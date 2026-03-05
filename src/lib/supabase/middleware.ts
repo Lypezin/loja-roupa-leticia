@@ -7,9 +7,15 @@ export async function updateSession(request: NextRequest) {
         request,
     })
 
+    // Prevenir que o Vercel Edge Middleware quebre com Erro 500 caso o usuário esqueça as variáveis
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+        console.warn('⚠️ Variáveis de ambiente do Supabase ausentes. Por favor, adicione-as na Vercel.')
+        return supabaseResponse
+    }
+
     const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
         {
             cookies: {
                 getAll() {
