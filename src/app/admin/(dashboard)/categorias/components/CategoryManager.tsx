@@ -21,6 +21,7 @@ interface CategoryManagerProps {
 export function CategoryManager({ initialCategories }: CategoryManagerProps) {
     const [isLoading, setIsLoading] = useState(false)
     const [name, setName] = useState('')
+    const [image, setImage] = useState<File | null>(null)
 
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -29,12 +30,19 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
         setIsLoading(true)
         const formData = new FormData()
         formData.append('name', name.trim())
+        if (image) {
+            formData.append('image', image)
+        }
 
         const res = await createCategory(formData)
         if (res?.error) {
             alert(res.error)
         } else {
             setName('')
+            setImage(null)
+            // Reset do file input
+            const fileInput = document.getElementById('image') as HTMLInputElement
+            if (fileInput) fileInput.value = ''
         }
         setIsLoading(false)
     }
@@ -56,8 +64,8 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
     return (
         <div className="space-y-6">
             {/* Criar Nova */}
-            <form onSubmit={handleCreate} className="flex gap-3 max-w-md items-end bg-white p-4 rounded-xl border">
-                <div className="flex-1 space-y-2">
+            <form onSubmit={handleCreate} className="flex flex-col md:flex-row gap-3 max-w-3xl items-end bg-white p-4 rounded-xl border">
+                <div className="flex-1 space-y-2 w-full">
                     <label htmlFor="name" className="text-sm font-medium leading-none">
                         Adicionar Nova Categoria
                     </label>
@@ -66,6 +74,18 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                         placeholder="Ex: Tênis"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
+                        disabled={isLoading}
+                    />
+                </div>
+                <div className="flex-1 space-y-2 w-full">
+                    <label htmlFor="image" className="text-sm font-medium leading-none">
+                        Imagem de Capa (Opcional)
+                    </label>
+                    <Input
+                        id="image"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setImage(e.target.files?.[0] || null)}
                         disabled={isLoading}
                     />
                 </div>

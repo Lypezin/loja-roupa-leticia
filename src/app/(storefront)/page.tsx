@@ -13,6 +13,12 @@ export default async function StorefrontHome() {
         .select('*')
         .single()
 
+    const { data: latestCategories } = await supabase
+        .from('categories')
+        .select('*')
+        .order('created_at', { ascending: true })
+        .limit(3)
+
     const { data: products } = await supabase
         .from('products')
         .select(`
@@ -40,7 +46,7 @@ export default async function StorefrontHome() {
             />
 
             {/* Categorias com Hover Expand */}
-            <CategoriesSection />
+            <CategoriesSection categories={latestCategories || []} />
 
             {/* Produtos Recentes */}
             <section className="container mx-auto px-4 py-20">

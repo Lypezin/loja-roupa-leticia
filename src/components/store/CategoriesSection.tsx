@@ -3,25 +3,13 @@
 import Link from "next/link"
 import { motion } from "framer-motion"
 
-const categories = [
-    {
-        name: "Camisetas",
-        href: "/camisetas",
-        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800",
-    },
-    {
-        name: "Calças",
-        href: "/calcas",
-        image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=800",
-    },
-    {
-        name: "Acessórios",
-        href: "/acessorios",
-        image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&q=80&w=800",
-    },
-]
+interface CategoriesSectionProps {
+    categories: any[]
+}
 
-export function CategoriesSection() {
+export function CategoriesSection({ categories }: CategoriesSectionProps) {
+    if (!categories || categories.length === 0) return null
+
     return (
         <section className="container mx-auto px-4 py-20">
             <div className="flex items-end justify-between mb-10">
@@ -36,17 +24,17 @@ export function CategoriesSection() {
             <div className="flex flex-col md:flex-row gap-4 h-auto md:h-[400px]">
                 {categories.map((cat, i) => (
                     <motion.div
-                        key={cat.name}
+                        key={cat.id || cat.name}
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.1, duration: 0.5 }}
-                        className="group relative flex-1 min-h-[200px] md:min-h-0 rounded-2xl overflow-hidden cursor-pointer hover:flex-[2] transition-all duration-500 ease-in-out"
+                        className="group relative flex-1 min-h-[200px] md:min-h-0 rounded-2xl overflow-hidden cursor-pointer hover:flex-[2] transition-all duration-500 ease-in-out bg-zinc-900"
                     >
-                        <Link href={cat.href} className="absolute inset-0 z-20" />
+                        <Link href={`/${cat.slug}`} className="absolute inset-0 z-20" />
                         <div
                             className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                            style={{ backgroundImage: `url(${cat.image})` }}
+                            style={{ backgroundImage: `url(${cat.image_url || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=800'})` }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-zinc-950/20 to-transparent" />
                         <div className="absolute bottom-6 left-6 z-10">
