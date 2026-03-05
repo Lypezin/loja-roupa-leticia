@@ -1,0 +1,120 @@
+'use client'
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Copy, Plus, Trash2 } from "lucide-react"
+import { createCategory, deleteCategory } from "../actions"
+
+type Category = {
+    id: string
+    name: string
+    slug: string
+    productsCount: number
+}
+
+interface CategoryManagerProps {
+    initialCategories: Category[]
+}
+
+export function CategoryManager({ initialCategories }: CategoryManagerProps) {
+    const [isLoading, setIsLoading] = useState(false)
+    const [name, setName] = useState('')
+
+    const handleCreate = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!name.trim()) return
+
+        setIsLoading(true)
+        const formData = new FormData()
+        formData.append('name', name.trim())
+
+        const res = await createCategory(formData)
+        if (res?.error) {
+            alert(res.error)
+        } else {
+            setName('')
+        }
+        setIsLoading(false)
+    }
+
+    const handleDelete = async (id: string, name: string, count: number) => {
+        if (count > 0) {
+            alert(`A categoria "${name}" tem ${count} produto(s). Remova os produtos dela antes de excluir.`)
+            return
+        }
+
+        if (confirm(`Tem certeza que deseja excluir a categoria "${name}"?`)) {
+            const res = await deleteCategory(id)
+            if (res?.error) {
+                alert(res.error)
+            }
+        }
+    }
+
+    return (
+        <div className="space-y-6">
+            {/* Criar Nova */}
+            <form onSubmit={handleCreate} className="flex gap-3 max-w-md items-end bg-white p-4 rounded-xl border">
+                <div className="flex-1 space-y-2">
+                    <label htmlFor="name" className="text-sm font-medium leading-none">
+                        Adicionar Nova Categoria
+                    </label>
+                    <Input
+                        id="name"
+                        placeholder="Ex: Tênis"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        disabled={isLoading}
+                    />
+                </div>
+                <Button type="submit" disabled={isLoading || !name.trim()} className="cursor-pointer">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Adicionar
+                </Button>
+            </form>
+
+            <div className="bg-white rounded-xl border overflow-hidden">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Nome</TableHead>
+                            <TableHead>Slug (URL)</TableHead>
+                            <TableHead>Nº de Produtos</TableHead>
+                            <TableHead className="w-[100px]">Ações</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {initialCategories.length === 0 ? (
+                            <TableRow>
+                                <TableCell colSpan={4} className="h-24 text-center text-zinc-500">
+                                    Nenhuma categoria cadastrada.
+                                </TableCell>
+                            </TableRow>
+                        ) : (
+                            initialCategories.map((cat) => (
+                                <TableRow key={cat.id}>
+                                    <TableCell className="font-medium">{cat.name}</TableCell>
+                                    <TableCell className="text-zinc-500">{cat.slug}</TableCell>
+                                    <TableCell>{cat.productsCount}</TableCell>
+                                    <TableCell>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={() => handleDelete(cat.id, cat.name, cat.productsCount)}
+                                            className="text-red-500 hover:text-red-700 cursor-pointer"
+                                            title="Excluir"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        )}
+                    </TableBody>
+                </Table>
+            </div>
+        </div>
+    )
+}

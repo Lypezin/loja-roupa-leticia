@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Package, LayoutDashboard, ShoppingCart, Settings, LogOut, Menu, ExternalLink } from "lucide-react"
+import { Package, LayoutDashboard, ShoppingCart, Settings, LogOut, Menu, ExternalLink, Tags } from "lucide-react"
 import { logout } from "../login/actions"
 import { Button } from "@/components/ui/button"
 import {
@@ -17,6 +17,7 @@ export default function AdminLayout({
     // Links de navegação para reaproveitar no Desktop e Mobile
     const navLinks = [
         { href: "/admin", icon: LayoutDashboard, label: "Início" },
+        { href: "/admin/categorias", icon: Tags, label: "Categorias" },
         { href: "/admin/produtos", icon: Package, label: "Produtos" },
         { href: "/admin/pedidos", icon: ShoppingCart, label: "Pedidos" },
         { href: "/admin/configuracoes", icon: Settings, label: "Configurações" },
