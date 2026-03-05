@@ -5,15 +5,14 @@ import { FilterSort } from "@/components/store/FilterSort"
 
 export const revalidate = 60
 
-export default async function CategoryPage({
-    params,
-    searchParams
-}: {
-    params: { slug: string }
-    searchParams: { sort?: string; minPrice?: string; maxPrice?: string }
+export default async function CategoryPage(props: {
+    params: Promise<{ slug: string }>
+    searchParams: Promise<{ sort?: string; minPrice?: string; maxPrice?: string }>
 }) {
-    const { slug } = params
-    const { sort, minPrice, maxPrice } = searchParams
+    const params = await props.params;
+    const searchParams = await props.searchParams;
+    const slug = params.slug;
+    const { sort, minPrice, maxPrice } = searchParams;
     const supabase = await createClient()
 
     // Buscar a categoria pelo slug

@@ -51,9 +51,9 @@ export function Header({ categories = [], storeName }: { categories?: Category[]
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => setMobileMenu(!mobileMenu)}
-                            className="lg:hidden p-2 rounded-lg hover:bg-zinc-100/80 transition-colors"
+                            className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
                         >
-                            <Menu className="w-5 h-5 text-zinc-700" />
+                            <Menu className="w-5 h-5 text-foreground" />
                         </button>
                         <Link href="/" className="font-bold text-xl tracking-[-0.05em] text-foreground hover:opacity-70 transition-opacity">
                             {storeName || 'FASHION STORE'}
@@ -71,29 +71,29 @@ export function Header({ categories = [], storeName }: { categories?: Category[]
                             <Link
                                 key={cat.id}
                                 href={`/${cat.slug}`}
-                                className="relative px-4 py-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100/60 group"
+                                className="relative px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted group"
                             >
                                 {cat.name}
-                                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-zinc-900 rounded-full transition-all duration-300 group-hover:w-1/2" />
+                                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-1/2" />
                             </Link>
                         ))}
 
                         {/* Dropdown menu para mais categorias */}
                         {extraCategories.length > 0 && (
                             <div className="relative group/dropdown">
-                                <button className="relative px-4 py-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100/60 flex items-center gap-1">
+                                <button className="relative px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted flex items-center gap-1">
                                     Mais
                                     <ChevronDown className="w-3.5 h-3.5" />
-                                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-zinc-900 rounded-full transition-all duration-300 group-[&:hover]/dropdown:w-1/2" />
+                                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-[&:hover]/dropdown:w-1/2" />
                                 </button>
 
-                                <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-zinc-100 rounded-xl shadow-xl opacity-0 invisible group-[&:hover]/dropdown:opacity-100 group-[&:hover]/dropdown:visible transition-all duration-300 transform origin-top-right group-[&:hover]/dropdown:translate-y-0 translate-y-2 z-50">
+                                <div className="absolute top-full right-0 mt-2 w-48 bg-background border border-border rounded-xl shadow-xl opacity-0 invisible group-[&:hover]/dropdown:opacity-100 group-[&:hover]/dropdown:visible transition-all duration-300 transform origin-top-right group-[&:hover]/dropdown:translate-y-0 translate-y-2 z-50">
                                     <div className="py-2 flex flex-col">
                                         {extraCategories.map(cat => (
                                             <Link
                                                 key={cat.id}
                                                 href={`/${cat.slug}`}
-                                                className="px-4 py-2 text-sm text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 transition-colors"
+                                                className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
                                             >
                                                 {cat.name}
                                             </Link>
@@ -103,14 +103,14 @@ export function Header({ categories = [], storeName }: { categories?: Category[]
                             </div>
                         )}
 
-                        <div className="w-px h-4 bg-zinc-200 mx-2" />
+                        <div className="w-px h-4 bg-border mx-2" />
 
                         <Link
                             href="/sobre"
-                            className="relative px-4 py-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100/60 group"
+                            className="relative px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted group"
                         >
                             Sobre
-                            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-zinc-900 rounded-full transition-all duration-300 group-hover:w-1/2" />
+                            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-1/2" />
                         </Link>
                     </nav>
 
@@ -118,7 +118,7 @@ export function Header({ categories = [], storeName }: { categories?: Category[]
                     <div className="flex items-center gap-1">
                         {mounted && (
                             <Link href={isLoggedIn ? "/conta" : "/conta/login"}>
-                                <button className="relative p-2.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100/60 transition-all">
+                                <button className="relative p-2.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-all">
                                     <User className="w-5 h-5" />
                                     {isLoggedIn && (
                                         <motion.span
@@ -132,7 +132,7 @@ export function Header({ categories = [], storeName }: { categories?: Category[]
                         )}
 
                         <Link href="/carrinho">
-                            <button className="relative p-2.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-zinc-100/60 transition-all">
+                            <button className="relative p-2.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-all">
                                 <ShoppingBag className="w-5 h-5" />
                                 {mounted && totalItems > 0 && (
                                     <motion.span

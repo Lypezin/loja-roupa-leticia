@@ -12,7 +12,7 @@ export default async function StorefrontLayout({
     const { data: settings } = await supabase.from('store_settings').select('store_name').single()
 
     return (
-        <div className="flex min-h-screen flex-col bg-white text-zinc-950 font-sans">
+        <div className="flex min-h-screen flex-col bg-background text-foreground font-sans">
             <Header categories={categories || []} storeName={settings?.store_name} />
             <main className="flex-1">
                 {children}

@@ -53,14 +53,14 @@ export function MobileMenu({ isOpen, onClose, categories }: MobileMenuProps) {
                                         <Link
                                             href={`/${cat.slug}`}
                                             onClick={onClose}
-                                            className="block px-4 py-3 rounded-xl text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 font-medium transition-colors"
+                                            className="block px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground font-medium transition-colors"
                                         >
                                             {cat.name}
                                         </Link>
                                     </motion.div>
                                 ))}
 
-                                <div className="w-full h-px bg-zinc-100 my-2" />
+                                <div className="w-full h-px bg-border my-2" />
 
                                 <motion.div
                                     initial={{ opacity: 0, x: -20 }}
@@ -70,7 +70,7 @@ export function MobileMenu({ isOpen, onClose, categories }: MobileMenuProps) {
                                     <Link
                                         href="/sobre"
                                         onClick={onClose}
-                                        className="block px-4 py-3 rounded-xl text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 font-medium transition-colors"
+                                        className="block px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground font-medium transition-colors"
                                     >
                                         Sobre
                                     </Link>
