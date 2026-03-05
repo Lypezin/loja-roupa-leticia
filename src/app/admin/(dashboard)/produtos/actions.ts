@@ -27,8 +27,6 @@ export async function saveProduct(formData: FormData) {
 
             if (error) return { error: error.message }
 
-            if (error) return { error: error.message }
-
             const { error: delVarError } = await supabase.from('product_variations').delete().eq('product_id', productId)
             if (delVarError) return { error: `Erro ao remover variações antigas: ${(delVarError as any).message}` }
 

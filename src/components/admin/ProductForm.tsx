@@ -5,10 +5,12 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Plus, Trash2, Image as ImageIcon, Loader2, X } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { saveProduct } from "@/app/admin/(dashboard)/produtos/actions"
 import { createClient } from "@/lib/supabase/client"
 import { toast } from "sonner"
+import { ProductImageManager } from "./ProductImageManager"
+import { VariationsEditor } from "./VariationsEditor"
 
 type Category = {
     id: string
@@ -128,7 +130,6 @@ export function ProductForm({ categories, product }: ProductFormProps) {
 
     return (
         <form action={handleSubmit} className="space-y-8 max-w-2xl bg-white p-6 rounded-xl border">
-
             <div className="space-y-4">
                 <div>
                     <Label htmlFor="name">Nome do Produto</Label>
@@ -170,53 +171,10 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                     </div>
                 </div>
 
-                <div className="pt-4 border-t">
-                    <Label htmlFor="images" className="flex items-center gap-2 mb-2 font-semibold">
-                        <ImageIcon className="w-4 h-4 text-zinc-500" />
-                        Imagens do Produto
-                    </Label>
-
-                    {/* Imagens já cadastradas */}
-                    {existingImages.length > 0 && (
-                        <div className="mb-4">
-                            <p className="text-sm text-zinc-500 mb-2">Imagens atuais:</p>
-                            <div className="flex gap-3 flex-wrap">
-                                {existingImages.map((img, i) => (
-                                    <div key={i} className="relative w-20 h-24 rounded-lg overflow-hidden border-2 border-zinc-200 group">
-                                        <div
-                                            className="absolute inset-0 bg-cover bg-center"
-                                            style={{ backgroundImage: `url(${img.image_url})` }}
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => handleRemoveExistingImage(i)}
-                                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                                        >
-                                            <X className="w-3 h-3" />
-                                        </button>
-                                        {img.is_primary && (
-                                            <span className="absolute bottom-1 left-1 bg-zinc-900 text-white text-[9px] px-1.5 py-0.5 rounded-full">
-                                                Capa
-                                            </span>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="text-sm text-zinc-500 mb-4">
-                        Selecione novas fotos para adicionar. A primeira será a capa se não houver imagens.
-                    </div>
-                    <Input
-                        id="images"
-                        name="images"
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        className="cursor-pointer"
-                    />
-                </div>
+                <ProductImageManager
+                    existingImages={existingImages}
+                    onRemoveExisting={handleRemoveExistingImage}
+                />
 
                 <div className="flex items-center gap-2 mt-4 pt-4 border-t">
                     <input
@@ -231,60 +189,12 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                 </div>
             </div>
 
-            <div className="border-t pt-6 space-y-4">
-                <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-lg">Variações e Estoque</h3>
-                    <Button type="button" variant="outline" size="sm" onClick={handleAddVariation} className="cursor-pointer">
-                        <Plus className="w-4 h-4 mr-2" />
-                        Adicionar Variação
-                    </Button>
-                </div>
-
-                <div className="space-y-3">
-                    {variations.map((variation, index) => (
-                        <div key={index} className="flex items-center gap-3 p-3 bg-zinc-50 rounded-lg border border-zinc-100">
-                            <div className="flex-1">
-                                <Label className="text-xs mb-1 block text-zinc-500">Tamanho</Label>
-                                <Input
-                                    value={variation.size}
-                                    placeholder="Ex: P, M, 38"
-                                    onChange={(e) => handleVariationChange(index, "size", e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="flex-1">
-                                <Label className="text-xs mb-1 block text-zinc-500">Cor</Label>
-                                <Input
-                                    value={variation.color}
-                                    placeholder="Ex: Preto, Azul"
-                                    onChange={(e) => handleVariationChange(index, "color", e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="w-24">
-                                <Label className="text-xs mb-1 block text-zinc-500">Estoque</Label>
-                                <Input
-                                    type="number"
-                                    min="0"
-                                    value={variation.stock_quantity}
-                                    onChange={(e) => handleVariationChange(index, "stock_quantity", parseInt(e.target.value) || 0)}
-                                    required
-                                />
-                            </div>
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon"
-                                className="mt-5 text-red-500 hover:text-red-700 cursor-pointer"
-                                onClick={() => handleRemoveVariation(index)}
-                                disabled={variations.length === 1}
-                            >
-                                <Trash2 className="w-4 h-4" />
-                            </Button>
-                        </div>
-                    ))}
-                </div>
-            </div>
+            <VariationsEditor
+                variations={variations}
+                onAdd={handleAddVariation}
+                onRemove={handleRemoveVariation}
+                onChange={handleVariationChange}
+            />
 
             <div className="border-t pt-6">
                 <Button disabled={isLoading} type="submit" className="w-full bg-zinc-950 text-white cursor-pointer h-12 text-base">
@@ -295,7 +205,6 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                     ) : isEditing ? "Atualizar Produto" : "Criar Produto"}
                 </Button>
             </div>
-
         </form>
     )
 }

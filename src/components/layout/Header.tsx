@@ -1,11 +1,12 @@
 'use client'
 
 import Link from "next/link"
-import { ShoppingBag, Menu, User, X, ChevronDown } from "lucide-react"
+import { ShoppingBag, Menu, User, ChevronDown } from "lucide-react"
 import { useCartStore } from "@/store/useCartStore"
 import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
+import { MobileMenu } from "./MobileMenu"
 
 export interface Category {
     id: string
@@ -44,7 +45,7 @@ export function Header({ categories = [] }: { categories?: Category[] }) {
                 }`}>
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between">
 
-                    {/* Logo + Mobile Menu */}
+                    {/* Logo + Mobile Menu Trigger */}
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => setMobileMenu(!mobileMenu)}
@@ -142,70 +143,12 @@ export function Header({ categories = [] }: { categories?: Category[] }) {
                 </div>
             </header>
 
-            {/* Mobile Menu Overlay */}
-            <AnimatePresence>
-                {mobileMenu && (
-                    <>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={() => setMobileMenu(false)}
-                            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50"
-                        />
-                        <motion.div
-                            initial={{ x: "-100%" }}
-                            animate={{ x: 0 }}
-                            exit={{ x: "-100%" }}
-                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                            className="fixed left-0 top-0 bottom-0 w-72 bg-white z-50 shadow-2xl"
-                        >
-                            <div className="p-6">
-                                <div className="flex items-center justify-between mb-8">
-                                    <span className="font-bold text-lg tracking-tight">FASHION STORE</span>
-                                    <button onClick={() => setMobileMenu(false)} className="p-2 rounded-lg hover:bg-zinc-100">
-                                        <X className="w-5 h-5" />
-                                    </button>
-                                </div>
-                                <nav className="flex flex-col gap-1">
-                                    {categories.map((cat, i) => (
-                                        <motion.div
-                                            key={cat.id}
-                                            initial={{ opacity: 0, x: -20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: i * 0.05 }}
-                                        >
-                                            <Link
-                                                href={`/${cat.slug}`}
-                                                onClick={() => setMobileMenu(false)}
-                                                className="block px-4 py-3 rounded-xl text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 font-medium transition-colors"
-                                            >
-                                                {cat.name}
-                                            </Link>
-                                        </motion.div>
-                                    ))}
-
-                                    <div className="w-full h-px bg-zinc-100 my-2" />
-
-                                    <motion.div
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: categories.length * 0.05 }}
-                                    >
-                                        <Link
-                                            href="/sobre"
-                                            onClick={() => setMobileMenu(false)}
-                                            className="block px-4 py-3 rounded-xl text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 font-medium transition-colors"
-                                        >
-                                            Sobre
-                                        </Link>
-                                    </motion.div>
-                                </nav>
-                            </div>
-                        </motion.div>
-                    </>
-                )}
-            </AnimatePresence>
+            {/* Mobile Menu */}
+            <MobileMenu
+                isOpen={mobileMenu}
+                onClose={() => setMobileMenu(false)}
+                categories={categories}
+            />
         </>
     )
 }
