@@ -67,27 +67,34 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
             {/* Seletor de Cores */}
             {availableColors.length > 0 && (
                 <div className="space-y-3">
-                    <h3 className="font-medium text-sm text-zinc-900">Cor</h3>
-                    <div className="flex gap-2">
-                        {availableColors.map((color) => (
-                            <button
-                                key={color}
-                                onClick={() => {
-                                    setSelectedColor(color)
-                                    // Ao trocar de cor, reseta o tamanho se ele não tiver pra nova cor
-                                    const newSizes = variations.filter(v => v.color === color).map(v => v.size)
-                                    if (!newSizes.includes(selectedSize)) {
-                                        setSelectedSize(newSizes[0])
-                                    }
-                                }}
-                                className={`px-4 py-2 text-sm border rounded-md transition-all ${selectedColor === color
-                                        ? "border-zinc-900 bg-zinc-900 text-white"
-                                        : "border-zinc-200 hover:border-zinc-400 text-zinc-700"
-                                    }`}
-                            >
-                                {color}
-                            </button>
-                        ))}
+                    <h3 className="font-medium text-sm text-zinc-900 uppercase tracking-widest">Cor</h3>
+                    <div className="flex gap-3">
+                        {availableColors.map((color) => {
+                            // Pegamos a variação específica global 
+                            const matchingVariantColors = variations.find(v => v.color === color)
+                            const isOutOfStock = matchingVariantColors ? matchingVariantColors.stock_quantity <= 0 : true
+                            return (
+                                <button
+                                    key={color}
+                                    disabled={isOutOfStock}
+                                    onClick={() => {
+                                        setSelectedColor(color)
+                                        // Ao trocar de cor, reseta o tamanho se ele não tiver pra nova cor
+                                        const newSizes = variations.filter(v => v.color === color).map(v => v.size)
+                                        if (!newSizes.includes(selectedSize)) {
+                                            setSelectedSize(newSizes[0])
+                                        }
+                                    }}
+                                    className={`px-5 py-2.5 text-sm font-medium border rounded-full transition-all ${isOutOfStock ? "opacity-30 cursor-not-allowed line-through" :
+                                            selectedColor === color
+                                                ? "border-zinc-900 bg-zinc-900 text-white shadow-md transform scale-105 inline-block"
+                                                : "border-zinc-200 hover:border-zinc-400 text-zinc-700 bg-zinc-50"
+                                        }`}
+                                >
+                                    {color}
+                                </button>
+                            )
+                        })}
                     </div>
                 </div>
             )}
@@ -95,20 +102,30 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
             {/* Seletor de Tamanhos */}
             {sizesForColor.length > 0 && (
                 <div className="space-y-3">
-                    <h3 className="font-medium text-sm text-zinc-900">Tamanho</h3>
-                    <div className="flex gap-2">
-                        {sizesForColor.map((size) => (
-                            <button
-                                key={size}
-                                onClick={() => setSelectedSize(size)}
-                                className={`w-12 h-12 flex items-center justify-center text-sm border transition-all ${selectedSize === size
-                                        ? "border-zinc-900 bg-zinc-900 text-white"
-                                        : "border-zinc-200 hover:border-zinc-400 text-zinc-700"
-                                    }`}
-                            >
-                                {size}
-                            </button>
-                        ))}
+                    <h3 className="font-medium text-sm text-zinc-900 flex justify-between uppercase tracking-widest mt-2">
+                        <span>Tamanho</span>
+                        <span className="text-zinc-500 underline cursor-pointer hover:text-zinc-900">Guia de Medidas</span>
+                    </h3>
+                    <div className="flex gap-3">
+                        {sizesForColor.map((size) => {
+                            const matchingVariantSizes = variations.find(v => v.color === selectedColor && v.size === size)
+                            const isSizeOutOfStock = matchingVariantSizes ? matchingVariantSizes.stock_quantity <= 0 : true
+
+                            return (
+                                <button
+                                    key={size}
+                                    disabled={isSizeOutOfStock}
+                                    onClick={() => setSelectedSize(size)}
+                                    className={`w-14 h-14 flex items-center justify-center font-medium text-sm border transition-all rounded-xl ${isSizeOutOfStock ? "opacity-30 cursor-not-allowed text-zinc-400 bg-zinc-100" :
+                                            selectedSize === size
+                                                ? "border-zinc-900 bg-zinc-900 text-white shadow-md transform scale-105"
+                                                : "border-zinc-200 hover:border-zinc-400 text-zinc-700 bg-zinc-50"
+                                        }`}
+                                >
+                                    {size}
+                                </button>
+                            )
+                        })}
                     </div>
                 </div>
             )}

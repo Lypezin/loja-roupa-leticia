@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import { AddToCart } from "@/components/store/AddToCart"
+import { ProductGallery } from "@/components/store/ProductGallery"
 
 export default async function ProductPage({
     params
@@ -38,16 +39,8 @@ export default async function ProductPage({
         <div className="container mx-auto px-4 py-8 md:py-16">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
 
-                {/* Galeria de Fotos */}
-                <div className="flex flex-col gap-4">
-                    <div className="relative aspect-[3/4] w-full bg-zinc-100 rounded-2xl overflow-hidden">
-                        <div
-                            className="absolute inset-0 bg-cover bg-center"
-                            style={{ backgroundImage: `url(${primaryImage})` }}
-                        />
-                    </div>
-                    {/* Thumbnails entrariam aqui se houvesse mais fotos */}
-                </div>
+                {/* Galeria de Fotos Interativa */}
+                <ProductGallery images={product.images || []} />
 
                 {/* Informações e Adição ao Carrinho */}
                 <div className="flex flex-col py-4 md:py-10">
