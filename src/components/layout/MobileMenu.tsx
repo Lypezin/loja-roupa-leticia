@@ -33,12 +33,12 @@ export function MobileMenu({ isOpen, onClose, categories }: MobileMenuProps) {
                         animate={{ x: 0 }}
                         exit={{ x: "-100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="fixed left-0 top-0 bottom-0 w-72 bg-white z-50 shadow-2xl"
+                        className="fixed left-0 top-0 bottom-0 w-72 bg-background z-50 shadow-2xl"
                     >
                         <div className="p-6">
                             <div className="flex items-center justify-between mb-8">
-                                <span className="font-bold text-lg tracking-tight">FASHION STORE</span>
-                                <button onClick={onClose} className="p-2 rounded-lg hover:bg-zinc-100">
+                                <span className="font-bold text-lg tracking-tight text-foreground">FASHION STORE</span>
+                                <button onClick={onClose} className="p-2 rounded-lg hover:bg-accent hover:text-accent-foreground">
                                     <X className="w-5 h-5" />
                                 </button>
                             </div>

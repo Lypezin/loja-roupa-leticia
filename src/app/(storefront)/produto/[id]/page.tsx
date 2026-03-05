@@ -4,6 +4,37 @@ import { AddToCart } from "@/components/store/AddToCart"
 import { ProductGallery } from "@/components/store/ProductGallery"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
+import { Metadata } from 'next'
+
+export async function generateMetadata({
+    params
+}: {
+    params: Promise<{ id: string }>
+}): Promise<Metadata> {
+    const { id } = await params
+    const supabase = await createClient()
+
+    const { data: product } = await supabase
+        .from('products')
+        .select('name, description, product_images(image_url)')
+        .eq('id', id)
+        .single()
+
+    if (!product) return {}
+
+    const description = product.description || "Confira este produto incrível em nossa loja."
+    const imageUrl = product.product_images?.find((img: any) => img.is_primary)?.image_url || product.product_images?.[0]?.image_url
+
+    return {
+        title: product.name,
+        description: description.slice(0, 160),
+        openGraph: {
+            title: product.name,
+            description: description,
+            images: imageUrl ? [{ url: imageUrl }] : [],
+        },
+    }
+}
 
 export default async function ProductPage({
     params

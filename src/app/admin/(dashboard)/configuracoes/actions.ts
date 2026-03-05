@@ -41,6 +41,7 @@ export async function saveBanner(formData: FormData) {
             hero_button_text: formData.get('hero_button_text') as string,
             hero_badge_text: formData.get('hero_badge_text') as string,
             hero_secondary_button_text: formData.get('hero_secondary_button_text') as string,
+            countdown_end: formData.get('countdown_end') as string || null,
             updated_at: new Date().toISOString()
         }
 

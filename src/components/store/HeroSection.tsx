@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
+import { CountdownTimer } from "./CountdownTimer"
 
 interface HeroSectionProps {
     title: string
@@ -10,9 +11,10 @@ interface HeroSectionProps {
     backgroundUrl: string
     badgeText?: string
     secondaryButtonText?: string
+    countdownEnd?: string
 }
 
-export function HeroSection({ title, subtitle, buttonText, backgroundUrl, badgeText, secondaryButtonText }: HeroSectionProps) {
+export function HeroSection({ title, subtitle, buttonText, backgroundUrl, badgeText, secondaryButtonText, countdownEnd }: HeroSectionProps) {
     return (
         <section className="relative h-[85vh] w-full bg-zinc-950 flex items-center justify-center overflow-hidden">
             {/* Background com Parallax sutil */}
@@ -57,6 +59,17 @@ export function HeroSection({ title, subtitle, buttonText, backgroundUrl, badgeT
                         {subtitle}
                     </p>
 
+                    {/* Countdown Timer (Item 15) */}
+                    {countdownEnd && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.5, delay: 0.5 }}
+                            className="w-full flex justify-start"
+                        >
+                            <CountdownTimer targetDate={countdownEnd} />
+                        </motion.div>
+                    )}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}

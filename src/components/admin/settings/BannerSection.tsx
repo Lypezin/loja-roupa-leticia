@@ -70,9 +70,21 @@ export function BannerSection({ settings }: BannerSectionProps) {
                         <Input id="hero_button_text" name="hero_button_text" defaultValue={settings.hero_button_text || ''} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
 
-                    <div className="space-y-2 md:col-span-2">
+                    <div className="space-y-2">
                         <Label htmlFor="hero_secondary_button_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Botão Secundário</Label>
                         <Input id="hero_secondary_button_text" name="hero_secondary_button_text" defaultValue={settings.hero_secondary_button_text || 'Conheça a marca'} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                    </div>
+
+                    <div className="space-y-2 md:col-span-2 pt-4 border-t border-zinc-50">
+                        <Label htmlFor="countdown_end" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Término da Oferta (Cronômetro)</Label>
+                        <Input
+                            id="countdown_end"
+                            name="countdown_end"
+                            type="datetime-local"
+                            defaultValue={settings.countdown_end ? new Date(settings.countdown_end).toISOString().slice(0, 16) : ''}
+                            className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200 w-full md:w-1/2"
+                        />
+                        <p className="text-[10px] text-zinc-400">Deixe vazio para desativar o cronômetro na página inicial.</p>
                     </div>
                 </div>
 

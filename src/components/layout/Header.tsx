@@ -7,6 +7,8 @@ import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { motion } from "framer-motion"
 import { MobileMenu } from "./MobileMenu"
+import { ThemeToggle } from "./ThemeToggle"
+import { SearchBar } from "./SearchBar"
 
 export interface Category {
     id: string
@@ -40,7 +42,7 @@ export function Header({ categories = [], storeName }: { categories?: Category[]
     return (
         <>
             <header className={`sticky top-0 z-50 w-full transition-all duration-500 ${scrolled
-                ? 'bg-white/70 backdrop-blur-xl shadow-[0_1px_0_0_rgba(0,0,0,0.05)] border-b border-zinc-200/50'
+                ? 'bg-background/70 backdrop-blur-xl shadow-[0_1px_0_0_rgba(0,0,0,0.05)] border-b border-border/50'
                 : 'bg-transparent'
                 }`}>
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -53,9 +55,14 @@ export function Header({ categories = [], storeName }: { categories?: Category[]
                         >
                             <Menu className="w-5 h-5 text-zinc-700" />
                         </button>
-                        <Link href="/" className="font-bold text-xl tracking-[-0.05em] text-zinc-900 hover:opacity-70 transition-opacity">
+                        <Link href="/" className="font-bold text-xl tracking-[-0.05em] text-foreground hover:opacity-70 transition-opacity">
                             {storeName || 'FASHION STORE'}
                         </Link>
+                    </div>
+
+                    {/* Search Bar - Desktop (Item 2) */}
+                    <div className="hidden lg:block flex-1 max-w-md mx-8">
+                        <SearchBar />
                     </div>
 
                     {/* Nav Desktop */}
@@ -125,19 +132,22 @@ export function Header({ categories = [], storeName }: { categories?: Category[]
                         )}
 
                         <Link href="/carrinho">
-                            <button className="relative p-2.5 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100/60 transition-all">
+                            <button className="relative p-2.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-zinc-100/60 transition-all">
                                 <ShoppingBag className="w-5 h-5" />
                                 {mounted && totalItems > 0 && (
                                     <motion.span
                                         initial={{ scale: 0 }}
                                         animate={{ scale: 1 }}
-                                        className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 text-[10px] font-bold text-white shadow-lg"
+                                        className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground shadow-lg"
                                     >
                                         {totalItems}
                                     </motion.span>
                                 )}
                             </button>
                         </Link>
+
+                        <div className="w-px h-4 bg-border mx-1" />
+                        <ThemeToggle />
                     </div>
 
                 </div>

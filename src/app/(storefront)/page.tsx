@@ -56,12 +56,13 @@ export default async function StorefrontHome() {
         <div className="flex flex-col">
             {/* Hero Banner Premium */}
             <HeroSection
-                title={heroTitle}
-                subtitle={heroSubtitle}
-                buttonText={heroButton}
-                backgroundUrl={heroBg}
-                badgeText={heroBadge}
-                secondaryButtonText={heroSecondaryButton}
+                title={settings?.hero_title}
+                subtitle={settings?.hero_subtitle}
+                buttonText={settings?.hero_button_text}
+                backgroundUrl={settings?.hero_image_url || '/hero-bg.jpg'}
+                badgeText={settings?.hero_badge_text}
+                secondaryButtonText={settings?.hero_secondary_button_text}
+                countdownEnd={settings?.countdown_end}
             />
 
             {/* Categorias com Hover Expand */}
