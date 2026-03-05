@@ -8,6 +8,7 @@ import {
     SheetTrigger,
     SheetTitle,
 } from "@/components/ui/sheet"
+import { Toaster } from "@/components/ui/sonner"
 
 export default function AdminLayout({
     children,
@@ -129,6 +130,7 @@ export default function AdminLayout({
                     {children}
                 </main>
             </div>
+            <Toaster position="top-right" richColors />
         </div>
     )
 }

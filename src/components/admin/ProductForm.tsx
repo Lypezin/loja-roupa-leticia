@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Plus, Trash2, Image as ImageIcon, Loader2, X } from "lucide-react"
 import { saveProduct } from "@/app/admin/(dashboard)/produtos/actions"
 import { createClient } from "@/lib/supabase/client"
+import { toast } from "sonner"
 
 type Category = {
     id: string
@@ -114,11 +115,12 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                 throw new Error(res.error)
             }
 
+            toast.success(isEditing ? "Produto atualizado com sucesso!" : "Produto criado com sucesso!")
             router.push('/admin/produtos')
             router.refresh()
         } catch (error: any) {
             console.error(error)
-            alert(`Erro ao salvar produto: ${error.message}`)
+            toast.error(`Erro ao salvar produto: ${error.message}`)
         } finally {
             setIsLoading(false)
         }

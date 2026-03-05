@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Plus, Search } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import {
@@ -44,6 +45,12 @@ export default async function AdminProdutos() {
             </div>
 
             <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
+                <div className="p-4 border-b flex items-center gap-4 bg-zinc-50/50">
+                    <div className="relative flex-1 max-w-sm">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                        <Input placeholder="Buscar produtos..." className="pl-9 bg-white" />
+                    </div>
+                </div>
                 {products && products.length > 0 ? (
                     <Table>
                         <TableHeader>
@@ -63,7 +70,7 @@ export default async function AdminProdutos() {
                                     : 'Sem categoria'
 
                                 return (
-                                    <TableRow key={product.id}>
+                                    <TableRow key={product.id} className="hover:bg-zinc-50 transition-colors">
                                         <TableCell className="font-medium">{product.name}</TableCell>
                                         <TableCell className="text-zinc-500">
                                             {categoryName}
@@ -72,7 +79,8 @@ export default async function AdminProdutos() {
                                             {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.base_price)}
                                         </TableCell>
                                         <TableCell>
-                                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${product.is_active ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-700'}`}>
+                                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${product.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-zinc-100 text-zinc-700'}`}>
+                                                <span className={`w-1.5 h-1.5 rounded-full ${product.is_active ? 'bg-emerald-500' : 'bg-zinc-400'}`}></span>
                                                 {product.is_active ? 'Ativo' : 'Oculto'}
                                             </span>
                                         </TableCell>

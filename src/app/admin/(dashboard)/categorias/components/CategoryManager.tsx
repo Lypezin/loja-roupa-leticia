@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Plus, Trash2, Loader2, Pencil, X, Save } from "lucide-react"
 import { createCategory, deleteCategory, updateCategory } from "../actions"
+import { toast } from "sonner"
 
 type Category = {
     id: string
@@ -41,8 +42,9 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
 
         const res = await createCategory(formData)
         if (res?.error) {
-            alert(res.error)
+            toast.error(res.error)
         } else {
+            toast.success("Categoria criada com sucesso!")
             setName('')
             setImage(null)
             // Reset do file input
@@ -64,8 +66,9 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
 
         const res = await updateCategory(id, formData)
         if (res?.error) {
-            alert(res.error)
+            toast.error(res.error)
         } else {
+            toast.success("Categoria atualizada com sucesso!")
             setEditingId(null)
             setEditName('')
             setEditImage(null)
@@ -87,14 +90,16 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
 
     const handleDelete = async (id: string, name: string, count: number) => {
         if (count > 0) {
-            alert(`A categoria "${name}" tem ${count} produto(s). Remova os produtos dela antes de excluir.`)
+            toast.error(`A categoria "${name}" tem ${count} produto(s). Remova os produtos dela antes de excluir.`)
             return
         }
 
         if (confirm(`Tem certeza que deseja excluir a categoria "${name}"?`)) {
             const res = await deleteCategory(id)
             if (res?.error) {
-                alert(res.error)
+                toast.error(res.error)
+            } else {
+                toast.success("Categoria excluída com sucesso!")
             }
         }
     }

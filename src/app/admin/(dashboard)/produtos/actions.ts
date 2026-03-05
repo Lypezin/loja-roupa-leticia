@@ -27,9 +27,14 @@ export async function saveProduct(formData: FormData) {
 
             if (error) return { error: error.message }
 
-            await supabase.from('product_variations').delete().eq('product_id', productId)
+            if (error) return { error: error.message }
+
+            const { error: delVarError } = await supabase.from('product_variations').delete().eq('product_id', productId)
+            if (delVarError) return { error: `Erro ao remover variações antigas: ${(delVarError as any).message}` }
+
             const varsToInsert = variations.map((v: any) => ({ ...v, product_id: productId }))
-            await supabase.from('product_variations').insert(varsToInsert)
+            const { error: insVarError } = await supabase.from('product_variations').insert(varsToInsert)
+            if (insVarError) return { error: `Erro ao inserir novas variações: ${(insVarError as any).message}` }
 
             // Gerenciar imagens existentes (mantidas pelo usuário)
             const existingImagesJson = formData.get('existing_images_json') as string
@@ -47,11 +52,16 @@ export async function saveProduct(formData: FormData) {
                 if (allImages) {
                     const toDelete = allImages.filter((img: any) => !keptUrls.includes(img.image_url))
                     for (const img of toDelete) {
-                        await supabase.from('product_images').delete().eq('id', img.id)
+                        const { error: delImgError } = await supabase.from('product_images').delete().eq('id', img.id)
+                        if (delImgError) {
+                            console.error('Falha ao deletar registro da imagem:', delImgError)
+                            continue; // Continua tentando deletar as outras
+                        }
                         // Deletar do storage
                         const parts = img.image_url.split('/product-images/')
                         if (parts.length > 1) {
-                            await supabase.storage.from('product-images').remove([parts[1]])
+                            const { error: storageError } = await supabase.storage.from('product-images').remove([parts[1]])
+                            if (storageError) console.error('Falha ao deletar arquivo do storage:', storageError)
                         }
                     }
                 }
@@ -80,12 +90,16 @@ export async function saveProduct(formData: FormData) {
         if (uploadedUrlsJson) {
             const uploadedUrls = JSON.parse(uploadedUrlsJson)
             for (let i = 0; i < uploadedUrls.length; i++) {
-                await supabase.from('product_images').insert({
+                const { error: imgInsertError } = await supabase.from('product_images').insert({
                     product_id: newProductId,
                     image_url: uploadedUrls[i],
                     is_primary: i === 0 && !productId,
                     display_order: i
                 })
+                if (imgInsertError) {
+                    console.error('Falha ao inserir imagem no banco:', imgInsertError)
+                    // Nao vamos abortar o request todo se 1 imagem falhar, mas idealmente poderiamos.
+                }
             }
         }
 
@@ -117,13 +131,17 @@ export async function deleteProduct(productId: string) {
                 .filter(Boolean) as string[]
 
             if (filePaths.length > 0) {
-                await supabase.storage.from('product-images').remove(filePaths)
+                const { error: storageError } = await supabase.storage.from('product-images').remove(filePaths)
+                if (storageError) console.error('Aviso: falha ao deletar algumas imagens do storage', storageError)
             }
         }
 
         // Deletar registros relacionados
-        await supabase.from('product_images').delete().eq('product_id', productId)
-        await supabase.from('product_variations').delete().eq('product_id', productId)
+        const { error: delImagesError } = await supabase.from('product_images').delete().eq('product_id', productId)
+        if (delImagesError) return { error: `Erro ao deletar imagens: ${(delImagesError as any).message}` }
+
+        const { error: delVarsError } = await supabase.from('product_variations').delete().eq('product_id', productId)
+        if (delVarsError) return { error: `Erro ao deletar variações: ${(delVarsError as any).message}` }
 
         const { error } = await supabase.from('products').delete().eq('id', productId)
         if (error) return { error: error.message }

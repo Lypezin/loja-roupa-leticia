@@ -55,6 +55,13 @@ export async function deleteCategory(id: string) {
     try {
         const supabase = await createClient()
 
+        // 1. Buscar a categoria para pegar a URL da imagem atual
+        const { data: category } = await supabase
+            .from('categories')
+            .select('image_url')
+            .eq('id', id)
+            .single()
+
         const { error } = await supabase
             .from('categories')
             .delete()
@@ -64,6 +71,25 @@ export async function deleteCategory(id: string) {
             // Pode ser erro de Foreign Key se tiver produtos atrelados
             if (error.code === '23503') return { error: 'Não é possível excluir esta categoria pois há produtos usando ela.' }
             return { error: error.message }
+        }
+
+        // 2. Se deletou a categoria com sucesso, e ela tinha imagem, deleta do Storage
+        if (category?.image_url) {
+            try {
+                // Extrair o caminho relativo do arquivo a partir da URL pública
+                const urlObj = new URL(category.image_url)
+                const pathParts = urlObj.pathname.split('/product-images/')
+                if (pathParts.length > 1) {
+                    const filePath = pathParts[1] // ex: categories/camisetas/category-123.jpg
+
+                    await supabase.storage
+                        .from('product-images')
+                        .remove([filePath])
+                }
+            } catch (storageErr) {
+                console.error('Falha ao deletar imagem do storage:', storageErr)
+                // Não retorna erro pro usuário pq a categoria já foi excluída, só logamos o erro msm
+            }
         }
 
         revalidatePath('/admin/categorias')
@@ -85,6 +111,13 @@ export async function updateCategory(id: string, formData: FormData) {
         const updateData: any = { name, slug }
 
         if (image && image.size > 0) {
+            // 1. Buscar a categoria antiga para saber se temos que deletar a imagem velha
+            const { data: oldCategory } = await supabase
+                .from('categories')
+                .select('image_url')
+                .eq('id', id)
+                .single()
+
             const fileExt = image.name.split('.').pop()
             const fileName = `category-${Date.now()}.${fileExt}`
             const filePath = `categories/${slug}/${fileName}`
@@ -102,6 +135,22 @@ export async function updateCategory(id: string, formData: FormData) {
                 .getPublicUrl(filePath)
 
             updateData.image_url = publicUrl
+
+            // 2. Sucesso no upload da foto nova! Agora deletamos a velha do Storage
+            if (oldCategory?.image_url) {
+                try {
+                    const urlObj = new URL(oldCategory.image_url)
+                    const pathParts = urlObj.pathname.split('/product-images/')
+                    if (pathParts.length > 1) {
+                        const oldFilePath = pathParts[1]
+                        await supabase.storage
+                            .from('product-images')
+                            .remove([oldFilePath])
+                    }
+                } catch (storageErr) {
+                    console.error('Falha ao deletar imagem antiga do storage:', storageErr)
+                }
+            }
         }
 
         const { error } = await supabase
