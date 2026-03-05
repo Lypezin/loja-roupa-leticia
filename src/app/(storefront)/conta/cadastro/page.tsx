@@ -1,107 +1,93 @@
 'use client'
 
-import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { cadastrarCliente } from "../actions"
-import { Loader2, Eye, EyeOff } from "lucide-react"
+import Link from "next/link"
 import { useState, Suspense } from "react"
+import { Loader2, User, Mail, Lock, ArrowRight } from "lucide-react"
 
-function CadastroFormContent() {
+function CadastroForm() {
     const searchParams = useSearchParams()
-    const error = searchParams.get('error')
+    const errorMsg = searchParams.get("error")
     const [isLoading, setIsLoading] = useState(false)
-    const [showPassword, setShowPassword] = useState(false)
-
-    const handleSubmit = async (formData: FormData) => {
-        setIsLoading(true)
-        try {
-            await cadastrarCliente(formData)
-        } catch {
-            // redirect lança exceção — é comportamento normal do Next.js
-        }
-        setIsLoading(false)
-    }
 
     return (
-        <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
-            <div className="w-full max-w-md space-y-8">
-                <div className="text-center">
-                    <h1 className="text-3xl font-bold tracking-tight">Criar sua conta</h1>
-                    <p className="text-zinc-500 mt-2">Cadastre-se para acompanhar pedidos e salvar favoritos</p>
+        <div className="min-h-[80vh] flex items-center justify-center px-4">
+            <div className="w-full max-w-md">
+                <div className="text-center mb-10">
+                    <Link href="/" className="inline-block font-bold text-2xl tracking-[-0.05em] text-zinc-900 mb-6">
+                        FASHION STORE
+                    </Link>
+                    <h1 className="text-2xl font-bold tracking-tight">Crie sua conta</h1>
+                    <p className="text-zinc-500 text-sm mt-2">
+                        Cadastre-se e tenha acesso a ofertas exclusivas.
+                    </p>
                 </div>
 
-                <form action={handleSubmit} className="bg-white p-8 rounded-2xl border shadow-sm space-y-5">
-                    {error && (
-                        <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg p-3 text-center animate-fade-in">
-                            {decodeURIComponent(error)}
-                        </div>
-                    )}
+                {errorMsg && (
+                    <div className="bg-red-50 text-red-600 text-sm rounded-xl px-4 py-3 mb-6 border border-red-100">
+                        {decodeURIComponent(errorMsg)}
+                    </div>
+                )}
 
-                    <div className="space-y-2">
-                        <Label htmlFor="name">Nome completo</Label>
-                        <Input
-                            id="name"
+                <form action={async (formData) => {
+                    setIsLoading(true)
+                    try { await cadastrarCliente(formData) } catch { } finally { setIsLoading(false) }
+                }} className="space-y-4">
+
+                    <div className="relative">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                        <input
                             name="name"
                             type="text"
-                            placeholder="Seu nome"
+                            placeholder="Nome completo"
                             required
-                            autoFocus
-                            className="h-11"
+                            className="w-full h-12 pl-11 pr-4 bg-zinc-50 border border-zinc-200 rounded-xl text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-300 transition-all"
                         />
                     </div>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="email">E-mail</Label>
-                        <Input
-                            id="email"
+                    <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                        <input
                             name="email"
                             type="email"
-                            placeholder="seu@email.com"
+                            placeholder="E-mail"
                             required
-                            className="h-11"
+                            className="w-full h-12 pl-11 pr-4 bg-zinc-50 border border-zinc-200 rounded-xl text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-300 transition-all"
                         />
                     </div>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="password">Senha</Label>
-                        <div className="relative">
-                            <Input
-                                id="password"
-                                name="password"
-                                type={showPassword ? "text" : "password"}
-                                required
-                                minLength={6}
-                                placeholder="Mínimo de 6 caracteres"
-                                className="h-11 pr-10"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
-                            >
-                                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                            </button>
-                        </div>
+                    <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                        <input
+                            name="password"
+                            type="password"
+                            placeholder="Senha (mínimo 6 caracteres)"
+                            required
+                            minLength={6}
+                            className="w-full h-12 pl-11 pr-4 bg-zinc-50 border border-zinc-200 rounded-xl text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-300 transition-all"
+                        />
                     </div>
 
-                    <Button disabled={isLoading} type="submit" className="w-full h-11 bg-zinc-950 text-white cursor-pointer text-base">
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full h-12 bg-zinc-950 text-white text-sm font-semibold rounded-xl hover:bg-zinc-800 disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
                         {isLoading ? (
-                            <span className="flex items-center gap-2">
-                                <Loader2 className="w-4 h-4 animate-spin" /> Criando conta...
-                            </span>
-                        ) : "Criar Conta"}
-                    </Button>
-
-                    <p className="text-sm text-center text-zinc-500">
-                        Já tem conta?{" "}
-                        <Link href="/conta/login" className="text-zinc-950 font-medium hover:underline">
-                            Faça login
-                        </Link>
-                    </p>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                            <>Criar Conta <ArrowRight className="w-4 h-4" /></>
+                        )}
+                    </button>
                 </form>
+
+                <p className="text-center text-sm text-zinc-500 mt-8">
+                    Já tem uma conta?{" "}
+                    <Link href="/conta/login" className="text-zinc-900 font-semibold hover:underline">
+                        Fazer login
+                    </Link>
+                </p>
             </div>
         </div>
     )
@@ -109,8 +95,12 @@ function CadastroFormContent() {
 
 export default function CadastroPage() {
     return (
-        <Suspense fallback={<div className="min-h-[70vh] flex items-center justify-center"><Loader2 className="w-6 h-6 animate-spin text-zinc-400" /></div>}>
-            <CadastroFormContent />
+        <Suspense fallback={
+            <div className="min-h-[80vh] flex items-center justify-center">
+                <div className="w-8 h-8 border-2 border-zinc-300 border-t-zinc-900 rounded-full animate-spin" />
+            </div>
+        }>
+            <CadastroForm />
         </Suspense>
     )
 }

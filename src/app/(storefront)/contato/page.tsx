@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
-import { Mail, Phone, Instagram } from "lucide-react"
+import { Mail, MessageCircle, Instagram, ArrowUpRight } from "lucide-react"
+import Link from "next/link"
 
 export const revalidate = 60
 
@@ -10,53 +11,70 @@ export default async function ContatoPage() {
         .select('store_name, support_email, whatsapp_number, instagram_url')
         .single()
 
+    const contacts = [
+        {
+            icon: Mail,
+            title: "E-mail",
+            value: settings?.support_email || "contato@fashionstore.com",
+            href: `mailto:${settings?.support_email || "contato@fashionstore.com"}`,
+            color: "bg-blue-50 text-blue-600 border-blue-100",
+        },
+        {
+            icon: MessageCircle,
+            title: "WhatsApp",
+            value: settings?.whatsapp_number || "(00) 00000-0000",
+            href: `https://wa.me/${settings?.whatsapp_number?.replace(/\D/g, '') || ""}`,
+            color: "bg-emerald-50 text-emerald-600 border-emerald-100",
+        },
+        {
+            icon: Instagram,
+            title: "Instagram",
+            value: settings?.instagram_url ? `@${settings.instagram_url.split('/').pop()}` : "@fashionstore",
+            href: settings?.instagram_url || "#",
+            color: "bg-pink-50 text-pink-600 border-pink-100",
+        },
+    ]
+
     return (
-        <div className="container mx-auto px-4 py-16 max-w-2xl">
-            <h1 className="text-4xl font-bold tracking-tight mb-4">Contato</h1>
-            <p className="text-zinc-500 mb-10">Estamos aqui para ajudar. Entre em contato conosco.</p>
+        <div className="container mx-auto px-4 py-16 md:py-24">
+            <div className="max-w-2xl mx-auto">
+                <div className="text-center mb-14">
+                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 mb-3 block">
+                        Fale Conosco
+                    </span>
+                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Contato</h1>
+                    <p className="text-zinc-500 text-lg max-w-md mx-auto">
+                        Estamos aqui para ajudar. Escolha o canal de sua preferência.
+                    </p>
+                </div>
 
-            <div className="grid gap-4">
-                {settings?.support_email && (
-                    <a href={`mailto:${settings.support_email}`} className="flex items-center gap-4 bg-white p-6 rounded-xl border shadow-sm hover:shadow-md transition-shadow">
-                        <div className="p-3 bg-zinc-100 rounded-lg">
-                            <Mail className="w-6 h-6 text-zinc-600" />
-                        </div>
-                        <div>
-                            <p className="font-semibold">E-mail</p>
-                            <p className="text-sm text-zinc-500">{settings.support_email}</p>
-                        </div>
-                    </a>
-                )}
+                <div className="space-y-4">
+                    {contacts.map(contact => (
+                        <Link
+                            key={contact.title}
+                            href={contact.href}
+                            target="_blank"
+                            className="group flex items-center justify-between p-5 rounded-2xl border border-zinc-100 hover:border-zinc-200 hover:shadow-sm bg-white transition-all"
+                        >
+                            <div className="flex items-center gap-4">
+                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center border ${contact.color}`}>
+                                    <contact.icon className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <p className="text-xs text-zinc-400 uppercase tracking-wider font-medium">{contact.title}</p>
+                                    <p className="text-zinc-900 font-semibold">{contact.value}</p>
+                                </div>
+                            </div>
+                            <ArrowUpRight className="w-5 h-5 text-zinc-300 group-hover:text-zinc-900 transition-colors" />
+                        </Link>
+                    ))}
+                </div>
 
-                {settings?.whatsapp_number && (
-                    <a href={`https://wa.me/55${settings.whatsapp_number}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-white p-6 rounded-xl border shadow-sm hover:shadow-md transition-shadow">
-                        <div className="p-3 bg-green-50 rounded-lg">
-                            <Phone className="w-6 h-6 text-green-600" />
-                        </div>
-                        <div>
-                            <p className="font-semibold">WhatsApp</p>
-                            <p className="text-sm text-zinc-500">({settings.whatsapp_number.slice(0, 2)}) {settings.whatsapp_number.slice(2)}</p>
-                        </div>
-                    </a>
-                )}
-
-                {settings?.instagram_url && (
-                    <a href={settings.instagram_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-white p-6 rounded-xl border shadow-sm hover:shadow-md transition-shadow">
-                        <div className="p-3 bg-pink-50 rounded-lg">
-                            <Instagram className="w-6 h-6 text-pink-600" />
-                        </div>
-                        <div>
-                            <p className="font-semibold">Instagram</p>
-                            <p className="text-sm text-zinc-500">Siga-nos no Instagram</p>
-                        </div>
-                    </a>
-                )}
-
-                {!settings?.support_email && !settings?.whatsapp_number && !settings?.instagram_url && (
-                    <div className="py-12 text-center text-zinc-500">
-                        Os canais de contato ainda não foram configurados. Acesse o painel administrativo para adicioná-los.
-                    </div>
-                )}
+                <div className="text-center mt-16 p-8 bg-zinc-50 rounded-2xl border border-zinc-100">
+                    <h3 className="font-semibold text-lg mb-2">Horário de Atendimento</h3>
+                    <p className="text-zinc-500 text-sm">Segunda a Sexta: 9h às 18h</p>
+                    <p className="text-zinc-500 text-sm">Sábado: 9h às 13h</p>
+                </div>
             </div>
         </div>
     )

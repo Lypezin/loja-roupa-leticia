@@ -1,65 +1,74 @@
 import { createClient } from "@/lib/supabase/server"
 
-export const revalidate = 3600
+export const revalidate = 60
 
 export default async function TermosPage() {
     const supabase = await createClient()
-    const { data: settings } = await supabase
-        .from('store_settings')
-        .select('store_name')
-        .single()
+    const { data: settings } = await supabase.from('store_settings').select('store_name').single()
+    const storeName = settings?.store_name || 'Fashion Store'
 
-    const storeName = settings?.store_name || 'LOJA MODA'
+    const sections = [
+        {
+            title: "1. Aceitação dos Termos",
+            content: `Ao acessar e utilizar o site da ${storeName}, você concorda com estes Termos de Uso. Caso não concorde, por favor, não utilize nossos serviços.`
+        },
+        {
+            title: "2. Conta do Usuário",
+            content: "Ao criar uma conta, você é responsável por manter a confidencialidade das suas credenciais de acesso. Todas as atividades realizadas na sua conta serão de sua responsabilidade."
+        },
+        {
+            title: "3. Política de Preços",
+            content: `Os preços exibidos no site da ${storeName} são válidos no momento da compra. Reservamo-nos o direito de alterar preços sem aviso prévio para compras futuras.`
+        },
+        {
+            title: "4. Política de Troca e Devolução",
+            content: "Produtos podem ser trocados ou devolvidos em até 7 dias após o recebimento, em conformidade com o Código de Defesa do Consumidor, desde que estejam em condições originais e com etiquetas."
+        },
+        {
+            title: "5. Privacidade e Dados",
+            content: "Seus dados pessoais são protegidos e utilizados exclusivamente para processamento de pedidos, comunicações sobre suas compras e melhorias do nosso serviço. Não compartilhamos suas informações com terceiros."
+        },
+        {
+            title: "6. Propriedade Intelectual",
+            content: `Todo o conteúdo do site — imagens, textos, logotipos e design — é propriedade da ${storeName} e não pode ser reproduzido sem autorização prévia.`
+        },
+    ]
 
     return (
-        <div className="container mx-auto px-4 py-16 max-w-2xl">
-            <h1 className="text-4xl font-bold tracking-tight mb-8">Termos de Uso</h1>
-
-            <div className="prose prose-zinc max-w-none space-y-8 text-zinc-600">
-                <section className="space-y-3">
-                    <h2 className="text-xl font-semibold text-zinc-900">1. Aceitação dos Termos</h2>
-                    <p>
-                        Ao acessar e utilizar o site da {storeName}, você concorda com os termos e condições aqui descritos.
-                        Caso não concorde, não utilize nossos serviços.
+        <div className="container mx-auto px-4 py-16 md:py-24">
+            <div className="max-w-2xl mx-auto">
+                <div className="text-center mb-14">
+                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 mb-3 block">
+                        Legal
+                    </span>
+                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Termos de Uso</h1>
+                    <p className="text-zinc-500">
+                        Última atualização: Março de 2025
                     </p>
-                </section>
+                </div>
 
-                <section className="space-y-3">
-                    <h2 className="text-xl font-semibold text-zinc-900">2. Produtos e Preços</h2>
-                    <p>
-                        Os preços e disponibilidade dos produtos podem ser alterados sem aviso prévio.
-                        Nos reservamos o direito de corrigir eventuais erros de precificação.
+                <div className="space-y-8">
+                    {sections.map((section, i) => (
+                        <div key={i} className="group">
+                            <h2 className="text-lg font-semibold text-zinc-900 mb-3 flex items-center gap-3">
+                                <span className="w-8 h-8 bg-zinc-100 rounded-lg flex items-center justify-center text-xs font-bold text-zinc-500 shrink-0">
+                                    {i + 1}
+                                </span>
+                                {section.title.replace(/^\d+\.\s*/, '')}
+                            </h2>
+                            <p className="text-zinc-500 leading-relaxed pl-11">
+                                {section.content}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="mt-14 p-6 bg-zinc-50 rounded-2xl border border-zinc-100 text-center">
+                    <p className="text-sm text-zinc-500">
+                        Dúvidas sobre os termos? Entre em contato pelo nosso{" "}
+                        <a href="/contato" className="text-zinc-900 font-semibold hover:underline">canal de atendimento</a>.
                     </p>
-                </section>
-
-                <section className="space-y-3">
-                    <h2 className="text-xl font-semibold text-zinc-900">3. Política de Trocas</h2>
-                    <p>
-                        Trocas podem ser solicitadas em até 7 dias corridos após o recebimento do produto,
-                        desde que este esteja em sua embalagem original, sem sinais de uso.
-                    </p>
-                </section>
-
-                <section className="space-y-3">
-                    <h2 className="text-xl font-semibold text-zinc-900">4. Privacidade</h2>
-                    <p>
-                        Seus dados pessoais são tratados com total sigilo e segurança.
-                        Utilizamos criptografia e práticas recomendadas de proteção de dados
-                        conforme a LGPD (Lei Geral de Proteção de Dados).
-                    </p>
-                </section>
-
-                <section className="space-y-3">
-                    <h2 className="text-xl font-semibold text-zinc-900">5. Contato</h2>
-                    <p>
-                        Em caso de dúvidas sobre estes termos, entre em contato conosco através da
-                        nossa página de contato.
-                    </p>
-                </section>
-
-                <p className="text-sm text-zinc-400 pt-4 border-t">
-                    Última atualização: {new Date().toLocaleDateString('pt-BR', { year: 'numeric', month: 'long' })}
-                </p>
+                </div>
             </div>
         </div>
     )

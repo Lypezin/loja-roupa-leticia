@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import { AddToCart } from "@/components/store/AddToCart"
 import { ProductGallery } from "@/components/store/ProductGallery"
+import Link from "next/link"
+import { ChevronRight } from "lucide-react"
 
 export default async function ProductPage({
     params
@@ -35,35 +37,58 @@ export default async function ProductPage({
         currency: 'BRL'
     }).format(product.base_price)
 
+    const installmentPrice = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    }).format(product.base_price / 3)
+
     return (
-        <div className="container mx-auto px-4 py-8 md:py-16">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
+        <div className="container mx-auto px-4 py-6 md:py-12">
+            {/* Breadcrumb */}
+            <nav className="flex items-center gap-1.5 text-sm text-zinc-400 mb-8">
+                <Link href="/" className="hover:text-zinc-700 transition-colors">Início</Link>
+                <ChevronRight className="w-3.5 h-3.5" />
+                {/* @ts-ignore */}
+                <Link href={`/${product.category?.name?.toLowerCase() || 'camisetas'}`} className="hover:text-zinc-700 transition-colors">
+                    {/* @ts-ignore */}
+                    {product.category?.name || 'Camisetas'}
+                </Link>
+                <ChevronRight className="w-3.5 h-3.5" />
+                <span className="text-zinc-700 font-medium">{product.name}</span>
+            </nav>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
 
                 {/* Galeria de Fotos Interativa */}
                 <ProductGallery images={product.images || []} />
 
                 {/* Informações e Adição ao Carrinho */}
-                <div className="flex flex-col py-4 md:py-10">
-                    <div className="space-y-2 mb-6">
-                        <h2 className="text-sm font-medium tracking-widest text-zinc-500 uppercase">
+                <div className="flex flex-col py-2 md:py-6">
+                    <div className="space-y-3 mb-6">
+                        <span className="text-xs font-semibold tracking-[0.2em] text-zinc-400 uppercase">
                             {/* @ts-ignore */}
                             {product.category?.name || 'Sem categoria'}
-                        </h2>
-                        <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-zinc-900">
+                        </span>
+                        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-zinc-900 leading-tight">
                             {product.name}
                         </h1>
-                        <p className="text-2xl text-zinc-900 font-medium pt-2">
-                            {formattedPrice}
+                        <div className="flex items-baseline gap-3">
+                            <p className="text-3xl text-zinc-900 font-bold">
+                                {formattedPrice}
+                            </p>
+                            <p className="text-sm text-zinc-400">
+                                até 3x de {installmentPrice}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="mb-6">
+                        <p className="text-zinc-500 leading-relaxed">
+                            {product.description || "Peça exclusiva com design minimalista, construída com materiais premium visando o máximo de conforto diário."}
                         </p>
                     </div>
 
-                    <div className="prose prose-zinc mb-8">
-                        <p className="text-zinc-600 leading-relaxed text-lg">
-                            {product.description || "Esta peça é uma obra de design minimalista construída com materiais premium visando o máximo de conforto diário."}
-                        </p>
-                    </div>
-
-                    <div className="w-full border-t border-zinc-200" />
+                    <div className="w-full border-t border-zinc-100 mb-2" />
 
                     {/* O componente Client-side gerencia Zustand e cliques */}
                     <AddToCart
@@ -74,6 +99,19 @@ export default async function ProductPage({
                         variations={product.variations || []}
                     />
 
+                    {/* Trust Indicators */}
+                    <div className="mt-8 pt-6 border-t border-zinc-100 space-y-3">
+                        {[
+                            { icon: "🚀", text: "Envio para todo o Brasil" },
+                            { icon: "↩️", text: "Troca grátis em até 7 dias" },
+                            { icon: "🔒", text: "Compra 100% segura" },
+                        ].map(item => (
+                            <div key={item.text} className="flex items-center gap-3 text-sm text-zinc-500">
+                                <span>{item.icon}</span>
+                                <span>{item.text}</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

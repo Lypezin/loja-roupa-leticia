@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react"
-import Image from "next/image"
+import { motion, AnimatePresence } from "framer-motion"
 
 interface ProductGalleryProps {
     images: {
@@ -15,29 +15,21 @@ export function ProductGallery({ images }: ProductGalleryProps) {
         images = [{ image_url: "/placeholder-image.jpg", is_primary: true }]
     }
 
-    const primaryImage = images.find(img => img.is_primary)?.image_url || images[0].image_url
-    const [selectedImage, setSelectedImage] = useState(primaryImage)
+    const sortedImages = [...images].sort((a, b) => Number(b.is_primary) - Number(a.is_primary))
+    const [selectedIndex, setSelectedIndex] = useState(0)
 
     return (
-        <div className="flex flex-col gap-4">
-            {/* Imagem em Destaque */}
-            <div className="relative aspect-[3/4] w-full bg-zinc-100 rounded-2xl overflow-hidden">
-                <div
-                    className="absolute inset-0 bg-cover bg-center transition-opacity duration-300"
-                    style={{ backgroundImage: `url(${selectedImage})` }}
-                />
-            </div>
-
-            {/* Thumbnails */}
-            {images.length > 1 && (
-                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-                    {images.map((img, i) => (
+        <div className="flex flex-col-reverse md:flex-row gap-4">
+            {/* Thumbnails à esquerda no desktop / abaixo no mobile */}
+            {sortedImages.length > 1 && (
+                <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto md:max-h-[600px] pb-2 md:pb-0">
+                    {sortedImages.map((img, i) => (
                         <button
                             key={i}
-                            onClick={() => setSelectedImage(img.image_url)}
-                            className={`relative w-20 h-24 shrink-0 rounded-xl overflow-hidden bg-zinc-100 border-2 transition-all ${selectedImage === img.image_url
-                                ? "border-zinc-900 shadow-md transform scale-105"
-                                : "border-transparent opacity-60 hover:opacity-100"
+                            onClick={() => setSelectedIndex(i)}
+                            className={`relative w-16 h-20 md:w-20 md:h-24 shrink-0 rounded-xl overflow-hidden bg-zinc-100 transition-all duration-300 ${selectedIndex === i
+                                ? "ring-2 ring-zinc-900 ring-offset-2 shadow-lg scale-[1.02]"
+                                : "opacity-50 hover:opacity-100 hover:scale-[1.02]"
                                 }`}
                         >
                             <div
@@ -48,6 +40,28 @@ export function ProductGallery({ images }: ProductGalleryProps) {
                     ))}
                 </div>
             )}
+
+            {/* Imagem Principal com Zoom */}
+            <div className="relative flex-1 aspect-[3/4] w-full bg-zinc-50 rounded-2xl overflow-hidden group cursor-crosshair">
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={selectedIndex}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                        style={{ backgroundImage: `url(${sortedImages[selectedIndex]?.image_url})` }}
+                    />
+                </AnimatePresence>
+
+                {/* Badge */}
+                <div className="absolute top-4 left-4 z-10">
+                    <span className="bg-zinc-900 text-white text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full font-semibold shadow-lg">
+                        Novo
+                    </span>
+                </div>
+            </div>
         </div>
     )
 }

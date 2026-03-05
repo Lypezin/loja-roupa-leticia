@@ -1,42 +1,52 @@
 import { createClient } from "@/lib/supabase/server"
+import { MapPin, Clock, Sparkles, Heart, Users } from "lucide-react"
 
 export const revalidate = 60
 
 export default async function SobrePage() {
     const supabase = await createClient()
-    const { data: settings } = await supabase
-        .from('store_settings')
-        .select('store_name, store_description')
-        .single()
-
-    const storeName = settings?.store_name || 'LOJA MODA'
+    const { data: settings } = await supabase.from('store_settings').select('store_name, store_description').single()
+    const storeName = settings?.store_name || 'Fashion Store'
 
     return (
-        <div className="container mx-auto px-4 py-16 max-w-2xl">
-            <h1 className="text-4xl font-bold tracking-tight mb-8">Sobre Nós</h1>
-
-            <div className="prose prose-zinc max-w-none space-y-6">
-                <p className="text-lg text-zinc-600 leading-relaxed">
-                    A <strong>{storeName}</strong> nasceu da paixão por moda minimalista e qualidade premium.
-                    Acreditamos que roupas bem feitas contam histórias e transformam o dia a dia.
-                </p>
-
-                <div className="bg-zinc-50 p-8 rounded-2xl border space-y-4">
-                    <h2 className="text-xl font-semibold">Nossa Missão</h2>
-                    <p className="text-zinc-600">
-                        Oferecer peças atemporais com caimento impecável, tecidos de alta qualidade e
-                        preços justos. Cada detalhe é pensado para que você se sinta confiante.
-                    </p>
+        <div className="flex flex-col">
+            {/* Hero */}
+            <section className="relative h-[50vh] bg-zinc-950 flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558171813-4c088753af8f?auto=format&fit=crop&q=80&w=2070')] bg-cover bg-center opacity-40" />
+                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent" />
+                <div className="relative z-10 text-center max-w-2xl px-4">
+                    <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">Nossa História</h1>
+                    <p className="text-zinc-300 text-lg">Mais do que roupas — contamos histórias através do estilo.</p>
                 </div>
+            </section>
 
-                <div className="bg-zinc-50 p-8 rounded-2xl border space-y-4">
-                    <h2 className="text-xl font-semibold">Compromisso</h2>
-                    <p className="text-zinc-600">
-                        Trabalhamos com fornecedores éticos e sustentáveis.
-                        A moda consciente é parte do nosso DNA.
+            {/* Valores */}
+            <section className="container mx-auto px-4 py-20">
+                <div className="max-w-3xl mx-auto">
+                    <p className="text-lg text-zinc-600 leading-relaxed mb-12 text-center">
+                        A <span className="font-semibold text-zinc-900">{storeName}</span> nasceu da
+                        paixão por moda atemporal e acessível. Acreditamos que cada peça deve contar
+                        uma história e fazer quem veste se sentir extraordinário. Nosso compromisso é
+                        oferecer qualidade, conforto e estilo em cada detalhe.
                     </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {[
+                            { icon: Sparkles, title: "Qualidade Premium", desc: "Materiais selecionados e acabamento impecável em cada peça." },
+                            { icon: Heart, title: "Paixão pelo Design", desc: "Cada coleção é pensada para inspirar e empoderar." },
+                            { icon: Users, title: "Para Todos", desc: "Moda inclusiva que celebra a diversidade de estilos." },
+                        ].map(item => (
+                            <div key={item.title} className="text-center p-6 rounded-2xl bg-zinc-50 border border-zinc-100">
+                                <div className="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center mx-auto mb-4">
+                                    <item.icon className="w-5 h-5 text-white" />
+                                </div>
+                                <h3 className="font-semibold text-zinc-900 mb-2">{item.title}</h3>
+                                <p className="text-sm text-zinc-500 leading-relaxed">{item.desc}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            </section>
         </div>
     )
 }
