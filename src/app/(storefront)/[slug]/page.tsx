@@ -1,0 +1,59 @@
+import { createClient } from "@/lib/supabase/server"
+import { ProductCard } from "@/components/store/ProductCard"
+import { notFound } from "next/navigation"
+
+export const revalidate = 60
+
+export default async function CategoryPage({
+    params
+}: {
+    params: Promise<{ slug: string }>
+}) {
+    const { slug } = await params
+    const supabase = await createClient()
+
+    // Buscar a categoria pelo slug
+    const { data: category } = await supabase
+        .from('categories')
+        .select('id, name')
+        .eq('slug', slug)
+        .single()
+
+    if (!category) {
+        notFound()
+    }
+
+    const { data: products } = await supabase
+        .from('products')
+        .select(`
+            id, name, base_price,
+            category:categories(name),
+            images:product_images(image_url, is_primary)
+        `)
+        .eq('is_active', true)
+        .eq('category_id', category.id)
+        .order('created_at', { ascending: false })
+
+    const filteredProducts = products || []
+
+    return (
+        <div className="container mx-auto px-4 py-16">
+            <div className="mb-12">
+                <h1 className="text-4xl font-bold tracking-tight">{category.name}</h1>
+                <p className="text-zinc-500 mt-2">Encontre os melhores produtos em {category.name.toLowerCase()}.</p>
+            </div>
+
+            {filteredProducts.length > 0 ? (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
+                    {filteredProducts.map((product: any) => (
+                        <ProductCard key={product.id} product={product} />
+                    ))}
+                </div>
+            ) : (
+                <div className="py-20 text-center text-zinc-500">
+                    Nenhum produto em {category.name} no momento.
+                </div>
+            )}
+        </div>
+    )
+}
