@@ -1,21 +1,25 @@
-import { Button } from "@/components/ui/button"
+import { createClient } from "@/lib/supabase/server"
+import { SettingsForm } from "@/components/admin/SettingsForm"
 
-export default function ConfiguracoesPage() {
+export default async function ConfiguracoesPage() {
+    const supabase = await createClient()
+
+    // Resgata com limite 1 a única linha de config do DB
+    const { data: settings } = await supabase
+        .from('store_settings')
+        .select('*')
+        .single()
+
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 w-full max-w-5xl">
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Configurações</h1>
+                <h1 className="text-3xl font-bold tracking-tight">Configurações Gerais</h1>
                 <p className="text-zinc-500">
-                    Gerencie os metadados da sua loja, frete e preferências globais.
+                    Gerencie o perfil da loja, integração de fretes e políticas de negócio.
                 </p>
             </div>
 
-            <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 text-center text-zinc-500">
-                <p className="mb-4">O painel de configurações gerais será disponibilizado em breve.</p>
-                <Button variant="outline" disabled>
-                    Em Desenvolvimento
-                </Button>
-            </div>
+            <SettingsForm settings={settings} />
         </div>
     )
 }

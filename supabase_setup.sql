@@ -5,6 +5,19 @@
 -- 1. Criação das Tabelas Base
 -- ------------------------------------------
 
+CREATE TABLE store_settings (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  store_name TEXT NOT NULL DEFAULT 'Minha Loja',
+  store_description TEXT,
+  support_email TEXT,
+  whatsapp_number TEXT,
+  instagram_url TEXT,
+  free_shipping_threshold DECIMAL(10,2),
+  shipping_origin_zip TEXT,
+  processing_days INTEGER DEFAULT 2,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 CREATE TABLE categories (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
@@ -73,6 +86,7 @@ insert into storage.buckets (id, name, public) values ('product-images', 'produc
 -- 3. Row Level Security (RLS) - POLÍTICAS
 -- ==========================================
 -- Habilitar RLS em todas as tabelas
+ALTER TABLE store_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE product_variations ENABLE ROW LEVEL SECURITY;
@@ -83,6 +97,7 @@ ALTER TABLE order_items ENABLE ROW LEVEL SECURITY;
 -- ----------------------------------------------------
 -- Políticas PÚBLICAS (Qualquer visitante pode ver a loja)
 -- ----------------------------------------------------
+CREATE POLICY "Vitrine Pública Configurações" ON store_settings FOR SELECT USING (true);
 CREATE POLICY "Vitrine Pública Categorias" ON categories FOR SELECT USING (true);
 CREATE POLICY "Vitrine Pública Produtos Ativos" ON products FOR SELECT USING (is_active = true);
 -- Todos podem ver variações e imagens dos produtos (joins)
@@ -93,6 +108,7 @@ CREATE POLICY "Vitrine Pública Imagens" ON product_images FOR SELECT USING (tru
 -- Políticas ADMIN (Dono da Loja - Acesso Total)
 -- O cliente precisa ter logado com email/senha (auth.uid())
 -- ----------------------------------------------------
+CREATE POLICY "Admin CRUD Configurações" ON store_settings FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Admin CRUD Categorias" ON categories FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Admin CRUD Produtos" ON products FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Admin CRUD Variações" ON product_variations FOR ALL USING (auth.role() = 'authenticated');
@@ -109,6 +125,9 @@ create policy "Admin gerencia imagens"
 create policy "Public ve imagens"
   on storage.objects for select
   using ( bucket_id = 'product-images' );
+
+-- Insert inicial pra travar numa linha de conf apenas.
+INSERT INTO store_settings (store_name) VALUES ('Loja de Roupas Premium');
 
 -- ==========================================
 -- FIM DO SCRIPT
