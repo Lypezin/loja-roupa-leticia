@@ -3,13 +3,14 @@
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ImageIcon, CloudUpload, X } from "lucide-react"
+import { ImageIcon, CloudUpload } from "lucide-react"
 import { saveBanner } from "@/app/admin/(dashboard)/configuracoes/actions"
 import { toast } from "sonner"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
+import Image from "next/image"
 
 interface BannerSectionProps {
-    settings: any
+    settings: Record<string, string | null>
 }
 
 export function BannerSection({ settings }: BannerSectionProps) {
@@ -31,8 +32,9 @@ export function BannerSection({ settings }: BannerSectionProps) {
             if (res?.error) throw new Error(res.error)
             showSuccess(setSuccess)
             toast.success("Banner Hero atualizado!")
-        } catch (error: any) {
-            toast.error(`Erro ao salvar banner: ${error.message}`)
+        } catch (error: unknown) {
+            const err = error as Error
+            toast.error(`Erro ao salvar banner: ${err.message}`)
         } finally {
             setIsLoading(false)
         }
@@ -40,7 +42,7 @@ export function BannerSection({ settings }: BannerSectionProps) {
 
     return (
         <form action={handleSubmit} className="bg-white p-6 md:p-8 rounded-2xl border border-zinc-100 shadow-sm space-y-8">
-            <input type="hidden" name="id" value={settings.id} />
+            <input type="hidden" name="id" value={settings.id || ''} />
 
             <SectionHeader
                 icon={ImageIcon}
@@ -93,7 +95,7 @@ export function BannerSection({ settings }: BannerSectionProps) {
                     <div className="group relative w-full h-64 rounded-2xl bg-zinc-50 border-2 border-dashed border-zinc-200 flex flex-col items-center justify-center overflow-hidden hover:border-zinc-300 transition-colors">
                         {imagePreview ? (
                             <>
-                                <img src={imagePreview} alt="Background Preview" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                <Image src={imagePreview} alt="Background Preview" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                     <div className="bg-white text-zinc-900 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 shadow-xl">
                                         <CloudUpload className="w-4 h-4" /> Alterar Fundo

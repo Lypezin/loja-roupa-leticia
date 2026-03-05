@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Plus, Search, Package, MoreVertical, Pencil, Trash2 } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
+import Image from "next/image"
 import {
     Table,
     TableBody,
@@ -90,9 +91,9 @@ export default async function AdminProdutos() {
                                         <TableRow key={product.id} className="group hover:bg-zinc-50 transition-all duration-200 border-zinc-50">
                                             <TableCell className="py-4">
                                                 <div className="flex items-center gap-4">
-                                                    <div className="w-12 h-12 rounded-xl bg-zinc-100 flex-shrink-0 overflow-hidden border border-zinc-100 group-hover:border-zinc-200 transition-colors">
+                                                    <div className="relative w-12 h-12 rounded-xl bg-zinc-100 flex-shrink-0 overflow-hidden border border-zinc-100 group-hover:border-zinc-200 transition-colors">
                                                         {primaryImage ? (
-                                                            <img src={primaryImage} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                                            <Image src={primaryImage} alt="" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
                                                         ) : (
                                                             <div className="w-full h-full flex items-center justify-center">
                                                                 <Package className="w-5 h-5 text-zinc-300" />

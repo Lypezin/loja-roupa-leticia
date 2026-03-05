@@ -10,7 +10,7 @@ import { toast } from "sonner"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
 
 interface FooterSectionProps {
-    settings: any
+    settings: Record<string, string | null>
 }
 
 export function FooterSection({ settings }: FooterSectionProps) {
@@ -24,8 +24,9 @@ export function FooterSection({ settings }: FooterSectionProps) {
             if (res?.error) throw new Error(res.error)
             showSuccess(setSuccess)
             toast.success("Rodapé atualizado!")
-        } catch (error: any) {
-            toast.error(`Erro ao salvar rodapé: ${error.message}`)
+        } catch (error: unknown) {
+            const err = error as Error
+            toast.error(`Erro ao salvar rodapé: ${err.message}`)
         } finally {
             setIsLoading(false)
         }
@@ -33,7 +34,7 @@ export function FooterSection({ settings }: FooterSectionProps) {
 
     return (
         <form action={handleSubmit} className="bg-white p-6 md:p-8 rounded-2xl border border-zinc-100 shadow-sm space-y-8">
-            <input type="hidden" name="id" value={settings.id} />
+            <input type="hidden" name="id" value={settings.id || ''} />
 
             <SectionHeader
                 icon={LayoutTemplate}

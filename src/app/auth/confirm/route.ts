@@ -7,8 +7,6 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const token_hash = searchParams.get('token_hash')
     const type = searchParams.get('type') as EmailOtpType | null
-    const next = '/conta?success=Email confirmado com sucesso! Bem-vindo(a)!'
-
     // Cria o link de redirecionamento sem o token secreto
     const redirectTo = request.nextUrl.clone()
     redirectTo.pathname = '/conta'

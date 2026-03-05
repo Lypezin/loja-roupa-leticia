@@ -2,10 +2,11 @@
 
 import { Button } from "@/components/ui/button"
 import { Loader2, CheckCircle2 } from "lucide-react"
+import { ElementType } from "react"
 import { motion } from "framer-motion"
 
 interface SectionHeaderProps {
-    icon: any
+    icon: ElementType
     title: string
     description?: string
 }

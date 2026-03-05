@@ -9,7 +9,7 @@ import { toast } from "sonner"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
 
 interface LogisticsSectionProps {
-    settings: any
+    settings: Record<string, string | null>
 }
 
 export function LogisticsSection({ settings }: LogisticsSectionProps) {
@@ -23,8 +23,9 @@ export function LogisticsSection({ settings }: LogisticsSectionProps) {
             if (res?.error) throw new Error(res.error)
             showSuccess(setSuccess)
             toast.success("Logística atualizada!")
-        } catch (error: any) {
-            toast.error(`Erro ao salvar logística: ${error.message}`)
+        } catch (error: unknown) {
+            const err = error as Error
+            toast.error(`Erro ao salvar logística: ${err.message}`)
         } finally {
             setIsLoading(false)
         }
@@ -32,7 +33,7 @@ export function LogisticsSection({ settings }: LogisticsSectionProps) {
 
     return (
         <form action={handleSubmit} className="bg-white p-6 md:p-8 rounded-2xl border border-zinc-100 shadow-sm space-y-8">
-            <input type="hidden" name="id" value={settings.id} />
+            <input type="hidden" name="id" value={settings.id || ''} />
 
             <SectionHeader
                 icon={Truck}

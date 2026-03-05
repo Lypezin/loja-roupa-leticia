@@ -4,9 +4,10 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Plus, Trash2, Loader2, Pencil, X, Save, LayoutGrid, Image as ImageIcon, ArrowRight } from "lucide-react"
+import { Plus, Trash2, Loader2, Pencil, Save, LayoutGrid, Image as ImageIcon, ArrowRight } from "lucide-react"
 import { createCategory, deleteCategory, updateCategory } from "../actions"
 import { toast } from "sonner"
+import Image from "next/image"
 
 type Category = {
     id: string
@@ -168,7 +169,7 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                                 <div className="group relative w-full h-32 rounded-xl bg-zinc-50 border-2 border-dashed border-zinc-200 flex flex-col items-center justify-center overflow-hidden hover:border-zinc-300 transition-colors">
                                     {imagePreview ? (
                                         <>
-                                            <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                            <Image src={imagePreview} alt="Preview" fill className="object-cover" />
                                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                                 <ImageIcon className="w-6 h-6 text-white" />
                                             </div>
@@ -235,7 +236,7 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                                                     <div className="flex flex-col md:flex-row gap-4 items-center">
                                                         <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200">
                                                             {editImagePreview ? (
-                                                                <img src={editImagePreview} alt="" className="w-full h-full object-cover" />
+                                                                <Image src={editImagePreview} alt="" fill className="object-cover" />
                                                             ) : (
                                                                 <ImageIcon className="w-full h-full p-4 text-zinc-300" />
                                                             )}
@@ -280,9 +281,9 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                                                 <>
                                                     <TableCell className="py-4 pl-6">
                                                         <div className="flex items-center gap-4">
-                                                            <div className="w-12 h-12 rounded-xl bg-zinc-100 border border-zinc-200 overflow-hidden flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
+                                                            <div className="relative w-12 h-12 rounded-xl bg-zinc-100 border border-zinc-200 overflow-hidden flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
                                                                 {cat.image_url ? (
-                                                                    <img src={cat.image_url} alt="" className="w-full h-full object-cover" />
+                                                                    <Image src={cat.image_url} alt="" fill className="object-cover" />
                                                                 ) : (
                                                                     <div className="w-full h-full flex items-center justify-center">
                                                                         <LayoutGrid className="w-4 h-4 text-zinc-300" />

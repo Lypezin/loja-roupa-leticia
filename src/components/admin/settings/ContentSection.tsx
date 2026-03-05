@@ -9,7 +9,7 @@ import { toast } from "sonner"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
 
 interface ContentSectionProps {
-    settings: any
+    settings: Record<string, string | null>
 }
 
 export function ContentSection({ settings }: ContentSectionProps) {
@@ -23,8 +23,9 @@ export function ContentSection({ settings }: ContentSectionProps) {
             if (res?.error) throw new Error(res.error)
             showSuccess(setSuccess)
             toast.success("Conteúdo da vitrine atualizado!")
-        } catch (error: any) {
-            toast.error(`Erro ao salvar conteúdo: ${error.message}`)
+        } catch (error: unknown) {
+            const err = error as Error
+            toast.error(`Erro ao salvar conteúdo: ${err.message}`)
         } finally {
             setIsLoading(false)
         }
@@ -32,7 +33,7 @@ export function ContentSection({ settings }: ContentSectionProps) {
 
     return (
         <form action={handleSubmit} className="bg-white p-6 md:p-8 rounded-2xl border border-zinc-100 shadow-sm space-y-10">
-            <input type="hidden" name="id" value={settings.id} />
+            <input type="hidden" name="id" value={settings.id || ''} />
 
             <SectionHeader
                 icon={Type}

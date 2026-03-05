@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
-import { DollarSign, ShoppingCart, Package, TrendingUp, ArrowUpRight, Settings, Tags, PlusCircle, BarChart3, Sparkles } from "lucide-react"
+import { DollarSign, ShoppingCart, Package, ArrowUpRight, Settings, Tags, PlusCircle, BarChart3, Sparkles } from "lucide-react"
 
 export default async function AdminDashboard() {
     const supabase = await createClient()

@@ -29,9 +29,20 @@ type ExistingImage = {
     is_primary: boolean
 }
 
+type ProductData = {
+    id: string
+    name: string
+    description?: string
+    base_price: number
+    category_id: string
+    is_active: boolean
+    variations?: Variation[]
+    images?: ExistingImage[]
+}
+
 interface ProductFormProps {
     categories: Category[]
-    product?: any
+    product?: ProductData | null
 }
 
 export function ProductForm({ categories, product }: ProductFormProps) {
@@ -120,9 +131,10 @@ export function ProductForm({ categories, product }: ProductFormProps) {
             toast.success(isEditing ? "Produto atualizado com sucesso!" : "Produto criado com sucesso!")
             router.push('/admin/produtos')
             router.refresh()
-        } catch (error: any) {
-            console.error(error)
-            toast.error(`Erro ao salvar produto: ${error.message}`)
+        } catch (error: unknown) {
+            const err = error as Error
+            console.error(err)
+            toast.error(`Erro ao salvar produto: ${err.message}`)
         } finally {
             setIsLoading(false)
         }

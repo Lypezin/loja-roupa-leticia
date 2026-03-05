@@ -1,7 +1,7 @@
-import { Metadata, Route } from 'next'
+import { MetadataRoute } from 'next'
 import { createClient } from '@/lib/supabase/server'
 
-export default async function sitemap(): Promise<any[]> {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const supabase = await createClient()
     const baseUrl = 'https://loja-roupa.vercel.app'
 
@@ -14,14 +14,14 @@ export default async function sitemap(): Promise<any[]> {
     const categoryEntries = (categories || []).map((cat) => ({
         url: `${baseUrl}/${cat.slug}`,
         lastModified: cat.updated_at ? new Date(cat.updated_at) : new Date(),
-        changeFrequency: 'weekly',
+        changeFrequency: 'weekly' as const,
         priority: 0.8,
     }))
 
     const productEntries = (products || []).map((prod) => ({
         url: `${baseUrl}/produtos/${prod.slug}`,
         lastModified: prod.updated_at ? new Date(prod.updated_at) : new Date(),
-        changeFrequency: 'daily',
+        changeFrequency: 'daily' as const,
         priority: 1,
     }))
 
@@ -29,7 +29,7 @@ export default async function sitemap(): Promise<any[]> {
         {
             url: baseUrl,
             lastModified: new Date(),
-            changeFrequency: 'daily',
+            changeFrequency: 'daily' as const,
             priority: 1,
         },
         ...categoryEntries,

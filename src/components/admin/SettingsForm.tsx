@@ -10,7 +10,7 @@ import { LogisticsSection } from "./settings/LogisticsSection"
 import { User, Image as ImageIcon, Type, LayoutTemplate, Truck, ChevronRight } from "lucide-react"
 
 interface SettingsFormProps {
-    settings: any
+    settings: Record<string, string | null>
 }
 
 export function SettingsForm({ settings }: SettingsFormProps) {
@@ -52,8 +52,8 @@ export function SettingsForm({ settings }: SettingsFormProps) {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all text-left shrink-0 group ${isActive
-                                        ? "bg-zinc-900 text-white shadow-lg shadow-zinc-200"
-                                        : "text-zinc-500 hover:bg-zinc-100"
+                                    ? "bg-zinc-900 text-white shadow-lg shadow-zinc-200"
+                                    : "text-zinc-500 hover:bg-zinc-100"
                                     }`}
                             >
                                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isActive ? "bg-white/10" : "bg-zinc-100 group-hover:bg-zinc-200"

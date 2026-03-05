@@ -22,7 +22,7 @@ export async function updateSession(request: NextRequest) {
                     return request.cookies.getAll()
                 },
                 setAll(cookiesToSet) {
-                    cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+                    cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
                     supabaseResponse = NextResponse.next({
                         request,
                     })
@@ -44,8 +44,8 @@ export async function updateSession(request: NextRequest) {
 
     // Verificar se o usuário é admin (role nos metadados OU email do admin configurado)
     const userRole = user?.user_metadata?.role
-    const isAdmin = userRole === 'admin' || userRole !== 'customer'
-    // Clientes cadastrados com role 'customer' NÃO são admin
+    const isAdmin = userRole === 'admin'
+    // Clientes cadastrados com role 'customer' ou contas incompletas NÃO são admin
 
     // Bloqueando o acesso ao admin: sem login -> tela de login
     if (!user && isAdminRoute) {

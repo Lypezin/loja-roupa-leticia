@@ -2,6 +2,14 @@ import { createClient } from "@/lib/supabase/server"
 import { ProductCard } from "@/components/store/ProductCard"
 import { Search } from "lucide-react"
 
+type SearchProduct = {
+    id: string
+    name: string
+    base_price: number
+    category?: { name: string }
+    images?: { image_url: string; is_primary: boolean }[]
+}
+
 export default async function SearchPage({
     searchParams
 }: {
@@ -31,19 +39,19 @@ export default async function SearchPage({
         .eq('is_active', true)
         .order('created_at', { ascending: false })
 
-    const results = products || []
+    const results = (products as unknown as SearchProduct[]) || []
 
     return (
         <div className="container mx-auto px-4 py-16">
             <div className="mb-12">
                 <p className="text-sm font-medium text-primary uppercase tracking-widest mb-2">Resultados da busca</p>
-                <h1 className="text-4xl font-bold tracking-tight">Exibindo resultados para "{q}"</h1>
+                <h1 className="text-4xl font-bold tracking-tight">Exibindo resultados para &quot;{q}&quot;</h1>
                 <p className="text-zinc-500 mt-2">Encontramos {results.length} produto(s).</p>
             </div>
 
             {results.length > 0 ? (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
-                    {results.map((product: any) => (
+                    {results.map((product) => (
                         <ProductCard key={product.id} product={product} />
                     ))}
                 </div>
