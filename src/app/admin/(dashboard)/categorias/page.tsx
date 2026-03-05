@@ -15,6 +15,7 @@ export default async function CategoriasPage() {
             id, 
             name, 
             slug, 
+            image_url,
             created_at,
             products(count)
         `)
@@ -29,6 +30,7 @@ export default async function CategoriasPage() {
         id: cat.id,
         name: cat.name,
         slug: cat.slug,
+        image_url: cat.image_url,
         productsCount: cat.products[0]?.count || 0
     }))
 
