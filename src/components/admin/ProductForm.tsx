@@ -47,7 +47,6 @@ export function ProductForm({ categories, product }: ProductFormProps) {
         setVariations(newVariations)
     }
 
-    // Ação de envio do Form (chama a Server Action importada)
     const handleSubmit = async (formData: FormData) => {
         setIsLoading(true)
         try {
@@ -59,12 +58,17 @@ export function ProductForm({ categories, product }: ProductFormProps) {
             }
 
             // Os arquivos de imagem anexados no input name="images" já vão naturalmente pelo FormData!
-            await saveProduct(formData)
+            const res = await saveProduct(formData)
+
+            if (res?.error) {
+                throw new Error(res.error)
+            }
+
             router.push('/admin/produtos')
             router.refresh()
-        } catch (error) {
+        } catch (error: any) {
             console.error(error)
-            alert("Erro ao salvar produto.")
+            alert(`Erro ao salvar produto: ${error.message}`)
         } finally {
             setIsLoading(false)
         }

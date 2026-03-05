@@ -24,11 +24,12 @@ export function SettingsForm({ settings }: SettingsFormProps) {
     const handleProfileSubmit = async (formData: FormData) => {
         setIsLoadingProfile(true)
         try {
-            await saveProfile(formData)
+            const res = await saveProfile(formData)
+            if (res?.error) throw new Error(res.error)
             alert("Perfil salvo com sucesso!")
-        } catch (error) {
+        } catch (error: any) {
             console.error("Erro ao salvar perfil:", error)
-            alert("Falha ao salvar perfil.")
+            alert(`Falha ao salvar perfil: ${error.message}`)
         } finally {
             setIsLoadingProfile(false)
         }
@@ -37,11 +38,12 @@ export function SettingsForm({ settings }: SettingsFormProps) {
     const handleBannerSubmit = async (formData: FormData) => {
         setIsLoadingBanner(true)
         try {
-            await saveBanner(formData)
+            const res = await saveBanner(formData)
+            if (res?.error) throw new Error(res.error)
             alert("Banner salvo com sucesso!")
-        } catch (error) {
+        } catch (error: any) {
             console.error("Erro ao salvar banner:", error)
-            alert("Falha ao salvar banner.")
+            alert(`Falha ao salvar banner: ${error.message}`)
         } finally {
             setIsLoadingBanner(false)
         }
@@ -50,11 +52,12 @@ export function SettingsForm({ settings }: SettingsFormProps) {
     const handleLogisticsSubmit = async (formData: FormData) => {
         setIsLoadingLogistics(true)
         try {
-            await saveLogistics(formData)
+            const res = await saveLogistics(formData)
+            if (res?.error) throw new Error(res.error)
             alert("Logística salva com sucesso!")
-        } catch (error) {
+        } catch (error: any) {
             console.error("Erro ao salvar logística:", error)
-            alert("Falha ao salvar logística.")
+            alert(`Falha ao salvar logística: ${error.message}`)
         } finally {
             setIsLoadingLogistics(false)
         }
