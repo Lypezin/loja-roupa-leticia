@@ -4,8 +4,8 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Plus, Trash2, Loader2 } from "lucide-react"
-import { createCategory, deleteCategory } from "../actions"
+import { Plus, Trash2, Loader2, Pencil, X, Save } from "lucide-react"
+import { createCategory, deleteCategory, updateCategory } from "../actions"
 
 type Category = {
     id: string
@@ -20,8 +20,13 @@ interface CategoryManagerProps {
 
 export function CategoryManager({ initialCategories }: CategoryManagerProps) {
     const [isLoading, setIsLoading] = useState(false)
+    const [loadingId, setLoadingId] = useState<string | null>(null)
     const [name, setName] = useState('')
     const [image, setImage] = useState<File | null>(null)
+
+    const [editingId, setEditingId] = useState<string | null>(null)
+    const [editName, setEditName] = useState('')
+    const [editImage, setEditImage] = useState<File | null>(null)
 
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -45,6 +50,39 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
             if (fileInput) fileInput.value = ''
         }
         setIsLoading(false)
+    }
+
+    const handleUpdate = async (id: string) => {
+        if (!editName.trim()) return
+
+        setLoadingId(id)
+        const formData = new FormData()
+        formData.append('name', editName.trim())
+        if (editImage) {
+            formData.append('image', editImage)
+        }
+
+        const res = await updateCategory(id, formData)
+        if (res?.error) {
+            alert(res.error)
+        } else {
+            setEditingId(null)
+            setEditName('')
+            setEditImage(null)
+        }
+        setLoadingId(null)
+    }
+
+    const startEditing = (cat: Category) => {
+        setEditingId(cat.id)
+        setEditName(cat.name)
+        setEditImage(null)
+    }
+
+    const cancelEditing = () => {
+        setEditingId(null)
+        setEditName('')
+        setEditImage(null)
     }
 
     const handleDelete = async (id: string, name: string, count: number) => {
@@ -120,20 +158,77 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                         ) : (
                             initialCategories.map((cat) => (
                                 <TableRow key={cat.id}>
-                                    <TableCell className="font-medium">{cat.name}</TableCell>
-                                    <TableCell className="text-zinc-500">{cat.slug}</TableCell>
-                                    <TableCell>{cat.productsCount}</TableCell>
-                                    <TableCell>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            onClick={() => handleDelete(cat.id, cat.name, cat.productsCount)}
-                                            className="text-red-500 hover:text-red-700 cursor-pointer"
-                                            title="Excluir"
-                                        >
-                                            <Trash2 className="w-4 h-4" />
-                                        </Button>
-                                    </TableCell>
+                                    {editingId === cat.id ? (
+                                        <>
+                                            <TableCell>
+                                                <Input
+                                                    value={editName}
+                                                    onChange={(e) => setEditName(e.target.value)}
+                                                    className="w-full"
+                                                />
+                                            </TableCell>
+                                            <TableCell colSpan={2}>
+                                                <Input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={(e) => setEditImage(e.target.files?.[0] || null)}
+                                                    className="w-full text-xs"
+                                                />
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="flex items-center gap-1">
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        onClick={() => handleUpdate(cat.id)}
+                                                        disabled={loadingId === cat.id}
+                                                        className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                                                        title="Salvar"
+                                                    >
+                                                        {loadingId === cat.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                                                    </Button>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        onClick={cancelEditing}
+                                                        disabled={loadingId === cat.id}
+                                                        className="text-zinc-500 hover:text-zinc-700"
+                                                        title="Cancelar"
+                                                    >
+                                                        <X className="w-4 h-4" />
+                                                    </Button>
+                                                </div>
+                                            </TableCell>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <TableCell className="font-medium">{cat.name}</TableCell>
+                                            <TableCell className="text-zinc-500">{cat.slug}</TableCell>
+                                            <TableCell>{cat.productsCount}</TableCell>
+                                            <TableCell>
+                                                <div className="flex items-center gap-1">
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        onClick={() => startEditing(cat)}
+                                                        className="text-blue-500 hover:text-blue-700 cursor-pointer"
+                                                        title="Editar"
+                                                    >
+                                                        <Pencil className="w-4 h-4" />
+                                                    </Button>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        onClick={() => handleDelete(cat.id, cat.name, cat.productsCount)}
+                                                        className="text-red-500 hover:text-red-700 cursor-pointer"
+                                                        title="Excluir"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </Button>
+                                                </div>
+                                            </TableCell>
+                                        </>
+                                    )}
                                 </TableRow>
                             ))
                         )}
