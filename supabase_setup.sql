@@ -2,6 +2,16 @@
 -- E-COMMERCE SUPABASE SCHEMA & RLS SETUP
 -- ==========================================
 
+-- 0. Limpeza do Banco Existente (CUIDADO: APAGA TODOS OS DADOS)
+-- ------------------------------------------
+DROP TABLE IF EXISTS order_items CASCADE;
+DROP TABLE IF EXISTS orders CASCADE;
+DROP TABLE IF EXISTS product_images CASCADE;
+DROP TABLE IF EXISTS product_variations CASCADE;
+DROP TABLE IF EXISTS products CASCADE;
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS store_settings CASCADE;
+
 -- 1. Criação das Tabelas Base
 -- ------------------------------------------
 
@@ -83,7 +93,10 @@ CREATE TABLE order_items (
 -- ==========================================
 -- 2. Configurações de Storage (Bucket para fotos)
 -- ==========================================
-insert into storage.buckets (id, name, public) values ('product-images', 'product-images', true);
+-- Tenta inserir o bucket. Se ele já existir do teste passado, o PostgreSQL simplesmente ignora sem quebrar a tela.
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('product-images', 'product-images', true)
+ON CONFLICT (id) DO NOTHING;
 
 
 -- ==========================================
@@ -121,17 +134,26 @@ CREATE POLICY "Admin CRUD Orders" ON orders FOR ALL USING (auth.role() = 'authen
 CREATE POLICY "Admin CRUD Order Items" ON order_items FOR ALL USING (auth.role() = 'authenticated');
 
 -- Permitir Auth Users gerenciar fotos no bucket (Upload/Delete)
+DROP POLICY IF EXISTS "Admin gerencia imagens" ON storage.objects;
 create policy "Admin gerencia imagens"
   on storage.objects for all
   using ( bucket_id = 'product-images' AND auth.role() = 'authenticated' );
 
 -- Permitir Public ver fotos no bucket
+DROP POLICY IF EXISTS "Public ve imagens" ON storage.objects;
 create policy "Public ve imagens"
   on storage.objects for select
   using ( bucket_id = 'product-images' );
 
 -- Insert inicial pra travar numa linha de conf apenas.
 INSERT INTO store_settings (store_name) VALUES ('Loja de Roupas Premium');
+
+-- Insert inicial de Categorias (Para que dê para cadastrar produtos)
+INSERT INTO categories (name, slug) VALUES 
+('Camisetas', 'camisetas'),
+('Calças', 'calcas'),
+('Acessórios', 'acessorios'),
+('Moletons', 'moletons');
 
 -- ==========================================
 -- FIM DO SCRIPT
