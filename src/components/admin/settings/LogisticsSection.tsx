@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Truck, MapPin, Clock, DollarSign } from "lucide-react"
-import { updateLogisticsSettings } from "@/app/admin/(dashboard)/configuracoes/actions"
+import { saveLogistics } from "@/app/admin/(dashboard)/configuracoes/actions"
 import { toast } from "sonner"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
 
@@ -19,7 +19,7 @@ export function LogisticsSection({ settings }: LogisticsSectionProps) {
     const handleSubmit = async (formData: FormData) => {
         setIsLoading(true)
         try {
-            const res = await updateLogisticsSettings(formData)
+            const res = await saveLogistics(formData)
             if (res?.error) throw new Error(res.error)
             showSuccess(setSuccess)
             toast.success("Logística atualizada!")
@@ -42,18 +42,18 @@ export function LogisticsSection({ settings }: LogisticsSectionProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                 <div className="space-y-2">
-                    <Label htmlFor="origin_postcode" className="text-xs font-bold uppercase tracking-wider text-zinc-400">CEP de Origem</Label>
+                    <Label htmlFor="shipping_origin_zip" className="text-xs font-bold uppercase tracking-wider text-zinc-400">CEP de Origem</Label>
                     <div className="relative">
                         <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
-                        <Input id="origin_postcode" name="origin_postcode" defaultValue={settings.origin_postcode || ''} className="pl-10 h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                        <Input id="shipping_origin_zip" name="shipping_origin_zip" defaultValue={settings.shipping_origin_zip || ''} className="pl-10 h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="handling_days" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Dias de Processamento</Label>
+                    <Label htmlFor="processing_days" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Dias de Processamento</Label>
                     <div className="relative">
                         <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
-                        <Input id="handling_days" name="handling_days" type="number" defaultValue={settings.handling_days || 0} className="pl-10 h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                        <Input id="processing_days" name="processing_days" type="number" defaultValue={settings.processing_days || 0} className="pl-10 h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
                     <p className="text-[10px] text-zinc-400">Dias úteis para preparar o pedido antes do envio.</p>
                 </div>

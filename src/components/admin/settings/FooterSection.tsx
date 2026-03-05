@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { LayoutTemplate, Info, Mail, Send } from "lucide-react"
-import { updateFooterSettings } from "@/app/admin/(dashboard)/configuracoes/actions"
+import { saveFooter } from "@/app/admin/(dashboard)/configuracoes/actions"
 import { toast } from "sonner"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
 
@@ -20,7 +20,7 @@ export function FooterSection({ settings }: FooterSectionProps) {
     const handleSubmit = async (formData: FormData) => {
         setIsLoading(true)
         try {
-            const res = await updateFooterSettings(formData)
+            const res = await saveFooter(formData)
             if (res?.error) throw new Error(res.error)
             showSuccess(setSuccess)
             toast.success("Rodapé atualizado!")

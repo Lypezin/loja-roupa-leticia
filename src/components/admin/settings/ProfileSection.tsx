@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { User, Instagram, Mail, Phone, Search } from "lucide-react"
-import { updateProfileSettings } from "@/app/admin/(dashboard)/configuracoes/actions"
+import { saveProfile } from "@/app/admin/(dashboard)/configuracoes/actions"
 import { toast } from "sonner"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
 
@@ -20,7 +20,7 @@ export function ProfileSection({ settings }: ProfileSectionProps) {
     const handleSubmit = async (formData: FormData) => {
         setIsLoading(true)
         try {
-            const res = await updateProfileSettings(formData)
+            const res = await saveProfile(formData)
             if (res?.error) throw new Error(res.error)
             showSuccess(setSuccess)
             toast.success("Perfil da loja atualizado!")
@@ -56,10 +56,10 @@ export function ProfileSection({ settings }: ProfileSectionProps) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="whatsapp" className="text-xs font-bold uppercase tracking-wider text-zinc-400">WhatsApp</Label>
+                    <Label htmlFor="whatsapp_number" className="text-xs font-bold uppercase tracking-wider text-zinc-400">WhatsApp</Label>
                     <div className="relative">
                         <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
-                        <Input id="whatsapp" name="whatsapp" defaultValue={settings.whatsapp || ''} className="pl-10 h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                        <Input id="whatsapp_number" name="whatsapp_number" defaultValue={settings.whatsapp_number || ''} className="pl-10 h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
                 </div>
 
