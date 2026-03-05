@@ -46,7 +46,8 @@ export async function createCategory(formData: FormData) {
         revalidatePath('/admin/categorias')
         revalidatePath('/admin/produtos/novo')
         return { success: true }
-    } catch (err: any) {
+    } catch (error: unknown) {
+        const err = error as Error
         return { error: err.message || 'Erro ao criar categoria.' }
     }
 }
@@ -94,7 +95,8 @@ export async function deleteCategory(id: string) {
 
         revalidatePath('/admin/categorias')
         return { success: true }
-    } catch (err: any) {
+    } catch (error: unknown) {
+        const err = error as Error
         return { error: err.message || 'Erro ao excluir categoria.' }
     }
 }
@@ -108,7 +110,7 @@ export async function updateCategory(id: string, formData: FormData) {
         // Simples gerador de slug
         const slug = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-')
 
-        const updateData: any = { name, slug }
+        const updateData: Record<string, string> = { name, slug }
 
         if (image && image.size > 0) {
             // 1. Buscar a categoria antiga para saber se temos que deletar a imagem velha
@@ -167,7 +169,8 @@ export async function updateCategory(id: string, formData: FormData) {
         revalidatePath('/admin/produtos/novo')
         revalidatePath('/') // Revalida a home onde as categorias aparecem
         return { success: true }
-    } catch (err: any) {
+    } catch (error: unknown) {
+        const err = error as Error
         return { error: err.message || 'Erro ao atualizar categoria.' }
     }
 }

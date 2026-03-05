@@ -1,0 +1,174 @@
+﻿
+> e-commerce@0.1.0 lint
+> eslint
+
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\(storefront)\[slug]\page.tsx
+  65:53  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\(storefront)\carrinho\page.tsx
+  15:21  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\(storefront)\carrinho\page.tsx:15:21
+  13 |     const total = totalPrice()
+  14 |
+> 15 |     useEffect(() => setMounted(true), [])
+     |                     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  16 |
+  17 |     if (!mounted) {
+  18 |         return (  react-hooks/set-state-in-effect
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\(storefront)\page.tsx
+  84:21  error  Do not use an `<a>` element to navigate to `/produtos/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+  92:29  error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free                                             @typescript-eslint/ban-ts-comment
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\(storefront)\produto\[id]\page.tsx
+   26:57  error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+   62:53  error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+   82:18  error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+   84:22  error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  100:30  error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\(storefront)\search\page.tsx
+  40:92  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  40:96  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  46:44  error  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\(storefront)\sobre\page.tsx
+  2:10  warning  'MapPin' is defined but never used  @typescript-eslint/no-unused-vars
+  2:18  warning  'Clock' is defined but never used   @typescript-eslint/no-unused-vars
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\(storefront)\termos\page.tsx
+  69:25  error  Do not use an `<a>` element to navigate to `/contato/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\admin\(dashboard)\categorias\actions.ts
+   49:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   97:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  111:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  170:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\admin\(dashboard)\categorias\components\CategoryManager.tsx
+    7:41  warning  'X' is defined but never used                                                                                                                                                                                                                                                            @typescript-eslint/no-unused-vars
+  171:45  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  238:65  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  285:69  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\admin\(dashboard)\configuracoes\actions.ts
+   28:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   38:39  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   98:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  126:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  151:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  185:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\admin\(dashboard)\page.tsx
+  3:45  warning  'TrendingUp' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\admin\(dashboard)\produtos\actions.ts
+   31:100  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   33:53   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   35:98   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   41:55   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   51:61   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   78:53   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  107:19   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  139:92   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  142:90   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  150:19   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\admin\(dashboard)\produtos\page.tsx
+   3:55  warning  'Trash2' is defined but never used                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+  81:74  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  86:85  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  95:61  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\auth\confirm\route.ts
+  10:11  warning  'next' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\not-found.tsx
+  3:16  warning  'ArrowLeft' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\app\sitemap.ts
+  1:10  warning  'Metadata' is defined but never used      @typescript-eslint/no-unused-vars
+  1:20  warning  'Route' is defined but never used         @typescript-eslint/no-unused-vars
+  4:50  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\components\admin\ProductForm.tsx
+   34:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  123:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\components\admin\SettingsForm.tsx
+  13:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\components\admin\settings\BannerSection.tsx
+   6:34  warning  'X' is defined but never used                                                                                                                                                                                                                                                            @typescript-eslint/no-unused-vars
+  12:15  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  34:25  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  96:33  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\components\admin\settings\ContentSection.tsx
+  12:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\components\admin\settings\FooterSection.tsx
+   7:32  warning  'Mail' is defined but never used          @typescript-eslint/no-unused-vars
+  13:15  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:25  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\components\admin\settings\LogisticsSection.tsx
+  12:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\components\admin\settings\ProfileSection.tsx
+  13:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\components\admin\settings\SettingsUI.tsx
+  8:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\components\layout\Header.tsx
+  27:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\components\layout\Header.tsx:27:9
+  25 |
+  26 |     useEffect(() => {
+> 27 |         setMounted(true)
+     |         ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  28 |
+  29 |         const supabase = createClient()
+  30 |         supabase.auth.getUser().then(({ data: { user } }) => {  react-hooks/set-state-in-effect
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\components\layout\SearchBar.tsx
+    4:27  warning  'X' is defined but never used                                                                                                                                                                                                                                                            @typescript-eslint/no-unused-vars
+   12:44  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   95:41  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  114:58  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  114:66  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\components\store\CategoriesSection.tsx
+  7:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\lib\supabase\middleware.ts
+  25:58  warning  'options' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\lib\supabase\server.ts
+  2:35  warning  'CookieOptions' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa\src\scripts\seed.ts
+  32:42  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  33:39  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Ô£û 77 problems (57 errors, 20 warnings)
+

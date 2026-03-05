@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { ProductCard } from "@/components/store/ProductCard"
 import { HeroSection } from "@/components/store/HeroSection"
 import { CategoriesSection } from "@/components/store/CategoriesSection"
+import Link from "next/link"
 
 export const revalidate = 60
 
@@ -81,15 +82,15 @@ export default async function StorefrontHome() {
                         </span>
                         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">{productsSectionTitle}</h2>
                     </div>
-                    <a href="/produtos" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+                    <Link href="/produtos" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
                         Ver tudo →
-                    </a>
+                    </Link>
                 </div>
 
                 {products && products.length > 0 ? (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
                         {products.map((product, i) => (
-                            // @ts-ignore
+                            // @ts-expect-error -> Product type has category object
                             <ProductCard key={product.id} product={product} index={i} />
                         ))}
                     </div>

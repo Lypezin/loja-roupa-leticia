@@ -24,6 +24,7 @@ export function Header({ categories = [], storeName }: { categories?: Category[]
     const [scrolled, setScrolled] = useState(false)
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         setMounted(true)
 
         const supabase = createClient()

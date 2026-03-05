@@ -28,17 +28,17 @@ export async function saveProduct(formData: FormData) {
             if (error) return { error: error.message }
 
             const { error: delVarError } = await supabase.from('product_variations').delete().eq('product_id', productId)
-            if (delVarError) return { error: `Erro ao remover variações antigas: ${(delVarError as any).message}` }
+            if (delVarError) return { error: `Erro ao remover variações antigas: ${(delVarError as Error).message}` }
 
-            const varsToInsert = variations.map((v: any) => ({ ...v, product_id: productId }))
+            const varsToInsert = variations.map((v: Record<string, unknown>) => ({ ...v, product_id: productId }))
             const { error: insVarError } = await supabase.from('product_variations').insert(varsToInsert)
-            if (insVarError) return { error: `Erro ao inserir novas variações: ${(insVarError as any).message}` }
+            if (insVarError) return { error: `Erro ao inserir novas variações: ${(insVarError as Error).message}` }
 
             // Gerenciar imagens existentes (mantidas pelo usuário)
             const existingImagesJson = formData.get('existing_images_json') as string
             if (existingImagesJson) {
                 const keptImages = JSON.parse(existingImagesJson)
-                const keptUrls = keptImages.map((img: any) => img.image_url)
+                const keptUrls = keptImages.map((img: Record<string, string>) => img.image_url)
 
                 // Buscar todas as imagens atuais do produto
                 const { data: allImages } = await supabase
@@ -48,7 +48,7 @@ export async function saveProduct(formData: FormData) {
 
                 // Deletar as que não foram mantidas
                 if (allImages) {
-                    const toDelete = allImages.filter((img: any) => !keptUrls.includes(img.image_url))
+                    const toDelete = allImages.filter((img: { id: string, image_url: string }) => !keptUrls.includes(img.image_url))
                     for (const img of toDelete) {
                         const { error: delImgError } = await supabase.from('product_images').delete().eq('id', img.id)
                         if (delImgError) {
@@ -75,7 +75,7 @@ export async function saveProduct(formData: FormData) {
             if (error) return { error: error.message }
             newProductId = productData.id
 
-            const varsToInsert = variations.map((v: any) => ({ ...v, product_id: newProductId }))
+            const varsToInsert = variations.map((v: Record<string, unknown>) => ({ ...v, product_id: newProductId }))
             const { error: varError } = await supabase
                 .from('product_variations')
                 .insert(varsToInsert)
@@ -104,7 +104,8 @@ export async function saveProduct(formData: FormData) {
         revalidatePath('/admin/produtos')
         revalidatePath('/')
         return { success: true }
-    } catch (err: any) {
+    } catch (error: unknown) {
+        const err = error as Error
         return { error: err.message || 'Erro Interno no Servidor.' }
     }
 }
@@ -136,10 +137,10 @@ export async function deleteProduct(productId: string) {
 
         // Deletar registros relacionados
         const { error: delImagesError } = await supabase.from('product_images').delete().eq('product_id', productId)
-        if (delImagesError) return { error: `Erro ao deletar imagens: ${(delImagesError as any).message}` }
+        if (delImagesError) return { error: `Erro ao deletar imagens: ${(delImagesError as Error).message}` }
 
         const { error: delVarsError } = await supabase.from('product_variations').delete().eq('product_id', productId)
-        if (delVarsError) return { error: `Erro ao deletar variações: ${(delVarsError as any).message}` }
+        if (delVarsError) return { error: `Erro ao deletar variações: ${(delVarsError as Error).message}` }
 
         const { error } = await supabase.from('products').delete().eq('id', productId)
         if (error) return { error: error.message }
@@ -147,7 +148,8 @@ export async function deleteProduct(productId: string) {
         revalidatePath('/admin/produtos')
         revalidatePath('/')
         return { success: true }
-    } catch (err: any) {
+    } catch (error: unknown) {
+        const err = error as Error
         return { error: err.message || 'Erro ao excluir produto.' }
     }
 }

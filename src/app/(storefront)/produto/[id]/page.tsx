@@ -76,16 +76,14 @@ export default async function ProductPage({
     return (
         <div className="container mx-auto px-4 py-6 md:py-12">
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-sm text-zinc-400 mb-8">
-                <Link href="/" className="hover:text-zinc-700 transition-colors">Início</Link>
+            <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-8">
+                <Link href="/" className="hover:text-foreground transition-colors">Início</Link>
                 <ChevronRight className="w-3.5 h-3.5" />
-                {/* @ts-ignore */}
-                <Link href={`/${product.category?.name?.toLowerCase() || 'camisetas'}`} className="hover:text-zinc-700 transition-colors">
-                    {/* @ts-ignore */}
+                <Link href={`/${product.category?.name?.toLowerCase() || 'camisetas'}`} className="hover:text-foreground transition-colors">
                     {product.category?.name || 'Camisetas'}
                 </Link>
                 <ChevronRight className="w-3.5 h-3.5" />
-                <span className="text-zinc-700 font-medium">{product.name}</span>
+                <span className="text-foreground font-medium">{product.name}</span>
             </nav>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
@@ -96,30 +94,29 @@ export default async function ProductPage({
                 {/* Informações e Adição ao Carrinho */}
                 <div className="flex flex-col py-2 md:py-6">
                     <div className="space-y-3 mb-6">
-                        <span className="text-xs font-semibold tracking-[0.2em] text-zinc-400 uppercase">
-                            {/* @ts-ignore */}
+                        <span className="text-xs font-semibold tracking-[0.2em] text-muted-foreground uppercase">
                             {product.category?.name || 'Sem categoria'}
                         </span>
-                        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-zinc-900 leading-tight">
+                        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-tight">
                             {product.name}
                         </h1>
                         <div className="flex items-baseline gap-3">
-                            <p className="text-3xl text-zinc-900 font-bold">
+                            <p className="text-3xl text-foreground font-bold">
                                 {formattedPrice}
                             </p>
-                            <p className="text-sm text-zinc-400">
+                            <p className="text-sm text-muted-foreground">
                                 até 3x de {installmentPrice}
                             </p>
                         </div>
                     </div>
 
                     <div className="mb-6">
-                        <p className="text-zinc-500 leading-relaxed">
+                        <p className="text-muted-foreground leading-relaxed">
                             {product.description || "Peça exclusiva com design minimalista, construída com materiais premium visando o máximo de conforto diário."}
                         </p>
                     </div>
 
-                    <div className="w-full border-t border-zinc-100 mb-2" />
+                    <div className="w-full border-t border-border mb-2" />
 
                     {/* O componente Client-side gerencia Zustand e cliques */}
                     <AddToCart
@@ -131,13 +128,13 @@ export default async function ProductPage({
                     />
 
                     {/* Trust Indicators */}
-                    <div className="mt-8 pt-6 border-t border-zinc-100 space-y-3">
+                    <div className="mt-8 pt-6 border-t border-border space-y-3">
                         {[
                             { icon: "🚀", text: "Envio para todo o Brasil" },
                             { icon: "↩️", text: "Troca grátis em até 7 dias" },
                             { icon: "🔒", text: "Compra 100% segura" },
                         ].map(item => (
-                            <div key={item.text} className="flex items-center gap-3 text-sm text-zinc-500">
+                            <div key={item.text} className="flex items-center gap-3 text-sm text-muted-foreground">
                                 <span>{item.icon}</span>
                                 <span>{item.text}</span>
                             </div>

@@ -5,6 +5,7 @@ import { Search, Loader2, X } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 export function SearchBar() {
@@ -91,10 +92,11 @@ export function SearchBar() {
                                     onClick={() => setIsOpen(false)}
                                     className="flex items-center gap-3 p-2 rounded-xl hover:bg-muted transition-colors group"
                                 >
-                                    <div className="w-12 h-12 rounded-lg bg-muted overflow-hidden">
-                                        <img
+                                    <div className="w-12 h-12 rounded-lg bg-muted overflow-hidden relative">
+                                        <Image
                                             src={product.product_images?.[0]?.image_url || "/placeholder.jpg"}
                                             alt={product.name}
+                                            fill
                                             className="w-full h-full object-cover"
                                         />
                                     </div>
@@ -111,7 +113,7 @@ export function SearchBar() {
                             onClick={handleSearch}
                             className="w-full p-3 bg-muted/50 text-center text-xs font-bold text-foreground hover:bg-muted transition-colors border-t border-border"
                         >
-                            Ver todos os resultados para "{query}"
+                            Ver todos os resultados para &quot;{query}&quot;
                         </button>
                     </motion.div>
                 )}

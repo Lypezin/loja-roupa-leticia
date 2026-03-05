@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
+import Link from "next/link"
 
 export const revalidate = 60
 
@@ -66,7 +67,7 @@ export default async function TermosPage() {
                 <div className="mt-14 p-6 bg-zinc-50 rounded-2xl border border-zinc-100 text-center">
                     <p className="text-sm text-zinc-500">
                         Dúvidas sobre os termos? Entre em contato pelo nosso{" "}
-                        <a href="/contato" className="text-zinc-900 font-semibold hover:underline">canal de atendimento</a>.
+                        <Link href="/contato" className="text-zinc-900 font-semibold hover:underline">canal de atendimento</Link>.
                     </p>
                 </div>
             </div>

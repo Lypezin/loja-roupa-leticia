@@ -25,7 +25,8 @@ export async function saveProfile(formData: FormData) {
         revalidatePath('/admin/configuracoes')
         revalidatePath('/')
         return { success: true }
-    } catch (err: any) {
+    } catch (error: unknown) {
+        const err = error as Error
         return { error: err.message || 'Erro Interno no Servidor.' }
     }
 }
@@ -35,7 +36,7 @@ export async function saveBanner(formData: FormData) {
         const supabase = await createClient()
         const id = formData.get('id') as string
 
-        const updates: Record<string, any> = {
+        const updates: Record<string, string | number | null> = {
             hero_title: formData.get('hero_title') as string,
             hero_subtitle: formData.get('hero_subtitle') as string,
             hero_button_text: formData.get('hero_button_text') as string,
@@ -95,7 +96,8 @@ export async function saveBanner(formData: FormData) {
         revalidatePath('/admin/configuracoes')
         revalidatePath('/')
         return { success: true }
-    } catch (err: any) {
+    } catch (error: unknown) {
+        const err = error as Error
         return { error: err.message || 'Erro Interno no Servidor.' }
     }
 }
@@ -123,7 +125,8 @@ export async function saveLogistics(formData: FormData) {
         revalidatePath('/admin/configuracoes')
         revalidatePath('/')
         return { success: true }
-    } catch (err: any) {
+    } catch (error: unknown) {
+        const err = error as Error
         return { error: err.message || 'Erro Interno no Servidor.' }
     }
 }
@@ -148,7 +151,8 @@ export async function saveFooter(formData: FormData) {
         revalidatePath('/admin/configuracoes')
         revalidatePath('/')
         return { success: true }
-    } catch (err: any) {
+    } catch (error: unknown) {
+        const err = error as Error
         return { error: err.message || 'Erro Interno no Servidor.' }
     }
 }
@@ -182,7 +186,8 @@ export async function saveContent(formData: FormData) {
         revalidatePath('/admin/configuracoes')
         revalidatePath('/')
         return { success: true }
-    } catch (err: any) {
+    } catch (error: unknown) {
+        const err = error as Error
         return { error: err.message || 'Erro Interno no Servidor.' }
     }
 }
