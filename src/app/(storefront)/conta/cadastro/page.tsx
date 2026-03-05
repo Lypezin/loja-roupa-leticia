@@ -17,7 +17,11 @@ function CadastroFormContent() {
 
     const handleSubmit = async (formData: FormData) => {
         setIsLoading(true)
-        await cadastrarCliente(formData)
+        try {
+            await cadastrarCliente(formData)
+        } catch {
+            // redirect lança exceção — é comportamento normal do Next.js
+        }
         setIsLoading(false)
     }
 

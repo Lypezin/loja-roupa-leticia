@@ -6,18 +6,23 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { loginCliente } from "../actions"
-import { Loader2, Eye, EyeOff } from "lucide-react"
+import { Loader2, Eye, EyeOff, Mail } from "lucide-react"
 import { useState, Suspense } from "react"
 
 function LoginFormContent() {
     const searchParams = useSearchParams()
     const error = searchParams.get('error')
+    const success = searchParams.get('success')
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
 
     const handleSubmit = async (formData: FormData) => {
         setIsLoading(true)
-        await loginCliente(formData)
+        try {
+            await loginCliente(formData)
+        } catch {
+            // redirect lança exceção — é comportamento normal do Next.js
+        }
         setIsLoading(false)
     }
 
@@ -30,9 +35,16 @@ function LoginFormContent() {
                 </div>
 
                 <form action={handleSubmit} className="bg-white p-8 rounded-2xl border shadow-sm space-y-5">
+                    {success && (
+                        <div className="bg-green-50 border border-green-200 text-green-700 text-sm rounded-lg p-3 text-center animate-fade-in flex items-center gap-2 justify-center">
+                            <Mail className="w-4 h-4 shrink-0" />
+                            {decodeURIComponent(success)}
+                        </div>
+                    )}
+
                     {error && (
                         <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg p-3 text-center animate-fade-in">
-                            {error}
+                            {decodeURIComponent(error)}
                         </div>
                     )}
 
