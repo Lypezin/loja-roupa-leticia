@@ -4,8 +4,8 @@ import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Phone, Instagram, Store } from "lucide-react"
-import { saveProfile } from "@/app/admin/(dashboard)/configuracoes/actions"
+import { User, Instagram, Mail, Phone, Search } from "lucide-react"
+import { updateProfileSettings } from "@/app/admin/(dashboard)/configuracoes/actions"
 import { toast } from "sonner"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
 
@@ -20,10 +20,10 @@ export function ProfileSection({ settings }: ProfileSectionProps) {
     const handleSubmit = async (formData: FormData) => {
         setIsLoading(true)
         try {
-            const res = await saveProfile(formData)
+            const res = await updateProfileSettings(formData)
             if (res?.error) throw new Error(res.error)
             showSuccess(setSuccess)
-            toast.success("Perfil salvo com sucesso!")
+            toast.success("Perfil da loja atualizado!")
         } catch (error: any) {
             toast.error(`Erro ao salvar perfil: ${error.message}`)
         } finally {
@@ -32,44 +32,59 @@ export function ProfileSection({ settings }: ProfileSectionProps) {
     }
 
     return (
-        <form action={handleSubmit} className="bg-white p-6 rounded-2xl border border-zinc-100 space-y-5 shadow-sm">
+        <form action={handleSubmit} className="bg-white p-6 md:p-8 rounded-2xl border border-zinc-100 shadow-sm space-y-8">
             <input type="hidden" name="id" value={settings.id} />
-            <SectionHeader icon={Store} title="Perfil e SEO" />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <SectionHeader
+                icon={User}
+                title="Perfil e SEO"
+                description="Configure as informações fundamentais que aparecem no cabeçalho, rodapé e nos resultados de busca."
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                 <div className="space-y-2">
-                    <Label htmlFor="store_name">Nome da Loja</Label>
-                    <Input id="store_name" name="store_name" defaultValue={settings.store_name} className="rounded-xl" />
+                    <Label htmlFor="store_name" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Nome da Loja</Label>
+                    <Input id="store_name" name="store_name" defaultValue={settings.store_name || ''} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                 </div>
+
                 <div className="space-y-2">
-                    <Label htmlFor="support_email">E-mail de Suporte</Label>
-                    <Input id="support_email" name="support_email" type="email" defaultValue={settings.support_email || ''} className="rounded-xl" />
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="whatsapp_number">WhatsApp</Label>
+                    <Label htmlFor="support_email" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Email de Suporte</Label>
                     <div className="relative">
-                        <Phone className="absolute left-3 top-3 h-4 w-4 text-zinc-400" />
-                        <Input id="whatsapp_number" name="whatsapp_number" className="pl-9 rounded-xl" placeholder="Ex: 11999999999" defaultValue={settings.whatsapp_number || ''} />
+                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                        <Input id="support_email" name="support_email" type="email" defaultValue={settings.support_email || ''} className="pl-10 h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
                 </div>
+
                 <div className="space-y-2">
-                    <Label htmlFor="instagram_url">Instagram</Label>
+                    <Label htmlFor="whatsapp" className="text-xs font-bold uppercase tracking-wider text-zinc-400">WhatsApp</Label>
                     <div className="relative">
-                        <Instagram className="absolute left-3 top-3 h-4 w-4 text-zinc-400" />
-                        <Input id="instagram_url" name="instagram_url" className="pl-9 rounded-xl" placeholder="https://instagram.com/sua_loja" defaultValue={settings.instagram_url || ''} />
+                        <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                        <Input id="whatsapp" name="whatsapp" defaultValue={settings.whatsapp || ''} className="pl-10 h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
                 </div>
-            </div>
 
-            <div className="space-y-2">
-                <Label htmlFor="store_description">Descrição (SEO)</Label>
-                <Textarea
-                    id="store_description"
-                    name="store_description"
-                    className="min-h-[80px] rounded-xl"
-                    placeholder="Descrição da loja para SEO e compartilhamento."
-                    defaultValue={settings.store_description || ''}
-                />
+                <div className="space-y-2">
+                    <Label htmlFor="instagram_url" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Instagram URL</Label>
+                    <div className="relative">
+                        <Instagram className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                        <Input id="instagram_url" name="instagram_url" placeholder="https://instagram.com/..." defaultValue={settings.instagram_url || ''} className="pl-10 h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                    </div>
+                </div>
+
+                <div className="space-y-2 md:col-span-2">
+                    <Label htmlFor="store_description" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Descrição/SEO (Meta Description)</Label>
+                    <div className="relative">
+                        <Search className="absolute left-3.5 top-3.5 w-4 h-4 text-zinc-400" />
+                        <Textarea
+                            id="store_description"
+                            name="store_description"
+                            defaultValue={settings.store_description || ''}
+                            rows={3}
+                            className="pl-10 rounded-xl border-zinc-200 focus-visible:ring-zinc-200 resize-none pt-3"
+                        />
+                    </div>
+                    <p className="text-[10px] text-zinc-400">Esta descrição aparece nos resultados de busca do Google.</p>
+                </div>
             </div>
 
             <SaveButton isLoading={isLoading} success={success} label="Salvar Perfil" />

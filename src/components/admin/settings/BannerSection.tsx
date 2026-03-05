@@ -1,11 +1,10 @@
 'use client'
 
-import { useState, useRef } from "react"
+import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { LayoutTemplate, Upload } from "lucide-react"
+import { ImageIcon, CloudUpload, X } from "lucide-react"
 import { saveBanner } from "@/app/admin/(dashboard)/configuracoes/actions"
-import { createClient } from "@/lib/supabase/client"
 import { toast } from "sonner"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
 
@@ -16,47 +15,22 @@ interface BannerSectionProps {
 export function BannerSection({ settings }: BannerSectionProps) {
     const [isLoading, setIsLoading] = useState(false)
     const [success, setSuccess] = useState(false)
-    const [bannerPreview, setBannerPreview] = useState<string | null>(settings?.hero_image_url || null)
-    const fileInputRef = useRef<HTMLInputElement>(null)
+    const [imagePreview, setImagePreview] = useState<string | null>(settings.hero_image_url || null)
 
-    const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (file) {
-            const url = URL.createObjectURL(file)
-            setBannerPreview(url)
+            setImagePreview(URL.createObjectURL(file))
         }
     }
 
     const handleSubmit = async (formData: FormData) => {
         setIsLoading(true)
         try {
-            const imageFile = fileInputRef.current?.files?.[0]
-
-            if (imageFile && imageFile.size > 0) {
-                const supabase = createClient()
-                const fileExt = imageFile.name.split('.').pop()
-                const fileName = `banner-${Date.now()}.${fileExt}`
-                const filePath = `store-assets/${fileName}`
-
-                const { error: uploadError } = await supabase.storage
-                    .from('product-images')
-                    .upload(filePath, imageFile)
-
-                if (uploadError) {
-                    throw new Error('Falha ao enviar imagem: ' + uploadError.message)
-                }
-
-                const { data: { publicUrl } } = supabase.storage
-                    .from('product-images')
-                    .getPublicUrl(filePath)
-
-                formData.set('hero_image_url_new', publicUrl)
-            }
-
             const res = await saveBanner(formData)
             if (res?.error) throw new Error(res.error)
             showSuccess(setSuccess)
-            toast.success("Banner salvo com sucesso!")
+            toast.success("Banner Hero atualizado!")
         } catch (error: any) {
             toast.error(`Erro ao salvar banner: ${error.message}`)
         } finally {
@@ -65,64 +39,76 @@ export function BannerSection({ settings }: BannerSectionProps) {
     }
 
     return (
-        <form action={handleSubmit} className="bg-white p-6 rounded-2xl border border-zinc-100 space-y-5 shadow-sm">
+        <form action={handleSubmit} className="bg-white p-6 md:p-8 rounded-2xl border border-zinc-100 shadow-sm space-y-8">
             <input type="hidden" name="id" value={settings.id} />
-            <SectionHeader icon={LayoutTemplate} title="Banner Principal (Vitrine)" />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                    <Label htmlFor="hero_title">Título Principal</Label>
-                    <Input id="hero_title" name="hero_title" placeholder="Ex: Nova Coleção Inverno" defaultValue={settings.hero_title || ''} className="rounded-xl" />
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="hero_subtitle">Subtítulo</Label>
-                    <Input id="hero_subtitle" name="hero_subtitle" placeholder="Ex: Essenciais para dias frios." defaultValue={settings.hero_subtitle || ''} className="rounded-xl" />
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="hero_badge_text">Badge / Etiqueta</Label>
-                    <Input id="hero_badge_text" name="hero_badge_text" placeholder="Ex: Nova Coleção 2025" defaultValue={settings.hero_badge_text || 'Nova Coleção 2025'} className="rounded-xl" />
-                    <p className="text-xs text-zinc-400">Texto da etiqueta que aparece acima do título.</p>
-                </div>
-                <div className="space-y-2">
-                    <Label htmlFor="hero_button_text">Texto do Botão Principal</Label>
-                    <Input id="hero_button_text" name="hero_button_text" placeholder="Ex: Comprar Agora" defaultValue={settings.hero_button_text || ''} className="rounded-xl" />
-                </div>
-                <div className="space-y-2 md:col-span-2">
-                    <Label htmlFor="hero_secondary_button_text">Texto do Botão Secundário</Label>
-                    <Input id="hero_secondary_button_text" name="hero_secondary_button_text" placeholder="Ex: Conheça a marca" defaultValue={settings.hero_secondary_button_text || 'Conheça a marca'} className="rounded-xl" />
-                    <p className="text-xs text-zinc-400">Botão com borda que aparece ao lado do principal no banner.</p>
-                </div>
-            </div>
+            <SectionHeader
+                icon={ImageIcon}
+                title="Banner Hero"
+                description="Ocupa a primeira dobra da loja. Use imagens de alta qualidade e chamadas impactantes."
+            />
 
-            <div className="space-y-3 mt-2">
-                <Label>Imagem de Fundo</Label>
-                {bannerPreview && (
-                    <div className="relative w-full md:w-1/2 aspect-video rounded-xl overflow-hidden border border-zinc-100 group/preview">
-                        <div
-                            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover/preview:scale-105"
-                            style={{ backgroundImage: `url(${bannerPreview})` }}
-                        />
-                        <div className="absolute inset-0 bg-black/20" />
+            <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                    <div className="space-y-2">
+                        <Label htmlFor="hero_badge_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Badge/Etiqueta</Label>
+                        <Input id="hero_badge_text" name="hero_badge_text" defaultValue={settings.hero_badge_text || 'Nova Coleção 2025'} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
-                )}
-                <div
-                    className="border-2 border-dashed border-zinc-200 rounded-xl p-6 text-center cursor-pointer hover:border-zinc-400 transition-colors"
-                    onClick={() => fileInputRef.current?.click()}
-                >
-                    <Upload className="w-6 h-6 text-zinc-400 mx-auto mb-2" />
-                    <p className="text-sm text-zinc-500">Clique para enviar uma imagem</p>
-                    <p className="text-xs text-zinc-400 mt-1">Recomendado: 1920x1080px</p>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="hero_title" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Título Principal</Label>
+                        <Input id="hero_title" name="hero_title" defaultValue={settings.hero_title || ''} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="hero_subtitle" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Subtítulo</Label>
+                        <Input id="hero_subtitle" name="hero_subtitle" defaultValue={settings.hero_subtitle || ''} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="hero_button_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Botão Principal</Label>
+                        <Input id="hero_button_text" name="hero_button_text" defaultValue={settings.hero_button_text || ''} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                    </div>
+
+                    <div className="space-y-2 md:col-span-2">
+                        <Label htmlFor="hero_secondary_button_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Botão Secundário</Label>
+                        <Input id="hero_secondary_button_text" name="hero_secondary_button_text" defaultValue={settings.hero_secondary_button_text || 'Conheça a marca'} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                    </div>
                 </div>
-                <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImagePreview}
-                />
+
+                <div className="space-y-3 pt-4">
+                    <Label className="text-xs font-bold uppercase tracking-wider text-zinc-400">Imagem de Fundo</Label>
+                    <div className="group relative w-full h-64 rounded-2xl bg-zinc-50 border-2 border-dashed border-zinc-200 flex flex-col items-center justify-center overflow-hidden hover:border-zinc-300 transition-colors">
+                        {imagePreview ? (
+                            <>
+                                <img src={imagePreview} alt="Background Preview" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <div className="bg-white text-zinc-900 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 shadow-xl">
+                                        <CloudUpload className="w-4 h-4" /> Alterar Fundo
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            <div className="flex flex-col items-center gap-2">
+                                <div className="w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center mb-1">
+                                    <ImageIcon className="w-6 h-6 text-zinc-400" />
+                                </div>
+                                <p className="text-sm font-semibold text-zinc-600">Upload de imagem de fundo</p>
+                                <p className="text-xs text-zinc-400">Recomendado: 1920x1080px (Alta resolução)</p>
+                            </div>
+                        )}
+                        <input
+                            type="file"
+                            name="hero_image"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="absolute inset-0 opacity-0 cursor-pointer"
+                        />
+                    </div>
+                </div>
             </div>
 
-            <SaveButton isLoading={isLoading} success={success} label="Salvar Banner" />
+            <SaveButton isLoading={isLoading} success={success} label="Salvar Banner Hero" />
         </form>
     )
 }

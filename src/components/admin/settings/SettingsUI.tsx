@@ -2,19 +2,26 @@
 
 import { Button } from "@/components/ui/button"
 import { Loader2, CheckCircle2 } from "lucide-react"
+import { motion } from "framer-motion"
 
 interface SectionHeaderProps {
     icon: any
     title: string
+    description?: string
 }
 
-export function SectionHeader({ icon: Icon, title }: SectionHeaderProps) {
+export function SectionHeader({ icon: Icon, title, description }: SectionHeaderProps) {
     return (
-        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-zinc-100">
-            <div className="w-9 h-9 bg-zinc-100 rounded-xl flex items-center justify-center">
-                <Icon className="w-4 h-4 text-zinc-600" />
+        <div className="flex flex-col gap-1 mb-8">
+            <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-zinc-900 rounded-xl flex items-center justify-center shadow-lg shadow-zinc-200">
+                    <Icon className="w-5 h-5 text-white" />
+                </div>
+                <h2 className="text-xl font-bold text-zinc-900 tracking-tight">{title}</h2>
             </div>
-            <h2 className="text-lg font-semibold text-zinc-900">{title}</h2>
+            {description && (
+                <p className="text-sm text-zinc-500 ml-13 max-w-2xl">{description}</p>
+            )}
         </div>
     )
 }
@@ -27,13 +34,21 @@ interface SaveButtonProps {
 
 export function SaveButton({ isLoading, success, label }: SaveButtonProps) {
     return (
-        <div className="pt-4 border-t border-zinc-100 mt-6 flex justify-end items-center gap-3">
+        <div className="pt-6 border-t border-zinc-100 mt-8 flex justify-end items-center gap-4">
             {success && (
-                <span className="text-sm text-emerald-600 flex items-center gap-1 animate-fade-in">
-                    <CheckCircle2 className="w-4 h-4" /> Salvo com sucesso!
-                </span>
+                <motion.span
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="text-sm font-medium text-emerald-600 flex items-center gap-1.5"
+                >
+                    <CheckCircle2 className="w-4 h-4" /> Alterações salvas!
+                </motion.span>
             )}
-            <Button disabled={isLoading} type="submit" className="px-6 bg-zinc-950 text-white cursor-pointer h-10 rounded-xl hover:bg-zinc-800 transition-colors">
+            <Button
+                disabled={isLoading}
+                type="submit"
+                className="px-8 bg-zinc-900 text-white cursor-pointer h-11 rounded-xl hover:bg-zinc-800 transition-all shadow-md active:scale-95 disabled:opacity-50"
+            >
                 {isLoading ? (
                     <span className="flex items-center gap-2">
                         <Loader2 className="w-4 h-4 animate-spin" /> Salvando...
