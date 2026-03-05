@@ -1,6 +1,9 @@
 import { createClient } from "@/lib/supabase/server"
 import { SettingsForm } from "@/components/admin/SettingsForm"
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function ConfiguracoesPage() {
     const supabase = await createClient()
 
@@ -8,7 +11,8 @@ export default async function ConfiguracoesPage() {
     const { data: settings } = await supabase
         .from('store_settings')
         .select('*')
-        .single()
+        .limit(1)
+        .maybeSingle()
 
     return (
         <div className="flex flex-col gap-6 w-full max-w-5xl">
@@ -19,7 +23,7 @@ export default async function ConfiguracoesPage() {
                 </p>
             </div>
 
-            <SettingsForm settings={settings} />
+            <SettingsForm settings={settings || {}} />
         </div>
     )
 }
