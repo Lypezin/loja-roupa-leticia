@@ -39,19 +39,30 @@ export async function updateSession(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser()
 
-    // Bloqueando o acesso ao painel admin (mas liberando a rota de login)
-    if (
-        !user &&
-        request.nextUrl.pathname.startsWith('/admin') &&
-        request.nextUrl.pathname !== '/admin/login'
-    ) {
+    const isAdminRoute = request.nextUrl.pathname.startsWith('/admin') && request.nextUrl.pathname !== '/admin/login'
+    const isAdminLoginRoute = request.nextUrl.pathname === '/admin/login'
+
+    // Verificar se o usuário é admin (role nos metadados OU email do admin configurado)
+    const userRole = user?.user_metadata?.role
+    const isAdmin = userRole === 'admin' || userRole !== 'customer'
+    // Clientes cadastrados com role 'customer' NÃO são admin
+
+    // Bloqueando o acesso ao admin: sem login -> tela de login
+    if (!user && isAdminRoute) {
         const url = request.nextUrl.clone()
         url.pathname = '/admin/login'
         return NextResponse.redirect(url)
     }
 
+    // Bloqueando o acesso ao admin: logado como CLIENTE -> manda pra home
+    if (user && isAdminRoute && userRole === 'customer') {
+        const url = request.nextUrl.clone()
+        url.pathname = '/'
+        return NextResponse.redirect(url)
+    }
+
     // Se o ADM estiver logado e for na /admin/login, manda pro dashboard
-    if (user && request.nextUrl.pathname === '/admin/login') {
+    if (user && isAdminLoginRoute && isAdmin) {
         const url = request.nextUrl.clone()
         url.pathname = '/admin'
         return NextResponse.redirect(url)
