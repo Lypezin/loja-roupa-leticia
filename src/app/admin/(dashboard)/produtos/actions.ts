@@ -58,6 +58,42 @@ export async function saveProduct(formData: FormData) {
         if (varError) throw new Error(varError.message)
     }
 
+    // 3. Processar Imagens Inseridas
+    const imageFiles = formData.getAll('images') as File[]
+    const validImages = imageFiles.filter(file => file.size > 0)
+
+    if (validImages.length > 0) {
+        for (let i = 0; i < validImages.length; i++) {
+            const file = validImages[i]
+            const fileExt = file.name.split('.').pop()
+            const fileName = `${newProductId}-${Date.now()}-${i}.${fileExt}`
+            const filePath = `${fileName}`
+
+            // Faz o upload fisico do Blob para o Bucket do Supabase
+            const { error: uploadError } = await supabase.storage
+                .from('product-images')
+                .upload(filePath, file)
+
+            if (uploadError) {
+                console.error("Erro no upload da imagem:", uploadError)
+                continue
+            }
+
+            // Pega a URL Publica
+            const { data: { publicUrl } } = supabase.storage
+                .from('product-images')
+                .getPublicUrl(filePath)
+
+            // Salva na tabela Product_Images referenciando o produto
+            await supabase.from('product_images').insert({
+                product_id: newProductId,
+                image_url: publicUrl,
+                is_primary: i === 0 && !productId, // Só marca como primária a foto 0 e SE for produto novo
+                display_order: i
+            })
+        }
+    }
+
     // Se conseguimos chegar até aqui, revalida a listagem global ou do produto e redireciona.
     revalidatePath('/admin/produtos')
     revalidatePath('/')

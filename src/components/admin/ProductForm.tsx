@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Plus, Trash2 } from "lucide-react"
+import { Plus, Trash2, Image as ImageIcon } from "lucide-react"
 import { saveProduct } from "@/app/admin/(dashboard)/produtos/actions"
 
 type Category = {
@@ -58,6 +58,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                 formData.append('product_id', product.id)
             }
 
+            // Os arquivos de imagem anexados no input name="images" já vão naturalmente pelo FormData!
             await saveProduct(formData)
             router.push('/admin/produtos')
             router.refresh()
@@ -113,14 +114,33 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-2 mt-4">
+                <div className="pt-4 border-t">
+                    <Label htmlFor="images" className="flex items-center gap-2 mb-2 font-semibold">
+                        <ImageIcon className="w-4 h-4 text-zinc-500" />
+                        Imagens do Produto
+                    </Label>
+                    <div className="text-sm text-zinc-500 mb-4">
+                        Selecione até 4 fotos do produto. A primeira será usada como capa da vitrine.
+                    </div>
+                    {/* Neste primeiro momento focamos APENAS em Upload sem preview p/ MVP rápido */}
+                    <Input
+                        id="images"
+                        name="images"
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="cursor-pointer"
+                    />
+                </div>
+
+                <div className="flex items-center gap-2 mt-4 pt-4 border-t">
                     <input
                         type="checkbox"
                         id="is_active"
                         name="is_active"
                         defaultChecked={product ? product.is_active : true}
                         value="true"
-                        className="w-4 h-4 rounded border-gray-300"
+                        className="w-4 h-4 rounded border-gray-300 cursor-pointer"
                     />
                     <Label htmlFor="is_active" className="cursor-pointer">Produto ativo e visível na loja</Label>
                 </div>
@@ -183,7 +203,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
 
             <div className="border-t pt-6">
                 <Button disabled={isLoading} type="submit" className="w-full bg-zinc-950 text-white cursor-pointer h-12">
-                    {isLoading ? "Salvando..." : isEditing ? "Atualizar Produto" : "Criar Produto"}
+                    {isLoading ? "Salvando e enviando imagens..." : isEditing ? "Atualizar Produto" : "Criar Produto"}
                 </Button>
             </div>
 
