@@ -16,10 +16,10 @@ export function CategoriesSection({ categories, sectionLabel = "Coleções", sec
         <section className="container mx-auto px-4 py-20">
             <div className="flex items-end justify-between mb-10">
                 <div>
-                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 mb-2 block">
+                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-2 block">
                         {sectionLabel}
                     </span>
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight">{sectionTitle}</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">{sectionTitle}</h2>
                 </div>
             </div>
 

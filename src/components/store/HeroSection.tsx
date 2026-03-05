@@ -51,13 +51,17 @@ export function HeroSection({ title, subtitle, buttonText, backgroundUrl, badgeT
                         </motion.span>
                     )}
 
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-[-0.04em] leading-[0.9] mb-6">
-                        {title}
-                    </h1>
+                    {title && (
+                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-[-0.04em] leading-[0.9] mb-6">
+                            {title}
+                        </h1>
+                    )}
 
-                    <p className="text-zinc-300 text-base md:text-lg max-w-lg mx-auto mb-10 leading-relaxed font-light">
-                        {subtitle}
-                    </p>
+                    {subtitle && (
+                        <p className="text-zinc-300 text-base md:text-lg max-w-lg mx-auto mb-10 leading-relaxed font-light">
+                            {subtitle}
+                        </p>
+                    )}
 
                     {/* Countdown Timer (Item 15) */}
                     {countdownEnd && (
@@ -76,13 +80,15 @@ export function HeroSection({ title, subtitle, buttonText, backgroundUrl, badgeT
                         transition={{ delay: 0.4, duration: 0.6 }}
                         className="flex flex-col sm:flex-row gap-3 md:justify-center"
                     >
-                        <Link
-                            href="/camisetas"
-                            className="group relative inline-flex items-center justify-center px-8 py-4 bg-white text-zinc-950 text-sm font-semibold rounded-full overflow-hidden transition-all hover:shadow-[0_0_40px_rgba(255,255,255,0.15)]"
-                        >
-                            <span className="relative z-10">{buttonText}</span>
-                            <span className="absolute inset-0 bg-zinc-100 transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
-                        </Link>
+                        {buttonText && (
+                            <Link
+                                href="/camisetas"
+                                className="group relative inline-flex items-center justify-center px-8 py-4 bg-white text-zinc-950 text-sm font-semibold rounded-full overflow-hidden transition-all hover:shadow-[0_0_40px_rgba(255,255,255,0.15)]"
+                            >
+                                <span className="relative z-10">{buttonText}</span>
+                                <span className="absolute inset-0 bg-zinc-100 transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
+                            </Link>
+                        )}
 
                         {secondaryButtonText && (
                             <Link

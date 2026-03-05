@@ -56,12 +56,12 @@ export default async function StorefrontHome() {
         <div className="flex flex-col">
             {/* Hero Banner Premium */}
             <HeroSection
-                title={settings?.hero_title}
-                subtitle={settings?.hero_subtitle}
-                buttonText={settings?.hero_button_text}
-                backgroundUrl={settings?.hero_image_url || '/hero-bg.jpg'}
-                badgeText={settings?.hero_badge_text}
-                secondaryButtonText={settings?.hero_secondary_button_text}
+                title={heroTitle}
+                subtitle={heroSubtitle}
+                buttonText={heroButton}
+                backgroundUrl={heroBg}
+                badgeText={heroBadge}
+                secondaryButtonText={heroSecondaryButton}
                 countdownEnd={settings?.countdown_end}
             />
 
@@ -76,12 +76,12 @@ export default async function StorefrontHome() {
             <section className="container mx-auto px-4 py-20">
                 <div className="flex items-end justify-between mb-12">
                     <div>
-                        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 mb-2 block">
+                        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-2 block">
                             {productsSectionLabel}
                         </span>
-                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight">{productsSectionTitle}</h2>
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">{productsSectionTitle}</h2>
                     </div>
-                    <a href="/camisetas" className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors flex items-center gap-1">
+                    <a href="/produtos" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
                         Ver tudo →
                     </a>
                 </div>
@@ -94,21 +94,21 @@ export default async function StorefrontHome() {
                         ))}
                     </div>
                 ) : (
-                    <div className="col-span-full py-16 text-center text-zinc-400">
+                    <div className="col-span-full py-16 text-center text-muted-foreground">
                         Nenhum produto disponível no momento.
                     </div>
                 )}
             </section>
 
             {/* Trust Banner */}
-            <section className="border-y border-zinc-100 bg-zinc-50/50">
+            <section className="border-y border-border bg-muted/30">
                 <div className="container mx-auto px-4 py-12">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                         {trustItems.map((item) => (
                             <div key={item.title} className="flex flex-col items-center gap-2">
                                 <span className="text-2xl">{item.emoji}</span>
-                                <h3 className="font-semibold text-sm">{item.title}</h3>
-                                <p className="text-xs text-zinc-500">{item.desc}</p>
+                                <h3 className="font-semibold text-sm text-foreground">{item.title}</h3>
+                                <p className="text-xs text-muted-foreground">{item.desc}</p>
                             </div>
                         ))}
                     </div>

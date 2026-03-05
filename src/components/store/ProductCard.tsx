@@ -114,13 +114,13 @@ export function ProductCard({ product, index = 0 }: { product: Product, index?: 
             </div>
 
             <Link href={`/produto/${product.id}`} className="flex flex-col gap-1 px-1 z-10">
-                <p className="text-[11px] text-zinc-400 uppercase tracking-[0.15em] font-medium">
+                <p className="text-[11px] text-muted-foreground uppercase tracking-[0.15em] font-medium">
                     {product.category?.name || "Sem Categoria"}
                 </p>
-                <h3 className="text-zinc-900 font-medium leading-tight group-hover:text-zinc-600 transition-colors">
+                <h3 className="text-foreground font-medium leading-tight group-hover:text-primary transition-colors">
                     {product.name}
                 </h3>
-                <p className="text-zinc-900 font-semibold mt-0.5">
+                <p className="text-foreground font-semibold mt-0.5">
                     {formattedPrice}
                 </p>
             </Link>
