@@ -30,10 +30,27 @@ export default async function StorefrontHome() {
         .order('created_at', { ascending: false })
         .limit(12)
 
+    // Hero settings
     const heroTitle = settings?.hero_title || "A NOVA COLEÇÃO"
     const heroSubtitle = settings?.hero_subtitle || "Descubra peças exclusivas. Caimento estruturado, paleta minimalista e conforto definitivo."
     const heroButton = settings?.hero_button_text || "Descobrir Agora"
     const heroBg = settings?.hero_image_url || "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=2070"
+    const heroBadge = settings?.hero_badge_text || "Nova Coleção 2025"
+    const heroSecondaryButton = settings?.hero_secondary_button_text || "Conheça a marca"
+
+    // Section settings
+    const productsSectionLabel = settings?.products_section_label || "Novidades"
+    const productsSectionTitle = settings?.products_section_title || "Lançamentos"
+    const categoriesSectionLabel = settings?.categories_section_label || "Coleções"
+    const categoriesSectionTitle = settings?.categories_section_title || "Explore por Categoria"
+
+    // Trust items from settings
+    const trustItems = [
+        { emoji: "🚀", title: settings?.trust_banner_1_title || "Envio Rápido", desc: settings?.trust_banner_1_desc || "Para todo o Brasil" },
+        { emoji: "🔒", title: settings?.trust_banner_2_title || "Compra Segura", desc: settings?.trust_banner_2_desc || "Pagamento protegido" },
+        { emoji: "↩️", title: settings?.trust_banner_3_title || "Trocas Fáceis", desc: settings?.trust_banner_3_desc || "Em até 7 dias" },
+        { emoji: "💬", title: settings?.trust_banner_4_title || "Suporte", desc: settings?.trust_banner_4_desc || "Atendimento humanizado" },
+    ]
 
     return (
         <div className="flex flex-col">
@@ -43,19 +60,25 @@ export default async function StorefrontHome() {
                 subtitle={heroSubtitle}
                 buttonText={heroButton}
                 backgroundUrl={heroBg}
+                badgeText={heroBadge}
+                secondaryButtonText={heroSecondaryButton}
             />
 
             {/* Categorias com Hover Expand */}
-            <CategoriesSection categories={latestCategories || []} />
+            <CategoriesSection
+                categories={latestCategories || []}
+                sectionLabel={categoriesSectionLabel}
+                sectionTitle={categoriesSectionTitle}
+            />
 
             {/* Produtos Recentes */}
             <section className="container mx-auto px-4 py-20">
                 <div className="flex items-end justify-between mb-12">
                     <div>
                         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 mb-2 block">
-                            Novidades
+                            {productsSectionLabel}
                         </span>
-                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Lançamentos</h2>
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight">{productsSectionTitle}</h2>
                     </div>
                     <a href="/camisetas" className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors flex items-center gap-1">
                         Ver tudo →
@@ -80,12 +103,7 @@ export default async function StorefrontHome() {
             <section className="border-y border-zinc-100 bg-zinc-50/50">
                 <div className="container mx-auto px-4 py-12">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                        {[
-                            { emoji: "🚀", title: "Envio Rápido", desc: "Para todo o Brasil" },
-                            { emoji: "🔒", title: "Compra Segura", desc: "Pagamento protegido" },
-                            { emoji: "↩️", title: "Trocas Fáceis", desc: "Em até 7 dias" },
-                            { emoji: "💬", title: "Suporte", desc: "Atendimento humanizado" },
-                        ].map((item) => (
+                        {trustItems.map((item) => (
                             <div key={item.title} className="flex flex-col items-center gap-2">
                                 <span className="text-2xl">{item.emoji}</span>
                                 <h3 className="font-semibold text-sm">{item.title}</h3>

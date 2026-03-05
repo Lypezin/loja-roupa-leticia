@@ -5,9 +5,11 @@ import { motion } from "framer-motion"
 
 interface CategoriesSectionProps {
     categories: any[]
+    sectionLabel?: string
+    sectionTitle?: string
 }
 
-export function CategoriesSection({ categories }: CategoriesSectionProps) {
+export function CategoriesSection({ categories, sectionLabel = "Coleções", sectionTitle = "Explore por Categoria" }: CategoriesSectionProps) {
     if (!categories || categories.length === 0) return null
 
     return (
@@ -15,9 +17,9 @@ export function CategoriesSection({ categories }: CategoriesSectionProps) {
             <div className="flex items-end justify-between mb-10">
                 <div>
                     <span className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 mb-2 block">
-                        Coleções
+                        {sectionLabel}
                     </span>
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Explore por Categoria</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight">{sectionTitle}</h2>
                 </div>
             </div>
 

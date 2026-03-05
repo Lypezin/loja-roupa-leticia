@@ -8,9 +8,11 @@ interface HeroSectionProps {
     subtitle: string
     buttonText: string
     backgroundUrl: string
+    badgeText?: string
+    secondaryButtonText?: string
 }
 
-export function HeroSection({ title, subtitle, buttonText, backgroundUrl }: HeroSectionProps) {
+export function HeroSection({ title, subtitle, buttonText, backgroundUrl, badgeText, secondaryButtonText }: HeroSectionProps) {
     return (
         <section className="relative h-[85vh] w-full bg-zinc-950 flex items-center justify-center overflow-hidden">
             {/* Background com Parallax sutil */}
@@ -36,14 +38,16 @@ export function HeroSection({ title, subtitle, buttonText, backgroundUrl }: Hero
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                     className="max-w-2xl text-left md:text-center"
                 >
-                    <motion.span
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 0.6 }}
-                        className="inline-block text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400 mb-6 border border-zinc-700/50 px-4 py-1.5 rounded-full"
-                    >
-                        Nova Coleção 2025
-                    </motion.span>
+                    {badgeText && (
+                        <motion.span
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2, duration: 0.6 }}
+                            className="inline-block text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400 mb-6 border border-zinc-700/50 px-4 py-1.5 rounded-full"
+                        >
+                            {badgeText}
+                        </motion.span>
+                    )}
 
                     <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-[-0.04em] leading-[0.9] mb-6">
                         {title}
@@ -67,12 +71,14 @@ export function HeroSection({ title, subtitle, buttonText, backgroundUrl }: Hero
                             <span className="absolute inset-0 bg-zinc-100 transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
                         </Link>
 
-                        <Link
-                            href="/sobre"
-                            className="inline-flex items-center justify-center px-8 py-4 border border-zinc-600 text-white text-sm font-medium rounded-full hover:border-zinc-400 hover:bg-white/5 transition-all"
-                        >
-                            Conheça a marca
-                        </Link>
+                        {secondaryButtonText && (
+                            <Link
+                                href="/sobre"
+                                className="inline-flex items-center justify-center px-8 py-4 border border-zinc-600 text-white text-sm font-medium rounded-full hover:border-zinc-400 hover:bg-white/5 transition-all"
+                            >
+                                {secondaryButtonText}
+                            </Link>
+                        )}
                     </motion.div>
                 </motion.div>
             </div>

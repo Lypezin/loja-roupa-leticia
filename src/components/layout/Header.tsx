@@ -14,7 +14,7 @@ export interface Category {
     slug: string
 }
 
-export function Header({ categories = [] }: { categories?: Category[] }) {
+export function Header({ categories = [], storeName }: { categories?: Category[]; storeName?: string }) {
     const totalItems = useCartStore((state) => state.totalItems())
     const [mounted, setMounted] = useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -54,7 +54,7 @@ export function Header({ categories = [] }: { categories?: Category[] }) {
                             <Menu className="w-5 h-5 text-zinc-700" />
                         </button>
                         <Link href="/" className="font-bold text-xl tracking-[-0.05em] text-zinc-900 hover:opacity-70 transition-opacity">
-                            FASHION STORE
+                            {storeName || 'FASHION STORE'}
                         </Link>
                     </div>
 

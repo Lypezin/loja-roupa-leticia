@@ -79,8 +79,18 @@ export function BannerSection({ settings }: BannerSectionProps) {
                     <Input id="hero_subtitle" name="hero_subtitle" placeholder="Ex: Essenciais para dias frios." defaultValue={settings.hero_subtitle || ''} className="rounded-xl" />
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="hero_button_text">Texto do Botão</Label>
+                    <Label htmlFor="hero_badge_text">Badge / Etiqueta</Label>
+                    <Input id="hero_badge_text" name="hero_badge_text" placeholder="Ex: Nova Coleção 2025" defaultValue={settings.hero_badge_text || 'Nova Coleção 2025'} className="rounded-xl" />
+                    <p className="text-xs text-zinc-400">Texto da etiqueta que aparece acima do título.</p>
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="hero_button_text">Texto do Botão Principal</Label>
                     <Input id="hero_button_text" name="hero_button_text" placeholder="Ex: Comprar Agora" defaultValue={settings.hero_button_text || ''} className="rounded-xl" />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                    <Label htmlFor="hero_secondary_button_text">Texto do Botão Secundário</Label>
+                    <Input id="hero_secondary_button_text" name="hero_secondary_button_text" placeholder="Ex: Conheça a marca" defaultValue={settings.hero_secondary_button_text || 'Conheça a marca'} className="rounded-xl" />
+                    <p className="text-xs text-zinc-400">Botão com borda que aparece ao lado do principal no banner.</p>
                 </div>
             </div>
 
