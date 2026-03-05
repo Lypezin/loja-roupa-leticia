@@ -124,12 +124,13 @@ export default function CartPage() {
                                 <p className="text-xs text-zinc-500 mt-2">Em até 12x s/ juros no cartão.</p>
                             </div>
 
-                            <Link href="/checkout" className="block w-full">
-                                <Button className="w-full h-14 bg-zinc-950 hover:bg-zinc-800 text-white text-base tracking-wide flex items-center justify-center gap-2 cursor-pointer transition-all">
-                                    Finalizar Compra
-                                    <ArrowRight className="w-5 h-5" />
-                                </Button>
-                            </Link>
+                            <Button
+                                onClick={() => alert('O sistema de pagamento será implementado em breve! Obrigado pelo interesse.')}
+                                className="w-full h-14 bg-zinc-950 hover:bg-zinc-800 text-white text-base tracking-wide flex items-center justify-center gap-2 cursor-pointer transition-all"
+                            >
+                                Finalizar Compra
+                                <ArrowRight className="w-5 h-5" />
+                            </Button>
                         </div>
                     </div>
 

@@ -6,12 +6,13 @@ export default async function EditarProdutoPage({ params }: { params: Promise<{ 
     const { id } = await params
     const supabase = await createClient()
 
-    // Buscar Produto, Variações (Grade de Estoque)
+    // Buscar Produto, Variações (Grade de Estoque) e Imagens
     const { data: product, error } = await supabase
         .from('products')
         .select(`
             *,
-            product_variations(*)
+            product_variations(*),
+            images:product_images(id, image_url, is_primary)
         `)
         .eq('id', id)
         .single()

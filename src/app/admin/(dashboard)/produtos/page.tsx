@@ -10,12 +10,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { DeleteProductButton } from "./components/DeleteProductButton"
 
 export default async function AdminProdutos() {
     const supabase = await createClient()
 
-    // Buscar todos os produtos junto com suas respectivas categorias usando tipagem estrita pro Supabase JS
-    const { data: products, error } = await supabase
+    const { data: products } = await supabase
         .from('products')
         .select(`
             id,
@@ -57,7 +57,6 @@ export default async function AdminProdutos() {
                         </TableHeader>
                         <TableBody>
                             {products.map((product) => {
-                                // Tipagem extraída pelo Supabase join em array/objeto
                                 const category = product.category as any
                                 const categoryName = category
                                     ? (Array.isArray(category) ? category[0]?.name : category.name)
@@ -77,12 +76,15 @@ export default async function AdminProdutos() {
                                                 {product.is_active ? 'Ativo' : 'Oculto'}
                                             </span>
                                         </TableCell>
-                                        <TableCell className="text-right text-zinc-500">
-                                            <Button asChild variant="ghost" size="sm" className="cursor-pointer">
-                                                <Link href={`/admin/produtos/${product.id}/editar`}>
-                                                    Editar
-                                                </Link>
-                                            </Button>
+                                        <TableCell className="text-right">
+                                            <div className="flex items-center justify-end gap-1">
+                                                <Button asChild variant="ghost" size="sm" className="cursor-pointer">
+                                                    <Link href={`/admin/produtos/${product.id}/editar`}>
+                                                        Editar
+                                                    </Link>
+                                                </Button>
+                                                <DeleteProductButton productId={product.id} productName={product.name} />
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 )

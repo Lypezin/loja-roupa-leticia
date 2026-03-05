@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Plus, Trash2, Image as ImageIcon, Loader2 } from "lucide-react"
+import { Plus, Trash2, Image as ImageIcon, Loader2, X } from "lucide-react"
 import { saveProduct } from "@/app/admin/(dashboard)/produtos/actions"
+import { createClient } from "@/lib/supabase/client"
 
 type Category = {
     id: string
@@ -19,9 +20,15 @@ type Variation = {
     stock_quantity: number
 }
 
+type ExistingImage = {
+    id?: string
+    image_url: string
+    is_primary: boolean
+}
+
 interface ProductFormProps {
     categories: Category[]
-    product?: any // Tipagem flexível para simplificar a edição por enquanto
+    product?: any
 }
 
 export function ProductForm({ categories, product }: ProductFormProps) {
@@ -31,6 +38,9 @@ export function ProductForm({ categories, product }: ProductFormProps) {
     const [isLoading, setIsLoading] = useState(false)
     const [variations, setVariations] = useState<Variation[]>(
         product?.variations || [{ size: "", color: "", stock_quantity: 0 }]
+    )
+    const [existingImages, setExistingImages] = useState<ExistingImage[]>(
+        product?.images || []
     )
 
     const handleAddVariation = () => {
@@ -47,17 +57,57 @@ export function ProductForm({ categories, product }: ProductFormProps) {
         setVariations(newVariations)
     }
 
+    const handleRemoveExistingImage = (index: number) => {
+        setExistingImages(existingImages.filter((_, i) => i !== index))
+    }
+
     const handleSubmit = async (formData: FormData) => {
         setIsLoading(true)
         try {
-            // Passa as variacoes como string JSON pois FormData nao suporata arrays complexos diretos
             formData.append('variations_json', JSON.stringify(variations))
 
             if (isEditing) {
                 formData.append('product_id', product.id)
             }
 
-            // Os arquivos de imagem anexados no input name="images" já vão naturalmente pelo FormData!
+            // Upload de imagens no client-side para evitar 400 na Vercel
+            const fileInput = document.getElementById('images') as HTMLInputElement
+            const files = fileInput?.files
+
+            if (files && files.length > 0) {
+                const supabase = createClient()
+                const uploadedUrls: string[] = []
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i]
+                    const fileExt = file.name.split('.').pop()
+                    const fileName = `${product?.id || 'new'}-${Date.now()}-${i}.${fileExt}`
+
+                    const { error: uploadError } = await supabase.storage
+                        .from('product-images')
+                        .upload(fileName, file)
+
+                    if (uploadError) {
+                        console.error("Erro no upload:", uploadError)
+                        continue
+                    }
+
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('product-images')
+                        .getPublicUrl(fileName)
+
+                    uploadedUrls.push(publicUrl)
+                }
+
+                formData.append('uploaded_image_urls', JSON.stringify(uploadedUrls))
+            }
+
+            // Enviar IDs das imagens existentes que foram mantidas
+            formData.append('existing_images_json', JSON.stringify(existingImages))
+
+            // Remover os files do FormData para não estourar payload
+            formData.delete('images')
+
             const res = await saveProduct(formData)
 
             if (res?.error) {
@@ -123,10 +173,39 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                         <ImageIcon className="w-4 h-4 text-zinc-500" />
                         Imagens do Produto
                     </Label>
+
+                    {/* Imagens já cadastradas */}
+                    {existingImages.length > 0 && (
+                        <div className="mb-4">
+                            <p className="text-sm text-zinc-500 mb-2">Imagens atuais:</p>
+                            <div className="flex gap-3 flex-wrap">
+                                {existingImages.map((img, i) => (
+                                    <div key={i} className="relative w-20 h-24 rounded-lg overflow-hidden border-2 border-zinc-200 group">
+                                        <div
+                                            className="absolute inset-0 bg-cover bg-center"
+                                            style={{ backgroundImage: `url(${img.image_url})` }}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemoveExistingImage(i)}
+                                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        >
+                                            <X className="w-3 h-3" />
+                                        </button>
+                                        {img.is_primary && (
+                                            <span className="absolute bottom-1 left-1 bg-zinc-900 text-white text-[9px] px-1.5 py-0.5 rounded-full">
+                                                Capa
+                                            </span>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                     <div className="text-sm text-zinc-500 mb-4">
-                        Selecione até 4 fotos do produto. A primeira será usada como capa da vitrine.
+                        Selecione novas fotos para adicionar. A primeira será a capa se não houver imagens.
                     </div>
-                    {/* Neste primeiro momento focamos APENAS em Upload sem preview p/ MVP rápido */}
                     <Input
                         id="images"
                         name="images"

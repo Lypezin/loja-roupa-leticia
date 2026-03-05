@@ -86,9 +86,9 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
                                         }
                                     }}
                                     className={`px-5 py-2.5 text-sm font-medium border rounded-full transition-all ${isOutOfStock ? "opacity-30 cursor-not-allowed line-through" :
-                                            selectedColor === color
-                                                ? "border-zinc-900 bg-zinc-900 text-white shadow-md transform scale-105 inline-block"
-                                                : "border-zinc-200 hover:border-zinc-400 text-zinc-700 bg-zinc-50"
+                                        selectedColor === color
+                                            ? "border-zinc-900 bg-zinc-900 text-white shadow-md transform scale-105 inline-block"
+                                            : "border-zinc-200 hover:border-zinc-400 text-zinc-700 bg-zinc-50"
                                         }`}
                                 >
                                     {color}
@@ -102,9 +102,8 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
             {/* Seletor de Tamanhos */}
             {sizesForColor.length > 0 && (
                 <div className="space-y-3">
-                    <h3 className="font-medium text-sm text-zinc-900 flex justify-between uppercase tracking-widest mt-2">
-                        <span>Tamanho</span>
-                        <span className="text-zinc-500 underline cursor-pointer hover:text-zinc-900">Guia de Medidas</span>
+                    <h3 className="font-medium text-sm text-zinc-900 uppercase tracking-widest mt-2">
+                        Tamanho
                     </h3>
                     <div className="flex gap-3">
                         {sizesForColor.map((size) => {
@@ -117,9 +116,9 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
                                     disabled={isSizeOutOfStock}
                                     onClick={() => setSelectedSize(size)}
                                     className={`w-14 h-14 flex items-center justify-center font-medium text-sm border transition-all rounded-xl ${isSizeOutOfStock ? "opacity-30 cursor-not-allowed text-zinc-400 bg-zinc-100" :
-                                            selectedSize === size
-                                                ? "border-zinc-900 bg-zinc-900 text-white shadow-md transform scale-105"
-                                                : "border-zinc-200 hover:border-zinc-400 text-zinc-700 bg-zinc-50"
+                                        selectedSize === size
+                                            ? "border-zinc-900 bg-zinc-900 text-white shadow-md transform scale-105"
+                                            : "border-zinc-200 hover:border-zinc-400 text-zinc-700 bg-zinc-50"
                                         }`}
                                 >
                                     {size}

@@ -6,20 +6,29 @@ export const revalidate = 60
 export default async function CamisetasPage() {
     const supabase = await createClient()
 
-    const { data: products } = await supabase
-        .from('products')
-        .select(`
-            id, name, base_price,
-            category:categories(name),
-            images:product_images(image_url, is_primary)
-        `)
-        .eq('is_active', true)
-        .eq('categories.slug', 'camisetas')
-        .order('created_at', { ascending: false })
+    // Buscar a categoria pelo nome
+    const { data: category } = await supabase
+        .from('categories')
+        .select('id')
+        .ilike('name', 'camiseta%')
+        .single()
 
-    const filteredProducts = products?.filter(
-        (p: any) => p.category !== null
-    ) || []
+    let filteredProducts: any[] = []
+
+    if (category) {
+        const { data: products } = await supabase
+            .from('products')
+            .select(`
+                id, name, base_price,
+                category:categories(name),
+                images:product_images(image_url, is_primary)
+            `)
+            .eq('is_active', true)
+            .eq('category_id', category.id)
+            .order('created_at', { ascending: false })
+
+        filteredProducts = products || []
+    }
 
     return (
         <div className="container mx-auto px-4 py-16">
