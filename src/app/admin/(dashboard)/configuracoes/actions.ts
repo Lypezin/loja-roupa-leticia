@@ -35,34 +35,17 @@ export async function saveBanner(formData: FormData) {
         const supabase = await createClient()
         const id = formData.get('id') as string
 
-        const updates: any = {
+        const updates: Record<string, any> = {
             hero_title: formData.get('hero_title') as string,
             hero_subtitle: formData.get('hero_subtitle') as string,
             hero_button_text: formData.get('hero_button_text') as string,
             updated_at: new Date().toISOString()
         }
 
-        let hero_image_url = formData.get('current_hero_image_url') as string
-        const imageFile = formData.get('hero_image') as File | null
-
-        if (imageFile && imageFile.size > 0 && imageFile.name !== 'undefined') {
-            const fileExt = imageFile.name.split('.').pop()
-            const fileName = `${Math.random()}.${fileExt}`
-            const filePath = `store-assets/${fileName}`
-
-            const { error: uploadError } = await supabase.storage
-                .from('product-images')
-                .upload(filePath, imageFile)
-
-            if (uploadError) {
-                return { error: 'Falha ao fazer upload da imagem do banner.' }
-            }
-
-            const { data: { publicUrl } } = supabase.storage
-                .from('product-images')
-                .getPublicUrl(filePath)
-
-            updates.hero_image_url = publicUrl
+        // A URL da imagem já foi enviada pelo client-side upload
+        const newImageUrl = formData.get('hero_image_url_new') as string
+        if (newImageUrl) {
+            updates.hero_image_url = newImageUrl
         }
 
         const { error } = await supabase.from('store_settings').update(updates).eq('id', id)

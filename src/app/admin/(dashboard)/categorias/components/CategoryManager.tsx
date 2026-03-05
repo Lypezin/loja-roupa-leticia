@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Plus, Trash2 } from "lucide-react"
+import { Plus, Trash2, Loader2 } from "lucide-react"
 import { createCategory, deleteCategory } from "../actions"
 
 type Category = {
@@ -70,8 +70,13 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                     />
                 </div>
                 <Button type="submit" disabled={isLoading || !name.trim()} className="cursor-pointer">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Adicionar
+                    {isLoading ? (
+                        <span className="flex items-center gap-2">
+                            <Loader2 className="w-4 h-4 animate-spin" /> Adicionando...
+                        </span>
+                    ) : (
+                        <><Plus className="w-4 h-4 mr-2" /> Adicionar</>
+                    )}
                 </Button>
             </form>
 

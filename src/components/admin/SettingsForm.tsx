@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { saveProfile, saveBanner, saveLogistics } from "@/app/admin/(dashboard)/configuracoes/actions"
-import { Store, Truck, Phone, Instagram, LayoutTemplate } from "lucide-react"
+import { createClient } from "@/lib/supabase/client"
+import { Store, Truck, Phone, Instagram, LayoutTemplate, Loader2, CheckCircle2, Upload } from "lucide-react"
 
 interface SettingsFormProps {
     settings: any
@@ -17,8 +18,20 @@ export function SettingsForm({ settings }: SettingsFormProps) {
     const [isLoadingBanner, setIsLoadingBanner] = useState(false)
     const [isLoadingLogistics, setIsLoadingLogistics] = useState(false)
 
+    const [successProfile, setSuccessProfile] = useState(false)
+    const [successBanner, setSuccessBanner] = useState(false)
+    const [successLogistics, setSuccessLogistics] = useState(false)
+
+    const [bannerPreview, setBannerPreview] = useState<string | null>(settings?.hero_image_url || null)
+    const fileInputRef = useRef<HTMLInputElement>(null)
+
     if (!settings) {
         return <p className="text-zinc-500">Erro: Nenhuma configuração encontrada no banco.</p>
+    }
+
+    const showSuccess = (setter: (v: boolean) => void) => {
+        setter(true)
+        setTimeout(() => setter(false), 3000)
     }
 
     const handleProfileSubmit = async (formData: FormData) => {
@@ -26,10 +39,9 @@ export function SettingsForm({ settings }: SettingsFormProps) {
         try {
             const res = await saveProfile(formData)
             if (res?.error) throw new Error(res.error)
-            alert("Perfil salvo com sucesso!")
+            showSuccess(setSuccessProfile)
         } catch (error: any) {
-            console.error("Erro ao salvar perfil:", error)
-            alert(`Falha ao salvar perfil: ${error.message}`)
+            alert(`Erro ao salvar perfil: ${error.message}`)
         } finally {
             setIsLoadingProfile(false)
         }
@@ -38,12 +50,36 @@ export function SettingsForm({ settings }: SettingsFormProps) {
     const handleBannerSubmit = async (formData: FormData) => {
         setIsLoadingBanner(true)
         try {
+            // Upload da imagem do lado do CLIENTE (browser) para evitar o limite de 1MB do Next.js Server Actions
+            const imageFile = fileInputRef.current?.files?.[0]
+
+            if (imageFile && imageFile.size > 0) {
+                const supabase = createClient()
+                const fileExt = imageFile.name.split('.').pop()
+                const fileName = `banner-${Date.now()}.${fileExt}`
+                const filePath = `store-assets/${fileName}`
+
+                const { error: uploadError } = await supabase.storage
+                    .from('product-images')
+                    .upload(filePath, imageFile)
+
+                if (uploadError) {
+                    throw new Error('Falha ao enviar imagem: ' + uploadError.message)
+                }
+
+                const { data: { publicUrl } } = supabase.storage
+                    .from('product-images')
+                    .getPublicUrl(filePath)
+
+                // Adiciona a URL ao FormData em vez do arquivo binário
+                formData.set('hero_image_url_new', publicUrl)
+            }
+
             const res = await saveBanner(formData)
             if (res?.error) throw new Error(res.error)
-            alert("Banner salvo com sucesso!")
+            showSuccess(setSuccessBanner)
         } catch (error: any) {
-            console.error("Erro ao salvar banner:", error)
-            alert(`Falha ao salvar banner: ${error.message}`)
+            alert(`Erro ao salvar banner: ${error.message}`)
         } finally {
             setIsLoadingBanner(false)
         }
@@ -54,12 +90,19 @@ export function SettingsForm({ settings }: SettingsFormProps) {
         try {
             const res = await saveLogistics(formData)
             if (res?.error) throw new Error(res.error)
-            alert("Logística salva com sucesso!")
+            showSuccess(setSuccessLogistics)
         } catch (error: any) {
-            console.error("Erro ao salvar logística:", error)
-            alert(`Falha ao salvar logística: ${error.message}`)
+            alert(`Erro ao salvar logística: ${error.message}`)
         } finally {
             setIsLoadingLogistics(false)
+        }
+    }
+
+    const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (file) {
+            const url = URL.createObjectURL(file)
+            setBannerPreview(url)
         }
     }
 
@@ -67,7 +110,7 @@ export function SettingsForm({ settings }: SettingsFormProps) {
         <div className="space-y-8 max-w-3xl">
 
             {/* CAIXA 1: PERFIL DA LOJA */}
-            <form action={handleProfileSubmit} className="bg-white p-6 rounded-xl border space-y-6 shadow-sm">
+            <form action={handleProfileSubmit} className="bg-white p-6 rounded-xl border space-y-6 shadow-sm transition-all hover:shadow-md">
                 <input type="hidden" name="id" value={settings.id} />
                 <div className="flex items-center gap-2 mb-4 border-b pb-4">
                     <Store className="w-5 h-5 text-zinc-500" />
@@ -113,15 +156,24 @@ export function SettingsForm({ settings }: SettingsFormProps) {
                     />
                 </div>
 
-                <div className="pt-2 border-t mt-4 flex justify-end">
+                <div className="pt-2 border-t mt-4 flex justify-end items-center gap-3">
+                    {successProfile && (
+                        <span className="text-sm text-green-600 flex items-center gap-1 animate-fade-in">
+                            <CheckCircle2 className="w-4 h-4" /> Salvo!
+                        </span>
+                    )}
                     <Button disabled={isLoadingProfile} type="submit" className="px-6 bg-zinc-950 text-white cursor-pointer h-10 w-full md:w-auto">
-                        {isLoadingProfile ? "Salvando..." : "Salvar Perfil"}
+                        {isLoadingProfile ? (
+                            <span className="flex items-center gap-2">
+                                <Loader2 className="w-4 h-4 animate-spin" /> Salvando...
+                            </span>
+                        ) : "Salvar Perfil"}
                     </Button>
                 </div>
             </form>
 
             {/* CAIXA 2: VITRINE E BANNER PRINCIPAL */}
-            <form action={handleBannerSubmit} encType="multipart/form-data" className="bg-white p-6 rounded-xl border space-y-6 shadow-sm">
+            <form action={handleBannerSubmit} className="bg-white p-6 rounded-xl border space-y-6 shadow-sm transition-all hover:shadow-md">
                 <input type="hidden" name="id" value={settings.id} />
                 <div className="flex items-center gap-2 mb-4 border-b pb-4">
                     <LayoutTemplate className="w-5 h-5 text-zinc-500" />
@@ -146,31 +198,53 @@ export function SettingsForm({ settings }: SettingsFormProps) {
                 </div>
 
                 <div className="space-y-3 mt-4">
-                    <Label htmlFor="hero_image">Imagem de Fundo do Banner</Label>
-                    <input type="hidden" name="current_hero_image_url" value={settings.hero_image_url || ''} />
+                    <Label>Imagem de Fundo do Banner</Label>
 
-                    {settings.hero_image_url && (
-                        <div className="relative w-full md:w-1/2 aspect-video rounded-md overflow-hidden border mb-2">
+                    {bannerPreview && (
+                        <div className="relative w-full md:w-1/2 aspect-video rounded-lg overflow-hidden border mb-2 group/preview">
                             <div
-                                className="absolute inset-0 bg-cover bg-center"
-                                style={{ backgroundImage: `url(${settings.hero_image_url})` }}
+                                className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover/preview:scale-105"
+                                style={{ backgroundImage: `url(${bannerPreview})` }}
                             />
+                            <div className="absolute inset-0 bg-black/20" />
                         </div>
                     )}
 
-                    <Input id="hero_image" name="hero_image" type="file" accept="image/*" />
-                    <p className="text-xs text-zinc-500">Formato recomendado: Paisagem (1920x1080px). Um gradiente escuro é aplicado automaticamente para os textos ficarem legíveis.</p>
+                    <div
+                        className="border-2 border-dashed border-zinc-300 rounded-lg p-6 text-center cursor-pointer hover:border-zinc-500 transition-colors"
+                        onClick={() => fileInputRef.current?.click()}
+                    >
+                        <Upload className="w-8 h-8 text-zinc-400 mx-auto mb-2" />
+                        <p className="text-sm text-zinc-500">Clique aqui para enviar uma imagem</p>
+                        <p className="text-xs text-zinc-400 mt-1">Recomendado: Paisagem (1920x1080px)</p>
+                    </div>
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleImagePreview}
+                    />
                 </div>
 
-                <div className="pt-2 border-t mt-4 flex justify-end">
+                <div className="pt-2 border-t mt-4 flex justify-end items-center gap-3">
+                    {successBanner && (
+                        <span className="text-sm text-green-600 flex items-center gap-1 animate-fade-in">
+                            <CheckCircle2 className="w-4 h-4" /> Salvo!
+                        </span>
+                    )}
                     <Button disabled={isLoadingBanner} type="submit" className="px-6 bg-zinc-950 text-white cursor-pointer h-10 w-full md:w-auto">
-                        {isLoadingBanner ? "Salvando..." : "Salvar Banner"}
+                        {isLoadingBanner ? (
+                            <span className="flex items-center gap-2">
+                                <Loader2 className="w-4 h-4 animate-spin" /> Enviando Imagem...
+                            </span>
+                        ) : "Salvar Banner"}
                     </Button>
                 </div>
             </form>
 
             {/* CAIXA 3: LOGÍSTICA E FRETE */}
-            <form action={handleLogisticsSubmit} className="bg-white p-6 rounded-xl border space-y-6 shadow-sm">
+            <form action={handleLogisticsSubmit} className="bg-white p-6 rounded-xl border space-y-6 shadow-sm transition-all hover:shadow-md">
                 <input type="hidden" name="id" value={settings.id} />
                 <div className="flex items-center gap-2 mb-4 border-b pb-4">
                     <Truck className="w-5 h-5 text-zinc-500" />
@@ -212,12 +286,21 @@ export function SettingsForm({ settings }: SettingsFormProps) {
                     </div>
                 </div>
                 <p className="text-xs text-zinc-500 pt-2">
-                    * Esses dados serão vitais na Fase 4 e 5 para calcularmos as etiquetas através da API de Entrega (Ex: Melhor Envio).
+                    * Esses dados serão utilizados para calcular as etiquetas de frete (Ex: Melhor Envio).
                 </p>
 
-                <div className="pt-2 border-t mt-4 flex justify-end">
+                <div className="pt-2 border-t mt-4 flex justify-end items-center gap-3">
+                    {successLogistics && (
+                        <span className="text-sm text-green-600 flex items-center gap-1 animate-fade-in">
+                            <CheckCircle2 className="w-4 h-4" /> Salvo!
+                        </span>
+                    )}
                     <Button disabled={isLoadingLogistics} type="submit" className="px-6 bg-zinc-950 text-white cursor-pointer h-10 w-full md:w-auto">
-                        {isLoadingLogistics ? "Salvando..." : "Salvar Logística"}
+                        {isLoadingLogistics ? (
+                            <span className="flex items-center gap-2">
+                                <Loader2 className="w-4 h-4 animate-spin" /> Salvando...
+                            </span>
+                        ) : "Salvar Logística"}
                     </Button>
                 </div>
             </form>

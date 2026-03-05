@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Plus, Trash2, Image as ImageIcon } from "lucide-react"
+import { Plus, Trash2, Image as ImageIcon, Loader2 } from "lucide-react"
 import { saveProduct } from "@/app/admin/(dashboard)/produtos/actions"
 
 type Category = {
@@ -206,8 +206,12 @@ export function ProductForm({ categories, product }: ProductFormProps) {
             </div>
 
             <div className="border-t pt-6">
-                <Button disabled={isLoading} type="submit" className="w-full bg-zinc-950 text-white cursor-pointer h-12">
-                    {isLoading ? "Salvando e enviando imagens..." : isEditing ? "Atualizar Produto" : "Criar Produto"}
+                <Button disabled={isLoading} type="submit" className="w-full bg-zinc-950 text-white cursor-pointer h-12 text-base">
+                    {isLoading ? (
+                        <span className="flex items-center justify-center gap-2">
+                            <Loader2 className="w-5 h-5 animate-spin" /> Salvando e enviando imagens...
+                        </span>
+                    ) : isEditing ? "Atualizar Produto" : "Criar Produto"}
                 </Button>
             </div>
 
