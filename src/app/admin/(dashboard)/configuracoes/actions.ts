@@ -44,10 +44,48 @@ export async function saveBanner(formData: FormData) {
             updated_at: new Date().toISOString()
         }
 
-        // A URL da imagem já foi enviada pelo client-side upload
-        const newImageUrl = formData.get('hero_image_url_new') as string
-        if (newImageUrl) {
-            updates.hero_image_url = newImageUrl
+        const heroImage = formData.get('hero_image') as File | null
+        if (heroImage && heroImage.size > 0) {
+            // 1. Buscar as configurações atuais para saber se temos que deletar a imagem velha
+            const { data: currentSettings } = await supabase
+                .from('store_settings')
+                .select('hero_image_url')
+                .eq('id', id)
+                .single()
+
+            const fileExt = heroImage.name.split('.').pop()
+            const fileName = `hero-banner-${Date.now()}.${fileExt}`
+            const filePath = `settings/banner/${fileName}`
+
+            const { error: uploadError } = await supabase.storage
+                .from('product-images')
+                .upload(filePath, heroImage)
+
+            if (uploadError) {
+                return { error: 'Falha ao subir a nova imagem do banner: ' + uploadError.message }
+            }
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('product-images')
+                .getPublicUrl(filePath)
+
+            updates.hero_image_url = publicUrl
+
+            // 2. Se tinha imagem velha, tenta deletar
+            if (currentSettings?.hero_image_url) {
+                try {
+                    const urlObj = new URL(currentSettings.hero_image_url)
+                    const pathParts = urlObj.pathname.split('/product-images/')
+                    if (pathParts.length > 1) {
+                        const oldFilePath = pathParts[1]
+                        await supabase.storage
+                            .from('product-images')
+                            .remove([oldFilePath])
+                    }
+                } catch (storageErr) {
+                    console.error('Falha ao deletar banner antigo:', storageErr)
+                }
+            }
         }
 
         const { error } = await supabase.from('store_settings').update(updates).eq('id', id)
