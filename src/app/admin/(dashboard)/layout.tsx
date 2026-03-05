@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Package, LayoutDashboard, ShoppingCart, Settings, LogOut, Menu, ExternalLink, Tags } from "lucide-react"
+import { Package, LayoutDashboard, ShoppingCart, Settings, LogOut, Menu, ExternalLink, Tags, ChevronRight } from "lucide-react"
 import { logout } from "../login/actions"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,9 +14,8 @@ export default function AdminLayout({
 }: {
     children: React.ReactNode
 }) {
-    // Links de navegação para reaproveitar no Desktop e Mobile
     const navLinks = [
-        { href: "/admin", icon: LayoutDashboard, label: "Início" },
+        { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
         { href: "/admin/categorias", icon: Tags, label: "Categorias" },
         { href: "/admin/produtos", icon: Package, label: "Produtos" },
         { href: "/admin/pedidos", icon: ShoppingCart, label: "Pedidos" },
@@ -24,56 +23,55 @@ export default function AdminLayout({
     ];
 
     return (
-        <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
-            {/* Sidebar Desktop */}
-            <div className="hidden border-r bg-zinc-100/40 lg:block dark:bg-zinc-800/40">
-                <div className="flex h-full max-h-screen flex-col gap-2">
-                    <div className="flex h-[60px] items-center border-b px-6">
-                        <Link href="/admin" className="flex items-center gap-2 font-semibold">
-                            <Package className="h-6 w-6" />
-                            <span className="">Loja Admin</span>
+        <div className="grid min-h-screen w-full lg:grid-cols-[260px_1fr]">
+            {/* Sidebar Desktop — Premium Dark */}
+            <div className="hidden lg:flex flex-col bg-zinc-950 text-white">
+                <div className="flex h-16 items-center gap-3 px-6 border-b border-zinc-800">
+                    <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+                        <Package className="h-4 w-4 text-zinc-950" />
+                    </div>
+                    <Link href="/admin" className="font-bold text-lg tracking-tight">
+                        Admin
+                    </Link>
+                </div>
+
+                <nav className="flex-1 py-4 px-3 space-y-1">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-zinc-400 font-medium transition-all hover:text-white hover:bg-zinc-800/60"
+                        >
+                            <link.icon className="h-4 w-4" />
+                            {link.label}
                         </Link>
-                    </div>
-                    <div className="flex-1 overflow-auto py-2">
-                        <nav className="grid items-start px-4 text-sm font-medium">
-                            {navLinks.map((link) => (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-zinc-500 transition-all hover:text-zinc-900"
-                                >
-                                    <link.icon className="h-4 w-4" />
-                                    {link.label}
-                                </Link>
-                            ))}
+                    ))}
+                </nav>
 
-                            <hr className="my-4 border-zinc-200" />
+                <div className="p-3 space-y-1 border-t border-zinc-800">
+                    <Link
+                        href="/"
+                        target="_blank"
+                        className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-zinc-400 font-medium transition-all hover:text-white hover:bg-zinc-800/60"
+                    >
+                        <ExternalLink className="h-4 w-4" />
+                        Ver Loja
+                        <ChevronRight className="h-3 w-3 ml-auto opacity-50" />
+                    </Link>
 
-                            <Link
-                                href="/"
-                                target="_blank"
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-zinc-900 font-medium transition-all hover:bg-zinc-200 bg-zinc-200/50"
-                            >
-                                <ExternalLink className="h-4 w-4" />
-                                Ver Loja
-                            </Link>
-                        </nav>
-                    </div>
-                    <div className="mt-auto p-4">
-                        <form action={logout}>
-                            <button type="submit" className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-zinc-500 cursor-pointer transition-all hover:bg-zinc-100 hover:text-red-600">
-                                <LogOut className="h-4 w-4" />
-                                Sair
-                            </button>
-                        </form>
-                    </div>
+                    <form action={logout}>
+                        <button type="submit" className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-zinc-500 cursor-pointer transition-all hover:bg-red-500/10 hover:text-red-400">
+                            <LogOut className="h-4 w-4" />
+                            Sair
+                        </button>
+                    </form>
                 </div>
             </div>
 
             {/* Conteúdo Principal */}
-            <div className="flex flex-col">
+            <div className="flex flex-col bg-zinc-50 min-h-screen">
                 {/* Header Mobile */}
-                <header className="flex h-14 lg:hidden items-center gap-4 border-b bg-zinc-100/40 px-6 dark:bg-zinc-800/40">
+                <header className="flex h-14 lg:hidden items-center gap-4 border-b bg-white px-4 shadow-sm">
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button variant="outline" size="icon" className="shrink-0 lg:hidden">
@@ -81,38 +79,38 @@ export default function AdminLayout({
                                 <span className="sr-only">Menu de navegação</span>
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="left" className="flex flex-col">
+                        <SheetContent side="left" className="flex flex-col bg-zinc-950 text-white border-zinc-800 w-72">
                             <SheetTitle className="sr-only">Menu lateral</SheetTitle>
-                            <nav className="grid gap-2 text-lg font-medium mt-4">
-                                <Link href="/admin" className="flex items-center gap-2 font-bold mb-4">
-                                    <Package className="h-6 w-6" />
-                                    <span>Loja Admin</span>
-                                </Link>
+                            <div className="flex items-center gap-3 mb-6 mt-2">
+                                <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+                                    <Package className="h-4 w-4 text-zinc-950" />
+                                </div>
+                                <span className="font-bold text-lg">Admin</span>
+                            </div>
+                            <nav className="flex flex-col gap-1">
                                 {navLinks.map((link) => (
                                     <Link
                                         key={link.href}
                                         href={link.href}
-                                        className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-zinc-500 hover:text-zinc-950"
+                                        className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-zinc-400 font-medium hover:text-white hover:bg-zinc-800/60 transition-all"
                                     >
                                         <link.icon className="h-5 w-5" />
                                         {link.label}
                                     </Link>
                                 ))}
+                            </nav>
 
-                                <hr className="my-4 border-zinc-200" />
-
+                            <div className="mt-auto space-y-1 border-t border-zinc-800 pt-3">
                                 <Link
                                     href="/"
                                     target="_blank"
-                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-zinc-900 hover:bg-zinc-100 font-medium"
+                                    className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-all"
                                 >
                                     <ExternalLink className="h-5 w-5" />
                                     Ver Loja
                                 </Link>
-                            </nav>
-                            <div className="mt-auto">
                                 <form action={logout}>
-                                    <button type="submit" className="flex w-full items-center gap-3 rounded-lg py-2 text-zinc-500 cursor-pointer transition-all hover:text-red-600">
+                                    <button type="submit" className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-zinc-500 cursor-pointer hover:bg-red-500/10 hover:text-red-400 transition-all">
                                         <LogOut className="h-5 w-5" />
                                         Sair
                                     </button>
@@ -121,13 +119,13 @@ export default function AdminLayout({
                         </SheetContent>
                     </Sheet>
 
-                    <Link href="/admin" className="flex items-center gap-2 font-semibold">
-                        <Package className="h-6 w-6" />
-                        <span className="sr-only">Loja Admin</span>
+                    <Link href="/admin" className="flex items-center gap-2 font-bold">
+                        <Package className="h-5 w-5" />
+                        Admin
                     </Link>
                 </header>
 
-                <main className="flex-1 p-6 md:p-8 overflow-y-auto">
+                <main className="flex-1 p-4 md:p-8 overflow-y-auto">
                     {children}
                 </main>
             </div>

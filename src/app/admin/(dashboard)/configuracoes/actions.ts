@@ -86,3 +86,29 @@ export async function saveLogistics(formData: FormData) {
         return { error: err.message || 'Erro Interno no Servidor.' }
     }
 }
+
+export async function saveFooter(formData: FormData) {
+    try {
+        const supabase = await createClient()
+        const id = formData.get('id') as string
+
+        const { error } = await supabase
+            .from('store_settings')
+            .update({
+                footer_about_text: formData.get('footer_about_text') as string,
+                footer_newsletter_title: formData.get('footer_newsletter_title') as string,
+                footer_newsletter_subtitle: formData.get('footer_newsletter_subtitle') as string,
+                updated_at: new Date().toISOString()
+            })
+            .eq('id', id)
+
+        if (error) return { error: error.message }
+
+        revalidatePath('/admin/configuracoes')
+        revalidatePath('/')
+        return { success: true }
+    } catch (err: any) {
+        return { error: err.message || 'Erro Interno no Servidor.' }
+    }
+}
+
