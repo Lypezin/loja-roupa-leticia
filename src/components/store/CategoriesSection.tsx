@@ -33,7 +33,7 @@ export function CategoriesSection() {
                 </div>
             </div>
 
-            <div className="flex gap-4 h-[400px]">
+            <div className="flex flex-col md:flex-row gap-4 h-auto md:h-[400px]">
                 {categories.map((cat, i) => (
                     <motion.div
                         key={cat.name}
@@ -41,7 +41,7 @@ export function CategoriesSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.1, duration: 0.5 }}
-                        className="group relative flex-1 rounded-2xl overflow-hidden cursor-pointer hover:flex-[2] transition-all duration-500 ease-in-out"
+                        className="group relative flex-1 min-h-[200px] md:min-h-0 rounded-2xl overflow-hidden cursor-pointer hover:flex-[2] transition-all duration-500 ease-in-out"
                     >
                         <Link href={cat.href} className="absolute inset-0 z-20" />
                         <div
