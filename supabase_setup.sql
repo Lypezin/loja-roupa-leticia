@@ -15,6 +15,10 @@ CREATE TABLE store_settings (
   free_shipping_threshold DECIMAL(10,2),
   shipping_origin_zip TEXT,
   processing_days INTEGER DEFAULT 2,
+  hero_title TEXT,
+  hero_subtitle TEXT,
+  hero_button_text TEXT,
+  hero_image_url TEXT,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

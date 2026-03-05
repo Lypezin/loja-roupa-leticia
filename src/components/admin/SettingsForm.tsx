@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { saveSettings } from "@/app/admin/(dashboard)/configuracoes/actions"
-import { Store, Truck, Mail, Phone, Instagram } from "lucide-react"
+import { Store, Truck, Mail, Phone, Instagram, LayoutTemplate } from "lucide-react"
 
 interface SettingsFormProps {
     settings: any
@@ -33,7 +33,7 @@ export function SettingsForm({ settings }: SettingsFormProps) {
     }
 
     return (
-        <form action={handleSubmit} className="space-y-8 max-w-3xl">
+        <form action={handleSubmit} className="space-y-8 max-w-3xl" encType="multipart/form-data">
             {/* ID invisível */}
             <input type="hidden" name="id" value={settings.id} />
 
@@ -84,7 +84,49 @@ export function SettingsForm({ settings }: SettingsFormProps) {
                 </div>
             </div>
 
-            {/* CAIXA 2: LOGÍSTICA E FRETE */}
+            {/* CAIXA 2: VITRINE E BANNER PRINCIPAL */}
+            <div className="bg-white p-6 rounded-xl border space-y-6 shadow-sm">
+                <div className="flex items-center gap-2 mb-4 border-b pb-4">
+                    <LayoutTemplate className="w-5 h-5 text-zinc-500" />
+                    <h2 className="text-xl font-semibold">Banner Principal (Vitrine)</h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="hero_title">Título Principal</Label>
+                        <Input id="hero_title" name="hero_title" placeholder="Ex: Nova Coleção Inverno" defaultValue={settings.hero_title || ''} />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="hero_subtitle">Subtítulo</Label>
+                        <Input id="hero_subtitle" name="hero_subtitle" placeholder="Ex: Essenciais para dias frios." defaultValue={settings.hero_subtitle || ''} />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="hero_button_text">Texto do Botão</Label>
+                        <Input id="hero_button_text" name="hero_button_text" placeholder="Ex: Comprar Agora" defaultValue={settings.hero_button_text || ''} />
+                    </div>
+                </div>
+
+                <div className="space-y-3 mt-4">
+                    <Label htmlFor="hero_image">Imagem de Fundo do Banner</Label>
+                    <input type="hidden" name="current_hero_image_url" value={settings.hero_image_url || ''} />
+
+                    {settings.hero_image_url && (
+                        <div className="relative w-full md:w-1/2 aspect-video rounded-md overflow-hidden border mb-2">
+                            <div
+                                className="absolute inset-0 bg-cover bg-center"
+                                style={{ backgroundImage: `url(${settings.hero_image_url})` }}
+                            />
+                        </div>
+                    )}
+
+                    <Input id="hero_image" name="hero_image" type="file" accept="image/*" />
+                    <p className="text-xs text-zinc-500">Formato recomendado: Paisagem (1920x1080px). Um gradiente escuro é aplicado automaticamente para os textos ficarem legíveis.</p>
+                </div>
+            </div>
+
+            {/* CAIXA 3: LOGÍSTICA E FRETE */}
             <div className="bg-white p-6 rounded-xl border space-y-6 shadow-sm">
                 <div className="flex items-center gap-2 mb-4 border-b pb-4">
                     <Truck className="w-5 h-5 text-zinc-500" />
