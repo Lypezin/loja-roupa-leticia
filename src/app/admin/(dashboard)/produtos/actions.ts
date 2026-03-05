@@ -30,7 +30,10 @@ export async function saveProduct(formData: FormData) {
             const { error: delVarError } = await supabase.from('product_variations').delete().eq('product_id', productId)
             if (delVarError) return { error: `Erro ao remover variações antigas: ${(delVarError as Error).message}` }
 
-            const varsToInsert = variations.map((v: Record<string, unknown>) => ({ ...v, product_id: productId }))
+            const varsToInsert = variations.map((v: Record<string, unknown>) => {
+                const { id, created_at, updated_at, ...rest } = v;
+                return { ...rest, product_id: productId };
+            })
             const { error: insVarError } = await supabase.from('product_variations').insert(varsToInsert)
             if (insVarError) return { error: `Erro ao inserir novas variações: ${(insVarError as Error).message}` }
 
@@ -75,7 +78,10 @@ export async function saveProduct(formData: FormData) {
             if (error) return { error: error.message }
             newProductId = productData.id
 
-            const varsToInsert = variations.map((v: Record<string, unknown>) => ({ ...v, product_id: newProductId }))
+            const varsToInsert = variations.map((v: Record<string, unknown>) => {
+                const { id, created_at, updated_at, ...rest } = v;
+                return { ...rest, product_id: newProductId };
+            })
             const { error: varError } = await supabase
                 .from('product_variations')
                 .insert(varsToInsert)
