@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
+import Link from "next/link"
 import {
     Table,
     TableBody,
@@ -13,13 +14,16 @@ import {
 export default async function AdminProdutos() {
     const supabase = await createClient()
 
-    // Buscar todos os produtos junto com suas respectivas categorias
+    // Buscar todos os produtos junto com suas respectivas categorias usando tipagem estrita pro Supabase JS
     const { data: products, error } = await supabase
         .from('products')
         .select(`
-      *,
-      category:categories(name)
-    `)
+            id,
+            name,
+            base_price,
+            is_active,
+            category:categories(name)
+        `)
         .order('created_at', { ascending: false })
 
     return (
@@ -31,9 +35,11 @@ export default async function AdminProdutos() {
                         Gerencie o catálogo da sua loja aqui.
                     </p>
                 </div>
-                <Button className="flex items-center gap-2 cursor-pointer">
-                    <Plus className="w-4 h-4" />
-                    Novo Produto
+                <Button asChild className="flex items-center gap-2 cursor-pointer">
+                    <Link href="/admin/produtos/novo">
+                        <Plus className="w-4 h-4" />
+                        Novo Produto
+                    </Link>
                 </Button>
             </div>
 
@@ -50,31 +56,47 @@ export default async function AdminProdutos() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {products.map((product) => (
-                                <TableRow key={product.id}>
-                                    <TableCell className="font-medium">{product.name}</TableCell>
-                                    <TableCell className="text-zinc-500">
-                                        {/* @ts-ignore */}
-                                        {product.category?.name || 'Sem categoria'}
-                                    </TableCell>
-                                    <TableCell>
-                                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.base_price)}
-                                    </TableCell>
-                                    <TableCell>
-                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${product.is_active ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-700'}`}>
-                                            {product.is_active ? 'Ativo' : 'Oculto'}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell className="text-right text-zinc-500">
-                                        <Button variant="ghost" size="sm" className="cursor-pointer">Editar</Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                            {products.map((product) => {
+                                // Tipagem extraída pelo Supabase join em array/objeto
+                                const category = product.category as any
+                                const categoryName = category
+                                    ? (Array.isArray(category) ? category[0]?.name : category.name)
+                                    : 'Sem categoria'
+
+                                return (
+                                    <TableRow key={product.id}>
+                                        <TableCell className="font-medium">{product.name}</TableCell>
+                                        <TableCell className="text-zinc-500">
+                                            {categoryName}
+                                        </TableCell>
+                                        <TableCell>
+                                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.base_price)}
+                                        </TableCell>
+                                        <TableCell>
+                                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${product.is_active ? 'bg-green-100 text-green-700' : 'bg-zinc-100 text-zinc-700'}`}>
+                                                {product.is_active ? 'Ativo' : 'Oculto'}
+                                            </span>
+                                        </TableCell>
+                                        <TableCell className="text-right text-zinc-500">
+                                            <Button asChild variant="ghost" size="sm" className="cursor-pointer">
+                                                <Link href={`/admin/produtos/${product.id}/editar`}>
+                                                    Editar
+                                                </Link>
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            })}
                         </TableBody>
                     </Table>
                 ) : (
                     <div className="p-8 text-center text-zinc-500">
-                        Nenhum produto cadastrado ainda.
+                        <p className="mb-4">Nenhum produto cadastrado ainda.</p>
+                        <Button asChild variant="outline">
+                            <Link href="/admin/produtos/novo">
+                                Criar Primeiro Produto
+                            </Link>
+                        </Button>
                     </div>
                 )}
             </div>
