@@ -1,13 +1,19 @@
 'use client'
 
 import Link from "next/link"
-import { ShoppingBag, Menu, User, X } from "lucide-react"
+import { ShoppingBag, Menu, User, X, ChevronDown } from "lucide-react"
 import { useCartStore } from "@/store/useCartStore"
 import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { motion, AnimatePresence } from "framer-motion"
 
-export function Header() {
+export interface Category {
+    id: string
+    name: string
+    slug: string
+}
+
+export function Header({ categories = [] }: { categories?: Category[] }) {
     const totalItems = useCartStore((state) => state.totalItems())
     const [mounted, setMounted] = useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -27,12 +33,8 @@ export function Header() {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
-    const navLinks = [
-        { href: "/camisetas", label: "Camisetas" },
-        { href: "/calcas", label: "Calças" },
-        { href: "/acessorios", label: "Acessórios" },
-        { href: "/sobre", label: "Sobre" },
-    ]
+    const displayCategories = categories.slice(0, 4)
+    const extraCategories = categories.slice(4)
 
     return (
         <>
@@ -57,16 +59,51 @@ export function Header() {
 
                     {/* Nav Desktop */}
                     <nav className="hidden lg:flex items-center gap-1">
-                        {navLinks.map((link) => (
+                        {displayCategories.map((cat) => (
                             <Link
-                                key={link.href}
-                                href={link.href}
+                                key={cat.id}
+                                href={`/${cat.slug}`}
                                 className="relative px-4 py-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100/60 group"
                             >
-                                {link.label}
+                                {cat.name}
                                 <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-zinc-900 rounded-full transition-all duration-300 group-hover:w-1/2" />
                             </Link>
                         ))}
+
+                        {/* Dropdown menu para mais categorias */}
+                        {extraCategories.length > 0 && (
+                            <div className="relative group/dropdown">
+                                <button className="relative px-4 py-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100/60 flex items-center gap-1">
+                                    Mais
+                                    <ChevronDown className="w-3.5 h-3.5" />
+                                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-zinc-900 rounded-full transition-all duration-300 group-[&:hover]/dropdown:w-1/2" />
+                                </button>
+
+                                <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-zinc-100 rounded-xl shadow-xl opacity-0 invisible group-[&:hover]/dropdown:opacity-100 group-[&:hover]/dropdown:visible transition-all duration-300 transform origin-top-right group-[&:hover]/dropdown:translate-y-0 translate-y-2 z-50">
+                                    <div className="py-2 flex flex-col">
+                                        {extraCategories.map(cat => (
+                                            <Link
+                                                key={cat.id}
+                                                href={`/${cat.slug}`}
+                                                className="px-4 py-2 text-sm text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 transition-colors"
+                                            >
+                                                {cat.name}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="w-px h-4 bg-zinc-200 mx-2" />
+
+                        <Link
+                            href="/sobre"
+                            className="relative px-4 py-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors rounded-lg hover:bg-zinc-100/60 group"
+                        >
+                            Sobre
+                            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-zinc-900 rounded-full transition-all duration-300 group-hover:w-1/2" />
+                        </Link>
                     </nav>
 
                     {/* Actions */}
@@ -131,22 +168,38 @@ export function Header() {
                                     </button>
                                 </div>
                                 <nav className="flex flex-col gap-1">
-                                    {navLinks.map((link, i) => (
+                                    {categories.map((cat, i) => (
                                         <motion.div
-                                            key={link.href}
+                                            key={cat.id}
                                             initial={{ opacity: 0, x: -20 }}
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: i * 0.05 }}
                                         >
                                             <Link
-                                                href={link.href}
+                                                href={`/${cat.slug}`}
                                                 onClick={() => setMobileMenu(false)}
                                                 className="block px-4 py-3 rounded-xl text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 font-medium transition-colors"
                                             >
-                                                {link.label}
+                                                {cat.name}
                                             </Link>
                                         </motion.div>
                                     ))}
+
+                                    <div className="w-full h-px bg-zinc-100 my-2" />
+
+                                    <motion.div
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: categories.length * 0.05 }}
+                                    >
+                                        <Link
+                                            href="/sobre"
+                                            onClick={() => setMobileMenu(false)}
+                                            className="block px-4 py-3 rounded-xl text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 font-medium transition-colors"
+                                        >
+                                            Sobre
+                                        </Link>
+                                    </motion.div>
                                 </nav>
                             </div>
                         </motion.div>
