@@ -5,40 +5,67 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { saveSettings } from "@/app/admin/(dashboard)/configuracoes/actions"
-import { Store, Truck, Mail, Phone, Instagram, LayoutTemplate } from "lucide-react"
+import { saveProfile, saveBanner, saveLogistics } from "@/app/admin/(dashboard)/configuracoes/actions"
+import { Store, Truck, Phone, Instagram, LayoutTemplate } from "lucide-react"
 
 interface SettingsFormProps {
     settings: any
 }
 
 export function SettingsForm({ settings }: SettingsFormProps) {
-    const [isLoading, setIsLoading] = useState(false)
-
-    const handleSubmit = async (formData: FormData) => {
-        setIsLoading(true)
-        try {
-            await saveSettings(formData)
-            alert("Configurações atualizadas com sucesso!")
-        } catch (error) {
-            console.error("Erro ao salvar:", error)
-            alert("Falha ao atualizar configurações.")
-        } finally {
-            setIsLoading(false)
-        }
-    }
+    const [isLoadingProfile, setIsLoadingProfile] = useState(false)
+    const [isLoadingBanner, setIsLoadingBanner] = useState(false)
+    const [isLoadingLogistics, setIsLoadingLogistics] = useState(false)
 
     if (!settings) {
         return <p className="text-zinc-500">Erro: Nenhuma configuração encontrada no banco.</p>
     }
 
+    const handleProfileSubmit = async (formData: FormData) => {
+        setIsLoadingProfile(true)
+        try {
+            await saveProfile(formData)
+            alert("Perfil salvo com sucesso!")
+        } catch (error) {
+            console.error("Erro ao salvar perfil:", error)
+            alert("Falha ao salvar perfil.")
+        } finally {
+            setIsLoadingProfile(false)
+        }
+    }
+
+    const handleBannerSubmit = async (formData: FormData) => {
+        setIsLoadingBanner(true)
+        try {
+            await saveBanner(formData)
+            alert("Banner salvo com sucesso!")
+        } catch (error) {
+            console.error("Erro ao salvar banner:", error)
+            alert("Falha ao salvar banner.")
+        } finally {
+            setIsLoadingBanner(false)
+        }
+    }
+
+    const handleLogisticsSubmit = async (formData: FormData) => {
+        setIsLoadingLogistics(true)
+        try {
+            await saveLogistics(formData)
+            alert("Logística salva com sucesso!")
+        } catch (error) {
+            console.error("Erro ao salvar logística:", error)
+            alert("Falha ao salvar logística.")
+        } finally {
+            setIsLoadingLogistics(false)
+        }
+    }
+
     return (
-        <form action={handleSubmit} className="space-y-8 max-w-3xl" encType="multipart/form-data">
-            {/* ID invisível */}
-            <input type="hidden" name="id" value={settings.id} />
+        <div className="space-y-8 max-w-3xl">
 
             {/* CAIXA 1: PERFIL DA LOJA */}
-            <div className="bg-white p-6 rounded-xl border space-y-6 shadow-sm">
+            <form action={handleProfileSubmit} className="bg-white p-6 rounded-xl border space-y-6 shadow-sm">
+                <input type="hidden" name="id" value={settings.id} />
                 <div className="flex items-center gap-2 mb-4 border-b pb-4">
                     <Store className="w-5 h-5 text-zinc-500" />
                     <h2 className="text-xl font-semibold">Perfil e SEO</h2>
@@ -47,7 +74,7 @@ export function SettingsForm({ settings }: SettingsFormProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <Label htmlFor="store_name">Nome da Loja</Label>
-                        <Input id="store_name" name="store_name" defaultValue={settings.store_name} required />
+                        <Input id="store_name" name="store_name" defaultValue={settings.store_name} />
                     </div>
 
                     <div className="space-y-2">
@@ -82,10 +109,17 @@ export function SettingsForm({ settings }: SettingsFormProps) {
                         defaultValue={settings.store_description || ''}
                     />
                 </div>
-            </div>
+
+                <div className="pt-2 border-t mt-4 flex justify-end">
+                    <Button disabled={isLoadingProfile} type="submit" className="px-6 bg-zinc-950 text-white cursor-pointer h-10 w-full md:w-auto">
+                        {isLoadingProfile ? "Salvando..." : "Salvar Perfil"}
+                    </Button>
+                </div>
+            </form>
 
             {/* CAIXA 2: VITRINE E BANNER PRINCIPAL */}
-            <div className="bg-white p-6 rounded-xl border space-y-6 shadow-sm">
+            <form action={handleBannerSubmit} encType="multipart/form-data" className="bg-white p-6 rounded-xl border space-y-6 shadow-sm">
+                <input type="hidden" name="id" value={settings.id} />
                 <div className="flex items-center gap-2 mb-4 border-b pb-4">
                     <LayoutTemplate className="w-5 h-5 text-zinc-500" />
                     <h2 className="text-xl font-semibold">Banner Principal (Vitrine)</h2>
@@ -124,10 +158,17 @@ export function SettingsForm({ settings }: SettingsFormProps) {
                     <Input id="hero_image" name="hero_image" type="file" accept="image/*" />
                     <p className="text-xs text-zinc-500">Formato recomendado: Paisagem (1920x1080px). Um gradiente escuro é aplicado automaticamente para os textos ficarem legíveis.</p>
                 </div>
-            </div>
+
+                <div className="pt-2 border-t mt-4 flex justify-end">
+                    <Button disabled={isLoadingBanner} type="submit" className="px-6 bg-zinc-950 text-white cursor-pointer h-10 w-full md:w-auto">
+                        {isLoadingBanner ? "Salvando..." : "Salvar Banner"}
+                    </Button>
+                </div>
+            </form>
 
             {/* CAIXA 3: LOGÍSTICA E FRETE */}
-            <div className="bg-white p-6 rounded-xl border space-y-6 shadow-sm">
+            <form action={handleLogisticsSubmit} className="bg-white p-6 rounded-xl border space-y-6 shadow-sm">
+                <input type="hidden" name="id" value={settings.id} />
                 <div className="flex items-center gap-2 mb-4 border-b pb-4">
                     <Truck className="w-5 h-5 text-zinc-500" />
                     <h2 className="text-xl font-semibold">Logística e Frete (Carrinho)</h2>
@@ -170,11 +211,14 @@ export function SettingsForm({ settings }: SettingsFormProps) {
                 <p className="text-xs text-zinc-500 pt-2">
                     * Esses dados serão vitais na Fase 4 e 5 para calcularmos as etiquetas através da API de Entrega (Ex: Melhor Envio).
                 </p>
-            </div>
 
-            <Button disabled={isLoading} type="submit" className="w-full md:w-auto px-8 bg-zinc-950 text-white cursor-pointer h-12">
-                {isLoading ? "Salvando Alterações..." : "Salvar Configurações"}
-            </Button>
-        </form>
+                <div className="pt-2 border-t mt-4 flex justify-end">
+                    <Button disabled={isLoadingLogistics} type="submit" className="px-6 bg-zinc-950 text-white cursor-pointer h-10 w-full md:w-auto">
+                        {isLoadingLogistics ? "Salvando..." : "Salvar Logística"}
+                    </Button>
+                </div>
+            </form>
+
+        </div>
     )
 }

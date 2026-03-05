@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Package, LayoutDashboard, ShoppingCart, Settings, LogOut, Menu } from "lucide-react"
+import { Package, LayoutDashboard, ShoppingCart, Settings, LogOut, Menu, ExternalLink } from "lucide-react"
 import { logout } from "../login/actions"
 import { Button } from "@/components/ui/button"
 import {
@@ -45,6 +45,17 @@ export default function AdminLayout({
                                     {link.label}
                                 </Link>
                             ))}
+
+                            <hr className="my-4 border-zinc-200" />
+
+                            <Link
+                                href="/"
+                                target="_blank"
+                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-zinc-900 font-medium transition-all hover:bg-zinc-200 bg-zinc-200/50"
+                            >
+                                <ExternalLink className="h-4 w-4" />
+                                Ver Loja
+                            </Link>
                         </nav>
                     </div>
                     <div className="mt-auto p-4">
@@ -86,6 +97,17 @@ export default function AdminLayout({
                                         {link.label}
                                     </Link>
                                 ))}
+
+                                <hr className="my-4 border-zinc-200" />
+
+                                <Link
+                                    href="/"
+                                    target="_blank"
+                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-zinc-900 hover:bg-zinc-100 font-medium"
+                                >
+                                    <ExternalLink className="h-5 w-5" />
+                                    Ver Loja
+                                </Link>
                             </nav>
                             <div className="mt-auto">
                                 <form action={logout}>

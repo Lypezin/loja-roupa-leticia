@@ -3,20 +3,38 @@
 import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 
-export async function saveSettings(formData: FormData) {
+export async function saveProfile(formData: FormData) {
     const supabase = await createClient()
-
     const id = formData.get('id') as string
-    const store_name = formData.get('store_name') as string
-    const store_description = formData.get('store_description') as string
-    const support_email = formData.get('support_email') as string
-    const whatsapp_number = formData.get('whatsapp_number') as string
-    const instagram_url = formData.get('instagram_url') as string
 
-    // Banner config
-    const hero_title = formData.get('hero_title') as string
-    const hero_subtitle = formData.get('hero_subtitle') as string
-    const hero_button_text = formData.get('hero_button_text') as string
+    const { error } = await supabase
+        .from('store_settings')
+        .update({
+            store_name: formData.get('store_name') as string,
+            store_description: formData.get('store_description') as string,
+            support_email: formData.get('support_email') as string,
+            whatsapp_number: formData.get('whatsapp_number') as string,
+            instagram_url: formData.get('instagram_url') as string,
+            updated_at: new Date().toISOString()
+        })
+        .eq('id', id)
+
+    if (error) throw new Error(error.message)
+    revalidatePath('/admin/configuracoes')
+    revalidatePath('/')
+}
+
+export async function saveBanner(formData: FormData) {
+    const supabase = await createClient()
+    const id = formData.get('id') as string
+
+    const updates: any = {
+        hero_title: formData.get('hero_title') as string,
+        hero_subtitle: formData.get('hero_subtitle') as string,
+        hero_button_text: formData.get('hero_button_text') as string,
+        updated_at: new Date().toISOString()
+    }
+
     let hero_image_url = formData.get('current_hero_image_url') as string
     const imageFile = formData.get('hero_image') as File | null
 
@@ -38,41 +56,33 @@ export async function saveSettings(formData: FormData) {
             .from('product-images')
             .getPublicUrl(filePath)
 
-        hero_image_url = publicUrl
+        updates.hero_image_url = publicUrl
     }
 
+    const { error } = await supabase.from('store_settings').update(updates).eq('id', id)
+    if (error) throw new Error(error.message)
+    revalidatePath('/admin/configuracoes')
+    revalidatePath('/')
+}
+
+export async function saveLogistics(formData: FormData) {
+    const supabase = await createClient()
+    const id = formData.get('id') as string
+
     const thresholdRaw = formData.get('free_shipping_threshold') as string
-    const free_shipping_threshold = thresholdRaw ? parseFloat(thresholdRaw) : null
-
-    const shipping_origin_zip = formData.get('shipping_origin_zip') as string
-
     const processingRaw = formData.get('processing_days') as string
-    const processing_days = processingRaw ? parseInt(processingRaw, 10) : 2
 
     const { error } = await supabase
         .from('store_settings')
         .update({
-            store_name,
-            store_description,
-            support_email,
-            whatsapp_number,
-            instagram_url,
-            free_shipping_threshold,
-            shipping_origin_zip,
-            processing_days,
-            hero_title,
-            hero_subtitle,
-            hero_button_text,
-            hero_image_url,
+            free_shipping_threshold: thresholdRaw ? parseFloat(thresholdRaw) : null,
+            shipping_origin_zip: formData.get('shipping_origin_zip') as string,
+            processing_days: processingRaw ? parseInt(processingRaw, 10) : 2,
             updated_at: new Date().toISOString()
         })
         .eq('id', id)
 
-    if (error) {
-        throw new Error(error.message)
-    }
-
-    // Revalida a rota para limpar o cache na proxima exibiçao
+    if (error) throw new Error(error.message)
     revalidatePath('/admin/configuracoes')
     revalidatePath('/')
 }
