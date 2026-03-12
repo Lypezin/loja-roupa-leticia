@@ -48,7 +48,9 @@ export function CartItem({ item, index, onIncrement, onDecrement, onRemove }: Ca
             <div className="flex-1 flex flex-col justify-between">
                 <div>
                     <h3 className="font-semibold text-zinc-900">{item.product_name}</h3>
-                    <p className="text-sm text-zinc-400 mt-0.5">{item.size} · {item.color}</p>
+                    <p className="text-sm text-zinc-400 mt-0.5">
+                        {[item.size, item.color].filter(Boolean).join(' · ')}
+                    </p>
                     <p className="text-sm text-zinc-500 mt-1">{formattedPrice}</p>
                 </div>
 

@@ -22,20 +22,27 @@ type AddToCartProps = {
 export function AddToCart({ productId, productName, price, imageUrl, variations }: AddToCartProps) {
     const addItem = useCartStore((state) => state.addItem)
 
-    // Agrupar tamanhos e cores únicos
-    const availableColors = Array.from(new Set(variations.map(v => v.color)))
+    // Filter out empty options
+    const availableColors = Array.from(new Set(variations.map(v => v.color).filter(Boolean)))
+    const availableSizes = Array.from(new Set(variations.map(v => v.size).filter(Boolean)))
 
     const [selectedColor, setSelectedColor] = useState<string>(availableColors[0] || "")
-    // Filtramos os tamanhos disponíveis apenas para a cor selecionada atualmente
-    const sizesForColor = variations.filter(v => v.color === selectedColor).map(v => v.size)
+    // Filtramos os tamanhos disponíveis apenas para a cor selecionada atualmente (se houver cor)
+    const sizesForColor = variations
+        .filter(v => !selectedColor || v.color === selectedColor)
+        .map(v => v.size)
+        .filter(Boolean)
+
     const [selectedSize, setSelectedSize] = useState<string>(sizesForColor[0] || "")
 
     const [added, setAdded] = useState(false)
 
-    // Encontrar a variação exata selecionada no banco para descontar do estoque dps
-    const selectedVariation = variations.find(
-        v => v.color === selectedColor && v.size === selectedSize
-    )
+    // Encontrar a variação exata selecionada
+    const selectedVariation = variations.find(v => {
+        const colorMatch = !availableColors.length || v.color === selectedColor
+        const sizeMatch = !availableSizes.length || v.size === selectedSize
+        return colorMatch && sizeMatch
+    })
 
     const handleAddToCart = () => {
         if (!selectedVariation) return
@@ -46,12 +53,12 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
         }
 
         addItem({
-            id: selectedVariation.id, // O ID no carrinho será o ID da Variação única pra não misturar P com M
+            id: selectedVariation.id,
             product_id: productId,
             product_name: productName,
             variation_id: selectedVariation.id,
-            size: selectedSize,
-            color: selectedColor,
+            size: selectedSize || "",
+            color: selectedColor || "",
             price: price,
             quantity: 1,
             image_url: imageUrl
@@ -67,10 +74,9 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
             {/* Seletor de Cores */}
             {availableColors.length > 0 && (
                 <div className="space-y-3">
-                    <h3 className="font-medium text-sm text-zinc-900 uppercase tracking-widest">Cor</h3>
+                    <h3 className="font-medium text-sm text-zinc-900 uppercase tracking-widest">Cor / Tipo</h3>
                     <div className="flex gap-3">
                         {availableColors.map((color) => {
-                            // Pegamos a variação específica global 
                             const matchingVariantColors = variations.find(v => v.color === color)
                             const isOutOfStock = matchingVariantColors ? matchingVariantColors.stock_quantity <= 0 : true
                             return (
@@ -79,9 +85,11 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
                                     disabled={isOutOfStock}
                                     onClick={() => {
                                         setSelectedColor(color)
-                                        // Ao trocar de cor, reseta o tamanho se ele não tiver pra nova cor
-                                        const newSizes = variations.filter(v => v.color === color).map(v => v.size)
-                                        if (!newSizes.includes(selectedSize)) {
+                                        const newSizes = variations
+                                            .filter(v => v.color === color)
+                                            .map(v => v.size)
+                                            .filter(Boolean)
+                                        if (newSizes.length > 0 && !newSizes.includes(selectedSize)) {
                                             setSelectedSize(newSizes[0])
                                         }
                                     }}
@@ -103,11 +111,13 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
             {sizesForColor.length > 0 && (
                 <div className="space-y-3">
                     <h3 className="font-medium text-sm text-zinc-900 uppercase tracking-widest mt-2">
-                        Tamanho
+                        Tamanho / Vol
                     </h3>
                     <div className="flex gap-3">
                         {sizesForColor.map((size) => {
-                            const matchingVariantSizes = variations.find(v => v.color === selectedColor && v.size === size)
+                            const matchingVariantSizes = variations.find(v =>
+                                (!selectedColor || v.color === selectedColor) && v.size === size
+                            )
                             const isSizeOutOfStock = matchingVariantSizes ? matchingVariantSizes.stock_quantity <= 0 : true
 
                             return (

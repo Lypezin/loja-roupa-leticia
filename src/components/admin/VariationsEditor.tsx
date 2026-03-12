@@ -33,21 +33,19 @@ export function VariationsEditor({ variations, onAdd, onRemove, onChange }: Vari
                 {variations.map((variation, index) => (
                     <div key={index} className="flex items-center gap-3 p-3 bg-zinc-50 rounded-lg border border-zinc-100">
                         <div className="flex-1">
-                            <Label className="text-xs mb-1 block text-zinc-500">Tamanho</Label>
+                            <Label className="text-xs mb-1 block text-zinc-500">Tamanho / Vol</Label>
                             <Input
                                 value={variation.size}
-                                placeholder="Ex: P, M, 38"
+                                placeholder="Ex: P, 42, 100ml"
                                 onChange={(e) => onChange(index, "size", e.target.value)}
-                                required
                             />
                         </div>
                         <div className="flex-1">
-                            <Label className="text-xs mb-1 block text-zinc-500">Cor</Label>
+                            <Label className="text-xs mb-1 block text-zinc-500">Cor / Tipo</Label>
                             <Input
                                 value={variation.color}
-                                placeholder="Ex: Preto, Azul"
+                                placeholder="Ex: Preto, Couro, EDP"
                                 onChange={(e) => onChange(index, "color", e.target.value)}
-                                required
                             />
                         </div>
                         <div className="w-24">
