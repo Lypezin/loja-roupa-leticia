@@ -22,12 +22,12 @@ export function ProductGallery({ images }: ProductGalleryProps) {
         <div className="flex flex-col-reverse md:flex-row gap-4">
             {/* Thumbnails à esquerda no desktop / abaixo no mobile */}
             {sortedImages.length > 1 && (
-                <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto md:max-h-[600px] pb-2 md:pb-0">
+                <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto md:max-h-[600px] pb-2 md:pb-0 snap-x snap-mandatory scrollbar-hide">
                     {sortedImages.map((img, i) => (
                         <button
                             key={i}
                             onClick={() => setSelectedIndex(i)}
-                            className={`relative w-16 h-20 md:w-20 md:h-24 shrink-0 rounded-xl overflow-hidden bg-zinc-100 transition-all duration-300 ${selectedIndex === i
+                            className={`relative w-16 h-20 md:w-20 md:h-24 shrink-0 rounded-xl overflow-hidden bg-zinc-100 transition-all duration-300 snap-start ${selectedIndex === i
                                 ? "ring-2 ring-zinc-900 ring-offset-2 shadow-lg scale-[1.02]"
                                 : "opacity-50 hover:opacity-100 hover:scale-[1.02]"
                                 }`}
@@ -41,8 +41,8 @@ export function ProductGallery({ images }: ProductGalleryProps) {
                 </div>
             )}
 
-            {/* Imagem Principal com Zoom */}
-            <div className="relative flex-1 aspect-[3/4] w-full bg-zinc-50 rounded-2xl overflow-hidden group cursor-crosshair">
+            {/* Imagem Principal */}
+            <div className="relative flex-1 aspect-[4/5] sm:aspect-[3/4] w-full bg-zinc-50 rounded-2xl overflow-hidden group cursor-crosshair">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={selectedIndex}

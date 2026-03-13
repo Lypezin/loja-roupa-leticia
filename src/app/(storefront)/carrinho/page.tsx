@@ -62,64 +62,70 @@ export default function CarrinhoPage() {
                         {items.map((item) => {
                             const itemPrice = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price * item.quantity)
                             return (
-                                <motion.div
+                                    <motion.div
                                     key={item.id}
                                     layout
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, x: -50, transition: { duration: 0.2 } }}
-                                    className="flex gap-5 p-4 bg-card border border-border rounded-2xl hover:border-primary/20 transition-colors"
+                                    className="flex flex-col sm:flex-row gap-5 p-4 bg-card border border-border rounded-2xl hover:border-primary/20 transition-colors"
                                 >
-                                    {/* Imagem */}
-                                    <div className="w-24 h-28 md:w-28 md:h-32 shrink-0 rounded-xl overflow-hidden bg-muted">
-                                        <div
-                                            className="w-full h-full bg-cover bg-center"
-                                            style={{ backgroundImage: `url(${item.image_url || '/placeholder-image.jpg'})` }}
-                                        />
-                                    </div>
-
-                                    {/* Info */}
-                                    <div className="flex flex-col flex-1 justify-between">
-                                        <div>
-                                            <h3 className="font-semibold text-card-foreground leading-tight">{item.product_name}</h3>
-                                            <p className="text-xs text-muted-foreground mt-1">
-                                                {item.color && `Cor: ${item.color}`}{item.color && item.size && ' · '}{item.size && `Tam: ${item.size}`}
-                                            </p>
+                                    <div className="flex gap-4 sm:gap-5">
+                                        {/* Imagem */}
+                                        <div className="w-20 h-24 sm:w-28 sm:h-32 shrink-0 rounded-xl overflow-hidden bg-muted">
+                                            <div
+                                                className="w-full h-full bg-cover bg-center"
+                                                style={{ backgroundImage: `url(${item.image_url || '/placeholder-image.jpg'})` }}
+                                            />
                                         </div>
 
-                                        <div className="flex items-center justify-between mt-3">
-                                            {/* Quantity Controls */}
-                                            <div className="flex items-center gap-0 border border-border rounded-lg overflow-hidden">
-                                                <button
-                                                    onClick={() => {
-                                                        if (item.quantity <= 1) {
-                                                            removeItem(item.id)
-                                                        } else {
-                                                            updateQuantity(item.id, item.quantity - 1)
-                                                        }
-                                                    }}
-                                                    className="p-2 hover:bg-muted transition-colors text-foreground"
-                                                >
-                                                    <Minus className="w-3.5 h-3.5" />
-                                                </button>
-                                                <span className="w-10 text-center text-sm font-medium text-foreground">{item.quantity}</span>
-                                                <button
-                                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                    className="p-2 hover:bg-muted transition-colors text-foreground"
-                                                >
-                                                    <Plus className="w-3.5 h-3.5" />
-                                                </button>
+                                        {/* Info - Basic mobile view */}
+                                        <div className="flex flex-col flex-1 justify-center sm:justify-start">
+                                            <h3 className="font-semibold text-card-foreground leading-tight text-sm sm:text-base">{item.product_name}</h3>
+                                            <p className="text-[10px] sm:text-xs text-muted-foreground mt-1">
+                                                {item.color && `Cor: ${item.color}`}{item.color && item.size && ' · '}{item.size && `Tam: ${item.size}`}
+                                            </p>
+                                            
+                                            {/* Mobile price - visible on sm and below */}
+                                            <div className="sm:hidden mt-2 font-bold text-sm text-card-foreground">
+                                                {itemPrice}
                                             </div>
+                                        </div>
+                                    </div>
 
-                                            <div className="flex items-center gap-4">
-                                                <span className="font-semibold text-card-foreground">{itemPrice}</span>
-                                                <button
-                                                    onClick={() => removeItem(item.id)}
-                                                    className="p-1.5 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors"
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
-                                                </button>
-                                            </div>
+                                    {/* Controls & Total - Full row on mobile sm, side by side on desktop */}
+                                    <div className="flex items-center justify-between sm:flex-col sm:justify-between sm:items-end mt-2 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-border/50">
+                                        {/* Quantity Controls */}
+                                        <div className="flex items-center gap-0 border border-border rounded-lg overflow-hidden h-9 sm:h-10">
+                                            <button
+                                                onClick={() => {
+                                                    if (item.quantity <= 1) {
+                                                        removeItem(item.id)
+                                                    } else {
+                                                        updateQuantity(item.id, item.quantity - 1)
+                                                    }
+                                                }}
+                                                className="px-3 py-1 hover:bg-muted transition-colors text-foreground"
+                                            >
+                                                <Minus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                                            </button>
+                                            <span className="w-8 sm:w-10 text-center text-xs sm:text-sm font-medium text-foreground">{item.quantity}</span>
+                                            <button
+                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                className="px-3 py-1 hover:bg-muted transition-colors text-foreground"
+                                            >
+                                                <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                                            </button>
+                                        </div>
+
+                                        <div className="flex items-center gap-4">
+                                            <span className="hidden sm:block font-semibold text-card-foreground">{itemPrice}</span>
+                                            <button
+                                                onClick={() => removeItem(item.id)}
+                                                className="p-2 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
                                         </div>
                                     </div>
                                 </motion.div>
