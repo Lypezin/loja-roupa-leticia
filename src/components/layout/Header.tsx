@@ -159,6 +159,7 @@ export function Header({ categories = [], storeName }: { categories?: Category[]
                 isOpen={mobileMenu}
                 onClose={() => setMobileMenu(false)}
                 categories={categories}
+                storeName={storeName}
             />
         </>
     )
