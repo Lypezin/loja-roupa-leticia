@@ -51,7 +51,7 @@ export default async function CategoryPage(props: {
         <div className="container mx-auto px-4 py-16">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                 <div>
-                    <h1 className="text-4xl font-bold tracking-tight text-foreground">{category.name}</h1>
+                    <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">{category.name}</h1>
                     <p className="text-muted-foreground mt-2">Encontre os melhores produtos em {category.name.toLowerCase()}.</p>
                 </div>
 

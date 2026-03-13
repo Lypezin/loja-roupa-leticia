@@ -17,11 +17,11 @@ export function FilterSort({ currentSort }: { currentSort?: string }) {
     }
 
     return (
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 w-full sm:w-auto">
             <select
                 defaultValue={currentSort || ''}
                 onChange={(e) => handleSortChange(e.target.value)}
-                className="h-10 pl-4 pr-10 bg-muted/50 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer"
+                className="h-10 w-full sm:w-auto pl-4 pr-10 bg-muted/50 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer"
             >
                 <option value="">Ordenar por</option>
                 <option value="price-asc">Menor Preço</option>

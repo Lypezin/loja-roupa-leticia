@@ -45,7 +45,7 @@ export default async function SearchPage({
         <div className="container mx-auto px-4 py-16">
             <div className="mb-12">
                 <p className="text-sm font-medium text-primary uppercase tracking-widest mb-2">Resultados da busca</p>
-                <h1 className="text-4xl font-bold tracking-tight">Exibindo resultados para &quot;{q}&quot;</h1>
+                <h1 className="text-2xl md:text-4xl font-bold tracking-tight">Exibindo resultados para &quot;{q}&quot;</h1>
                 <p className="text-zinc-500 mt-2">Encontramos {results.length} produto(s).</p>
             </div>
 

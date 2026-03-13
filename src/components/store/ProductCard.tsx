@@ -66,11 +66,11 @@ export function ProductCard({ product, index = 0 }: { product: Product, index?: 
                 {/* Arrow Navigation */}
                 {images.length > 1 && (
                     <>
-                        <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
+                        <div className="absolute inset-0 z-20 opacity-0 md:group-hover:opacity-100 transition-all duration-300 pointer-events-none md:pointer-events-auto">
                             <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-auto">
                                 <button
                                     onClick={prevImage}
-                                    className="p-2 rounded-full bg-white/90 text-zinc-800 hover:bg-white hover:scale-110 shadow-lg backdrop-blur-sm transition-all focus:outline-none"
+                                    className="p-2 rounded-full bg-white/95 text-zinc-800 hover:bg-white hover:scale-110 shadow-lg backdrop-blur-sm transition-all focus:outline-none md:opacity-0 md:group-hover:opacity-100 hidden md:flex items-center justify-center lg:flex"
                                 >
                                     <ChevronLeft className="w-4 h-4" />
                                 </button>
@@ -78,15 +78,21 @@ export function ProductCard({ product, index = 0 }: { product: Product, index?: 
                             <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-auto">
                                 <button
                                     onClick={nextImage}
-                                    className="p-2 rounded-full bg-white/90 text-zinc-800 hover:bg-white hover:scale-110 shadow-lg backdrop-blur-sm transition-all focus:outline-none"
+                                    className="p-2 rounded-full bg-white/95 text-zinc-800 hover:bg-white hover:scale-110 shadow-lg backdrop-blur-sm transition-all focus:outline-none md:opacity-0 md:group-hover:opacity-100 hidden md:flex items-center justify-center lg:flex"
                                 >
                                     <ChevronRight className="w-4 h-4" />
                                 </button>
                             </div>
                         </div>
 
+                        {/* Mobile Touch Navigation Overlay (Invisible but functional) */}
+                        <div className="absolute inset-0 z-11 md:hidden flex">
+                           <div className="flex-1 h-full" onClick={prevImage} />
+                           <div className="flex-1 h-full" onClick={nextImage} />
+                        </div>
+
                         {/* Dot Indicators */}
-                        <div className="absolute bottom-3 inset-x-0 flex justify-center gap-1.5 z-20 pointer-events-auto">
+                        <div className="absolute bottom-3 inset-x-0 flex justify-center gap-2 z-20 pointer-events-auto">
                             {images.map((_, idx) => (
                                 <button
                                     key={idx}
@@ -95,7 +101,7 @@ export function ProductCard({ product, index = 0 }: { product: Product, index?: 
                                         e.stopPropagation()
                                         setCurrentIndex(idx)
                                     }}
-                                    className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-5 bg-white shadow-md' : 'w-1.5 bg-white/50 hover:bg-white/80'
+                                    className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-6 bg-white shadow-md' : 'w-1.5 bg-white/60 hover:bg-white/90'
                                         }`}
                                 />
                             ))}
