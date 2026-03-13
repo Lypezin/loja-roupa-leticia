@@ -56,7 +56,7 @@ export function Header({ categories = [], storeName }: { categories?: Category[]
                         >
                             <Menu className="w-5 h-5 text-foreground" />
                         </button>
-                        <Link href="/" className="font-bold text-xl tracking-[-0.05em] text-foreground hover:opacity-70 transition-opacity">
+                        <Link href="/" className="font-bold text-base sm:text-lg lg:text-xl tracking-[-0.05em] text-foreground hover:opacity-70 transition-opacity truncate max-w-[120px] xs:max-w-[180px] sm:max-w-none">
                             {storeName || 'FASHION STORE'}
                         </Link>
                     </div>

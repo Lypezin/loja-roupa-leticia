@@ -37,7 +37,7 @@ export function MobileMenu({ isOpen, onClose, categories }: MobileMenuProps) {
                     >
                         <div className="p-6">
                             <div className="flex items-center justify-between mb-8">
-                                <span className="font-bold text-lg tracking-tight text-foreground">FASHION STORE</span>
+                                <span className="font-bold text-lg tracking-tight text-foreground truncate max-w-[200px]">FASHION STORE</span>
                                 <button onClick={onClose} className="p-2 rounded-lg hover:bg-accent hover:text-accent-foreground">
                                     <X className="w-5 h-5" />
                                 </button>
