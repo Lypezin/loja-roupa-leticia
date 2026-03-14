@@ -6,6 +6,8 @@ import { Trash2, ShoppingBag, Plus, Minus, ArrowRight, ArrowLeft } from "lucide-
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
+import { MessageSquare } from "lucide-react"
+import { createClient } from "@/lib/supabase/client"
 
 export default function CarrinhoPage() {
     const { items, removeItem, updateQuantity, totalPrice } = useCartStore()
@@ -14,6 +16,32 @@ export default function CarrinhoPage() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { setMounted(true) }, [])
+
+    const handleWhatsAppCheckout = async () => {
+        const supabase = createClient()
+        const { data: settings } = await supabase.from('store_settings').select('whatsapp_number, store_name').single()
+        
+        const phone = settings?.whatsapp_number || "5500000000000" // Fallback number
+        const cleanPhone = phone.replace(/\D/g, '')
+        
+        let message = `*Novo Pedido - ${settings?.store_name || 'Loja'}*\n\n`
+        message += `Olá! Gostaria de finalizar a compra dos seguintes itens:\n\n`
+        
+        items.forEach((item, index: number) => {
+            message += `${index + 1}. *${item.product_name}*\n`
+            message += `   Qtd: ${item.quantity}\n`
+            if (item.color) message += `   Cor: ${item.color}\n`
+            if (item.size) message += `   Tam: ${item.size}\n`
+            message += `   Preço: ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price)}\n\n`
+        })
+        
+        message += `*Total: ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}*`
+        
+        const encodedMessage = encodeURIComponent(message)
+        const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodedMessage}`
+        
+        window.open(whatsappUrl, '_blank')
+    }
 
     if (!mounted) {
         return (
@@ -163,6 +191,15 @@ export default function CarrinhoPage() {
                         >
                             Finalizar Compra
                             <ArrowRight className="w-4 h-4" />
+                        </Button>
+
+                        <Button
+                            onClick={handleWhatsAppCheckout}
+                            variant="outline"
+                            className="w-full h-13 border-emerald-500/30 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-semibold tracking-wide cursor-pointer flex items-center justify-center gap-2 rounded-xl transition-colors"
+                        >
+                            <MessageSquare className="w-4 h-4" />
+                            Finalizar via WhatsApp
                         </Button>
 
                         <Link href="/" className="block text-center text-sm text-muted-foreground hover:text-foreground transition-colors">

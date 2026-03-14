@@ -14,29 +14,39 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Loja de Roupas | Fashion Store",
-    template: "%s | Fashion Store"
-  },
-  description: "As melhores peças e a nova coleção de ponta. Qualidade, estilo e conforto em um só lugar.",
-  keywords: ["moda", "roupas", "fashion", "loja online", "coleção 2025"],
-  authors: [{ name: "Fashion Store" }],
-  creator: "Fashion Store",
-  openGraph: {
-    type: "website",
-    locale: "pt_BR",
-    url: "https://loja-roupa.vercel.app",
-    siteName: "Fashion Store",
-    title: "Fashion Store | Coleção 2025",
-    description: "Sua loja de moda favorita com as melhores tendências.",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }]
-  },
-  robots: {
-    index: true,
-    follow: true
-  }
-};
+import { createClient } from "@/lib/supabase/server";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const supabase = await createClient();
+  const { data: settings } = await supabase.from('store_settings').select('*').single();
+
+  const title = settings?.store_name || "Fashion Store";
+  const description = settings?.store_description || "As melhores peças e a nova coleção de ponta. Qualidade, estilo e conforto em um só lugar.";
+
+  return {
+    title: {
+      default: `${title} | Oficial`,
+      template: `%s | ${title}`
+    },
+    description,
+    keywords: ["moda", "roupas", "fashion", "loja online", "coleção 2025"],
+    authors: [{ name: title }],
+    creator: title,
+    openGraph: {
+      type: "website",
+      locale: "pt_BR",
+      url: "https://loja-roupa.vercel.app",
+      siteName: title,
+      title: `${title} | Coleção 2025`,
+      description: description,
+      images: [{ url: "/og-image.jpg", width: 1200, height: 630 }]
+    },
+    robots: {
+      index: true,
+      follow: true
+    }
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: [
