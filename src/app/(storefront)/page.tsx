@@ -8,28 +8,21 @@ export const revalidate = 60
 
 export default async function StorefrontHome() {
     const supabase = await createClient()
-
-    const { data: settings } = await supabase
-        .from('store_settings')
-        .select('*')
-        .single()
-
-    const { data: latestCategories } = await supabase
-        .from('categories')
-        .select('*')
-        .order('created_at', { ascending: true })
-        .limit(3)
-
-    const { data: products } = await supabase
-        .from('products')
-        .select(`
-      id, name, base_price,
-      category:categories(name),
-      images:product_images(image_url, is_primary)
-    `)
-        .eq('is_active', true)
-        .order('created_at', { ascending: false })
-        .limit(12)
+    
+    // Fetch all data in parallel
+    const [
+        { data: settings },
+        { data: latestCategories },
+        { data: products }
+    ] = await Promise.all([
+        supabase.from('store_settings').select('*').single(),
+        supabase.from('categories').select('*').order('created_at', { ascending: true }).limit(3),
+        supabase.from('products').select(`
+            id, name, base_price,
+            category:categories(name),
+            images:product_images(image_url, is_primary)
+        `).eq('is_active', true).order('created_at', { ascending: false }).limit(12)
+    ])
 
     // Hero settings
     const heroTitle = settings?.hero_title || "A NOVA COLEÇÃO"

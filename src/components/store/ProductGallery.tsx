@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import Image from "next/image"
 
 interface ProductGalleryProps {
     images: {
@@ -32,9 +33,12 @@ export function ProductGallery({ images }: ProductGalleryProps) {
                                 : "opacity-50 hover:opacity-100 hover:scale-[1.02]"
                                 }`}
                         >
-                            <div
-                                className="absolute inset-0 bg-cover bg-center"
-                                style={{ backgroundImage: `url(${img.image_url})` }}
+                            <Image
+                                src={img.image_url}
+                                alt={`Thumbnail ${i}`}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 64px, 80px"
                             />
                         </button>
                     ))}
@@ -50,9 +54,17 @@ export function ProductGallery({ images }: ProductGalleryProps) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                        style={{ backgroundImage: `url(${sortedImages[selectedIndex]?.image_url})` }}
-                    />
+                        className="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
+                    >
+                        <Image
+                            src={sortedImages[selectedIndex]?.image_url || "/placeholder-image.jpg"}
+                            alt="Produto"
+                            fill
+                            priority
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                    </motion.div>
                 </AnimatePresence>
 
                 {/* Badge */}

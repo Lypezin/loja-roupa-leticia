@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
+import Image from "next/image"
 import { CountdownTimer } from "./CountdownTimer"
 
 interface HeroSectionProps {
@@ -17,11 +18,18 @@ interface HeroSectionProps {
 export function HeroSection({ title, subtitle, buttonText, backgroundUrl, badgeText, secondaryButtonText, countdownEnd }: HeroSectionProps) {
     return (
         <section className="relative h-[85vh] w-full bg-zinc-950 flex items-center justify-center overflow-hidden">
-            {/* Background com Parallax sutil */}
-            <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110 transition-transform duration-[2s]"
-                style={{ backgroundImage: `url('${backgroundUrl}')` }}
-            />
+            {/* Background com next/image para performance */}
+            <div className="absolute inset-0 scale-110 transition-transform duration-[2s]">
+                <Image
+                    src={backgroundUrl}
+                    alt={title}
+                    fill
+                    priority
+                    className="object-cover"
+                    sizes="100vw"
+                    quality={85}
+                />
+            </div>
 
             {/* Overlay Gradiente Premium */}
             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/50 to-zinc-950/20 z-10" />

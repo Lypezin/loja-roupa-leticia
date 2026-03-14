@@ -5,21 +5,16 @@ import { DollarSign, ShoppingCart, Package, ArrowUpRight, Settings, Tags, PlusCi
 export default async function AdminDashboard() {
     const supabase = await createClient()
 
-    // Contar produtos ativos
-    const { count: productCount } = await supabase
-        .from('products')
-        .select('*', { count: 'exact', head: true })
-        .eq('is_active', true)
-
-    // Contar categorias
-    const { count: categoryCount } = await supabase
-        .from('categories')
-        .select('*', { count: 'exact', head: true })
-
-    // Contar total de produtos
-    const { count: totalProducts } = await supabase
-        .from('products')
-        .select('*', { count: 'exact', head: true })
+    // Fetch counts in parallel
+    const [
+        { count: productCount },
+        { count: categoryCount },
+        { count: totalProducts }
+    ] = await Promise.all([
+        supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_active', true),
+        supabase.from('categories').select('*', { count: 'exact', head: true }),
+        supabase.from('products').select('*', { count: 'exact', head: true })
+    ])
 
     const stats = [
         {

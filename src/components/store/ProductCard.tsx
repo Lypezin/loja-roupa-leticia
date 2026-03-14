@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { motion } from "framer-motion"
+import Image from "next/image"
 
 export type Product = {
     id: string
@@ -15,7 +16,7 @@ export type Product = {
 
 export function ProductCard({ product, index = 0 }: { product: Product, index?: number }) {
     const images = product.images && product.images.length > 0
-        ? product.images.sort((a, b) => Number(b.is_primary) - Number(a.is_primary))
+        ? [...product.images].sort((a, b) => Number(b.is_primary) - Number(a.is_primary))
         : [{ image_url: "/placeholder-image.jpg", is_primary: true }]
 
     const [currentIndex, setCurrentIndex] = useState(0)
@@ -50,14 +51,22 @@ export function ProductCard({ product, index = 0 }: { product: Product, index?: 
             </Link>
 
             <div className="relative aspect-[3/4] w-full overflow-hidden bg-zinc-100 rounded-2xl z-10">
-                {/* Images */}
+                {/* Images with next/image optimization */}
                 {images.map((img, idx) => (
                     <div
                         key={idx}
-                        className={`absolute inset-0 bg-cover bg-center transition-all duration-700 ease-out ${idx === currentIndex ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'
+                        className={`absolute inset-0 transition-all duration-700 ease-out ${idx === currentIndex ? 'opacity-100 z-10 scale-100' : 'opacity-0 z-0 scale-105'
                             }`}
-                        style={{ backgroundImage: `url(${img.image_url})` }}
-                    />
+                    >
+                        <Image
+                            src={img.image_url}
+                            alt={product.name}
+                            fill
+                            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            className="object-cover"
+                            priority={index < 4}
+                        />
+                    </div>
                 ))}
 
                 {/* Hover Zoom Effect */}

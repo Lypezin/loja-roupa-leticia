@@ -8,8 +8,15 @@ export default async function StorefrontLayout({
     children: React.ReactNode
 }) {
     const supabase = await createClient()
-    const { data: categories } = await supabase.from('categories').select('id, name, slug').order('created_at', { ascending: true })
-    const { data: settings } = await supabase.from('store_settings').select('store_name').single()
+    
+    // Fetch categories and settings in parallel
+    const [
+        { data: categories },
+        { data: settings }
+    ] = await Promise.all([
+        supabase.from('categories').select('id, name, slug').order('created_at', { ascending: true }),
+        supabase.from('store_settings').select('store_name').single()
+    ])
 
     return (
         <div className="flex min-h-screen flex-col bg-background text-foreground font-sans">
