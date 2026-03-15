@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-outfit);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -205,4 +205,35 @@
   background: linear-gradient(90deg, transparent 25%, rgba(255, 255, 255, 0.1) 50%, transparent 75%);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
+}
+
+/* Camada de Utilitários Premium */
+@layer utilities {
+  .glass {
+    @apply bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border border-white/20 dark:border-white/10;
+  }
+  
+  .glass-dark {
+    @apply bg-zinc-950/40 backdrop-blur-xl border border-white/5;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-foreground via-foreground/90 to-foreground/70;
+  }
+
+  .mesh-gradient {
+    background-color: oklch(1 0 0);
+    background-image: 
+      radial-gradient(at 0% 0%, oklch(0.95 0.05 300 / 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, oklch(0.9 0.1 200 / 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, oklch(0.95 0.05 300 / 0.1) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, oklch(0.9 0.1 200 / 0.05) 0px, transparent 50%);
+  }
+
+  .dark .mesh-gradient {
+    background-color: oklch(0.145 0 0);
+    background-image: 
+      radial-gradient(at 0% 0%, oklch(0.3 0.1 260 / 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, oklch(0.4 0.1 300 / 0.05) 0px, transparent 50%);
+  }
 }
