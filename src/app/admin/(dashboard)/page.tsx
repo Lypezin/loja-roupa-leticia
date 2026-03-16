@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
-import { DollarSign, ShoppingCart, Package, Settings, Tags, PlusCircle, BarChart3, Sparkles } from "lucide-react"
-import { AdminActionCard, AdminStatCard } from "@/components/admin/dashboard/AdminCards"
+import { BarChart3, Sparkles } from "lucide-react"
+import { AdminActionCard, AdminStatCard, type AdminDashboardIcon } from "@/components/admin/dashboard/AdminCards"
 
 export default async function AdminDashboard() {
     const supabase = await createClient()
@@ -17,49 +17,59 @@ export default async function AdminDashboard() {
         supabase.from('products').select('*', { count: 'exact', head: true })
     ])
 
-    const stats = [
+    const stats: Array<{
+        label: string
+        value: string
+        change: string
+        icon: AdminDashboardIcon
+    }> = [
         {
             label: "Vendas no Mês",
             value: "R$ 0,00",
             change: "Gateway pendente",
-            icon: DollarSign,
+            icon: "DollarSign",
         },
         {
             label: "Pedidos",
             value: "0",
             change: "Nenhum ainda",
-            icon: ShoppingCart,
+            icon: "ShoppingCart",
         },
         {
             label: "Produtos Ativos",
             value: String(productCount || 0),
             change: `${totalProducts || 0} no total`,
-            icon: Package,
+            icon: "Package",
         },
         {
             label: "Categorias",
             value: String(categoryCount || 0),
             change: "Organizadas",
-            icon: Tags,
+            icon: "Tags",
         },
     ]
 
-    const quickActions = [
+    const quickActions: Array<{
+        href: string
+        icon: AdminDashboardIcon
+        label: string
+        desc: string
+    }> = [
         {
             href: "/admin/produtos/novo",
-            icon: PlusCircle,
+            icon: "PlusCircle",
             label: "Novo Produto",
             desc: "Adicionar ao catálogo",
         },
         {
             href: "/admin/categorias",
-            icon: Tags,
+            icon: "Tags",
             label: "Categorias",
             desc: "Gerenciar organização",
         },
         {
             href: "/admin/configuracoes",
-            icon: Settings,
+            icon: "Settings",
             label: "Configurações",
             desc: "Perfil, banner e conteúdo",
         },

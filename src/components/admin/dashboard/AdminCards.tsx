@@ -1,22 +1,41 @@
 "use client"
 
 import Link from "next/link"
-import type { LucideIcon } from "lucide-react"
-import { ArrowUpRight } from "lucide-react"
+import {
+  ArrowUpRight,
+  DollarSign,
+  ShoppingCart,
+  Package,
+  Tags,
+  PlusCircle,
+  Settings,
+} from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+
+const ICONS = {
+  DollarSign,
+  ShoppingCart,
+  Package,
+  Tags,
+  PlusCircle,
+  Settings,
+} as const
+
+export type AdminDashboardIcon = keyof typeof ICONS
 
 export function AdminStatCard({
   label,
   value,
   change,
-  icon: Icon,
+  icon,
 }: {
   label: string
   value: string
   change: string
-  icon: LucideIcon
+  icon: AdminDashboardIcon
 }) {
+  const Icon = ICONS[icon]
   return (
     <Card className="relative overflow-hidden rounded-2xl border-border/60 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
       <div className="pointer-events-none absolute inset-0 admin-mesh opacity-70" />
@@ -38,15 +57,16 @@ export function AdminStatCard({
 
 export function AdminActionCard({
   href,
-  icon: Icon,
+  icon,
   label,
   desc,
 }: {
   href: string
-  icon: LucideIcon
+  icon: AdminDashboardIcon
   label: string
   desc: string
 }) {
+  const Icon = ICONS[icon]
   return (
     <Link href={href} className="group block">
       <Card className="relative overflow-hidden rounded-2xl border-border/60 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
