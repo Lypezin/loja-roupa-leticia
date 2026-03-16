@@ -18,7 +18,7 @@ export default async function ConfiguracoesPage() {
         <div className="flex flex-col gap-6 w-full max-w-5xl">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight">Configurações Gerais</h1>
-                <p className="text-zinc-500">
+                <p className="text-muted-foreground">
                     Gerencie o perfil da loja, integração de fretes e políticas de negócio.
                 </p>
             </div>

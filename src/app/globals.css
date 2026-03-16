@@ -80,6 +80,70 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 
+/* Admin theme (scoped): overrides shadcn tokens inside [data-admin] only */
+[data-admin] {
+  /* Light surfaces + vivid accent */
+  --background: oklch(0.985 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.47 0 0);
+  --border: oklch(0.93 0 0);
+  --input: oklch(0.93 0 0);
+  --ring: oklch(0.71 0.16 264);
+
+  /* Accent (primary) */
+  --primary: oklch(0.56 0.22 264);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.96 0.02 264);
+  --secondary-foreground: oklch(0.205 0 0);
+  --accent: oklch(0.96 0.02 264);
+  --accent-foreground: oklch(0.205 0 0);
+
+  /* Sidebar stays dark for contrast */
+  --sidebar: oklch(0.16 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.56 0.22 264);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.22 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.25 0 0);
+  --sidebar-ring: oklch(0.56 0.22 264);
+}
+
+[data-admin].dark {
+  --background: oklch(0.16 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.72 0 0);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.62 0.19 264);
+
+  --primary: oklch(0.62 0.19 264);
+  --primary-foreground: oklch(0.17 0 0);
+  --secondary: oklch(0.27 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --accent: oklch(0.27 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+
+  --sidebar: oklch(0.14 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.62 0.19 264);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.22 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.62 0.19 264);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -235,5 +299,12 @@
     background-image: 
       radial-gradient(at 0% 0%, oklch(0.3 0.1 260 / 0.1) 0px, transparent 50%),
       radial-gradient(at 100% 0%, oklch(0.4 0.1 300 / 0.05) 0px, transparent 50%);
+  }
+
+  .admin-mesh {
+    background-image:
+      radial-gradient(at 0% 0%, color-mix(in oklab, var(--primary) 22%, transparent) 0px, transparent 55%),
+      radial-gradient(at 100% 0%, color-mix(in oklab, var(--primary) 14%, transparent) 0px, transparent 60%),
+      radial-gradient(at 100% 100%, color-mix(in oklab, var(--primary) 10%, transparent) 0px, transparent 55%);
   }
 }

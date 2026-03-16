@@ -129,8 +129,8 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
             {/* Header com Estatística rápida */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-zinc-900">Categorias</h1>
-                    <p className="text-zinc-500 text-sm mt-1">
+                    <h1 className="text-3xl font-bold tracking-tight text-foreground">Categorias</h1>
+                    <p className="text-muted-foreground text-sm mt-1">
                         Organize seus produtos em {initialCategories.length} coleções.
                     </p>
                 </div>
@@ -139,17 +139,17 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Formulário lateral */}
                 <div className="lg:col-span-1">
-                    <form onSubmit={handleCreate} className="bg-white p-6 rounded-2xl border border-zinc-100 shadow-sm sticky top-6 space-y-5">
+                    <form onSubmit={handleCreate} className="bg-card p-6 rounded-2xl border border-border shadow-sm sticky top-6 space-y-5">
                         <div className="flex items-center gap-3 mb-2">
-                            <div className="w-9 h-9 rounded-xl bg-zinc-900 flex items-center justify-center">
-                                <Plus className="w-4 h-4 text-white" />
+                            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center shadow-sm shadow-primary/20">
+                                <Plus className="w-4 h-4 text-primary-foreground" />
                             </div>
-                            <h2 className="font-bold text-zinc-900">Nova Categoria</h2>
+                            <h2 className="font-bold text-foreground">Nova Categoria</h2>
                         </div>
 
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <label htmlFor="name" className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                                <label htmlFor="name" className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                                     Nome da Categoria
                                 </label>
                                 <Input
@@ -158,15 +158,15 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     disabled={isLoading}
-                                    className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200"
+                                    className="h-11 rounded-xl bg-background"
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                                <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                                     Imagem de Capa
                                 </label>
-                                <div className="group relative w-full h-32 rounded-xl bg-zinc-50 border-2 border-dashed border-zinc-200 flex flex-col items-center justify-center overflow-hidden hover:border-zinc-300 transition-colors">
+                                <div className="group relative w-full h-32 rounded-xl bg-muted/30 border-2 border-dashed border-border flex flex-col items-center justify-center overflow-hidden hover:border-border/80 transition-colors">
                                     {imagePreview ? (
                                         <>
                                             <Image src={imagePreview} alt="Preview" fill className="object-cover" />
@@ -176,8 +176,8 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                                         </>
                                     ) : (
                                         <>
-                                            <ImageIcon className="w-6 h-6 text-zinc-300 mb-1" />
-                                            <span className="text-[10px] text-zinc-400 font-medium">PNG ou JPG (800x400 recomendado)</span>
+                                            <ImageIcon className="w-6 h-6 text-muted-foreground/50 mb-1" />
+                                            <span className="text-[10px] text-muted-foreground font-medium">PNG ou JPG (800x400 recomendado)</span>
                                         </>
                                     )}
                                     <input
@@ -195,7 +195,7 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                         <Button
                             type="submit"
                             disabled={isLoading || !name.trim()}
-                            className="w-full h-11 bg-zinc-900 text-white rounded-xl hover:bg-zinc-800 shadow-sm transition-all"
+                            className="w-full h-11 rounded-xl shadow-sm transition-all"
                         >
                             {isLoading ? (
                                 <Loader2 className="w-4 h-4 animate-spin mr-2" />
@@ -209,19 +209,19 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
 
                 {/* Lista principal */}
                 <div className="lg:col-span-2">
-                    <div className="bg-white rounded-2xl border border-zinc-100 shadow-sm overflow-hidden">
+                    <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
                         <Table>
-                            <TableHeader className="bg-zinc-50/50">
-                                <TableRow className="hover:bg-transparent border-zinc-50">
-                                    <TableHead className="font-bold text-zinc-900 py-4 uppercase text-[11px] tracking-widest pl-6">Coleção</TableHead>
-                                    <TableHead className="font-bold text-zinc-900 py-4 uppercase text-[11px] tracking-widest">Produtos</TableHead>
-                                    <TableHead className="text-right font-bold text-zinc-900 py-4 uppercase text-[11px] tracking-widest pr-6">Ações</TableHead>
+                            <TableHeader className="bg-muted/30">
+                                <TableRow className="hover:bg-transparent">
+                                    <TableHead className="font-bold text-foreground py-4 uppercase text-[11px] tracking-widest pl-6">Coleção</TableHead>
+                                    <TableHead className="font-bold text-foreground py-4 uppercase text-[11px] tracking-widest">Produtos</TableHead>
+                                    <TableHead className="text-right font-bold text-foreground py-4 uppercase text-[11px] tracking-widest pr-6">Ações</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {initialCategories.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={3} className="h-40 text-center text-zinc-400">
+                                        <TableCell colSpan={3} className="h-40 text-center text-muted-foreground">
                                             <div className="flex flex-col items-center justify-center gap-2">
                                                 <LayoutGrid className="w-8 h-8 opacity-20" />
                                                 <p>Nenhuma categoria encontrada.</p>
@@ -230,15 +230,15 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                                     </TableRow>
                                 ) : (
                                     initialCategories.map((cat) => (
-                                        <TableRow key={cat.id} className="group hover:bg-zinc-50/50 transition-colors border-zinc-50">
+                                        <TableRow key={cat.id} className="group hover:bg-muted/30 transition-colors">
                                             {editingId === cat.id ? (
                                                 <TableCell colSpan={3} className="p-4 pl-6">
                                                     <div className="flex flex-col md:flex-row gap-4 items-center">
-                                                        <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200">
+                                                        <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-muted border border-border">
                                                             {editImagePreview ? (
                                                                 <Image src={editImagePreview} alt="" fill className="object-cover" />
                                                             ) : (
-                                                                <ImageIcon className="w-full h-full p-4 text-zinc-300" />
+                                                                <ImageIcon className="w-full h-full p-4 text-muted-foreground/50" />
                                                             )}
                                                             <input
                                                                 type="file"
@@ -251,17 +251,17 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                                                             <Input
                                                                 value={editName}
                                                                 onChange={(e) => setEditName(e.target.value)}
-                                                                className="h-10 rounded-xl focus-visible:ring-zinc-200 border-zinc-200"
+                                                                className="h-10 rounded-xl bg-background"
                                                                 placeholder="Novo nome..."
                                                             />
-                                                            <p className="text-[10px] text-zinc-400 font-medium">Clique na imagem para alterar</p>
+                                                            <p className="text-[10px] text-muted-foreground font-medium">Clique na imagem para alterar</p>
                                                         </div>
                                                         <div className="flex items-center gap-2">
                                                             <Button
                                                                 size="sm"
                                                                 onClick={() => handleUpdate(cat.id)}
                                                                 disabled={loadingId === cat.id}
-                                                                className="h-10 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl"
+                                                                className="h-10 px-4 rounded-xl"
                                                             >
                                                                 {loadingId === cat.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                                                                 Salvar
@@ -270,7 +270,7 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                                                                 variant="outline"
                                                                 size="sm"
                                                                 onClick={cancelEditing}
-                                                                className="h-10 px-4 rounded-xl border-zinc-200 text-zinc-600"
+                                                                className="h-10 px-4 rounded-xl"
                                                             >
                                                                 Cancelar
                                                             </Button>
@@ -281,25 +281,25 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                                                 <>
                                                     <TableCell className="py-4 pl-6">
                                                         <div className="flex items-center gap-4">
-                                                            <div className="relative w-12 h-12 rounded-xl bg-zinc-100 border border-zinc-200 overflow-hidden flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
+                                                            <div className="relative w-12 h-12 rounded-xl bg-muted border border-border overflow-hidden flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
                                                                 {cat.image_url ? (
                                                                     <Image src={cat.image_url} alt="" fill className="object-cover" />
                                                                 ) : (
                                                                     <div className="w-full h-full flex items-center justify-center">
-                                                                        <LayoutGrid className="w-4 h-4 text-zinc-300" />
+                                                                        <LayoutGrid className="w-4 h-4 text-muted-foreground/50" />
                                                                     </div>
                                                                 )}
                                                             </div>
                                                             <div>
-                                                                <p className="font-bold text-zinc-900 group-hover:text-zinc-600 transition-colors uppercase tracking-tight">{cat.name}</p>
-                                                                <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">{cat.slug}</p>
+                                                                <p className="font-bold text-foreground group-hover:text-foreground/80 transition-colors uppercase tracking-tight">{cat.name}</p>
+                                                                <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">{cat.slug}</p>
                                                             </div>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="py-4">
                                                         <div className="flex items-center gap-1.5">
-                                                            <span className="text-sm font-bold text-zinc-900">{cat.productsCount}</span>
-                                                            <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">itens</span>
+                                                            <span className="text-sm font-bold text-foreground">{cat.productsCount}</span>
+                                                            <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">itens</span>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="py-4 text-right pr-6">
@@ -308,7 +308,7 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                                                                 variant="ghost"
                                                                 size="icon"
                                                                 onClick={() => startEditing(cat)}
-                                                                className="w-9 h-9 rounded-xl hover:bg-white hover:shadow-sm border border-transparent hover:border-zinc-100 transition-all text-zinc-400 hover:text-blue-600"
+                                                                className="w-9 h-9 rounded-xl border border-transparent hover:border-border hover:bg-background transition-all text-muted-foreground hover:text-primary"
                                                             >
                                                                 <Pencil className="w-4 h-4" />
                                                             </Button>
@@ -316,13 +316,13 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                                                                 variant="ghost"
                                                                 size="icon"
                                                                 onClick={() => handleDelete(cat.id, cat.name, cat.productsCount)}
-                                                                className="w-9 h-9 rounded-xl hover:bg-white hover:shadow-sm border border-transparent hover:border-zinc-100 transition-all text-zinc-400 hover:text-red-600"
+                                                                className="w-9 h-9 rounded-xl border border-transparent hover:border-border hover:bg-background transition-all text-muted-foreground hover:text-red-600"
                                                             >
                                                                 <Trash2 className="w-4 h-4" />
                                                             </Button>
                                                         </div>
                                                         <div className="group-hover:hidden">
-                                                            <ArrowRight className="w-4 h-4 text-zinc-200 ml-auto" />
+                                                            <ArrowRight className="w-4 h-4 text-muted-foreground/25 ml-auto" />
                                                         </div>
                                                     </TableCell>
                                                 </>

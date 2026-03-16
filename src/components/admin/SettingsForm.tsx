@@ -43,7 +43,9 @@ export function SettingsForm({ settings }: SettingsFormProps) {
         <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-8 items-start">
             {/* Sidebar de Navegação */}
             <aside className="w-full lg:sticky lg:top-8 flex flex-col gap-2">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 px-4 mb-2">Categorias de Ajuste</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground px-4 mb-2">
+                    Categorias de Ajuste
+                </p>
                 <nav className="flex lg:flex-col overflow-x-auto lg:overflow-x-visible gap-1 pb-4 lg:pb-0 scrollbar-hide">
                     {tabs.map((tab) => {
                         const isActive = activeTab === tab.id
@@ -52,22 +54,22 @@ export function SettingsForm({ settings }: SettingsFormProps) {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all text-left shrink-0 group ${isActive
-                                    ? "bg-zinc-900 text-white shadow-lg shadow-zinc-200"
-                                    : "text-zinc-500 hover:bg-zinc-100"
+                                    ? "bg-primary text-primary-foreground shadow-sm shadow-primary/20"
+                                    : "text-muted-foreground hover:bg-muted"
                                     }`}
                             >
-                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isActive ? "bg-white/10" : "bg-zinc-100 group-hover:bg-zinc-200"
+                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${isActive ? "bg-primary-foreground/10" : "bg-background border border-border group-hover:bg-background"
                                     }`}>
-                                    <tab.icon className={`h-4 w-4 ${isActive ? "text-white" : "text-zinc-500"}`} />
+                                    <tab.icon className={`h-4 w-4 ${isActive ? "text-primary-foreground" : "text-foreground/70"}`} />
                                 </div>
                                 <div className="flex-1">
                                     <p className="text-sm font-bold tracking-tight">{tab.label}</p>
-                                    <p className={`text-[10px] ${isActive ? "text-zinc-400" : "text-zinc-400 group-hover:text-zinc-500"}`}>
+                                    <p className={`text-[10px] ${isActive ? "text-primary-foreground/70" : "text-muted-foreground group-hover:text-foreground/70"}`}>
                                         {tab.desc}
                                     </p>
                                 </div>
                                 {isActive && (
-                                    <ChevronRight className="h-4 w-4 text-zinc-600 hidden lg:block" />
+                                    <ChevronRight className="h-4 w-4 text-primary-foreground/60 hidden lg:block" />
                                 )}
                             </button>
                         )
