@@ -9,14 +9,14 @@ import {
     SheetTitle,
 } from "@/components/ui/sheet"
 import { Toaster } from "@/components/ui/sonner"
-import { AdminNavLinks } from "@/components/admin/layout/AdminNavLinks"
+import { AdminNavLinks, type AdminNavLink } from "@/components/admin/layout/AdminNavLinks"
 
 export default function AdminLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
-    const navLinks = [
+    const navLinks: AdminNavLink[] = [
         { href: "/admin", icon: "LayoutDashboard", label: "Dashboard" },
         { href: "/admin/categorias", icon: "Tags", label: "Categorias" },
         { href: "/admin/produtos", icon: "Package", label: "Produtos" },

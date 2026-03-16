@@ -19,7 +19,7 @@ const ICONS = {
   Settings,
 } as const
 
-type NavLink = {
+export type AdminNavLink = {
   href: string
   icon: keyof typeof ICONS
   label: string
@@ -29,7 +29,7 @@ export function AdminNavLinks({
   links,
   variant,
 }: {
-  links: NavLink[]
+  links: AdminNavLink[]
   variant: "desktop" | "mobile"
 }) {
   const pathname = usePathname()
