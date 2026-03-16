@@ -17,11 +17,11 @@ export default function AdminLayout({
     children: React.ReactNode
 }) {
     const navLinks = [
-        { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
-        { href: "/admin/categorias", icon: Tags, label: "Categorias" },
-        { href: "/admin/produtos", icon: Package, label: "Produtos" },
-        { href: "/admin/pedidos", icon: ShoppingCart, label: "Pedidos" },
-        { href: "/admin/configuracoes", icon: Settings, label: "Configurações" },
+        { href: "/admin", icon: "LayoutDashboard", label: "Dashboard" },
+        { href: "/admin/categorias", icon: "Tags", label: "Categorias" },
+        { href: "/admin/produtos", icon: "Package", label: "Produtos" },
+        { href: "/admin/pedidos", icon: "ShoppingCart", label: "Pedidos" },
+        { href: "/admin/configuracoes", icon: "Settings", label: "Configurações" },
     ];
 
     return (

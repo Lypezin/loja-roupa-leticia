@@ -2,12 +2,26 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import type { LucideIcon } from "lucide-react"
+import {
+  LayoutDashboard,
+  Tags,
+  Package,
+  ShoppingCart,
+  Settings,
+} from "lucide-react"
 import { cn } from "@/lib/utils"
+
+const ICONS = {
+  LayoutDashboard,
+  Tags,
+  Package,
+  ShoppingCart,
+  Settings,
+} as const
 
 type NavLink = {
   href: string
-  icon: LucideIcon
+  icon: keyof typeof ICONS
   label: string
 }
 
@@ -27,6 +41,8 @@ export function AdminNavLinks({
           pathname === link.href ||
           (link.href !== "/admin" && pathname?.startsWith(link.href))
 
+        const Icon = ICONS[link.icon]
+
         return (
           <Link
             key={link.href}
@@ -40,7 +56,7 @@ export function AdminNavLinks({
                 : "text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent/50",
             )}
           >
-            <link.icon className={cn(variant === "mobile" ? "h-5 w-5" : "h-4 w-4")} />
+            <Icon className={cn(variant === "mobile" ? "h-5 w-5" : "h-4 w-4")} />
             {link.label}
             {isActive && (
               <span className="ml-auto h-2 w-2 rounded-full bg-sidebar-primary" />
