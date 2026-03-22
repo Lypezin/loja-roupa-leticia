@@ -1,9 +1,8 @@
 'use client'
 
 import { motion } from "framer-motion"
-import Link from "next/link"
-import Image from "next/image"
-import { CountdownTimer } from "./CountdownTimer"
+import { HeroBackground } from "./HeroBackground"
+import { HeroContent } from "./HeroContent"
 
 interface HeroSectionProps {
     title: string
@@ -14,9 +13,6 @@ interface HeroSectionProps {
     secondaryButtonText?: string
     countdownEnd?: string
 }
-
-import { HeroBackground } from "./HeroBackground"
-import { HeroContent } from "./HeroContent"
 
 export function HeroSection({ title, subtitle, buttonText, backgroundUrl, badgeText, secondaryButtonText, countdownEnd }: HeroSectionProps) {
     return (

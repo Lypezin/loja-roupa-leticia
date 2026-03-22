@@ -1,20 +1,6 @@
 import Link from "next/link"
 import { Instagram, Mail } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
-
-export async function Footer() {
-    const supabase = await createClient()
-    const { data: settings } = await supabase
-        .from('store_settings')
-        .select('store_name, footer_about_text, footer_newsletter_title, footer_newsletter_subtitle, instagram_url, support_email')
-        .single()
-
-    const currentYear = new Date().getFullYear()
-    const storeName = settings?.store_name || 'FASHION STORE'
-    const aboutText = settings?.footer_about_text || 'Peças exclusivas com qualidade premium. Fazemos moda que conta histórias.'
-    const newsletterTitle = settings?.footer_newsletter_title || 'Fique por dentro'
-    const newsletterSubtitle = settings?.footer_newsletter_subtitle || 'Receba novidades e ofertas exclusivas.'
-
 import { FooterNewsletter } from "./FooterNewsletter"
 import { FooterLinksSection } from "./FooterLinksSection"
 
