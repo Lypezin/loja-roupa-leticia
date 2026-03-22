@@ -1,12 +1,12 @@
 'use server'
 
-import { createClient } from "@/lib/supabase/server"
+import { createClient, requireAdmin } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 
 export async function createCategory(formData: FormData) {
     try {
-        const supabase = await createClient()
-        const name = formData.get('name') as string
+        const supabase = await requireAdmin()
+        const name = (formData.get('name') as string) || ''
 
         const image = formData.get('image') as File | null
 
@@ -54,7 +54,7 @@ export async function createCategory(formData: FormData) {
 
 export async function deleteCategory(id: string) {
     try {
-        const supabase = await createClient()
+        const supabase = await requireAdmin()
 
         // 1. Buscar a categoria para pegar a URL da imagem atual
         const { data: category } = await supabase
@@ -103,8 +103,8 @@ export async function deleteCategory(id: string) {
 
 export async function updateCategory(id: string, formData: FormData) {
     try {
-        const supabase = await createClient()
-        const name = formData.get('name') as string
+        const supabase = await requireAdmin()
+        const name = (formData.get('name') as string) || ''
         const image = formData.get('image') as File | null
 
         // Simples gerador de slug

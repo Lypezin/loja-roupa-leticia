@@ -47,17 +47,11 @@ export async function updateSession(request: NextRequest) {
     const isAdmin = userRole === 'admin'
     // Clientes cadastrados com role 'customer' ou contas incompletas NÃO são admin
 
-    // Bloqueando o acesso ao admin: sem login -> tela de login
-    if (!user && isAdminRoute) {
+    // Bloqueando o acesso ao admin: sem permissão de admin (não logado ou logado sem ser admin)
+    if (isAdminRoute && !isAdmin) {
         const url = request.nextUrl.clone()
-        url.pathname = '/admin/login'
-        return NextResponse.redirect(url)
-    }
-
-    // Bloqueando o acesso ao admin: logado como CLIENTE -> manda pra home
-    if (user && isAdminRoute && userRole === 'customer') {
-        const url = request.nextUrl.clone()
-        url.pathname = '/'
+        // Se estiver logado (mas não é admin), manda pra home. Se não estiver logado, manda pro login admin.
+        url.pathname = user ? '/' : '/admin/login'
         return NextResponse.redirect(url)
     }
 

@@ -27,3 +27,14 @@ export async function createClient() {
         }
     )
 }
+
+export async function requireAdmin() {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    if (!user || user?.user_metadata?.role !== 'admin') {
+        throw new Error("Acesso negado: Permissão de administrador é necessária.")
+    }
+    
+    return supabase
+}

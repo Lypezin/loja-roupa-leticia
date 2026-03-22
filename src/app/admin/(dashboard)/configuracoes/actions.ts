@@ -1,11 +1,11 @@
 'use server'
 
-import { createClient } from "@/lib/supabase/server"
+import { createClient, requireAdmin } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 
 export async function saveProfile(formData: FormData) {
     try {
-        const supabase = await createClient()
+        const supabase = await requireAdmin()
         const id = formData.get('id') as string
 
         const { error } = await supabase
@@ -33,7 +33,7 @@ export async function saveProfile(formData: FormData) {
 
 export async function saveBanner(formData: FormData) {
     try {
-        const supabase = await createClient()
+        const supabase = await requireAdmin()
         const id = formData.get('id') as string
 
         const updates: Record<string, string | number | null> = {
@@ -104,7 +104,7 @@ export async function saveBanner(formData: FormData) {
 
 export async function saveLogistics(formData: FormData) {
     try {
-        const supabase = await createClient()
+        const supabase = await requireAdmin()
         const id = formData.get('id') as string
 
         const thresholdRaw = formData.get('free_shipping_threshold') as string
@@ -133,7 +133,7 @@ export async function saveLogistics(formData: FormData) {
 
 export async function saveFooter(formData: FormData) {
     try {
-        const supabase = await createClient()
+        const supabase = await requireAdmin()
         const id = formData.get('id') as string
 
         const { error } = await supabase
@@ -159,7 +159,7 @@ export async function saveFooter(formData: FormData) {
 
 export async function saveContent(formData: FormData) {
     try {
-        const supabase = await createClient()
+        const supabase = await requireAdmin()
         const id = formData.get('id') as string
 
         const { error } = await supabase
