@@ -1,4 +1,9 @@
-export default function AdminPedidos() {
+import { getAdminOrders } from './actions'
+import OrderListClient from './components/OrderListClient'
+
+export default async function AdminPedidos() {
+    const orders = await getAdminOrders()
+
     return (
         <div className="flex flex-col gap-8">
             <div className="flex items-center justify-between">
@@ -10,8 +15,14 @@ export default function AdminPedidos() {
                 </div>
             </div>
 
-            <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-8 text-center">
-                <p className="text-muted-foreground">Nenhum pedido recebido ainda.</p>
+            <div className="rounded-xl border bg-card text-card-foreground shadow-sm">
+                {orders.length === 0 ? (
+                    <div className="p-8 text-center text-muted-foreground">
+                        Nenhum pedido recebido ainda.
+                    </div>
+                ) : (
+                    <OrderListClient orders={orders} />
+                )}
             </div>
         </div>
     )

@@ -1,0 +1,108 @@
+'use client'
+
+import { useState } from 'react'
+import { updateOrderStatus } from '../actions'
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { formatCurrency } from '@/lib/utils'
+
+type Order = {
+    id: string
+    stripe_session_id: string
+    total_amount: number
+    status: string
+    customer_email: string | null
+    customer_name: string | null
+    created_at: string
+    users: { full_name: string | null, email: string } | null
+    order_items: { id: string, quantity: number, price: number, products: { name: string } | null }[]
+}
+
+const statusMap: Record<string, string> = {
+    'paid': 'Pago',
+    'processing': 'Processando',
+    'shipped': 'Enviado',
+    'delivered': 'Entregue',
+    'cancelled': 'Cancelado',
+}
+
+export default function OrderListClient({ orders }: { orders: Order[] }) {
+    const [updating, setUpdating] = useState<string | null>(null)
+
+    const handleStatusChange = async (orderId: string, newStatus: string) => {
+        try {
+            setUpdating(orderId)
+            await updateOrderStatus(orderId, newStatus)
+        } catch (error) {
+            console.error("Erro ao alterar status:", error)
+        } finally {
+            setUpdating(null)
+        }
+    }
+
+    return (
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHead>Data</TableHead>
+                    <TableHead>Cliente</TableHead>
+                    <TableHead>Itens / Recibo</TableHead>
+                    <TableHead>Total</TableHead>
+                    <TableHead>Status</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {orders.map((order) => {
+                    const clientName = order.customer_name || order.users?.full_name || 'Desconhecido'
+                    const clientEmail = order.customer_email || order.users?.email || 'Sem e-mail'
+                    
+                    return (
+                        <TableRow key={order.id}>
+                            <TableCell className="font-medium">
+                                {new Date(order.created_at).toLocaleDateString('pt-BR')}
+                            </TableCell>
+                            <TableCell>
+                                <div className="font-medium">{clientName}</div>
+                                <div className="text-sm text-muted-foreground">{clientEmail}</div>
+                            </TableCell>
+                            <TableCell>
+                                <div className="text-sm text-balance max-w-[200px]">
+                                    {order.order_items?.map(i => `${i.quantity}x ${i.products?.name || 'Item'}`).join(', ') || 'Nenhum item'}
+                                </div>
+                            </TableCell>
+                            <TableCell>
+                                {formatCurrency(order.total_amount)}
+                            </TableCell>
+                            <TableCell>
+                                <Select 
+                                    defaultValue={order.status} 
+                                    onValueChange={(val) => handleStatusChange(order.id, val)}
+                                    disabled={updating === order.id}
+                                >
+                                    <SelectTrigger className="w-[140px]">
+                                        <SelectValue placeholder="Status" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="paid">Pago</SelectItem>
+                                        <SelectItem value="processing">Processando</SelectItem>
+                                        <SelectItem value="shipped">Enviado</SelectItem>
+                                        <SelectItem value="delivered">Entregue</SelectItem>
+                                        <SelectItem value="cancelled">Cancelado</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </TableCell>
+                        </TableRow>
+                    )
+                })}
+            </TableBody>
+        </Table>
+    )
+}
