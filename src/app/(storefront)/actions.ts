@@ -70,13 +70,20 @@ export async function createCheckoutSession(cartItems: any[]) {
             payment_method_types: ['card', 'boleto'], 
             line_items: lineItems,
             mode: 'payment',
-            success_url: `${origin}/sucesso`,
+            success_url: `${origin}/sucesso?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${origin}/carrinho`,
-            metadata: orderMetadata
+            metadata: orderMetadata,
+            // Coleta de endereço de entrega (a Stripe pergunta para o cliente)
+            shipping_address_collection: {
+                allowed_countries: ['BR'],
+            },
+            // Exigir endereço de cobrança também
+            billing_address_collection: 'required',
         }
 
         if (user) {
             sessionParams.client_reference_id = user.id
+            sessionParams.customer_email = user.email
         }
 
         const session = await stripe.checkout.sessions.create(sessionParams)

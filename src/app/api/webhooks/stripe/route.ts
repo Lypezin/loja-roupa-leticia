@@ -18,34 +18,40 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Webhook signature verification failed' }, { status: 400 })
         }
     } else {
-        // Se ainda não tivermos a variável configurada, passamos o evento manualmente durante os testes
         event = JSON.parse(body)
     }
 
     // 2. Tratar Eventos Específicos da Stripe
     switch (event.type) {
-        case 'checkout.session.completed':
+        case 'checkout.session.completed': {
             const session = event.data.object as any
 
             console.log(`✅ Pagamento efetuado com sucesso (Checkout ID: ${session.id})`)
-            console.log(`Valor Total: ${session.amount_total / 100} BRL`)
-            
-            // 3. Salvar Pedido no Supabase
-            // Usamos o @supabase/supabase-js com a SERVICE_ROLE_KEY para ignorar o RLS durante o webhook
+
+            // Iniciar Supabase Admin (Service Role para ignorar RLS)
             const { createClient } = await import('@supabase/supabase-js')
-            
             const supabaseAdmin = createClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
                 process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
             )
 
-            // Tentar descobrir o user_id real se ele fez checkout logado
-            let userId = session.client_reference_id || null
-            if (!userId && session.metadata?.userId) {
-                userId = session.metadata.userId
+            // ========== PROTEÇÃO CONTRA DUPLICIDADE ==========
+            // Se a Stripe reenviar o evento, não criar pedido duplicado
+            const { data: existingOrder } = await supabaseAdmin
+                .from('orders')
+                .select('id')
+                .eq('stripe_session_id', session.id)
+                .maybeSingle()
+
+            if (existingOrder) {
+                console.log(`⚠️ Pedido já existe para session ${session.id}. Ignorando duplicata.`)
+                return NextResponse.json({ received: true, duplicate: true }, { status: 200 })
             }
 
-            // Inserir Order (Pedido Principal)
+            // Descobrir o user_id (via client_reference_id enviado no checkout)
+            const userId = session.client_reference_id || null
+
+            // ========== INSERIR PEDIDO ==========
             const { data: insertedOrder, error: orderError } = await supabaseAdmin.from('orders').insert({
                 stripe_session_id: session.id,
                 user_id: userId,
@@ -57,13 +63,13 @@ export async function POST(req: Request) {
             }).select('id').single()
 
             if (orderError) {
-                console.error("❌ Erro ao salvar Pedido na tabela 'orders':", orderError.message)
+                console.error("❌ Erro ao salvar Pedido:", orderError.message)
                 return NextResponse.json({ error: 'Database Order error' }, { status: 500 })
             }
 
             console.log(`✅ Pedido cadastrado com ID: ${insertedOrder.id}`)
 
-            // Inserir os Itens do Pedido se baseando no Carrinho
+            // ========== INSERIR ITENS + DESCONTAR ESTOQUE ==========
             if (session.metadata?.cartDetails) {
                 const items = JSON.parse(session.metadata.cartDetails)
                 
@@ -78,18 +84,32 @@ export async function POST(req: Request) {
                 const { error: itemsError } = await supabaseAdmin.from('order_items').insert(orderItemsToInsert)
                 
                 if (itemsError) {
-                    console.error("❌ Erro ao registrar Itens do Pedido no BD:", itemsError.message)
+                    console.error("❌ Erro ao registrar Itens:", itemsError.message)
                 } else {
-                    console.log(`✅ ${items.length} itens registrados no pedido!`)
+                    console.log(`✅ ${items.length} itens registrados!`)
+                }
+
+                // Descontar estoque automaticamente
+                for (const item of items) {
+                    if (item.variation) {
+                        const { error: stockError } = await supabaseAdmin.rpc('decrement_stock', {
+                            p_variation_id: item.variation,
+                            p_quantity: item.q
+                        })
+                        if (stockError) {
+                            console.error(`⚠️ Erro ao descontar estoque da variação ${item.variation}:`, stockError.message)
+                        }
+                    }
                 }
             }
-            break;
+            break
+        }
             
-        case 'charge.refunded':
+        case 'charge.refunded': {
             const charge = event.data.object as any
             console.log(`⚠️ Pagamento reembolsado: ${charge.id}`)
-            // Atualizar status no banco de dados para "Devolvido"
-            break;
+            break
+        }
 
         default:
             console.log(`🤷‍♂️ Evento ignorado: ${event.type}`)

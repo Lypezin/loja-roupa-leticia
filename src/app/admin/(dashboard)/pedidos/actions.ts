@@ -1,15 +1,22 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/supabase/server'
+import { createClient as createAdminClient } from '@supabase/supabase-js'
 import { revalidatePath } from 'next/cache'
 
-// Função para buscar os pedidos do painel admin
+// Cliente com service_role para bypassar RLS nas operações do Admin
+function getAdminSupabase() {
+    return createAdminClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+}
+
+// Buscar todos os pedidos
 export async function getAdminOrders() {
     await requireAdmin()
-    const supabase = await createClient()
+    const supabase = getAdminSupabase()
 
-    // Buscamos os pedidos mais recentes
     const { data: orders, error } = await supabase
         .from('orders')
         .select(`
@@ -31,14 +38,14 @@ export async function getAdminOrders() {
     return orders
 }
 
-// Função para atualizar o status do pedido
+// Atualizar status do pedido
 export async function updateOrderStatus(orderId: string, status: string) {
     await requireAdmin()
-    const supabase = await createClient()
+    const supabase = getAdminSupabase()
 
     const { error } = await supabase
         .from('orders')
-        .update({ status })
+        .update({ status, updated_at: new Date().toISOString() })
         .eq('id', orderId)
 
     if (error) {
@@ -47,4 +54,25 @@ export async function updateOrderStatus(orderId: string, status: string) {
     }
 
     revalidatePath('/admin/pedidos')
+}
+
+// Stats para o Dashboard
+export async function getAdminStats() {
+    await requireAdmin()
+    const supabase = getAdminSupabase()
+
+    const now = new Date()
+    const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
+
+    // Pedidos do mês e total de vendas
+    const { data: monthOrders } = await supabase
+        .from('orders')
+        .select('total_amount')
+        .gte('created_at', firstDayOfMonth)
+        .neq('status', 'cancelled')
+
+    const totalSales = monthOrders?.reduce((sum, o) => sum + Number(o.total_amount), 0) || 0
+    const totalOrders = monthOrders?.length || 0
+
+    return { totalSales, totalOrders }
 }

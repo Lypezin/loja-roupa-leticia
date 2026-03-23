@@ -2,21 +2,23 @@ import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { BarChart3, Sparkles } from "lucide-react"
 import { AdminActionCard, AdminStatCard, type AdminDashboardIcon } from "@/components/admin/dashboard/AdminCards"
-
 import { AdminActivitySection } from "@/components/admin/dashboard/AdminActivitySection"
+import { getAdminStats } from "./pedidos/actions"
+import { formatCurrency } from "@/lib/utils"
 
 export default async function AdminDashboard() {
     const supabase = await createClient()
 
-    const [ { count: prodC }, { count: catC }, { count: totP } ] = await Promise.all([
+    const [ { count: prodC }, { count: catC }, { count: totP }, salesData ] = await Promise.all([
         supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_active', true),
         supabase.from('categories').select('*', { count: 'exact', head: true }),
-        supabase.from('products').select('*', { count: 'exact', head: true })
+        supabase.from('products').select('*', { count: 'exact', head: true }),
+        getAdminStats()
     ])
 
     const stats: any[] = [
-        { label: "Vendas no Mês", value: "R$ 0,00", change: "Gateway pendente", icon: "DollarSign" },
-        { label: "Pedidos", value: "0", change: "Nenhum ainda", icon: "ShoppingCart" },
+        { label: "Vendas no Mês", value: formatCurrency(salesData.totalSales), change: `${salesData.totalOrders} pedido(s)`, icon: "DollarSign" },
+        { label: "Pedidos", value: String(salesData.totalOrders), change: "Este mês", icon: "ShoppingCart" },
         { label: "Produtos Ativos", value: String(prodC || 0), change: `${totP || 0} no total`, icon: "Package" },
         { label: "Categorias", value: String(catC || 0), change: "Organizadas", icon: "Tags" },
     ]
