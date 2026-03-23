@@ -4,8 +4,8 @@ import Stripe from 'stripe'
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY || ''
 
 export const stripe = new Stripe(stripeSecretKey, {
-    // Definimos a versão mais recente da API estável
-    apiVersion: '2023-10-16', 
+    // Definimos a versão mais recente da API estável baseada na tipagem instalada
+    apiVersion: '2026-02-25.clover', 
     appInfo: {
         name: 'Fashion Store',
         version: '0.1.0'
