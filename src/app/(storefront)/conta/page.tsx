@@ -39,26 +39,47 @@ export default async function MinhaContaPage({
                     <p className="text-muted-foreground">{user.email}</p>
                 </div>
 
-                <div className="grid gap-4">
-                    <div className="bg-card p-6 rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow">
-                        <div className="flex items-center gap-4">
-                            <div className="p-3 bg-muted rounded-lg">
-                                <Package className="w-6 h-6 text-muted-foreground" />
+                <div className="grid sm:grid-cols-2 gap-4">
+                    {/* Card Meus Dados */}
+                    <Link href="/conta/perfil" className="group block">
+                        <div className="bg-card p-6 rounded-xl border border-border shadow-sm hover:shadow-md transition-all group-hover:border-primary/50 h-full flex flex-col">
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                                    <User className="w-6 h-6 text-primary" />
+                                </div>
+                                <h3 className="font-semibold text-foreground text-lg">Meus Dados</h3>
                             </div>
-                            <div className="flex-1">
-                                <h3 className="font-semibold text-foreground">Meus Pedidos</h3>
-                                <p className="text-sm text-muted-foreground">Acompanhe seus pedidos e entregas</p>
+                            <p className="text-sm text-muted-foreground flex-1">
+                                Gerencie suas informações pessoais, como nome, telefone e CPF.
+                            </p>
+                            <div className="mt-4 pt-4 border-t border-border flex items-center text-sm font-medium text-primary">
+                                Editar Perfil <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                             </div>
-                            <Link href="/conta/pedidos">
-                                <Button variant="outline" className="cursor-pointer">Ver Pedidos</Button>
-                            </Link>
                         </div>
-                    </div>
+                    </Link>
+
+                    {/* Card Meus Pedidos */}
+                    <Link href="/conta/pedidos" className="group block">
+                        <div className="bg-card p-6 rounded-xl border border-border shadow-sm hover:shadow-md transition-all group-hover:border-primary/50 h-full flex flex-col">
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                                    <Package className="w-6 h-6 text-primary" />
+                                </div>
+                                <h3 className="font-semibold text-foreground text-lg">Meus Pedidos</h3>
+                            </div>
+                            <p className="text-sm text-muted-foreground flex-1">
+                                Acompanhe o status e histórico de todas as suas compras.
+                            </p>
+                            <div className="mt-4 pt-4 border-t border-border flex items-center text-sm font-medium text-primary">
+                                Ver Pedidos <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                            </div>
+                        </div>
+                    </Link>
                 </div>
 
-                <div className="flex flex-col items-center gap-4 pt-4">
+                <div className="flex flex-col items-center gap-4 pt-8">
                     <form action={logoutCliente}>
-                        <Button type="submit" variant="outline" className="text-red-600 dark:text-red-400 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-500/10 cursor-pointer">
+                        <Button type="submit" variant="ghost" className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 cursor-pointer">
                             <LogOut className="w-4 h-4 mr-2" />
                             Sair da Conta
                         </Button>
