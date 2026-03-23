@@ -90,7 +90,19 @@ export async function deleteProduct(productId: string) {
     try {
         const supabase = await requireAdmin()
         
-        // Simplified: delete relations then product
+        // 1. Busca se esse produto tem ID conectada com a Stripe
+        const { data: productToDelete } = await supabase.from('products').select('stripe_product_id').eq('id', productId).single()
+        
+        if (productToDelete?.stripe_product_id) {
+            try {
+                // Tentamos arquivar na Stripe (se já tiver venda a Stripe não deixa excluir 100%, então inativar é a prática universal)
+                await stripe.products.update(productToDelete.stripe_product_id, { active: false })
+            } catch (stripeErr: any) {
+                console.error("Aviso: Falha ao arquivar produto na Stripe:", stripeErr)
+            }
+        }
+
+        // 2. Continua apagando todas as referencias do banco normalmente
         await supabase.from('product_images').delete().eq('product_id', productId)
         await supabase.from('product_variations').delete().eq('product_id', productId)
         const { error } = await supabase.from('products').delete().eq('id', productId)
