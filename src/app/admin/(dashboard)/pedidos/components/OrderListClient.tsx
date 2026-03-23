@@ -22,7 +22,6 @@ type Order = {
     customer_email: string | null
     customer_name: string | null
     created_at: string
-    users: { full_name: string | null, email: string } | null
     order_items: { id: string, quantity: number, price: number, products: { name: string } | null }[]
 }
 
@@ -61,8 +60,8 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
             </TableHeader>
             <TableBody>
                 {orders.map((order) => {
-                    const clientName = order.customer_name || order.users?.full_name || 'Desconhecido'
-                    const clientEmail = order.customer_email || order.users?.email || 'Sem e-mail'
+                    const clientName = order.customer_name || 'Alguém'
+                    const clientEmail = order.customer_email || 'Oculto na Stripe'
                     
                     return (
                         <TableRow key={order.id}>

@@ -40,12 +40,9 @@ export async function POST(req: Request) {
             )
 
             // Tentar descobrir o user_id real se ele fez checkout logado
-            let userId = null
-            if (session.metadata?.userId) {
+            let userId = session.client_reference_id || null
+            if (!userId && session.metadata?.userId) {
                 userId = session.metadata.userId
-            } else if (session.customer_email) {
-                 const { data: userByEmail } = await supabaseAdmin.from('users').select('id').eq('email', session.customer_email).single()
-                 if(userByEmail) userId = userByEmail.id
             }
 
             // Inserir Order (Pedido Principal)
@@ -72,10 +69,10 @@ export async function POST(req: Request) {
                 
                 const orderItemsToInsert = items.map((item: any) => ({
                     order_id: insertedOrder.id,
-                    product_id: item.productId,
-                    variation_id: item.variationId || null,
-                    quantity: item.quantity,
-                    price: item.price
+                    product_id: item.id,
+                    variation_id: item.variation || null,
+                    quantity: item.q,
+                    price: item.p || 0
                 }))
 
                 const { error: itemsError } = await supabaseAdmin.from('order_items').insert(orderItemsToInsert)

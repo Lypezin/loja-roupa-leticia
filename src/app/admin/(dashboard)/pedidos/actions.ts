@@ -14,7 +14,6 @@ export async function getAdminOrders() {
         .from('orders')
         .select(`
             *,
-            users ( full_name, email ),
             order_items (
                 id,
                 quantity,

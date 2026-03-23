@@ -59,20 +59,27 @@ export async function createCheckoutSession(cartItems: any[]) {
                 id: i.product_id, 
                 variation: i.variation_id, 
                 q: i.quantity,
-                s: i.size,
-                c: i.color
+                p: i.price
             })))
         }
 
+        const { data: { user } } = await supabase.auth.getUser()
+
         // Criar a Sessão na Stripe
-        const session = await stripe.checkout.sessions.create({
+        const sessionParams: any = {
             payment_method_types: ['card', 'boleto'], 
             line_items: lineItems,
             mode: 'payment',
             success_url: `${origin}/sucesso`,
             cancel_url: `${origin}/carrinho`,
             metadata: orderMetadata
-        })
+        }
+
+        if (user) {
+            sessionParams.client_reference_id = user.id
+        }
+
+        const session = await stripe.checkout.sessions.create(sessionParams)
 
         if (!session.url) {
             throw new Error('Stripe não retornou a URL de destino.')
