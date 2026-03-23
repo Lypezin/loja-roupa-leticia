@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
-import { MapPin, Clock, Sparkles, Heart, Users } from "lucide-react"
+import { Sparkles, Heart, Users } from "lucide-react"
 
 export const revalidate = 60
 
@@ -21,10 +21,10 @@ export default async function SobrePage() {
             </section>
 
             {/* Valores */}
-            <section className="container mx-auto px-4 py-20">
+            <section className="container mx-auto px-4 py-12 md:py-20">
                 <div className="max-w-3xl mx-auto">
-                    <p className="text-lg text-zinc-600 leading-relaxed mb-12 text-center">
-                        A <span className="font-semibold text-zinc-900">{storeName}</span> nasceu da
+                    <p className="text-lg text-muted-foreground leading-relaxed mb-12 text-center">
+                        A <span className="font-semibold text-foreground">{storeName}</span> nasceu da
                         paixão por moda atemporal e acessível. Acreditamos que cada peça deve contar
                         uma história e fazer quem veste se sentir extraordinário. Nosso compromisso é
                         oferecer qualidade, conforto e estilo em cada detalhe.
@@ -36,12 +36,12 @@ export default async function SobrePage() {
                             { icon: Heart, title: "Paixão pelo Design", desc: "Cada coleção é pensada para inspirar e empoderar." },
                             { icon: Users, title: "Para Todos", desc: "Moda inclusiva que celebra a diversidade de estilos." },
                         ].map(item => (
-                            <div key={item.title} className="text-center p-6 rounded-2xl bg-zinc-50 border border-zinc-100">
-                                <div className="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center mx-auto mb-4">
-                                    <item.icon className="w-5 h-5 text-white" />
+                            <div key={item.title} className="text-center p-6 rounded-2xl bg-muted/50 border border-border">
+                                <div className="w-12 h-12 bg-foreground rounded-xl flex items-center justify-center mx-auto mb-4">
+                                    <item.icon className="w-5 h-5 text-background" />
                                 </div>
-                                <h3 className="font-semibold text-zinc-900 mb-2">{item.title}</h3>
-                                <p className="text-sm text-zinc-500 leading-relaxed">{item.desc}</p>
+                                <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
+                                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                             </div>
                         ))}
                     </div>

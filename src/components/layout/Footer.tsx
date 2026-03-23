@@ -6,10 +6,18 @@ import { FooterLinksSection } from "./FooterLinksSection"
 
 export async function Footer() {
     const supabase = await createClient()
-    const { data: settings } = await supabase
-        .from('store_settings')
-        .select('store_name, footer_about_text, footer_newsletter_title, footer_newsletter_subtitle, instagram_url, support_email')
-        .single()
+    
+    const [{ data: settings }, { data: categories }] = await Promise.all([
+        supabase
+            .from('store_settings')
+            .select('store_name, footer_about_text, footer_newsletter_title, footer_newsletter_subtitle, instagram_url, support_email')
+            .single(),
+        supabase
+            .from('categories')
+            .select('name, slug')
+            .order('created_at', { ascending: true })
+            .limit(5)
+    ])
 
     const currentYear = new Date().getFullYear()
     const storeName = settings?.store_name || 'FASHION STORE'
@@ -17,10 +25,18 @@ export async function Footer() {
     const newsletterTitle = settings?.footer_newsletter_title || 'Fique por dentro'
     const newsletterSubtitle = settings?.footer_newsletter_subtitle || 'Receba novidades e ofertas exclusivas.'
 
+    // Links de categorias dinâmicos do banco
+    const categoryLinks = categories?.map((cat: { name: string; slug: string }) => ({
+        href: `/${cat.slug}`,
+        label: cat.name
+    })) || [
+        { href: "/produtos", label: "Todos os Produtos" }
+    ]
+
     const sections = [
-        { title: "Loja", links: [{ href: "/camisetas", label: "Camisetas" }, { href: "/calcas", label: "Calças" }, { href: "/acessorios", label: "Acessórios" }] },
+        { title: "Loja", links: [...categoryLinks, { href: "/produtos", label: "Ver Tudo" }] },
         { title: "Empresa", links: [{ href: "/sobre", label: "Sobre Nós" }, { href: "/contato", label: "Contato" }, { href: "/termos", label: "Termos de Uso" }] },
-        { title: "Atendimento", links: [{ href: "/conta", label: "Minha Conta" }, { href: "/carrinho", label: "Meu Carrinho" }] }
+        { title: "Atendimento", links: [{ href: "/conta", label: "Minha Conta" }, { href: "/conta/pedidos", label: "Meus Pedidos" }, { href: "/carrinho", label: "Meu Carrinho" }] }
     ]
 
     return (

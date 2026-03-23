@@ -44,7 +44,6 @@ export function ProductCard({ product, index = 0 }: { product: Product, index?: 
                 <h3 className="text-xl font-bold tracking-tight text-foreground/90 truncate">{product.name}</h3>
                 <div className="flex items-center gap-2">
                     <p className="text-lg font-bold text-foreground">{formattedPrice}</p>
-                    <span className="text-xs text-muted-foreground line-through opacity-50 text-sm">R$ {(product.base_price * 1.2).toFixed(2)}</span>
                 </div>
             </Link>
         </motion.div>

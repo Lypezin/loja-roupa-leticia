@@ -29,7 +29,7 @@ export function HeroContent({ title, subtitle, buttonText, badgeText, secondaryB
                     </motion.div>
                 )}
 
-                <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight leading-[0.85] mb-8 text-gradient">
+                <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight leading-[0.85] mb-6 md:mb-8 text-gradient">
                     {title.split(' ').map((word, i) => (
                         <motion.span key={i} className="inline-block mr-[0.2em]" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + (i * 0.1), duration: 0.8 }}>
                             {word}
@@ -37,13 +37,13 @@ export function HeroContent({ title, subtitle, buttonText, badgeText, secondaryB
                     ))}
                 </h1>
 
-                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8, duration: 1 }} className="text-zinc-400 text-lg md:text-xl max-w-xl mx-auto mb-12 leading-relaxed font-light">
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8, duration: 1 }} className="text-zinc-400 text-base md:text-xl max-w-xl mx-auto mb-8 md:mb-12 leading-relaxed font-light">
                     {subtitle}
                 </motion.p>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Link href="/camisetas" className="group relative flex items-center justify-center px-10 py-5 bg-foreground text-background text-sm font-bold rounded-full transition-all hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] overflow-hidden">
+                        <Link href="/produtos" className="group relative flex items-center justify-center px-8 py-4 md:px-10 md:py-5 bg-foreground text-background text-sm font-bold rounded-full transition-all hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] overflow-hidden">
                             <span className="relative z-10">{buttonText}</span>
                             <motion.div className="absolute inset-0 bg-primary/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" />
                         </Link>

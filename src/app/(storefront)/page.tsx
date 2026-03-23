@@ -67,7 +67,7 @@ export default async function StorefrontHome() {
             />
 
             {/* Produtos Recentes */}
-            <section className="container mx-auto px-4 py-20">
+            <section className="container mx-auto px-4 py-12 md:py-20">
                 <div className="flex items-end justify-between mb-12">
                     <div>
                         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-2 block">
@@ -82,8 +82,7 @@ export default async function StorefrontHome() {
 
                 {products && products.length > 0 ? (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
-                        {products.map((product, i) => (
-                            // @ts-expect-error -> Product type has category object
+                        {products.map((product: any, i: number) => (
                             <ProductCard key={product.id} product={product} index={i} />
                         ))}
                     </div>
