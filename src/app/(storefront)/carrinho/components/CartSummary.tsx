@@ -1,8 +1,11 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
-import { ArrowRight, MessageSquare } from "lucide-react"
+import { ArrowRight, MessageSquare, Loader2 } from "lucide-react"
 import Link from "next/link"
+import { useState } from "react"
+import { useCartStore } from "@/store/useCartStore"
+import { createCheckoutSession } from "@/app/(storefront)/actions"
 
 interface CartSummaryProps {
     total: number;
@@ -12,6 +15,32 @@ interface CartSummaryProps {
 }
 
 export function CartSummary({ total, formattedTotal, installment, handleWhatsAppCheckout }: CartSummaryProps) {
+    const { items } = useCartStore()
+    const [isLoadingStripe, setIsLoadingStripe] = useState(false)
+
+    // Handler para disparar a Stripe
+    const handleStripeCheckout = async () => {
+        if (items.length === 0) return
+        
+        setIsLoadingStripe(true)
+        try {
+            const result = await createCheckoutSession(items)
+            
+            if (result.error) {
+                alert(result.error)
+                setIsLoadingStripe(false)
+                return
+            }
+
+            if (result.url) {
+                window.location.href = result.url // Redireciona o cliente para a tela oficial de pagamento
+            }
+        } catch (error) {
+            alert('Falha interna ao redirecionar para pagamentos.')
+            setIsLoadingStripe(false)
+        }
+    }
+
     return (
         <div className="lg:col-span-1">
             <div className="sticky top-24 bg-card rounded-2xl p-6 space-y-5 border border-border">
@@ -36,15 +65,20 @@ export function CartSummary({ total, formattedTotal, installment, handleWhatsApp
                 </div>
 
                 <Button
-                    onClick={() => alert('O sistema de pagamento será implementado em breve! Obrigado pelo interesse.')}
-                    className="w-full h-13 bg-foreground hover:bg-foreground/90 text-background text-sm font-semibold tracking-wide cursor-pointer flex items-center justify-center gap-2 rounded-xl"
+                    onClick={handleStripeCheckout}
+                    disabled={isLoadingStripe}
+                    className="w-full h-13 bg-foreground hover:bg-foreground/90 text-background text-sm font-semibold tracking-wide cursor-pointer flex items-center justify-center gap-2 rounded-xl disabled:opacity-70"
                 >
-                    Finalizar Compra
-                    <ArrowRight className="w-4 h-4" />
+                    {isLoadingStripe ? (
+                        <>Processando <Loader2 className="w-4 h-4 animate-spin" /></>
+                    ) : (
+                        <>Finalizar Compra <ArrowRight className="w-4 h-4" /></>
+                    )}
                 </Button>
 
                 <Button
                     onClick={handleWhatsAppCheckout}
+                    disabled={isLoadingStripe}
                     variant="outline"
                     className="w-full h-13 border-emerald-500/30 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-semibold tracking-wide cursor-pointer flex items-center justify-center gap-2 rounded-xl transition-colors"
                 >
