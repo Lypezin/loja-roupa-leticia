@@ -43,27 +43,25 @@ export async function saveProduct(formData: FormData) {
             let stripePriceId = null
 
             try {
-                if (process.env.STRIPE_SECRET_KEY) {
-                    // 1. Cria o Produto na Stripe
-                    const stripeProduct = await stripe.products.create({
-                        name,
-                        description,
-                        active: is_active
-                    })
-                    
-                    // 2. Cria o Preço cobrado no Brasil
-                    const stripePrice = await stripe.prices.create({
-                        product: stripeProduct.id,
-                        unit_amount: Math.round(base_price * 100), // R$ 10,00 -> 1000 centavos
-                        currency: 'brl',
-                    })
-                    
-                    stripeProductId = stripeProduct.id
-                    stripePriceId = stripePrice.id
-                }
-            } catch (stripeErr) {
-                console.error("Erro na integração com a Stripe: ", stripeErr)
-                // Se a Stripe falhar, nós avisamos, mas podemos decidir se o backend deve interromper ou criar mesmo assim (vamos deixar tentar criar sem Stripe)
+                // 1. Cria o Produto na Stripe
+                const stripeProduct = await stripe.products.create({
+                    name,
+                    description,
+                    active: is_active
+                })
+                
+                // 2. Cria o Preço cobrado no Brasil
+                const stripePrice = await stripe.prices.create({
+                    product: stripeProduct.id,
+                    unit_amount: Math.round(base_price * 100), // R$ 10,00 -> 1000 centavos
+                    currency: 'brl',
+                })
+                
+                stripeProductId = stripeProduct.id
+                stripePriceId = stripePrice.id
+            } catch (stripeErr: any) {
+                console.error("Erro na integração com a Stripe:", stripeErr)
+                throw new Error("Erro na Stripe: " + stripeErr.message)
             }
 
             // Inserir no Supabase salvando as chaves conectadas
