@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 import { manageProductImages } from "./image-actions"
 import { updateProductVariations } from "./variation-actions"
+import { stripe } from "@/lib/stripe"
 
 export async function saveProduct(formData: FormData) {
     try {
@@ -17,11 +18,63 @@ export async function saveProduct(formData: FormData) {
         const variations = JSON.parse(formData.get('variations_json') as string)
 
         let finalId = productId
+
         if (productId) {
+            // Atualizar produto existente (Buscamos o ID da Stripe primeiro)
+            const { data: existingProduct } = await supabase.from('products').select('stripe_product_id').eq('id', productId).single()
+            
+            // Sincroniza atualização de titulo/descrição para a Stripe se existir
+            if (existingProduct?.stripe_product_id) {
+                try {
+                    await stripe.products.update(existingProduct.stripe_product_id, {
+                        name,
+                        description,
+                        active: is_active
+                    })
+                } catch (stripeErr) {
+                    console.error('Aviso: Falha ao atualizar na Stripe:', stripeErr)
+                }
+            }
+            
             await supabase.from('products').update({ name, description, base_price, category_id, is_active }).eq('id', productId)
         } else {
-            const { data, error } = await supabase.from('products').insert([{ name, description, base_price, category_id, is_active }]).select('id').single()
-            if (error || !data) throw new Error(error?.message || 'Erro ao criar produto.')
+            // CRIAR NOVO PRODUTO NA STRIPE E NO SUPABASE SIMULTANEAMENTE
+            let stripeProductId = null
+            let stripePriceId = null
+
+            try {
+                if (process.env.STRIPE_SECRET_KEY) {
+                    // 1. Cria o Produto na Stripe
+                    const stripeProduct = await stripe.products.create({
+                        name,
+                        description,
+                        active: is_active
+                    })
+                    
+                    // 2. Cria o Preço cobrado no Brasil
+                    const stripePrice = await stripe.prices.create({
+                        product: stripeProduct.id,
+                        unit_amount: Math.round(base_price * 100), // R$ 10,00 -> 1000 centavos
+                        currency: 'brl',
+                    })
+                    
+                    stripeProductId = stripeProduct.id
+                    stripePriceId = stripePrice.id
+                }
+            } catch (stripeErr) {
+                console.error("Erro na integração com a Stripe: ", stripeErr)
+                // Se a Stripe falhar, nós avisamos, mas podemos decidir se o backend deve interromper ou criar mesmo assim (vamos deixar tentar criar sem Stripe)
+            }
+
+            // Inserir no Supabase salvando as chaves conectadas
+            const insertData: any = { name, description, base_price, category_id, is_active }
+            if (stripeProductId && stripePriceId) {
+                insertData.stripe_product_id = stripeProductId
+                insertData.stripe_price_id = stripePriceId
+            }
+
+            const { data, error } = await supabase.from('products').insert([insertData]).select('id').single()
+            if (error || !data) throw new Error(error?.message || 'Erro ao criar produto no banco.')
             finalId = data.id
         }
 
