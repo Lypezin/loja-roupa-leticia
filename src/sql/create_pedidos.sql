@@ -1,3 +1,7 @@
+-- Limpeza de tabelas velhas caso existissem de testes anteriores
+DROP TABLE IF EXISTS public.order_items CASCADE;
+DROP TABLE IF EXISTS public.orders CASCADE;
+
 -- 1. Tabela de Pedidos
 CREATE TABLE IF NOT EXISTS public.orders (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,

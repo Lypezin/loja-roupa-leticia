@@ -7,7 +7,7 @@ import { redirect } from "next/navigation"
 export async function loginCliente(formData: FormData) {
     const supabase = await createClient()
 
-    const email = formData.get('email') as string
+    const email = (formData.get('email') as string)?.trim()
     const password = formData.get('password') as string
 
     const { error } = await supabase.auth.signInWithPassword({ email, password })
@@ -32,8 +32,8 @@ export async function loginCliente(formData: FormData) {
 export async function cadastrarCliente(formData: FormData) {
     const supabase = await createClient()
 
-    const name = formData.get('name') as string
-    const email = formData.get('email') as string
+    const name = (formData.get('name') as string)?.trim()
+    const email = (formData.get('email') as string)?.trim()
     const password = formData.get('password') as string
 
     const { data, error } = await supabase.auth.signUp({
