@@ -6,9 +6,12 @@ import { revalidatePath } from 'next/cache'
 
 // Cliente com service_role para bypassar RLS nas operações do Admin
 function getAdminSupabase() {
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        throw new Error("⛔ CRÍTICO: SUPABASE_SERVICE_ROLE_KEY ausente. Não é seguro prosseguir operação como anônimo.")
+    }
     return createAdminClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        process.env.SUPABASE_SERVICE_ROLE_KEY
     )
 }
 

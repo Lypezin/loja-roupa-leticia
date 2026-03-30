@@ -10,15 +10,16 @@ export async function POST(req: Request) {
 
     // 1. Validar Assinatura do Evento
     let event
-    if (endpointSecret) {
-        try {
-            event = stripe.webhooks.constructEvent(body, signature, endpointSecret)
-        } catch (err: any) {
-            console.error(`⚠️  Webhook signature verification failed: ${err.message}`)
-            return NextResponse.json({ error: 'Webhook signature verification failed' }, { status: 400 })
-        }
-    } else {
-        event = JSON.parse(body)
+    if (!endpointSecret) {
+        console.error("⛔ CRÍTICO: STRIPE_WEBHOOK_SECRET ausente. Abortando operação para segurança do sistema.");
+        return NextResponse.json({ error: 'Webhook configuration error' }, { status: 500 })
+    }
+
+    try {
+        event = stripe.webhooks.constructEvent(body, signature, endpointSecret)
+    } catch (err: any) {
+        console.error(`⚠️  Webhook signature verification failed: ${err.message}`)
+        return NextResponse.json({ error: 'Webhook signature verification failed' }, { status: 400 })
     }
 
     // 2. Tratar Eventos Específicos da Stripe
@@ -30,9 +31,13 @@ export async function POST(req: Request) {
 
             // Iniciar Supabase Admin (Service Role para ignorar RLS)
             const { createClient } = await import('@supabase/supabase-js')
+            if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+                console.error("⛔ CRÍTICO: SUPABASE_SERVICE_ROLE_KEY ausente. Não é seguro continuar a gerir pedidos com token anônimo.")
+                return NextResponse.json({ error: 'Missing admin configuration' }, { status: 500 })
+            }
             const supabaseAdmin = createClient(
                 process.env.NEXT_PUBLIC_SUPABASE_URL!,
-                process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+                process.env.SUPABASE_SERVICE_ROLE_KEY
             )
 
             // ========== PROTEÇÃO CONTRA DUPLICIDADE ==========

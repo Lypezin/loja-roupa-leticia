@@ -30,15 +30,14 @@ export async function createCheckoutSession(cartItems: any[]) {
                 throw new Error(`Produto ${cartItem.product_name} não encontrado no banco de dados.`)
             }
 
-            // Usamos o Price ID da Stripe se existir. 
-            // Porém, o Price nativo não mostra a "Cor" nem "Tamanho" pro usuário na nota final.
-            // A forma garantida de mostrar variação pro cliente na tela da API é usar 'price_data'.
-            // Mas para auditoria interna, a Stripe recomenda amarrar ao ID do produto.
+            // OBRIGATÓRIO (SEGURANÇA): Utilizar EXCLUSIVAMENTE o preço guardado no BD (base_price).
+            // NUNCA confiar no valor (cartItem.price) enviado do Front-End (Price Tampering).
+            const securePrice = productInfo.base_price;
             
             return {
                 price_data: {
                     currency: 'brl',
-                    unit_amount: Math.round(cartItem.price * 100),
+                    unit_amount: Math.round(securePrice * 100),
                     product_data: {
                         name: `${cartItem.product_name} ${cartItem.size ? `(${cartItem.size})` : ''}`,
                         description: cartItem.color ? `Cor: ${cartItem.color}` : undefined,
@@ -55,12 +54,15 @@ export async function createCheckoutSession(cartItems: any[]) {
 
         // Metadados são perfeitos pra sabermos no Webhook *exatamente* o que baixar do estoque do banco
         const orderMetadata = {
-            cartDetails: JSON.stringify(cartItems.map(i => ({ 
-                id: i.product_id, 
-                variation: i.variation_id, 
-                q: i.quantity,
-                p: i.price
-            })))
+            cartDetails: JSON.stringify(cartItems.map(i => {
+                const pInfo = products.find(p => p.id === i.product_id)
+                return { 
+                    id: i.product_id, 
+                    variation: i.variation_id, 
+                    q: i.quantity,
+                    p: pInfo?.base_price || 0 // Usa banco como fonte da verdade
+                }
+            }))
         }
 
         const { data: { user } } = await supabase.auth.getUser()
