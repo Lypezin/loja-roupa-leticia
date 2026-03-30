@@ -17,65 +17,81 @@ function getAdminSupabase() {
 
 // Buscar todos os pedidos
 export async function getAdminOrders() {
-    await requireAdmin()
-    const supabase = getAdminSupabase()
+    try {
+        await requireAdmin()
+        const supabase = getAdminSupabase()
 
-    const { data: orders, error } = await supabase
-        .from('orders')
-        .select(`
-            *,
-            order_items (
-                id,
-                quantity,
-                price,
-                products ( name )
-            )
-        `)
-        .order('created_at', { ascending: false })
+        const { data: orders, error } = await supabase
+            .from('orders')
+            .select(`
+                *,
+                order_items (
+                    id,
+                    quantity,
+                    price,
+                    products ( name )
+                )
+            `)
+            .order('created_at', { ascending: false })
 
-    if (error) {
-        console.error("Erro ao buscar pedidos:", error)
+        if (error) {
+            console.error("Erro ao buscar pedidos:", error)
+            return []
+        }
+
+        return orders || []
+    } catch (error: any) {
+        console.error("Erros no painel Admin (Pedidos):", error.message)
         return []
     }
-
-    return orders
 }
 
 // Atualizar status do pedido
 export async function updateOrderStatus(orderId: string, status: string) {
-    await requireAdmin()
-    const supabase = getAdminSupabase()
+    try {
+        await requireAdmin()
+        const supabase = getAdminSupabase()
 
-    const { error } = await supabase
-        .from('orders')
-        .update({ status, updated_at: new Date().toISOString() })
-        .eq('id', orderId)
+        const { error } = await supabase
+            .from('orders')
+            .update({ status, updated_at: new Date().toISOString() })
+            .eq('id', orderId)
 
-    if (error) {
-        console.error("Erro ao atualizar pedido:", error)
-        throw new Error("Não foi possível atualizar o pedido")
+        if (error) {
+            console.error("Erro DB ao atualizar pedido:", error)
+            throw new Error("Não foi possível atualizar o pedido")
+        }
+
+        revalidatePath('/admin/pedidos')
+    } catch (error: any) {
+        console.error("Erro Fatal no Update Status:", error.message)
+        throw new Error(error.message || "Erro desconhecido ao atualizar pedido.")
     }
-
-    revalidatePath('/admin/pedidos')
 }
 
 // Stats para o Dashboard
 export async function getAdminStats() {
-    await requireAdmin()
-    const supabase = getAdminSupabase()
+    try {
+        await requireAdmin()
+        const supabase = getAdminSupabase()
 
-    const now = new Date()
-    const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
+        const now = new Date()
+        const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
 
-    // Pedidos do mês e total de vendas
-    const { data: monthOrders } = await supabase
-        .from('orders')
-        .select('total_amount')
-        .gte('created_at', firstDayOfMonth)
-        .neq('status', 'cancelled')
+        // Pedidos do mês e total de vendas
+        const { data: monthOrders } = await supabase
+            .from('orders')
+            .select('total_amount')
+            .gte('created_at', firstDayOfMonth)
+            .neq('status', 'cancelled')
 
-    const totalSales = monthOrders?.reduce((sum, o) => sum + Number(o.total_amount), 0) || 0
-    const totalOrders = monthOrders?.length || 0
+        const totalSales = monthOrders?.reduce((sum, o) => sum + Number(o.total_amount), 0) || 0
+        const totalOrders = monthOrders?.length || 0
 
-    return { totalSales, totalOrders }
+        return { totalSales, totalOrders }
+    } catch (error: any) {
+        console.error("Erro nas estatisticas do painel Admin:", error.message)
+        return { totalSales: 0, totalOrders: 0 }
+    }
 }
+
