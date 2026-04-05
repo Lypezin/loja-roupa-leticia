@@ -9,7 +9,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const { data: categories } = await supabase.from('categories').select('slug, updated_at')
 
     // 2. Buscar Produtos
-    const { data: products } = await supabase.from('products').select('slug, updated_at')
+    const { data: products } = await supabase
+        .from('products')
+        .select('id, updated_at')
+        .eq('is_active', true)
 
     const categoryEntries = (categories || []).map((cat) => ({
         url: `${baseUrl}/${cat.slug}`,
@@ -19,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
 
     const productEntries = (products || []).map((prod) => ({
-        url: `${baseUrl}/produtos/${prod.slug}`,
+        url: `${baseUrl}/produto/${prod.id}`,
         lastModified: prod.updated_at ? new Date(prod.updated_at) : new Date(),
         changeFrequency: 'daily' as const,
         priority: 1,

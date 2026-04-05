@@ -1,13 +1,16 @@
 import { Toaster } from "@/components/ui/sonner"
-import { AdminNavLinks, type AdminNavLink } from "@/components/admin/layout/AdminNavLinks"
+import { type AdminNavLink } from "@/components/admin/layout/AdminNavLinks"
 import { AdminSidebar } from "./components/AdminSidebar"
 import { AdminMobileHeader } from "./components/AdminMobileHeader"
+import { requireAdminPage } from "@/lib/supabase/server"
 
-export default function AdminLayout({
+export default async function AdminLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
+    await requireAdminPage()
+
     const navLinks: AdminNavLink[] = [
         { href: "/admin", icon: "LayoutDashboard", label: "Dashboard" },
         { href: "/admin/categorias", icon: "Tags", label: "Categorias" },

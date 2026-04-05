@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { isAdminUser } from '@/lib/supabase/auth'
 
 export async function login(formData: FormData) {
     const supabase = await createClient()
@@ -12,11 +13,16 @@ export async function login(formData: FormData) {
         password: formData.get('password') as string,
     }
 
-    const { error } = await supabase.auth.signInWithPassword(data)
+    const { data: authData, error } = await supabase.auth.signInWithPassword(data)
 
     if (error) {
         // Redireciona com erro via querystring para ser lido no cliente
         redirect('/admin/login?error=Credenciais invalidas')
+    }
+
+    if (!isAdminUser(authData.user)) {
+        await supabase.auth.signOut()
+        redirect('/admin/login?error=Acesso restrito a administradores')
     }
 
     revalidatePath('/admin', 'layout')

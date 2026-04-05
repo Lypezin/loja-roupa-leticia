@@ -1,6 +1,8 @@
 // src/lib/supabase/server.ts
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { isAdminUser } from './auth'
 
 export async function createClient() {
     const cookieStore = await cookies()
@@ -19,8 +21,8 @@ export async function createClient() {
                             cookieStore.set(name, value, options)
                         )
                     } catch {
-                        // Se tentar setar os cookies num Server Component
-                        // ignoramos o erro
+                        // Se tentar setar os cookies num Server Component,
+                        // ignoramos o erro.
                     }
                 },
             },
@@ -31,10 +33,25 @@ export async function createClient() {
 export async function requireAdmin() {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
-    
-    if (!user || user?.user_metadata?.role !== 'admin') {
-        throw new Error("Acesso negado: Permissão de administrador é necessária.")
+
+    if (!isAdminUser(user)) {
+        throw new Error('Acesso negado: permissao de administrador e necessaria.')
     }
-    
+
+    return supabase
+}
+
+export async function requireAdminPage() {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+        redirect('/admin/login')
+    }
+
+    if (!isAdminUser(user)) {
+        redirect('/')
+    }
+
     return supabase
 }

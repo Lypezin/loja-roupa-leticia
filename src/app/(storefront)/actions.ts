@@ -1,89 +1,141 @@
 'use server'
 
+import type Stripe from "stripe"
 import { stripe } from "@/lib/stripe"
 import { createClient } from "@/lib/supabase/server"
 import { headers } from "next/headers"
+import { buildOrderMetadata, parseCheckoutCartItems, type OrderMetadataItem } from "@/lib/checkout"
 
-export async function createCheckoutSession(cartItems: any[]) {
+type ProductRecord = {
+    id: string
+    name: string
+    base_price: number
+    is_active: boolean
+}
+
+type VariationRecord = {
+    id: string
+    product_id: string
+    size: string | null
+    color: string | null
+    stock_quantity: number
+}
+
+export async function createCheckoutSession(cartItems: unknown) {
     try {
         const supabase = await createClient()
         const headersList = await headers()
-        const origin = headersList.get('origin') || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+        const origin = process.env.NEXT_PUBLIC_SITE_URL || headersList.get('origin') || 'http://localhost:3000'
+        const normalizedCartItems = parseCheckoutCartItems(cartItems)
 
-        // Extract product IDs
-        const productIds = cartItems.map(item => item.product_id)
+        const productIds = [...new Set(normalizedCartItems.map((item) => item.product_id))]
+        const variationIds = [...new Set(normalizedCartItems.map((item) => item.variation_id))]
 
-        // Fetch corresponding Stripe Price IDs from Supabase
-        const { data: products } = await supabase
-            .from('products')
-            .select('id, stripe_price_id, name, base_price')
-            .in('id', productIds)
+        const [
+            { data: products, error: productsError },
+            { data: variations, error: variationsError },
+        ] = await Promise.all([
+            supabase
+                .from('products')
+                .select('id, name, base_price, is_active')
+                .in('id', productIds)
+                .eq('is_active', true),
+            supabase
+                .from('product_variations')
+                .select('id, product_id, size, color, stock_quantity')
+                .in('id', variationIds),
+        ])
 
-        if (!products || products.length === 0) {
-            throw new Error('Falha ao buscar detalhes do produto no banco de dados.')
+        if (productsError) {
+            throw new Error('Falha ao buscar produtos no banco de dados.')
         }
 
-        const lineItems = cartItems.map((cartItem) => {
-            const productInfo = products.find(p => p.id === cartItem.product_id)
-            
-            if (!productInfo) {
-                throw new Error(`Produto ${cartItem.product_name} não encontrado no banco de dados.`)
+        if (variationsError) {
+            throw new Error('Falha ao validar variacoes do carrinho.')
+        }
+
+        if (!products || products.length !== productIds.length) {
+            throw new Error('Um ou mais produtos do carrinho estao indisponiveis.')
+        }
+
+        if (!variations || variations.length !== variationIds.length) {
+            throw new Error('Uma ou mais variacoes do carrinho nao existem.')
+        }
+
+        const productsById = new Map(products.map((product) => [product.id, product as ProductRecord]))
+        const variationsById = new Map(variations.map((variation) => [variation.id, variation as VariationRecord]))
+
+        const validatedItems = normalizedCartItems.map((cartItem) => {
+            const productInfo = productsById.get(cartItem.product_id)
+            const variationInfo = variationsById.get(cartItem.variation_id)
+
+            if (!productInfo || !productInfo.is_active) {
+                throw new Error('Produto indisponivel para checkout.')
             }
 
-            // OBRIGATÓRIO (SEGURANÇA): Utilizar EXCLUSIVAMENTE o preço guardado no BD (base_price).
-            // NUNCA confiar no valor (cartItem.price) enviado do Front-End (Price Tampering).
-            const securePrice = productInfo.base_price;
-            
+            if (!variationInfo || variationInfo.product_id !== productInfo.id) {
+                throw new Error(`Variacao invalida para o produto ${productInfo.name}.`)
+            }
+
+            if (variationInfo.stock_quantity < cartItem.quantity) {
+                throw new Error(`Estoque insuficiente para ${productInfo.name}.`)
+            }
+
             return {
-                price_data: {
-                    currency: 'brl',
-                    unit_amount: Math.round(securePrice * 100),
-                    product_data: {
-                        name: `${cartItem.product_name} ${cartItem.size ? `(${cartItem.size})` : ''}`,
-                        description: cartItem.color ? `Cor: ${cartItem.color}` : undefined,
-                        // Para conectar com nossos relatórios do Stripe no futuro caso precise, vinculamos aqui:
-                        metadata: {
-                            product_id: cartItem.product_id,
-                            variation_id: cartItem.variation_id
-                        }
-                    }
-                },
+                product_id: productInfo.id,
+                product_name: productInfo.name,
+                variation_id: variationInfo.id,
+                size: variationInfo.size,
+                color: variationInfo.color,
+                unit_price: productInfo.base_price,
                 quantity: cartItem.quantity,
             }
         })
 
-        // Metadados são perfeitos pra sabermos no Webhook *exatamente* o que baixar do estoque do banco
-        const orderMetadata = {
-            cartDetails: JSON.stringify(cartItems.map(i => {
-                const pInfo = products.find(p => p.id === i.product_id)
-                return { 
-                    id: i.product_id, 
-                    variation: i.variation_id, 
-                    q: i.quantity,
-                    p: pInfo?.base_price || 0 // Usa banco como fonte da verdade
-                }
-            }))
-        }
+        const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = validatedItems.map((item) => ({
+            price_data: {
+                currency: 'brl',
+                unit_amount: Math.round(item.unit_price * 100),
+                product_data: {
+                    name: `${item.product_name}${item.size ? ` (${item.size})` : ''}`,
+                    description: item.color ? `Cor: ${item.color}` : undefined,
+                    metadata: {
+                        product_id: item.product_id,
+                        variation_id: item.variation_id,
+                    },
+                },
+            },
+            quantity: item.quantity,
+        }))
+
+        const orderMetadataItems: OrderMetadataItem[] = validatedItems.map((item) => ({
+            product_id: item.product_id,
+            variation_id: item.variation_id,
+            quantity: item.quantity,
+            unit_price: item.unit_price,
+            product_name: item.product_name,
+            size: item.size,
+            color: item.color,
+        }))
 
         const { data: { user } } = await supabase.auth.getUser()
 
-        // Criar a Sessão na Stripe
-        const sessionParams: any = {
-            payment_method_types: ['card', 'boleto'], 
+        const sessionParams: Stripe.Checkout.SessionCreateParams = {
+            payment_method_types: ['card', 'boleto'],
             line_items: lineItems,
             mode: 'payment',
             success_url: `${origin}/sucesso?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${origin}/carrinho`,
-            metadata: orderMetadata,
-            // Coleta de endereço de entrega (a Stripe pergunta para o cliente)
+            metadata: {
+                cartDetails: buildOrderMetadata(orderMetadataItems),
+            },
             shipping_address_collection: {
                 allowed_countries: ['BR'],
             },
-            // Exigir endereço de cobrança também
             billing_address_collection: 'required',
         }
 
-        if (user) {
+        if (user?.email) {
             sessionParams.client_reference_id = user.id
             sessionParams.customer_email = user.email
         }
@@ -91,13 +143,12 @@ export async function createCheckoutSession(cartItems: any[]) {
         const session = await stripe.checkout.sessions.create(sessionParams)
 
         if (!session.url) {
-            throw new Error('Stripe não retornou a URL de destino.')
+            throw new Error('Stripe nao retornou a URL de destino.')
         }
 
         return { url: session.url }
-
-    } catch (error: any) {
+    } catch (error) {
         console.error('Erro ao gerar Stripe Checkout Session:', error)
-        return { error: error.message || 'Falha ao processar pagamento.' }
+        return { error: error instanceof Error ? error.message : 'Falha ao processar pagamento.' }
     }
 }
