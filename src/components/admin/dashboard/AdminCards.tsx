@@ -37,12 +37,13 @@ export function AdminStatCard({
 }) {
   const Icon = ICONS[icon]
   return (
-    <Card className="relative overflow-hidden rounded-2xl border-border/60 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+    <Card className="relative overflow-hidden rounded-[1.8rem] border-white/45 bg-white/75 shadow-[0_20px_50px_rgba(63,42,122,0.08)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_rgba(63,42,122,0.14)] dark:border-white/10 dark:bg-white/[0.04]">
       <div className="pointer-events-none absolute inset-0 admin-mesh opacity-70" />
+      <div className="pointer-events-none absolute inset-0 admin-grid opacity-[0.22]" />
       <CardHeader className="relative pb-3">
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium text-muted-foreground">{label}</p>
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground shadow-sm shadow-primary/20">
+          <div className="grid h-11 w-11 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-sm shadow-primary/30">
             <Icon className="h-4 w-4" />
           </div>
         </div>
@@ -69,12 +70,12 @@ export function AdminActionCard({
   const Icon = ICONS[icon]
   return (
     <Link href={href} className="group block">
-      <Card className="relative overflow-hidden rounded-2xl border-border/60 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+      <Card className="relative overflow-hidden rounded-[1.8rem] border-white/45 bg-white/78 shadow-[0_18px_45px_rgba(63,42,122,0.08)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_26px_55px_rgba(63,42,122,0.14)] dark:border-white/10 dark:bg-white/[0.04]">
         <div className="pointer-events-none absolute inset-0 admin-mesh opacity-50 transition-opacity duration-300 group-hover:opacity-80" />
         <CardContent className="relative flex items-center gap-4 p-5">
           <div
             className={cn(
-              "grid h-12 w-12 place-items-center rounded-xl",
+              "grid h-12 w-12 place-items-center rounded-2xl",
               "bg-primary text-primary-foreground shadow-sm shadow-primary/20",
               "transition-transform duration-300 group-hover:scale-105",
             )}
@@ -93,4 +94,3 @@ export function AdminActionCard({
     </Link>
   )
 }
-

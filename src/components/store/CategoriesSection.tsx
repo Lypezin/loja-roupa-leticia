@@ -9,21 +9,21 @@ interface CategoriesSectionProps {
     sectionTitle?: string
 }
 
-export function CategoriesSection({ categories, sectionLabel = "Coleções", sectionTitle = "Explore por Categoria" }: CategoriesSectionProps) {
+export function CategoriesSection({ categories, sectionLabel = "Colecoes", sectionTitle = "Explore por Categoria" }: CategoriesSectionProps) {
     if (!categories || categories.length === 0) return null
 
     return (
         <section className="container mx-auto px-4 py-20">
-            <div className="flex items-end justify-between mb-10">
+            <div className="mb-10 flex items-end justify-between">
                 <div>
-                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-2 block">
+                    <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
                         {sectionLabel}
                     </span>
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">{sectionTitle}</h2>
+                    <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">{sectionTitle}</h2>
                 </div>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-4 h-auto md:h-[400px]">
+            <div className="flex h-auto flex-col gap-4 md:h-[430px] md:flex-row">
                 {categories.map((cat, i) => (
                     <motion.div
                         key={cat.id || cat.name}
@@ -31,20 +31,26 @@ export function CategoriesSection({ categories, sectionLabel = "Coleções", sec
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.1, duration: 0.5 }}
-                        className="group relative flex-1 min-h-[200px] md:min-h-0 rounded-2xl overflow-hidden cursor-pointer hover:flex-[2] transition-all duration-500 ease-in-out bg-zinc-900"
+                        className="paper-panel group relative min-h-[220px] flex-1 cursor-pointer overflow-hidden rounded-[2rem] border border-white/40 transition-all duration-500 ease-in-out md:min-h-0 md:hover:flex-[1.8]"
                     >
                         <Link href={`/${cat.slug}`} className="absolute inset-0 z-20" />
                         <div
                             className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                            style={{ backgroundImage: `url(${cat.image_url || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=800'})` }}
+                            style={{ backgroundImage: `url(${cat.image_url || "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=800"})` }}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-zinc-950/20 to-transparent" />
-                        <div className="absolute bottom-6 left-6 z-10">
-                            <h3 className="text-white text-xl md:text-2xl font-bold tracking-tight">
+                        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/10 to-transparent" />
+                        <div className="absolute right-4 top-4 z-10 rounded-full border border-white/20 bg-black/20 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-white/70 backdrop-blur-md">
+                            Curadoria
+                        </div>
+                        <div className="absolute bottom-6 left-6 z-10 max-w-[80%]">
+                            <h3 className="text-xl font-bold tracking-tight text-white md:text-3xl">
                                 {cat.name}
                             </h3>
-                            <span className="text-zinc-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                Ver coleção →
+                            <p className="mt-2 text-sm text-white/70">
+                                Editoriais visuais e pecas com identidade propria.
+                            </p>
+                            <span className="mt-4 inline-flex text-sm font-medium text-zinc-200 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                                Ver colecao →
                             </span>
                         </div>
                     </motion.div>
