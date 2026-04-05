@@ -1,5 +1,8 @@
 'use client'
 
+// Página de carrinho de compras da loja
+
+
 import { useCartStore } from "@/store/useCartStore"
 import { useEffect, useState } from "react"
 import { Trash2, ShoppingBag, Plus, Minus, ArrowRight, ArrowLeft } from "lucide-react"
