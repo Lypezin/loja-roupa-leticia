@@ -23,7 +23,7 @@ export function SettingsForm({ settings }: SettingsFormProps) {
         { id: "perfil", label: "Perfil e SEO", icon: User, desc: "identidade e busca" },
         { id: "banner", label: "Banner hero", icon: ImageIcon, desc: "destaque principal" },
         { id: "conteudo", label: "Pagina inicial", icon: Type, desc: "titulos e secoes" },
-        { id: "rodape", label: "Rodape", icon: LayoutTemplate, desc: "links e newsletter" },
+        { id: "rodape", label: "Rodape", icon: LayoutTemplate, desc: "links e contatos" },
         { id: "logistica", label: "Logistica", icon: Truck, desc: "fretes e prazos" },
     ]
 

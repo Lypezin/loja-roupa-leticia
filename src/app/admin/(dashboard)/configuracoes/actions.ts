@@ -142,8 +142,6 @@ export async function saveFooter(formData: FormData) {
             .from('store_settings')
             .update({
                 footer_about_text: formData.get('footer_about_text') as string,
-                footer_newsletter_title: formData.get('footer_newsletter_title') as string,
-                footer_newsletter_subtitle: formData.get('footer_newsletter_subtitle') as string,
                 updated_at: new Date().toISOString()
             })
             .eq('id', id)

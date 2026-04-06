@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { Instagram, Mail } from "lucide-react"
 import type { StoreCategory, StoreSettings } from "@/lib/storefront"
-import { FooterNewsletter } from "./FooterNewsletter"
 import { FooterLinksSection } from "./FooterLinksSection"
 
 export function Footer({
@@ -14,8 +13,6 @@ export function Footer({
     const currentYear = new Date().getFullYear()
     const storeName = settings?.store_name || "FASHION STORE"
     const aboutText = settings?.footer_about_text || "Loja online com selecao atual, boas fotos e atendimento direto quando voce precisar."
-    const newsletterTitle = settings?.footer_newsletter_title || "Receba a edicao da semana"
-    const newsletterSubtitle = settings?.footer_newsletter_subtitle || "Novidades, reposicoes e lancamentos sem excesso."
 
     const categoryLinks = categories.length > 0
         ? categories.slice(0, 4).map((cat) => ({
@@ -32,8 +29,6 @@ export function Footer({
 
     return (
         <footer className="mt-0 w-full border-t border-border/70 bg-background text-foreground">
-            <FooterNewsletter title={newsletterTitle} subtitle={newsletterSubtitle} />
-
             <div className="container mx-auto px-4 py-12 md:py-16">
                 <div className="paper-panel mb-10 rounded-[2rem] p-6 md:p-8">
                     <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">

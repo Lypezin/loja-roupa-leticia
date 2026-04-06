@@ -30,15 +30,6 @@ export function HeroBackground({ backgroundUrl, title }: HeroBackgroundProps) {
                 <div className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/82 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-foreground/76 md:left-5 md:top-5">
                     colecao atual
                 </div>
-
-                <div className="absolute bottom-4 left-4 right-4 md:bottom-5 md:left-5 md:right-5">
-                    <div className="glass rounded-[1.6rem] px-5 py-4">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">em destaque</p>
-                        <p className="mt-2 max-w-sm text-sm leading-6 text-foreground/82">
-                            Imagem principal da colecao para mostrar textura, cor e proporcao sem excesso de elemento na tela.
-                        </p>
-                    </div>
-                </div>
             </div>
         </div>
     )

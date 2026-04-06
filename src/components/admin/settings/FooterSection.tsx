@@ -1,10 +1,9 @@
 'use client'
 
 import { useState } from "react"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { LayoutTemplate, Info, Send } from "lucide-react"
+import { LayoutTemplate, Info } from "lucide-react"
 import { saveFooter } from "@/app/admin/(dashboard)/configuracoes/actions"
 import { toast } from "sonner"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
@@ -39,42 +38,21 @@ export function FooterSection({ settings }: FooterSectionProps) {
             <SectionHeader
                 icon={LayoutTemplate}
                 title="Configuração do Rodapé"
-                description="Personalize as informações institucionais e a chamada para sua newsletter."
+                description="Personalize as informações institucionais exibidas no rodape da loja."
             />
 
-            <div className="space-y-6">
-                <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                        <Info className="w-4 h-4 text-zinc-400" />
-                        <Label htmlFor="footer_about_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Sobre a Loja (Rodapé)</Label>
-                    </div>
-                    <Textarea
-                        id="footer_about_text"
-                        name="footer_about_text"
-                        defaultValue={settings.footer_about_text || ''}
-                        rows={3}
-                        className="rounded-xl border-zinc-200 focus-visible:ring-zinc-200 resize-none pt-3"
-                    />
+            <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                    <Info className="w-4 h-4 text-zinc-400" />
+                    <Label htmlFor="footer_about_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Sobre a Loja (Rodapé)</Label>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 pt-4 border-t border-zinc-50">
-                    <div className="md:col-span-2">
-                        <div className="flex items-center gap-2 mb-4">
-                            <Send className="w-4 h-4 text-zinc-400" />
-                            <h3 className="text-xs font-bold text-zinc-900 uppercase tracking-widest">Newsletter</h3>
-                        </div>
-                    </div>
-
-                    <div className="space-y-2">
-                        <Label htmlFor="footer_newsletter_title" className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Título Newsletter</Label>
-                        <Input id="footer_newsletter_title" name="footer_newsletter_title" defaultValue={settings.footer_newsletter_title || ''} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
-                    </div>
-
-                    <div className="space-y-2">
-                        <Label htmlFor="footer_newsletter_subtitle" className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Subtítulo Newsletter</Label>
-                        <Input id="footer_newsletter_subtitle" name="footer_newsletter_subtitle" defaultValue={settings.footer_newsletter_subtitle || ''} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
-                    </div>
-                </div>
+                <Textarea
+                    id="footer_about_text"
+                    name="footer_about_text"
+                    defaultValue={settings.footer_about_text || ''}
+                    rows={4}
+                    className="rounded-xl border-zinc-200 focus-visible:ring-zinc-200 resize-none pt-3"
+                />
             </div>
 
             <SaveButton isLoading={isLoading} success={success} label="Salvar Rodapé" />
