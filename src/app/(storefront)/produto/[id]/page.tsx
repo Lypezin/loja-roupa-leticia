@@ -1,19 +1,26 @@
+import { Metadata } from 'next'
+import Link from "next/link"
+import { ChevronRight, RefreshCcw, ShieldCheck, Truck } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import { AddToCart } from "@/components/store/AddToCart"
 import { ProductGallery } from "@/components/store/ProductGallery"
-import Link from "next/link"
-import { ChevronRight } from "lucide-react"
-import { Metadata } from 'next'
 
 type ProductImage = {
     image_url: string
-    is_primary?: boolean
+    is_primary?: boolean | null
 }
 
 type ProductCategory = {
-    name?: string
-    slug?: string
+    name?: string | null
+    slug?: string | null
+}
+
+type ProductVariation = {
+    id: string
+    size: string | null
+    color: string | null
+    stock_quantity: number
 }
 
 export async function generateMetadata({
@@ -33,7 +40,7 @@ export async function generateMetadata({
     if (!product) return {}
 
     const images = (product.product_images || []) as ProductImage[]
-    const description = product.description || "Confira este produto incrivel em nossa loja."
+    const description = product.description || "Confira este produto em nossa curadoria."
     const imageUrl = images.find((img) => img.is_primary)?.image_url || images[0]?.image_url
 
     return {
@@ -58,11 +65,11 @@ export default async function ProductPage({
     const { data: product } = await supabase
         .from('products')
         .select(`
-      *,
-      category:categories(name, slug),
-      variations:product_variations(*),
-      images:product_images(image_url, is_primary)
-    `)
+            *,
+            category:categories(name, slug),
+            variations:product_variations(*),
+            images:product_images(image_url, is_primary)
+        `)
         .eq('id', id)
         .single()
 
@@ -72,6 +79,7 @@ export default async function ProductPage({
 
     const images = (product.images || []) as ProductImage[]
     const category = (product.category || {}) as ProductCategory
+    const variations = (product.variations || []) as ProductVariation[]
     const primaryImage = images.find((img) => img.is_primary)?.image_url
         || images[0]?.image_url
         || "/placeholder-image.jpg"
@@ -87,64 +95,62 @@ export default async function ProductPage({
         currency: 'BRL'
     }).format(product.base_price / 3)
 
+    const highlights = [
+        { icon: Truck, title: "Envio nacional", desc: "Entrega com acompanhamento direto." },
+        { icon: RefreshCcw, title: "Troca assistida", desc: "Apoio humano em ate 7 dias." },
+        { icon: ShieldCheck, title: "Compra protegida", desc: "Pagamento seguro do inicio ao fim." },
+    ]
+
     return (
-        <div className="container mx-auto px-4 py-6 md:py-12">
-            <nav className="flex items-center gap-1.5 text-sm text-muted-foreground mb-8">
-                <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-                <ChevronRight className="w-3.5 h-3.5" />
-                <Link href={categoryHref} className="hover:text-foreground transition-colors">
-                    {category.name || 'Camisetas'}
+        <div className="page-shell py-8 md:py-12">
+            <nav className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground">
+                <Link href="/" className="transition-colors hover:text-foreground">Inicio</Link>
+                <ChevronRight className="h-3.5 w-3.5" />
+                <Link href={categoryHref} className="transition-colors hover:text-foreground">
+                    {category.name || 'Catalogo'}
                 </Link>
-                <ChevronRight className="w-3.5 h-3.5" />
-                <span className="text-foreground font-medium">{product.name}</span>
+                <ChevronRight className="h-3.5 w-3.5" />
+                <span className="text-foreground">{product.name}</span>
             </nav>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
-                <ProductGallery images={product.images || []} />
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+                <ProductGallery images={images} />
 
-                <div className="flex flex-col py-2 md:py-6">
-                    <div className="space-y-3 mb-6">
-                        <span className="text-xs font-semibold tracking-[0.2em] text-muted-foreground uppercase">
-                            {category.name || 'Sem categoria'}
-                        </span>
-                        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-tight">
-                            {product.name}
-                        </h1>
-                        <div className="flex items-baseline gap-3">
-                            <p className="text-3xl text-foreground font-bold">
-                                {formattedPrice}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                                ate 3x de {installmentPrice}
-                            </p>
-                        </div>
-                    </div>
+                <div className="flex flex-col py-2">
+                    <span className="eyebrow">{category.name || 'peca selecionada'}</span>
+                    <h1 className="mt-4 font-display text-4xl leading-tight text-foreground md:text-5xl">
+                        {product.name}
+                    </h1>
 
-                    <div className="mb-6">
-                        <p className="text-muted-foreground leading-relaxed">
-                            {product.description || "Peca exclusiva com design minimalista, construida com materiais premium visando o maximo de conforto diario."}
+                    <div className="mt-5 flex items-end gap-4">
+                        <p className="text-3xl font-semibold text-foreground">
+                            {formattedPrice}
+                        </p>
+                        <p className="pb-1 text-sm text-muted-foreground">
+                            ou 3x de {installmentPrice}
                         </p>
                     </div>
 
-                    <div className="w-full border-t border-border mb-2" />
+                    <p className="mt-6 text-base leading-8 text-muted-foreground">
+                        {product.description || "Peca com desenho limpo, conforto diario e acabamento pensado para durar mais do que uma tendencia."}
+                    </p>
 
                     <AddToCart
                         productId={product.id}
                         productName={product.name}
                         price={product.base_price}
                         imageUrl={primaryImage}
-                        variations={product.variations || []}
+                        variations={variations}
                     />
 
-                    <div className="mt-8 pt-6 border-t border-border space-y-3">
-                        {[
-                            { icon: "🚀", text: "Envio para todo o Brasil" },
-                            { icon: "↩️", text: "Troca gratis em ate 7 dias" },
-                            { icon: "🔒", text: "Compra 100% segura" },
-                        ].map((item) => (
-                            <div key={item.text} className="flex items-center gap-3 text-sm text-muted-foreground">
-                                <span>{item.icon}</span>
-                                <span>{item.text}</span>
+                    <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                        {highlights.map((item) => (
+                            <div key={item.title} className="surface-card-soft rounded-[1.4rem] p-4">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                    <item.icon className="h-4 w-4" />
+                                </div>
+                                <h3 className="mt-4 text-sm font-semibold text-foreground">{item.title}</h3>
+                                <p className="mt-1 text-sm leading-6 text-muted-foreground">{item.desc}</p>
                             </div>
                         ))}
                     </div>

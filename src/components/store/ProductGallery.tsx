@@ -1,41 +1,39 @@
 'use client'
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 
 interface ProductGalleryProps {
     images: {
         image_url: string
-        is_primary: boolean
+        is_primary?: boolean | null
     }[]
 }
 
 export function ProductGallery({ images }: ProductGalleryProps) {
-    if (!images || images.length === 0) {
-        images = [{ image_url: "/placeholder-image.jpg", is_primary: true }]
-    }
+    const galleryImages = images.length > 0
+        ? [...images].sort((a, b) => Number(Boolean(b.is_primary)) - Number(Boolean(a.is_primary)))
+        : [{ image_url: "/placeholder-image.jpg", is_primary: true }]
 
-    const sortedImages = [...images].sort((a, b) => Number(b.is_primary) - Number(a.is_primary))
     const [selectedIndex, setSelectedIndex] = useState(0)
 
     return (
-        <div className="flex flex-col-reverse md:flex-row gap-4">
-            {/* Thumbnails à esquerda no desktop / abaixo no mobile */}
-            {sortedImages.length > 1 && (
-                <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto md:max-h-[600px] pb-2 md:pb-0 snap-x snap-mandatory scrollbar-hide">
-                    {sortedImages.map((img, i) => (
+        <div className="flex flex-col-reverse gap-4 md:flex-row">
+            {galleryImages.length > 1 && (
+                <div className="flex gap-3 overflow-x-auto pb-2 md:max-h-[620px] md:flex-col md:overflow-y-auto md:pb-0">
+                    {galleryImages.map((image, index) => (
                         <button
-                            key={i}
-                            onClick={() => setSelectedIndex(i)}
-                            className={`relative w-16 h-20 md:w-20 md:h-24 shrink-0 rounded-xl overflow-hidden bg-zinc-100 transition-all duration-300 snap-start ${selectedIndex === i
-                                ? "ring-2 ring-zinc-900 ring-offset-2 shadow-lg scale-[1.02]"
-                                : "opacity-50 hover:opacity-100 hover:scale-[1.02]"
-                                }`}
+                            key={`${image.image_url}-${index}`}
+                            onClick={() => setSelectedIndex(index)}
+                            className={`relative h-20 w-16 shrink-0 overflow-hidden rounded-[1rem] border transition-all md:h-24 md:w-20 ${
+                                selectedIndex === index
+                                    ? "border-primary shadow-[0_12px_28px_rgba(70,52,35,0.12)]"
+                                    : "border-border opacity-70 hover:opacity-100"
+                            }`}
                         >
                             <Image
-                                src={img.image_url}
-                                alt={`Thumbnail ${i}`}
+                                src={image.image_url}
+                                alt={`Imagem ${index + 1}`}
                                 fill
                                 className="object-cover"
                                 sizes="(max-width: 768px) 64px, 80px"
@@ -45,33 +43,20 @@ export function ProductGallery({ images }: ProductGalleryProps) {
                 </div>
             )}
 
-            {/* Imagem Principal */}
-            <div className="relative flex-1 aspect-[4/5] sm:aspect-[3/4] w-full bg-zinc-50 rounded-2xl overflow-hidden group cursor-crosshair">
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={selectedIndex}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
-                    >
-                        <Image
-                            src={sortedImages[selectedIndex]?.image_url || "/placeholder-image.jpg"}
-                            alt="Produto"
-                            fill
-                            priority
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                        />
-                    </motion.div>
-                </AnimatePresence>
-
-                {/* Badge */}
-                <div className="absolute top-4 left-4 z-10">
-                    <span className="bg-zinc-900 text-white text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full font-semibold shadow-lg">
-                        Novo
-                    </span>
+            <div className="paper-panel relative flex-1 overflow-hidden rounded-[2rem] p-3">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem] bg-card">
+                    <Image
+                        src={galleryImages[selectedIndex]?.image_url || "/placeholder-image.jpg"}
+                        alt="Produto"
+                        fill
+                        priority
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 52vw"
+                        quality={88}
+                    />
+                </div>
+                <div className="absolute left-8 top-8 rounded-full border border-white/60 bg-white/84 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-foreground/76">
+                    detalhe
                 </div>
             </div>
         </div>

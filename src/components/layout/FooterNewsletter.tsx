@@ -1,26 +1,27 @@
 interface FooterNewsletterProps {
-    title: string;
-    subtitle: string;
+    title: string
+    subtitle: string
 }
 
 export function FooterNewsletter({ title, subtitle }: FooterNewsletterProps) {
     return (
-        <div className="border-b border-zinc-800">
-            <div className="container mx-auto px-4 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="border-b border-border/70">
+            <div className="container mx-auto flex flex-col items-start justify-between gap-6 px-4 py-10 md:flex-row md:items-center">
                 <div>
-                    <h3 className="text-white font-semibold text-lg mb-1">{title}</h3>
-                    <p className="text-sm text-zinc-500">{subtitle}</p>
+                    <span className="eyebrow">edicao semanal</span>
+                    <h3 className="mt-4 font-display text-3xl text-foreground">{title}</h3>
+                    <p className="mt-2 text-sm leading-7 text-muted-foreground">{subtitle}</p>
                 </div>
-                <div className="flex flex-col xs:flex-row w-full md:w-auto gap-2 xs:gap-0">
+                <form className="flex w-full flex-col gap-2 xs:flex-row xs:gap-0 md:w-auto">
                     <input
                         type="email"
                         placeholder="Seu melhor e-mail"
-                        className="flex-1 md:w-72 bg-zinc-900 border border-zinc-800 rounded-xl xs:rounded-r-none xs:rounded-l-xl px-4 py-3 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:ring-1 focus:ring-zinc-700 transition-all"
+                        className="h-12 flex-1 rounded-xl border border-border bg-card px-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/15 xs:w-72 xs:rounded-r-none"
                     />
-                    <button className="bg-white text-zinc-950 px-6 py-3 rounded-xl xs:rounded-l-none xs:rounded-r-xl text-sm font-semibold hover:bg-zinc-100 transition-colors whitespace-nowrap">
+                    <button className="h-12 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 xs:rounded-l-none">
                         Inscrever
                     </button>
-                </div>
+                </form>
             </div>
         </div>
     )

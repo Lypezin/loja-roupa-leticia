@@ -1,44 +1,61 @@
 export default function Loading() {
     return (
-        <div className="flex flex-col w-full">
-            {/* Hero Skeleton */}
-            <div className="relative h-[85vh] w-full bg-zinc-100 animate-pulse flex items-center justify-center">
-                <div className="max-w-2xl w-full px-4 space-y-6 flex flex-col items-center">
-                    <div className="h-4 w-32 bg-zinc-200 rounded-full" />
-                    <div className="h-16 md:h-24 w-full bg-zinc-200 rounded-2xl" />
-                    <div className="h-4 w-64 bg-zinc-200 rounded-full" />
-                    <div className="flex gap-4">
-                        <div className="h-12 w-40 bg-zinc-200 rounded-full" />
-                        <div className="h-12 w-40 bg-zinc-200 rounded-full" />
+        <div className="page-shell py-8 md:py-10">
+            <section className="paper-panel overflow-hidden rounded-[2rem] px-6 py-8 md:px-10 md:py-10">
+                <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+                    <div className="space-y-5">
+                        <div className="h-3 w-28 animate-pulse rounded-full bg-secondary" />
+                        <div className="space-y-3">
+                            <div className="h-12 w-full max-w-2xl animate-pulse rounded-full bg-secondary/85 md:h-16" />
+                            <div className="h-12 w-4/5 max-w-xl animate-pulse rounded-full bg-secondary/70 md:h-16" />
+                        </div>
+                        <div className="space-y-3">
+                            <div className="h-3 w-full max-w-xl animate-pulse rounded-full bg-secondary/70" />
+                            <div className="h-3 w-5/6 max-w-lg animate-pulse rounded-full bg-secondary/55" />
+                        </div>
+                        <div className="flex flex-wrap gap-3 pt-3">
+                            <div className="h-11 w-36 animate-pulse rounded-full bg-secondary/80" />
+                            <div className="h-11 w-36 animate-pulse rounded-full bg-secondary/60" />
+                        </div>
+                    </div>
+
+                    <div className="relative aspect-[4/5] overflow-hidden rounded-[1.8rem] bg-secondary/70">
+                        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-secondary to-secondary/40" />
                     </div>
                 </div>
-            </div>
-
-            {/* Categories Skeleton */}
-            <section className="container mx-auto px-4 py-20">
-                 <div className="h-4 w-24 bg-zinc-100 rounded mb-4" />
-                 <div className="h-8 w-48 bg-zinc-100 rounded mb-12" />
-                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                     {[1, 2, 3].map(i => (
-                         <div key={i} className="aspect-[16/9] bg-zinc-100 rounded-3xl animate-pulse" />
-                     ))}
-                 </div>
             </section>
 
-            {/* Products Skeleton */}
-            <section className="container mx-auto px-4 py-20">
-                <div className="flex items-end justify-between mb-12">
-                     <div className="space-y-4">
-                        <div className="h-4 w-24 bg-zinc-100 rounded" />
-                        <div className="h-8 w-48 bg-zinc-100 rounded" />
-                     </div>
+            <section className="space-y-6">
+                <div className="space-y-3">
+                    <div className="h-3 w-24 animate-pulse rounded-full bg-secondary/80" />
+                    <div className="h-10 w-64 animate-pulse rounded-full bg-secondary/70" />
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
-                        <div key={i} className="space-y-4">
-                            <div className="aspect-[3/4] bg-zinc-100 rounded-2xl animate-pulse" />
-                            <div className="h-4 w-3/4 bg-zinc-100 rounded" />
-                            <div className="h-4 w-1/2 bg-zinc-100 rounded" />
+                <div className="grid gap-5 md:grid-cols-3">
+                    {[1, 2, 3].map((item) => (
+                        <div key={item} className="paper-panel space-y-4 rounded-[1.8rem] p-4">
+                            <div className="aspect-[5/4] animate-pulse rounded-[1.3rem] bg-secondary/75" />
+                            <div className="h-3 w-24 animate-pulse rounded-full bg-secondary/80" />
+                            <div className="h-6 w-2/3 animate-pulse rounded-full bg-secondary/65" />
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            <section className="space-y-6">
+                <div className="flex items-end justify-between gap-4">
+                    <div className="space-y-3">
+                        <div className="h-3 w-28 animate-pulse rounded-full bg-secondary/80" />
+                        <div className="h-10 w-56 animate-pulse rounded-full bg-secondary/65" />
+                    </div>
+                    <div className="hidden h-10 w-32 animate-pulse rounded-full bg-secondary/65 md:block" />
+                </div>
+                <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
+                    {[1, 2, 3, 4].map((item) => (
+                        <div key={item} className="space-y-4">
+                            <div className="aspect-[3/4] animate-pulse rounded-[1.6rem] bg-secondary/75" />
+                            <div className="h-3 w-20 animate-pulse rounded-full bg-secondary/75" />
+                            <div className="h-6 w-4/5 animate-pulse rounded-full bg-secondary/60" />
+                            <div className="h-4 w-24 animate-pulse rounded-full bg-secondary/55" />
                         </div>
                     ))}
                 </div>

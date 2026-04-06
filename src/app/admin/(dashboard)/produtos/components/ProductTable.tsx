@@ -4,9 +4,22 @@ import Link from "next/link"
 import { Package, Pencil, MoreVertical } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DeleteProductButton } from "./DeleteProductButton"
+import type { Database } from "@/lib/supabase/database.types"
+
+type ProductImageRow = Database["public"]["Tables"]["product_images"]["Row"]
+type CategoryRelation = { name: string | null } | Array<{ name: string | null }> | null
+
+export type ProductTableProduct = {
+    id: string
+    name: string
+    base_price: number
+    is_active: boolean | null
+    category?: CategoryRelation
+    images?: ProductImageRow[] | null
+}
 
 interface ProductTableProps {
-    products: any[];
+    products: ProductTableProduct[]
 }
 
 export function ProductTable({ products }: ProductTableProps) {
@@ -15,69 +28,69 @@ export function ProductTable({ products }: ProductTableProps) {
             <Table>
                 <TableHeader className="bg-muted/30">
                     <TableRow className="hover:bg-transparent">
-                        <TableHead className="font-semibold text-foreground py-4 h-auto">Produto</TableHead>
-                        <TableHead className="font-semibold text-foreground py-4 h-auto">Categoria</TableHead>
-                        <TableHead className="font-semibold text-foreground py-4 h-auto">Preço Base</TableHead>
-                        <TableHead className="font-semibold text-foreground py-4 h-auto">Status</TableHead>
-                        <TableHead className="text-right font-semibold text-foreground py-4 h-auto">Ações</TableHead>
+                        <TableHead className="h-auto py-4 font-semibold text-foreground">Produto</TableHead>
+                        <TableHead className="h-auto py-4 font-semibold text-foreground">Categoria</TableHead>
+                        <TableHead className="h-auto py-4 font-semibold text-foreground">Preco base</TableHead>
+                        <TableHead className="h-auto py-4 font-semibold text-foreground">Status</TableHead>
+                        <TableHead className="h-auto py-4 text-right font-semibold text-foreground">Acoes</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {products.map((product) => {
-                        const category = product.category as any
-                        const categoryName = category
-                            ? (Array.isArray(category) ? category[0]?.name : category.name)
-                            : 'Sem categoria'
+                        const category = product.category
+                        const categoryName = Array.isArray(category)
+                            ? (category[0]?.name ?? "Sem categoria")
+                            : (category?.name ?? "Sem categoria")
 
-                        const primaryImage = product.images?.find((img: any) => img.is_primary)?.image_url
+                        const primaryImage = product.images?.find((image) => image.is_primary)?.image_url
                             || product.images?.[0]?.image_url
 
                         return (
-                            <TableRow key={product.id} className="group hover:bg-muted/30 transition-all duration-200">
+                            <TableRow key={product.id} className="group transition-all duration-200 hover:bg-muted/30">
                                 <TableCell className="py-4">
                                     <div className="flex items-center gap-4">
-                                        <div className="relative w-12 h-12 rounded-xl bg-muted flex-shrink-0 overflow-hidden border border-border/60 group-hover:border-border transition-colors">
+                                        <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl border border-border/60 bg-muted transition-colors group-hover:border-border">
                                             {primaryImage ? (
-                                                <Image src={primaryImage} alt="" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                                                <Image src={primaryImage} alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
                                             ) : (
-                                                <div className="w-full h-full flex items-center justify-center">
-                                                    <Package className="w-5 h-5 text-muted-foreground/50" />
+                                                <div className="flex h-full w-full items-center justify-center">
+                                                    <Package className="h-5 w-5 text-muted-foreground/50" />
                                                 </div>
                                             )}
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-foreground leading-none mb-1 group-hover:text-foreground/80 transition-colors">{product.name}</p>
-                                            <p className="text-xs text-muted-foreground font-medium">ID: {product.id.slice(0, 8)}</p>
+                                            <p className="mb-1 font-semibold leading-none text-foreground transition-colors group-hover:text-foreground/80">{product.name}</p>
+                                            <p className="text-xs font-medium text-muted-foreground">ID: {product.id.slice(0, 8)}</p>
                                         </div>
                                     </div>
                                 </TableCell>
                                 <TableCell className="py-4">
-                                    <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-muted text-foreground/70 text-[11px] font-bold uppercase tracking-tight">
+                                    <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[11px] font-bold uppercase tracking-tight text-foreground/70">
                                         {categoryName}
                                     </span>
                                 </TableCell>
                                 <TableCell className="py-4">
                                     <span className="font-medium text-foreground">
-                                        {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.base_price)}
+                                        {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(product.base_price)}
                                     </span>
                                 </TableCell>
                                 <TableCell className="py-4">
-                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide ${product.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}>
-                                        <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${product.is_active ? 'bg-emerald-500' : 'bg-red-400'}`}></span>
-                                        {product.is_active ? 'Ativo' : 'Oculto'}
+                                    <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide ${product.is_active ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`}>
+                                        <span className={`h-1.5 w-1.5 rounded-full ${product.is_active ? "bg-emerald-500" : "bg-red-400"}`} />
+                                        {product.is_active ? "Ativo" : "Oculto"}
                                     </span>
                                 </TableCell>
                                 <TableCell className="py-4 text-right">
-                                    <div className="flex items-center justify-end gap-2 pr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                        <Button asChild variant="ghost" size="icon" className="h-9 w-9 rounded-xl cursor-pointer border border-transparent hover:border-border hover:bg-background">
+                                    <div className="flex items-center justify-end gap-2 pr-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                                        <Button asChild variant="ghost" size="icon" className="h-9 w-9 cursor-pointer rounded-xl border border-transparent hover:border-border hover:bg-background">
                                             <Link href={`/admin/produtos/${product.id}/editar`}>
-                                                <Pencil className="w-3.5 h-3.5 text-muted-foreground" />
+                                                <Pencil className="h-3.5 w-3.5 text-muted-foreground" />
                                             </Link>
                                         </Button>
                                         <DeleteProductButton productId={product.id} productName={product.name} />
                                     </div>
-                                    <div className="group-hover:hidden pr-2">
-                                        <MoreVertical className="w-4 h-4 text-muted-foreground/40 ml-auto" />
+                                    <div className="pr-2 group-hover:hidden">
+                                        <MoreVertical className="ml-auto h-4 w-4 text-muted-foreground/40" />
                                     </div>
                                 </TableCell>
                             </TableRow>

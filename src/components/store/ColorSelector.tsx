@@ -1,10 +1,15 @@
 'use client'
 
+type Variation = {
+    color: string | null
+    stock_quantity: number
+}
+
 interface ColorSelectorProps {
-    availableColors: string[];
-    selectedColor: string;
-    onSelect: (color: string) => void;
-    variations: any[];
+    availableColors: string[]
+    selectedColor: string
+    onSelect: (color: string) => void
+    variations: Variation[]
 }
 
 export function ColorSelector({ availableColors, selectedColor, onSelect, variations }: ColorSelectorProps) {
@@ -12,21 +17,24 @@ export function ColorSelector({ availableColors, selectedColor, onSelect, variat
 
     return (
         <div className="space-y-3">
-            <h3 className="font-medium text-sm text-zinc-900 uppercase tracking-widest">Cor / Tipo</h3>
-            <div className="flex gap-3">
+            <h3 className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">Cor / tipo</h3>
+            <div className="flex flex-wrap gap-3">
                 {availableColors.map((color) => {
-                    const matchingVariantColors = variations.find(v => v.color === color)
-                    const isOutOfStock = matchingVariantColors ? matchingVariantColors.stock_quantity <= 0 : true
+                    const matchingVariation = variations.find((variation) => variation.color === color)
+                    const isOutOfStock = matchingVariation ? matchingVariation.stock_quantity <= 0 : true
+
                     return (
                         <button
                             key={color}
                             disabled={isOutOfStock}
                             onClick={() => onSelect(color)}
-                            className={`px-5 py-2.5 text-sm font-medium border rounded-full transition-all ${isOutOfStock ? "opacity-30 cursor-not-allowed line-through" :
-                                selectedColor === color
-                                    ? "border-zinc-900 bg-zinc-900 text-white shadow-md transform scale-105 inline-block"
-                                    : "border-zinc-200 hover:border-zinc-400 text-zinc-700 bg-zinc-50"
-                                }`}
+                            className={`rounded-full border px-5 py-2.5 text-sm font-medium transition-all ${
+                                isOutOfStock
+                                    ? "cursor-not-allowed border-border opacity-35 line-through"
+                                    : selectedColor === color
+                                        ? "border-primary bg-primary text-primary-foreground"
+                                        : "border-border bg-card text-foreground hover:bg-accent"
+                            }`}
                         >
                             {color}
                         </button>

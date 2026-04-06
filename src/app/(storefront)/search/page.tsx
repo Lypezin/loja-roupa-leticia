@@ -1,13 +1,13 @@
+import { Search } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 import { ProductCard } from "@/components/store/ProductCard"
-import { Search } from "lucide-react"
 
 type SearchProduct = {
     id: string
     name: string
     base_price: number
-    category?: { name: string }
-    images?: { image_url: string; is_primary: boolean }[]
+    category?: { name?: string | null } | null
+    images?: { image_url: string; is_primary: boolean | null }[]
 }
 
 export default async function SearchPage({
@@ -20,10 +20,16 @@ export default async function SearchPage({
 
     if (!q) {
         return (
-            <div className="container mx-auto px-4 py-20 text-center">
-                <Search className="w-12 h-12 text-zinc-300 mx-auto mb-4" />
-                <h1 className="text-2xl font-bold">O que você está procurando?</h1>
-                <p className="text-zinc-500 mt-2">Digite algo na busca acima para encontrar produtos.</p>
+            <div className="page-shell py-20 text-center">
+                <div className="mx-auto max-w-xl">
+                    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-border bg-card text-muted-foreground">
+                        <Search className="h-7 w-7" />
+                    </div>
+                    <h1 className="mt-6 font-display text-4xl text-foreground">O que voce esta procurando?</h1>
+                    <p className="mt-3 text-base leading-7 text-muted-foreground">
+                        Use a busca no topo para encontrar pecas por nome, linha ou categoria.
+                    </p>
+                </div>
             </div>
         )
     }
@@ -39,29 +45,35 @@ export default async function SearchPage({
         .eq('is_active', true)
         .order('created_at', { ascending: false })
 
-    const results = (products as unknown as SearchProduct[]) || []
+    const results = (products || []) as SearchProduct[]
 
     return (
-        <div className="container mx-auto px-4 py-16">
-            <div className="mb-12">
-                <p className="text-sm font-medium text-primary uppercase tracking-widest mb-2">Resultados da busca</p>
-                <h1 className="text-2xl md:text-4xl font-bold tracking-tight">Exibindo resultados para &quot;{q}&quot;</h1>
-                <p className="text-zinc-500 mt-2">Encontramos {results.length} produto(s).</p>
+        <div className="page-shell py-10 md:py-14">
+            <div className="paper-panel rounded-[2rem] px-6 py-6 md:px-8">
+                <span className="eyebrow">resultados</span>
+                <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">
+                    Busca por {q}
+                </h1>
+                <p className="mt-3 text-sm text-muted-foreground">
+                    Encontramos {results.length} produto(s).
+                </p>
             </div>
 
             {results.length > 0 ? (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
-                    {results.map((product) => (
-                        <ProductCard key={product.id} product={product} />
+                <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+                    {results.map((product, index) => (
+                        <ProductCard key={product.id} product={product} index={index} />
                     ))}
                 </div>
             ) : (
                 <div className="py-20 text-center">
-                    <div className="bg-muted w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <Search className="w-8 h-8 text-zinc-400" />
+                    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-border bg-card text-muted-foreground">
+                        <Search className="h-7 w-7" />
                     </div>
-                    <h2 className="text-xl font-semibold">Nenhum produto encontrado</h2>
-                    <p className="text-zinc-500 mt-2">Tente buscar por termos diferentes ou confira nossas categorias.</p>
+                    <h2 className="mt-6 font-display text-3xl text-foreground">Nada por aqui</h2>
+                    <p className="mt-3 text-base leading-7 text-muted-foreground">
+                        Tente buscar por um termo diferente ou navegue pelas categorias.
+                    </p>
                 </div>
             )}
         </div>

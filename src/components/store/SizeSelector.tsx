@@ -1,11 +1,17 @@
 'use client'
 
+type Variation = {
+    color: string | null
+    size: string | null
+    stock_quantity: number
+}
+
 interface SizeSelectorProps {
-    sizesForColor: string[];
-    selectedSize: string;
-    onSelect: (size: string) => void;
-    variations: any[];
-    selectedColor: string;
+    sizesForColor: string[]
+    selectedSize: string
+    onSelect: (size: string) => void
+    variations: Variation[]
+    selectedColor: string
 }
 
 export function SizeSelector({ sizesForColor, selectedSize, onSelect, variations, selectedColor }: SizeSelectorProps) {
@@ -13,26 +19,28 @@ export function SizeSelector({ sizesForColor, selectedSize, onSelect, variations
 
     return (
         <div className="space-y-3">
-            <h3 className="font-medium text-sm text-zinc-900 uppercase tracking-widest mt-2">
-                Tamanho / Vol
+            <h3 className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                Tamanho
             </h3>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
                 {sizesForColor.map((size) => {
-                    const matchingVariantSizes = variations.find(v =>
-                        (!selectedColor || v.color === selectedColor) && v.size === size
+                    const matchingVariation = variations.find((variation) =>
+                        (!selectedColor || variation.color === selectedColor) && variation.size === size
                     )
-                    const isSizeOutOfStock = matchingVariantSizes ? matchingVariantSizes.stock_quantity <= 0 : true
+                    const isOutOfStock = matchingVariation ? matchingVariation.stock_quantity <= 0 : true
 
                     return (
                         <button
                             key={size}
-                            disabled={isSizeOutOfStock}
+                            disabled={isOutOfStock}
                             onClick={() => onSelect(size)}
-                            className={`w-14 h-14 flex items-center justify-center font-medium text-sm border transition-all rounded-xl ${isSizeOutOfStock ? "opacity-30 cursor-not-allowed text-zinc-400 bg-zinc-100" :
-                                selectedSize === size
-                                    ? "border-zinc-900 bg-zinc-900 text-white shadow-md transform scale-105"
-                                    : "border-zinc-200 hover:border-zinc-400 text-zinc-700 bg-zinc-50"
-                                }`}
+                            className={`flex h-12 min-w-12 items-center justify-center rounded-[1rem] border px-4 text-sm font-medium transition-all ${
+                                isOutOfStock
+                                    ? "cursor-not-allowed border-border bg-muted opacity-40"
+                                    : selectedSize === size
+                                        ? "border-primary bg-primary text-primary-foreground"
+                                        : "border-border bg-card text-foreground hover:bg-accent"
+                            }`}
                         >
                             {size}
                         </button>

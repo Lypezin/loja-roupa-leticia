@@ -10,40 +10,37 @@ interface Category {
 }
 
 interface DesktopNavProps {
-    displayCategories: Category[];
-    extraCategories: Category[];
+    displayCategories: Category[]
+    extraCategories: Category[]
 }
 
 export function DesktopNav({ displayCategories, extraCategories }: DesktopNavProps) {
     return (
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-1 rounded-full border border-border/80 bg-card/90 px-2 py-1 shadow-[0_12px_28px_rgba(70,52,35,0.05)]">
             {displayCategories.map((cat) => (
                 <Link
                     key={cat.id}
                     href={`/${cat.slug}`}
-                    className="relative px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted group"
+                    className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
                     {cat.name}
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-1/2" />
                 </Link>
             ))}
 
-            {/* Dropdown menu para mais categorias */}
             {extraCategories.length > 0 && (
                 <div className="relative group/dropdown">
-                    <button className="relative px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted flex items-center gap-1">
+                    <button className="flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
                         Mais
                         <ChevronDown className="w-3.5 h-3.5" />
-                        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-[&:hover]/dropdown:w-1/2" />
                     </button>
 
-                    <div className="absolute top-full right-0 mt-2 w-48 bg-background border border-border rounded-xl shadow-xl opacity-0 invisible group-[&:hover]/dropdown:opacity-100 group-[&:hover]/dropdown:visible transition-all duration-300 transform origin-top-right group-[&:hover]/dropdown:translate-y-0 translate-y-2 z-50">
-                        <div className="py-2 flex flex-col">
-                            {extraCategories.map(cat => (
+                    <div className="invisible absolute right-0 top-full z-50 mt-3 w-52 translate-y-2 rounded-[1.4rem] border border-border bg-background p-2 opacity-0 shadow-[0_24px_55px_rgba(70,52,35,0.1)] transition-all duration-200 group-[&:hover]/dropdown:visible group-[&:hover]/dropdown:translate-y-0 group-[&:hover]/dropdown:opacity-100">
+                        <div className="flex flex-col py-2">
+                            {extraCategories.map((cat) => (
                                 <Link
                                     key={cat.id}
                                     href={`/${cat.slug}`}
-                                    className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                                    className="rounded-xl px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                                 >
                                     {cat.name}
                                 </Link>
@@ -53,14 +50,13 @@ export function DesktopNav({ displayCategories, extraCategories }: DesktopNavPro
                 </div>
             )}
 
-            <div className="w-px h-4 bg-border mx-2" />
+            <div className="mx-2 h-4 w-px bg-border" />
 
             <Link
                 href="/sobre"
-                className="relative px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted group"
+                className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
                 Sobre
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 group-hover:w-1/2" />
             </Link>
         </nav>
     )

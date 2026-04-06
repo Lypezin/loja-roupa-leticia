@@ -4,6 +4,14 @@ import { FilterSort } from "@/components/store/FilterSort"
 
 export const revalidate = 60
 
+type CatalogProduct = {
+    id: string
+    name: string
+    base_price: number
+    category?: { name?: string | null } | null
+    images?: { image_url: string; is_primary: boolean | null }[]
+}
+
 export default async function ProdutosPage({
     searchParams,
 }: {
@@ -32,31 +40,31 @@ export default async function ProdutosPage({
     const { data: products } = await query
 
     return (
-        <div className="container mx-auto px-4 py-16">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-                <div>
-                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-2 block">
-                        Catálogo
-                    </span>
-                    <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Todos os Produtos</h1>
-                    <p className="text-muted-foreground mt-2">
-                        {products?.length || 0} produto(s) encontrado(s).
-                    </p>
-                </div>
-                <div className="flex items-center gap-4">
-                    <FilterSort currentSort={sort} />
+        <div className="page-shell py-10 md:py-14">
+            <div className="paper-panel rounded-[2rem] px-6 py-6 md:px-8">
+                <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                    <div>
+                        <span className="eyebrow">catalogo</span>
+                        <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">Todas as pecas</h1>
+                        <p className="mt-3 text-sm text-muted-foreground">
+                            {products?.length || 0} produto(s) encontrado(s).
+                        </p>
+                    </div>
+                    <div className="w-full md:w-auto">
+                        <FilterSort currentSort={sort} />
+                    </div>
                 </div>
             </div>
 
             {products && products.length > 0 ? (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
-                    {products.map((product: any, i: number) => (
-                        <ProductCard key={product.id} product={product} index={i} />
+                <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+                    {(products as CatalogProduct[]).map((product, index) => (
+                        <ProductCard key={product.id} product={product} index={index} />
                     ))}
                 </div>
             ) : (
                 <div className="py-20 text-center text-muted-foreground">
-                    Nenhum produto disponível no momento.
+                    Nenhum produto disponivel no momento.
                 </div>
             )}
         </div>

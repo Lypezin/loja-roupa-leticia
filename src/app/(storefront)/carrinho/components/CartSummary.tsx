@@ -1,31 +1,29 @@
 'use client'
 
-import { Button } from "@/components/ui/button"
-import { ArrowRight, MessageSquare, Loader2 } from "lucide-react"
 import Link from "next/link"
+import { ArrowRight, Loader2, MessageSquare } from "lucide-react"
 import { useState } from "react"
+import { Button } from "@/components/ui/button"
 import { useCartStore } from "@/store/useCartStore"
 import { createCheckoutSession } from "@/app/(storefront)/actions"
 
 interface CartSummaryProps {
-    total: number;
-    formattedTotal: string;
-    installment: string;
-    handleWhatsAppCheckout: () => void;
+    formattedTotal: string
+    installment: string
+    handleWhatsAppCheckout: () => void
 }
 
-export function CartSummary({ total, formattedTotal, installment, handleWhatsAppCheckout }: CartSummaryProps) {
+export function CartSummary({ formattedTotal, installment, handleWhatsAppCheckout }: CartSummaryProps) {
     const { items } = useCartStore()
     const [isLoadingStripe, setIsLoadingStripe] = useState(false)
 
-    // Handler para disparar a Stripe
     const handleStripeCheckout = async () => {
         if (items.length === 0) return
-        
+
         setIsLoadingStripe(true)
         try {
             const result = await createCheckoutSession(items)
-            
+
             if (result.error) {
                 alert(result.error)
                 setIsLoadingStripe(false)
@@ -33,33 +31,33 @@ export function CartSummary({ total, formattedTotal, installment, handleWhatsApp
             }
 
             if (result.url) {
-                window.location.href = result.url // Redireciona o cliente para a tela oficial de pagamento
+                window.location.href = result.url
             }
-        } catch (error) {
-            alert('Falha interna ao redirecionar para pagamentos.')
+        } catch {
+            alert("Falha interna ao redirecionar para pagamentos.")
             setIsLoadingStripe(false)
         }
     }
 
     return (
         <div className="lg:col-span-1">
-            <div className="sticky top-24 bg-card rounded-2xl p-6 space-y-5 border border-border">
-                <h2 className="font-semibold text-lg text-card-foreground">Resumo do pedido</h2>
+            <div className="surface-card sticky top-24 rounded-[1.9rem] p-6">
+                <h2 className="font-display text-3xl text-card-foreground">Resumo</h2>
 
-                <div className="space-y-3 text-sm">
+                <div className="mt-6 space-y-3 text-sm">
                     <div className="flex justify-between text-muted-foreground">
                         <span>Subtotal</span>
                         <span>{formattedTotal}</span>
                     </div>
                     <div className="flex justify-between text-muted-foreground">
                         <span>Frete</span>
-                        <span className="text-emerald-600 font-medium">Grátis</span>
+                        <span className="font-medium text-emerald-600">Gratis</span>
                     </div>
-                    <div className="border-t border-border pt-3 flex justify-between font-bold text-lg text-card-foreground">
+                    <div className="flex justify-between border-t border-border pt-4 text-lg font-semibold text-card-foreground">
                         <span>Total</span>
                         <span>{formattedTotal}</span>
                     </div>
-                    <p className="text-xs text-muted-foreground text-right">
+                    <p className="text-right text-xs text-muted-foreground">
                         ou 3x de {installment} sem juros
                     </p>
                 </div>
@@ -67,12 +65,16 @@ export function CartSummary({ total, formattedTotal, installment, handleWhatsApp
                 <Button
                     onClick={handleStripeCheckout}
                     disabled={isLoadingStripe}
-                    className="w-full h-13 bg-foreground hover:bg-foreground/90 text-background text-sm font-semibold tracking-wide cursor-pointer flex items-center justify-center gap-2 rounded-xl disabled:opacity-70"
+                    className="mt-6 h-12 w-full rounded-full text-sm font-semibold uppercase tracking-[0.16em]"
                 >
                     {isLoadingStripe ? (
-                        <>Processando <Loader2 className="w-4 h-4 animate-spin" /></>
+                        <>
+                            Processando <Loader2 className="h-4 w-4 animate-spin" />
+                        </>
                     ) : (
-                        <>Finalizar Compra <ArrowRight className="w-4 h-4" /></>
+                        <>
+                            Finalizar compra <ArrowRight className="h-4 w-4" />
+                        </>
                     )}
                 </Button>
 
@@ -80,14 +82,14 @@ export function CartSummary({ total, formattedTotal, installment, handleWhatsApp
                     onClick={handleWhatsAppCheckout}
                     disabled={isLoadingStripe}
                     variant="outline"
-                    className="w-full h-13 border-emerald-500/30 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-semibold tracking-wide cursor-pointer flex items-center justify-center gap-2 rounded-xl transition-colors"
+                    className="mt-3 h-12 w-full rounded-full border-emerald-500/30 text-sm font-semibold uppercase tracking-[0.16em] text-emerald-700 hover:bg-emerald-50"
                 >
-                    <MessageSquare className="w-4 h-4" />
+                    <MessageSquare className="h-4 w-4" />
                     Finalizar via WhatsApp
                 </Button>
 
-                <Link href="/" className="block text-center text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    ← Continuar comprando
+                <Link href="/" className="mt-5 block text-center text-sm text-muted-foreground transition-colors hover:text-foreground">
+                    Continuar comprando
                 </Link>
             </div>
         </div>

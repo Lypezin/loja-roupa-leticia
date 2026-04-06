@@ -3,8 +3,6 @@
 import Link from "next/link"
 import { Menu } from "lucide-react"
 import { useEffect, useState } from "react"
-import { useCartStore } from "@/store/useCartStore"
-import { createClient } from "@/lib/supabase/client"
 import { MobileMenu } from "./MobileMenu"
 import { SearchBar } from "./SearchBar"
 import { DesktopNav } from "./DesktopNav"
@@ -16,56 +14,53 @@ export interface Category {
     slug: string
 }
 
-export function Header({ categories = [], storeName }: { categories?: Category[]; storeName?: string }) {
-    const totalItems = useCartStore((state) => state.totalItems())
-    const [mounted, setMounted] = useState(false)
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+export function Header({
+    categories = [],
+    storeName,
+    isLoggedIn = false,
+}: {
+    categories?: Category[]
+    storeName?: string
+    isLoggedIn?: boolean
+}) {
     const [mobileMenu, setMobileMenu] = useState(false)
-    const [scrolled, setScrolled] = useState(false)
 
     useEffect(() => {
-        setMounted(true)
-        const supabase = createClient()
-
-        supabase.auth.getUser().then(({ data: { user } }) => {
-            setIsLoggedIn(!!user)
-        })
-
-        const handleScroll = () => setScrolled(window.scrollY > 20)
-        window.addEventListener("scroll", handleScroll)
-
-        return () => window.removeEventListener("scroll", handleScroll)
-    }, [])
+        document.body.style.overflow = mobileMenu ? 'hidden' : ''
+        return () => {
+            document.body.style.overflow = ''
+        }
+    }, [mobileMenu])
 
     const displayCategories = categories.slice(0, 4)
     const extraCategories = categories.slice(4)
 
     return (
         <>
-            <header className={`sticky top-0 z-50 w-full transition-all duration-500 ${scrolled
-                ? "border-b border-white/40 bg-background/72 shadow-[0_10px_40px_rgba(60,42,23,0.08)] backdrop-blur-2xl"
-                : "bg-transparent"
-                }`}>
-                <div className="container mx-auto flex h-16 items-center justify-between px-4 md:h-20">
-                    <div className="flex items-center gap-3">
+            <header className="sticky top-0 z-50 border-b border-border/70 bg-background/88 backdrop-blur-xl">
+                <div className="container mx-auto flex h-[4.5rem] items-center justify-between gap-3 px-4 md:h-20">
+                    <div className="flex items-center gap-3 md:gap-4">
                         <button
-                            onClick={() => setMobileMenu(!mobileMenu)}
-                            className="rounded-xl border border-transparent p-2 transition-colors hover:bg-white/50 lg:hidden"
+                            onClick={() => setMobileMenu(true)}
+                            className="rounded-full border border-border bg-card p-2.5 text-foreground transition-colors hover:bg-accent lg:hidden"
                         >
-                            <Menu className="h-5 w-5 text-foreground" />
+                            <Menu className="h-5 w-5" />
                         </button>
-                        <Link href="/" className="max-w-[120px] truncate text-base font-bold tracking-[-0.08em] text-foreground transition-opacity hover:opacity-70 xs:max-w-[180px] sm:max-w-none sm:text-lg lg:text-xl">
-                            {storeName || "FASHION STORE"}
+                        <Link href="/" className="min-w-0">
+                            <span className="eyebrow mb-2 hidden md:inline-flex">atelier online</span>
+                            <span className="block max-w-[150px] truncate font-display text-[1.4rem] leading-none text-foreground sm:max-w-none md:text-[1.8rem]">
+                                {storeName || "FASHION STORE"}
+                            </span>
                         </Link>
                     </div>
 
-                    <div className="mx-8 hidden max-w-md flex-1 lg:block">
+                    <div className="mx-4 hidden max-w-md flex-1 lg:block">
                         <SearchBar />
                     </div>
 
                     <DesktopNav displayCategories={displayCategories} extraCategories={extraCategories} />
 
-                    <UserActions mounted={mounted} isLoggedIn={isLoggedIn} totalItems={totalItems} />
+                    <UserActions isLoggedIn={isLoggedIn} />
                 </div>
             </header>
 

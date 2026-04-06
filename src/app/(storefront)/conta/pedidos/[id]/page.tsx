@@ -1,9 +1,9 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, CheckCircle, CreditCard, Package, Truck } from 'lucide-react'
+import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { formatCurrency } from '@/lib/utils'
+import { createClient } from '@/lib/supabase/server'
 
 const statusSteps = ['paid', 'processing', 'shipped', 'delivered']
 const stepLabels: Record<string, string> = {
@@ -12,7 +12,15 @@ const stepLabels: Record<string, string> = {
     shipped: 'Enviado',
     delivered: 'Entregue',
 }
+
 const stepIcons = [CreditCard, Package, Truck, CheckCircle]
+
+type OrderItem = {
+    id: string
+    quantity: number
+    price: number
+    products?: { id?: string | null; name?: string | null } | null
+}
 
 export default async function DetalhesPedidoPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
@@ -36,14 +44,18 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
         .eq('user_id', user.id)
         .single()
 
-    if (!order) return <div className="text-center py-20">Pedido não encontrado.</div>
+    if (!order) {
+        return <div className="page-shell py-20 text-center">Pedido nao encontrado.</div>
+    }
 
-    // Índice atual do status para o tracker progressivo
     const currentStepIndex = statusSteps.indexOf(order.status)
     const isCancelled = order.status === 'cancelled'
+    const orderItems = (order.order_items || []) as OrderItem[]
 
-    // Parsear endereço de entrega se existir
-    const address = order.shipping_address
+    const address = order.shipping_address && typeof order.shipping_address === 'object' && !Array.isArray(order.shipping_address)
+        ? order.shipping_address as Record<string, string | null | undefined>
+        : null
+
     const addressStr = address
         ? [address.line1, address.line2, address.city, address.state, address.postal_code, address.country]
             .filter(Boolean)
@@ -51,100 +63,90 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
         : null
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-3xl">
-            <Button variant="ghost" className="mb-6 -ml-4 text-muted-foreground" asChild>
-                <Link href="/conta/pedidos">
-                    <ArrowLeft className="w-4 h-4 mr-2" /> Voltar aos Pedidos
-                </Link>
-            </Button>
+        <div className="page-shell py-10 md:py-14">
+            <div className="mx-auto max-w-5xl space-y-8">
+                <Button variant="ghost" className="-ml-4 w-fit" asChild>
+                    <Link href="/conta/pedidos">
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Voltar aos pedidos
+                    </Link>
+                </Button>
 
-            <div className="bg-card border rounded-2xl shadow-sm overflow-hidden">
-                <div className="p-6 border-b bg-muted/20 flex flex-wrap gap-4 items-center justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold tracking-tight mb-1">Pedido #{order.id.split('-')[0].toUpperCase()}</h1>
-                        <p className="text-sm text-muted-foreground">
-                            Realizado em {new Date(order.created_at).toLocaleString('pt-BR')}
-                        </p>
+                <div className="paper-panel rounded-[2rem] px-6 py-8 md:px-8">
+                    <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                            <span className="eyebrow">pedido</span>
+                            <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">
+                                #{order.id.split('-')[0].toUpperCase()}
+                            </h1>
+                            <p className="mt-3 text-sm text-muted-foreground">
+                                Realizado em {new Date(order.created_at).toLocaleString('pt-BR')}
+                            </p>
+                        </div>
+                        {isCancelled && (
+                            <span className="rounded-full bg-red-100 px-4 py-2 text-xs font-medium text-red-700">
+                                Cancelado
+                            </span>
+                        )}
                     </div>
-                    {isCancelled && (
-                        <span className="bg-red-100 text-red-700 text-sm px-3 py-1 rounded-full font-medium">
-                            Cancelado
-                        </span>
-                    )}
                 </div>
 
-                <div className="p-6 space-y-8">
-                    {/* Status Tracker Progressivo */}
-                    {!isCancelled && (
-                        <div className="flex bg-muted/40 p-4 rounded-xl border border-muted-foreground/10 items-center justify-between mx-auto">
+                {!isCancelled && (
+                    <div className="surface-card rounded-[1.8rem] p-6">
+                        <div className="grid gap-4 md:grid-cols-4">
                             {statusSteps.map((step, index) => {
                                 const Icon = stepIcons[index]
                                 const isCompleted = currentStepIndex >= index
-                                const isLast = index === statusSteps.length - 1
 
                                 return (
-                                    <div key={step} className="flex items-center flex-1 last:flex-none">
-                                        <div className="flex flex-col items-center gap-2">
-                                            <div className={`p-3 rounded-full transition-colors ${
-                                                isCompleted 
-                                                    ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400' 
-                                                    : 'bg-zinc-100 text-zinc-400 dark:bg-zinc-800'
-                                            }`}>
-                                                <Icon className="w-5 h-5" />
-                                            </div>
-                                            <span className={`text-xs font-medium ${isCompleted ? 'text-emerald-600 dark:text-emerald-400' : 'text-muted-foreground'}`}>
-                                                {stepLabels[step]}
-                                            </span>
+                                    <div key={step} className="surface-card-soft rounded-[1.4rem] p-4">
+                                        <div className={`flex h-11 w-11 items-center justify-center rounded-full ${isCompleted ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground'}`}>
+                                            <Icon className="h-4 w-4" />
                                         </div>
-                                        {!isLast && (
-                                            <div className="flex-1 h-0.5 mx-2 -mt-6 rounded-full bg-zinc-200 dark:bg-zinc-700">
-                                                <div className={`h-full rounded-full transition-all ${
-                                                    currentStepIndex > index ? 'bg-emerald-500 w-full' : 'w-0'
-                                                }`} />
-                                            </div>
-                                        )}
+                                        <p className="mt-4 text-sm font-semibold text-foreground">{stepLabels[step]}</p>
                                     </div>
                                 )
                             })}
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    {/* Conteúdo */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-4">
-                            <h3 className="font-semibold text-lg flex items-center gap-2"><Package className="w-5 h-5"/> Produtos</h3>
-                            <div className="divide-y border rounded-xl overflow-hidden">
-                                {order.order_items?.map((item: any) => (
-                                    <div key={item.id} className="p-4 flex items-center justify-between hover:bg-muted/30 transition-colors">
-                                        <div>
-                                            <div className="font-medium">{item.products?.name || 'Produto Removido'}</div>
-                                            <div className="text-sm text-muted-foreground">Qtd: {item.quantity}</div>
-                                        </div>
-                                        <div className="font-semibold">
-                                            {formatCurrency(item.price * item.quantity)}
-                                        </div>
+                <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+                    <div className="surface-card rounded-[1.8rem] p-6">
+                        <h2 className="font-display text-3xl text-foreground">Itens do pedido</h2>
+                        <div className="mt-6 space-y-4">
+                            {orderItems.map((item) => (
+                                <div key={item.id} className="flex items-center justify-between rounded-[1.2rem] border border-border bg-card px-4 py-4">
+                                    <div>
+                                        <p className="font-medium text-foreground">{item.products?.name || 'Produto removido'}</p>
+                                        <p className="mt-1 text-sm text-muted-foreground">Quantidade: {item.quantity}</p>
                                     </div>
-                                ))}
+                                    <p className="font-semibold text-foreground">{formatCurrency(item.price * item.quantity)}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="space-y-6">
+                        <div className="surface-card rounded-[1.8rem] p-6">
+                            <h2 className="font-display text-3xl text-foreground">Resumo</h2>
+                            <div className="mt-6 space-y-3 text-sm">
+                                <div className="flex justify-between text-muted-foreground">
+                                    <span>Subtotal</span>
+                                    <span>{formatCurrency(order.total_amount)}</span>
+                                </div>
+                                <div className="flex justify-between border-t border-border pt-4 text-lg font-semibold text-foreground">
+                                    <span>Total</span>
+                                    <span>{formatCurrency(order.total_amount)}</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="space-y-6">
-                            <div className="bg-zinc-50 dark:bg-zinc-900 border rounded-xl p-5 space-y-4">
-                                <h3 className="font-semibold border-b pb-2">Resumo Financeiro</h3>
-                                <div className="space-y-2 text-sm">
-                                    <div className="flex justify-between"><span>Subtotal dos Itens</span> <span>{formatCurrency(order.total_amount)}</span></div>
-                                    <div className="flex justify-between font-bold text-lg pt-2 border-t"><span>Total</span> <span>{formatCurrency(order.total_amount)}</span></div>
-                                </div>
+                        {addressStr && (
+                            <div className="surface-card rounded-[1.8rem] p-6">
+                                <h2 className="font-display text-3xl text-foreground">Entrega</h2>
+                                <p className="mt-4 text-sm leading-7 text-muted-foreground">{addressStr}</p>
                             </div>
-
-                            {/* Endereço de Entrega */}
-                            {addressStr && (
-                                <div className="bg-zinc-50 dark:bg-zinc-900 border rounded-xl p-5 space-y-2">
-                                    <h3 className="font-semibold border-b pb-2">Endereço de Entrega</h3>
-                                    <p className="text-sm text-muted-foreground">{addressStr}</p>
-                                </div>
-                            )}
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>

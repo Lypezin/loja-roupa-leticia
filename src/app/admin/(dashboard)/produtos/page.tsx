@@ -1,20 +1,9 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Plus, Search, Package, MoreVertical, Pencil, Trash2 } from "lucide-react"
+import { Plus, Search, Package } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
-import Image from "next/image"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
-import { DeleteProductButton } from "./components/DeleteProductButton"
-
-import { ProductTable } from "./components/ProductTable"
+import { ProductTable, type ProductTableProduct } from "./components/ProductTable"
 
 export default async function AdminProdutos() {
     const supabase = await createClient()
@@ -61,7 +50,7 @@ export default async function AdminProdutos() {
                 </div>
 
                 {products && products.length > 0 ? (
-                    <ProductTable products={products} />
+                    <ProductTable products={(products ?? []) as ProductTableProduct[]} />
                 ) : (
                     <div className="p-16 text-center">
                         <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">

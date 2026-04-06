@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
-import { ProductCard } from "@/components/store/ProductCard"
-import { notFound } from "next/navigation"
 import { FilterSort } from "@/components/store/FilterSort"
+import { ProductCard, type Product } from "@/components/store/ProductCard"
+import { notFound } from "next/navigation"
 
 export const revalidate = 60
 
@@ -9,17 +9,16 @@ export default async function CategoryPage(props: {
     params: Promise<{ slug: string }>
     searchParams: Promise<{ sort?: string; minPrice?: string; maxPrice?: string }>
 }) {
-    const params = await props.params;
-    const searchParams = await props.searchParams;
-    const slug = params.slug;
-    const { sort, minPrice, maxPrice } = searchParams;
+    const params = await props.params
+    const searchParams = await props.searchParams
+    const slug = params.slug
+    const { sort, minPrice, maxPrice } = searchParams
     const supabase = await createClient()
 
-    // Buscar a categoria pelo slug
     const { data: category } = await supabase
-        .from('categories')
-        .select('id, name')
-        .eq('slug', slug)
+        .from("categories")
+        .select("id, name")
+        .eq("slug", slug)
         .single()
 
     if (!category) {
@@ -27,48 +26,51 @@ export default async function CategoryPage(props: {
     }
 
     let query = supabase
-        .from('products')
+        .from("products")
         .select(`
             id, name, base_price,
             category:categories(name),
             images:product_images(image_url, is_primary)
         `)
-        .eq('is_active', true)
-        .eq('category_id', category.id)
+        .eq("is_active", true)
+        .eq("category_id", category.id)
 
-    if (minPrice) query = query.gte('base_price', parseFloat(minPrice))
-    if (maxPrice) query = query.lte('base_price', parseFloat(maxPrice))
+    if (minPrice) query = query.gte("base_price", parseFloat(minPrice))
+    if (maxPrice) query = query.lte("base_price", parseFloat(maxPrice))
 
-    if (sort === 'price-asc') query = query.order('base_price', { ascending: true })
-    else if (sort === 'price-desc') query = query.order('base_price', { ascending: false })
-    else query = query.order('created_at', { ascending: false })
+    if (sort === "price-asc") query = query.order("base_price", { ascending: true })
+    else if (sort === "price-desc") query = query.order("base_price", { ascending: false })
+    else query = query.order("created_at", { ascending: false })
 
     const { data: products } = await query
-
-    const filteredProducts = products || []
+    const filteredProducts = (products ?? []) as Product[]
 
     return (
-        <div className="container mx-auto px-4 py-16">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-                <div>
-                    <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">{category.name}</h1>
-                    <p className="text-muted-foreground mt-2">Encontre os melhores produtos em {category.name.toLowerCase()}.</p>
-                </div>
-
-                <div className="flex items-center gap-4">
-                    <FilterSort currentSort={sort} />
+        <div className="page-shell py-10 md:py-14">
+            <div className="paper-panel rounded-[2rem] px-6 py-6 md:px-8">
+                <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                    <div>
+                        <span className="eyebrow">categoria</span>
+                        <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">{category.name}</h1>
+                        <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">
+                            Uma selecao pensada para quem procura {category.name.toLowerCase()} com acabamento, caimento e facilidade no dia a dia.
+                        </p>
+                    </div>
+                    <div className="w-full md:w-auto">
+                        <FilterSort currentSort={sort} />
+                    </div>
                 </div>
             </div>
 
             {filteredProducts.length > 0 ? (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
-                    {filteredProducts.map((product: any) => (
-                        <ProductCard key={product.id} product={product} />
+                <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+                    {filteredProducts.map((product, index) => (
+                        <ProductCard key={product.id} product={product} index={index} />
                     ))}
                 </div>
             ) : (
                 <div className="py-20 text-center text-muted-foreground">
-                    Nenhum produto em {category.name} no momento.
+                    Nenhum produto disponivel nesta categoria no momento.
                 </div>
             )}
         </div>

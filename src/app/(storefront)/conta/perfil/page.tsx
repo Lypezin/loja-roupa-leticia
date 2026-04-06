@@ -1,14 +1,14 @@
-import { createClient } from "@/lib/supabase/server"
-import { redirect } from "next/navigation"
 import Link from "next/link"
+import { ArrowLeft, FileText, Mail, Phone, User } from "lucide-react"
+import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, User, Phone, FileText, Mail } from "lucide-react"
+import { createClient } from "@/lib/supabase/server"
 import { atualizarPerfil } from "./actions"
 
 export default async function PerfilPage({
     searchParams,
 }: {
-    searchParams: Promise<{ success?: string, error?: string }>
+    searchParams: Promise<{ success?: string; error?: string }>
 }) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
@@ -21,44 +21,44 @@ export default async function PerfilPage({
     const successMessage = params?.success
     const errorMessage = params?.error
 
-    // Extrair dados atuais do user_metadata
     const fullName = user.user_metadata?.full_name || ''
     const phone = user.user_metadata?.phone || ''
     const cpf = user.user_metadata?.cpf || ''
     const email = user.email || ''
 
     return (
-        <div className="container mx-auto px-4 py-8 lg:py-12 max-w-2xl">
-            <Link href="/conta" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-6">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Voltar para Minha Conta
-            </Link>
+        <div className="page-shell py-10 md:py-14">
+            <div className="mx-auto max-w-3xl space-y-6">
+                <Link href="/conta" className="ink-link">
+                    <ArrowLeft className="h-4 w-4" />
+                    Voltar para minha conta
+                </Link>
 
-            <div className="space-y-6">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-foreground">Meus Dados</h1>
-                    <p className="text-muted-foreground mt-2">Atualize suas informações pessoais abaixo.</p>
+                <div className="paper-panel rounded-[2rem] px-6 py-8 md:px-8">
+                    <span className="eyebrow">dados pessoais</span>
+                    <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">Editar perfil</h1>
+                    <p className="mt-3 text-sm leading-7 text-muted-foreground">Atualize os dados basicos da sua conta com seguranca.</p>
                 </div>
 
                 {successMessage && (
-                    <div className="bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-sm rounded-lg p-4 animate-fade-in">
+                    <div className="rounded-[1.2rem] border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
                         {successMessage}
                     </div>
                 )}
+
                 {errorMessage && (
-                    <div className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-400 text-sm rounded-lg p-4 animate-fade-in">
+                    <div className="rounded-[1.2rem] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                         {errorMessage}
                     </div>
                 )}
 
-                <div className="bg-card border border-border rounded-xl p-6 sm:p-8 shadow-sm">
+                <div className="surface-card rounded-[1.8rem] p-6 md:p-8">
                     <form action={atualizarPerfil} className="space-y-6">
-                        <div className="grid sm:grid-cols-2 gap-6">
-                            {/* Nome Completo */}
+                        <div className="grid gap-6 sm:grid-cols-2">
                             <div className="space-y-2 sm:col-span-2">
-                                <label htmlFor="fullName" className="text-sm font-medium text-foreground flex items-center gap-2">
-                                    <User className="w-4 h-4 text-muted-foreground" />
-                                    Nome Completo
+                                <label htmlFor="fullName" className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                    <User className="h-4 w-4 text-muted-foreground" />
+                                    Nome completo
                                 </label>
                                 <input
                                     type="text"
@@ -67,14 +67,13 @@ export default async function PerfilPage({
                                     defaultValue={fullName}
                                     placeholder="Seu nome completo"
                                     required
-                                    className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-foreground"
+                                    className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
                                 />
                             </div>
 
-                            {/* Telefone */}
                             <div className="space-y-2">
-                                <label htmlFor="phone" className="text-sm font-medium text-foreground flex items-center gap-2">
-                                    <Phone className="w-4 h-4 text-muted-foreground" />
+                                <label htmlFor="phone" className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                    <Phone className="h-4 w-4 text-muted-foreground" />
                                     Telefone
                                 </label>
                                 <input
@@ -83,14 +82,13 @@ export default async function PerfilPage({
                                     name="phone"
                                     defaultValue={phone}
                                     placeholder="(11) 90000-0000"
-                                    className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-foreground"
+                                    className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
                                 />
                             </div>
 
-                            {/* CPF */}
                             <div className="space-y-2">
-                                <label htmlFor="cpf" className="text-sm font-medium text-foreground flex items-center gap-2">
-                                    <FileText className="w-4 h-4 text-muted-foreground" />
+                                <label htmlFor="cpf" className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                    <FileText className="h-4 w-4 text-muted-foreground" />
                                     CPF
                                 </label>
                                 <input
@@ -99,29 +97,28 @@ export default async function PerfilPage({
                                     name="cpf"
                                     defaultValue={cpf}
                                     placeholder="000.000.000-00"
-                                    className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-foreground"
+                                    className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
                                 />
                             </div>
 
-                            {/* E-mail (Somente leitura para simplificar) */}
                             <div className="space-y-2 sm:col-span-2">
-                                <label htmlFor="email" className="text-sm font-medium text-foreground flex items-center gap-2">
-                                    <Mail className="w-4 h-4 text-muted-foreground" />
-                                    E-mail <span className="text-xs text-muted-foreground font-normal">(não editável)</span>
+                                <label htmlFor="email" className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                    <Mail className="h-4 w-4 text-muted-foreground" />
+                                    E-mail
                                 </label>
                                 <input
                                     type="email"
                                     id="email"
                                     value={email}
                                     disabled
-                                    className="w-full px-4 py-3 bg-muted border border-border rounded-xl text-muted-foreground cursor-not-allowed opacity-70"
+                                    className="h-12 w-full rounded-[1rem] border border-border bg-muted px-4 text-muted-foreground"
                                 />
                             </div>
                         </div>
 
-                        <div className="pt-4 border-t border-border flex justify-end">
-                            <Button type="submit" className="w-full sm:w-auto cursor-pointer">
-                                Salvar Alterações
+                        <div className="pt-4">
+                            <Button type="submit" className="rounded-full">
+                                Salvar alteracoes
                             </Button>
                         </div>
                     </form>

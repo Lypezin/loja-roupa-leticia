@@ -3,11 +3,13 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useCartStore } from "@/store/useCartStore"
+import { ColorSelector } from "./ColorSelector"
+import { SizeSelector } from "./SizeSelector"
 
 type Variation = {
     id: string
-    size: string
-    color: string
+    size: string | null
+    color: string | null
     stock_quantity: number
 }
 
@@ -19,45 +21,85 @@ type AddToCartProps = {
     variations: Variation[]
 }
 
-import { ColorSelector } from "./ColorSelector"
-import { SizeSelector } from "./SizeSelector"
-
 export function AddToCart({ productId, productName, price, imageUrl, variations }: AddToCartProps) {
     const addItem = useCartStore((state) => state.addItem)
-    const availableColors = Array.from(new Set(variations.map(v => v.color).filter(Boolean)))
-    const availableSizes = Array.from(new Set(variations.map(v => v.size).filter(Boolean)))
+    const availableColors = Array.from(new Set(variations.map((variation) => variation.color).filter(Boolean))) as string[]
+    const availableSizes = Array.from(new Set(variations.map((variation) => variation.size).filter(Boolean))) as string[]
 
     const [selectedColor, setSelectedColor] = useState<string>(availableColors[0] || "")
-    const sizesForColor = variations.filter(v => !selectedColor || v.color === selectedColor).map(v => v.size).filter(Boolean)
+    const sizesForColor = variations
+        .filter((variation) => !selectedColor || variation.color === selectedColor)
+        .map((variation) => variation.size)
+        .filter(Boolean) as string[]
     const [selectedSize, setSelectedSize] = useState<string>(sizesForColor[0] || "")
     const [added, setAdded] = useState(false)
 
-    const selectedVariation = variations.find(v => {
-        const colorMatch = !availableColors.length || v.color === selectedColor
-        const sizeMatch = !availableSizes.length || v.size === selectedSize
+    const selectedVariation = variations.find((variation) => {
+        const colorMatch = !availableColors.length || variation.color === selectedColor
+        const sizeMatch = !availableSizes.length || variation.size === selectedSize
         return colorMatch && sizeMatch
     })
 
     const handleAddToCart = () => {
         if (!selectedVariation || selectedVariation.stock_quantity <= 0) return
-        addItem({ id: selectedVariation.id, product_id: productId, product_name: productName, variation_id: selectedVariation.id, size: selectedSize || "", color: selectedColor || "", price, quantity: 1, image_url: imageUrl })
-        setAdded(true); setTimeout(() => setAdded(false), 2000)
+
+        addItem({
+            id: selectedVariation.id,
+            product_id: productId,
+            product_name: productName,
+            variation_id: selectedVariation.id,
+            size: selectedSize || "",
+            color: selectedColor || "",
+            price,
+            quantity: 1,
+            image_url: imageUrl,
+        })
+
+        setAdded(true)
+        setTimeout(() => setAdded(false), 1800)
     }
 
     return (
-        <div className="flex flex-col gap-6 mt-8">
-            <ColorSelector availableColors={availableColors} selectedColor={selectedColor} variations={variations} onSelect={(color) => {
-                setSelectedColor(color)
-                const s = variations.filter(v => v.color === color).map(v => v.size).filter(Boolean)
-                if (s.length > 0 && !s.includes(selectedSize)) setSelectedSize(s[0])
-            }} />
+        <div className="mt-8 rounded-[1.8rem] border border-border bg-card p-5 shadow-[0_14px_30px_rgba(68,48,31,0.05)]">
+            <div className="space-y-6">
+                <ColorSelector
+                    availableColors={availableColors}
+                    selectedColor={selectedColor}
+                    variations={variations}
+                    onSelect={(color) => {
+                        setSelectedColor(color)
+                        const nextSizes = variations
+                            .filter((variation) => variation.color === color)
+                            .map((variation) => variation.size)
+                            .filter(Boolean) as string[]
 
-            <SizeSelector sizesForColor={sizesForColor} selectedSize={selectedSize} variations={variations} selectedColor={selectedColor} onSelect={setSelectedSize} />
+                        if (nextSizes.length > 0 && !nextSizes.includes(selectedSize)) {
+                            setSelectedSize(nextSizes[0])
+                        }
+                    }}
+                />
 
-            <Button onClick={handleAddToCart} disabled={!selectedVariation || selectedVariation.stock_quantity <= 0} size="lg" className="w-full h-14 text-base tracking-wide bg-zinc-950 hover:bg-zinc-800 text-white cursor-pointer mt-4 transition-all">
-                {added ? "Adicionado ✓" : !selectedVariation ? "Selecione as opções" : selectedVariation.stock_quantity <= 0 ? "Esgotado" : "Adicionar à Sacola"}
-            </Button>
-            <p className="text-xs text-center text-zinc-500 mt-2">Frete grátis para todo o Brasil acima de R$ 300.</p>
+                <SizeSelector
+                    sizesForColor={sizesForColor}
+                    selectedSize={selectedSize}
+                    variations={variations}
+                    selectedColor={selectedColor}
+                    onSelect={setSelectedSize}
+                />
+
+                <Button
+                    onClick={handleAddToCart}
+                    disabled={!selectedVariation || selectedVariation.stock_quantity <= 0}
+                    size="lg"
+                    className="h-12 w-full rounded-full text-sm font-semibold uppercase tracking-[0.16em]"
+                >
+                    {added ? "Na sacola" : !selectedVariation ? "Selecione as opcoes" : selectedVariation.stock_quantity <= 0 ? "Esgotado" : "Adicionar a sacola"}
+                </Button>
+
+                <p className="text-center text-xs leading-6 text-muted-foreground">
+                    Frete gratis acima de R$ 300 e troca assistida em ate 7 dias.
+                </p>
+            </div>
         </div>
     )
 }

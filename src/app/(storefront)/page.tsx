@@ -1,45 +1,56 @@
 import Link from "next/link"
+import { MessageCircle, RefreshCcw, ShieldCheck, Truck } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
+import { getStoreCategories, getStoreSettings } from "@/lib/storefront"
 import { ProductCard } from "@/components/store/ProductCard"
 import { HeroSection } from "@/components/store/HeroSection"
 import { CategoriesSection } from "@/components/store/CategoriesSection"
 
 export const revalidate = 60
 
+type HomeProduct = {
+    id: string
+    name: string
+    base_price: number
+    category?: { name?: string | null } | null
+    images?: { image_url: string; is_primary: boolean | null }[]
+}
+
 export default async function StorefrontHome() {
     const supabase = await createClient()
 
-    const [
-        { data: settings },
-        { data: latestCategories },
-        { data: products }
-    ] = await Promise.all([
-        supabase.from("store_settings").select("*").single(),
-        supabase.from("categories").select("*").order("created_at", { ascending: true }).limit(3),
-        supabase.from("products").select(`
-            id, name, base_price,
-            category:categories(name),
-            images:product_images(image_url, is_primary)
-        `).eq("is_active", true).order("created_at", { ascending: false }).limit(12)
+    const [settings, categories, { data: products }] = await Promise.all([
+        getStoreSettings(),
+        getStoreCategories(),
+        supabase
+            .from("products")
+            .select(`
+                id, name, base_price,
+                category:categories(name),
+                images:product_images(image_url, is_primary)
+            `)
+            .eq("is_active", true)
+            .order("created_at", { ascending: false })
+            .limit(12),
     ])
 
-    const heroTitle = settings?.hero_title || "A NOVA COLECAO"
-    const heroSubtitle = settings?.hero_subtitle || "Descubra pecas exclusivas. Caimento estruturado, paleta minimalista e conforto definitivo."
-    const heroButton = settings?.hero_button_text || "Descobrir Agora"
-    const heroBg = settings?.hero_image_url || "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=2070"
-    const heroBadge = settings?.hero_badge_text || "Nova Colecao 2025"
+    const heroTitle = settings?.hero_title || "Colecao autoral"
+    const heroSubtitle = settings?.hero_subtitle || "Pecas com leitura mais calma, material honesto e um desenho que fica melhor ao vivo do que em excesso de efeito."
+    const heroButton = settings?.hero_button_text || "Ver colecao"
+    const heroBg = settings?.hero_image_url || "/placeholder-image.jpg"
+    const heroBadge = settings?.hero_badge_text || "Capsula de estacao"
     const heroSecondaryButton = settings?.hero_secondary_button_text || "Conheca a marca"
 
-    const productsSectionLabel = settings?.products_section_label || "Novidades"
-    const productsSectionTitle = settings?.products_section_title || "Lancamentos"
+    const productsSectionLabel = settings?.products_section_label || "Selecao"
+    const productsSectionTitle = settings?.products_section_title || "Entradas da semana"
     const categoriesSectionLabel = settings?.categories_section_label || "Colecoes"
-    const categoriesSectionTitle = settings?.categories_section_title || "Explore por Categoria"
+    const categoriesSectionTitle = settings?.categories_section_title || "Explore por categoria"
 
     const trustItems = [
-        { emoji: "🚀", title: settings?.trust_banner_1_title || "Envio Rapido", desc: settings?.trust_banner_1_desc || "Para todo o Brasil" },
-        { emoji: "🔒", title: settings?.trust_banner_2_title || "Compra Segura", desc: settings?.trust_banner_2_desc || "Pagamento protegido" },
-        { emoji: "↩️", title: settings?.trust_banner_3_title || "Trocas Faceis", desc: settings?.trust_banner_3_desc || "Em ate 7 dias" },
-        { emoji: "💬", title: settings?.trust_banner_4_title || "Suporte", desc: settings?.trust_banner_4_desc || "Atendimento humanizado" },
+        { icon: Truck, title: "Entrega para todo o Brasil", desc: "Frete claro e acompanhamento direto." },
+        { icon: ShieldCheck, title: "Compra protegida", desc: "Pagamento seguro e fluxo objetivo." },
+        { icon: RefreshCcw, title: "Troca assistida", desc: "Atendimento humano quando voce precisa." },
+        { icon: MessageCircle, title: "Suporte rapido", desc: "Resposta com linguagem simples e direta." },
     ]
 
     return (
@@ -51,69 +62,57 @@ export default async function StorefrontHome() {
                 backgroundUrl={heroBg}
                 badgeText={heroBadge}
                 secondaryButtonText={heroSecondaryButton}
-                countdownEnd={settings?.countdown_end}
+                countdownEnd={settings?.countdown_end || undefined}
             />
 
             <CategoriesSection
-                categories={latestCategories || []}
+                categories={categories.slice(0, 3)}
                 sectionLabel={categoriesSectionLabel}
                 sectionTitle={categoriesSectionTitle}
             />
 
-            <section className="container mx-auto px-4 py-12 md:py-20">
-                <div className="paper-panel mb-12 rounded-[2rem] border border-white/40 px-6 py-6 md:px-8">
+            <section className="page-shell py-8 md:py-14">
+                <div className="paper-panel rounded-[2rem] px-6 py-6 md:px-8">
                     <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                         <div>
-                            <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                                {productsSectionLabel}
-                            </span>
-                            <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">{productsSectionTitle}</h2>
-                            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                                Uma selecao de entrada para a vitrine principal, com pecas de apelo mais forte e imagens de maior impacto.
-                            </p>
+                            <span className="eyebrow">{productsSectionLabel}</span>
+                            <h2 className="mt-4 font-display text-4xl text-foreground md:text-5xl">{productsSectionTitle}</h2>
                         </div>
-                        <Link href="/produtos" className="inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-opacity hover:opacity-70">
-                            Ver tudo <span className="text-primary">→</span>
-                        </Link>
+                        <div className="max-w-xl">
+                            <p className="section-lead">
+                                Uma vitrine com menos ruido e mais criterio: preco legivel, imagem limpa e navegacao sem peso desnecessario.
+                            </p>
+                            <Link href="/produtos" className="ink-link mt-4">
+                                Ver todas as pecas <span aria-hidden="true">→</span>
+                            </Link>
+                        </div>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_2fr] lg:items-start">
-                    <div>
-                        <div className="rounded-[2rem] border border-white/35 bg-zinc-950 p-6 text-white shadow-[0_24px_60px_rgba(18,12,8,0.18)]">
-                            <p className="text-[11px] uppercase tracking-[0.26em] text-white/50">Selecao da semana</p>
-                            <h3 className="mt-3 text-2xl font-bold tracking-tight">Moda com presenca, nao volume.</h3>
-                            <p className="mt-4 text-sm leading-relaxed text-white/70">
-                                A loja agora assume um visual mais editorial, com contraste mais forte, blocos de destaque e superficies mais materiais.
-                            </p>
-                        </div>
-                    </div>
-
-                    {products && products.length > 0 ? (
-                        <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-3 xl:grid-cols-4">
-                            {products.map((product: any, i: number) => (
-                                <ProductCard key={product.id} product={product} index={i} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="col-span-full py-16 text-center text-muted-foreground">
-                            Nenhum produto disponivel no momento.
-                        </div>
-                    )}
-                </div>
-            </section>
-
-            <section className="border-y border-border/70 bg-white/35 py-12 backdrop-blur-sm dark:bg-white/[0.02]">
-                <div className="container mx-auto px-4">
-                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                        {trustItems.map((item) => (
-                            <div key={item.title} className="rounded-[1.6rem] border border-white/35 bg-white/70 p-5 text-left shadow-[0_18px_40px_rgba(83,61,39,0.06)] backdrop-blur-sm dark:border-white/8 dark:bg-white/[0.04]">
-                                <span className="text-2xl">{item.emoji}</span>
-                                <h3 className="mt-4 text-base font-semibold text-foreground">{item.title}</h3>
-                                <p className="mt-2 text-sm text-muted-foreground">{item.desc}</p>
-                            </div>
+                {products && products.length > 0 ? (
+                    <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+                        {(products as HomeProduct[]).map((product, index) => (
+                            <ProductCard key={product.id} product={product} index={index} />
                         ))}
                     </div>
+                ) : (
+                    <div className="py-16 text-center text-muted-foreground">
+                        Nenhum produto disponivel no momento.
+                    </div>
+                )}
+            </section>
+
+            <section className="page-shell pb-14 md:pb-18">
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    {trustItems.map((item) => (
+                        <div key={item.title} className="surface-card rounded-[1.6rem] p-5">
+                            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                <item.icon className="h-5 w-5" />
+                            </div>
+                            <h3 className="mt-5 text-lg font-semibold text-foreground">{item.title}</h3>
+                            <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.desc}</p>
+                        </div>
+                    ))}
                 </div>
             </section>
         </div>

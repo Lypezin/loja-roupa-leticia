@@ -1,5 +1,6 @@
 import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
+import { getStoreCategories, getStoreSettings } from "@/lib/storefront"
 import { createClient } from "@/lib/supabase/server"
 
 export default async function StorefrontLayout({
@@ -8,23 +9,24 @@ export default async function StorefrontLayout({
     children: React.ReactNode
 }) {
     const supabase = await createClient()
-    
-    // Fetch categories and settings in parallel
+
     const [
-        { data: categories },
-        { data: settings }
+        categories,
+        settings,
+        { data: { user } }
     ] = await Promise.all([
-        supabase.from('categories').select('id, name, slug').order('created_at', { ascending: true }),
-        supabase.from('store_settings').select('store_name').single()
+        getStoreCategories(),
+        getStoreSettings(),
+        supabase.auth.getUser(),
     ])
 
     return (
         <div className="flex min-h-screen flex-col bg-background text-foreground font-sans">
-            <Header categories={categories || []} storeName={settings?.store_name} />
+            <Header categories={categories} storeName={settings?.store_name} isLoggedIn={Boolean(user)} />
             <main className="flex-1">
                 {children}
             </main>
-            <Footer />
+            <Footer categories={categories} settings={settings} />
         </div>
     )
 }

@@ -2,9 +2,6 @@
 
 import Link from "next/link"
 import { X, Search, Phone } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
 
 interface Category {
     id: string
@@ -20,114 +17,86 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ isOpen, onClose, categories, storeName }: MobileMenuProps) {
-    const [searchQuery, setSearchQuery] = useState("")
-    const router = useRouter()
-
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault()
-        if (searchQuery.trim()) {
-            router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
-            onClose()
-            setSearchQuery("")
-        }
+    if (!isOpen) {
+        return null
     }
 
     return (
-        <AnimatePresence>
-            {isOpen && (
-                <>
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={onClose}
-                        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50"
-                    />
-                    <motion.div
-                        initial={{ x: "-100%" }}
-                        animate={{ x: 0 }}
-                        exit={{ x: "-100%" }}
-                        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="fixed left-0 top-0 bottom-0 w-72 bg-background z-50 shadow-2xl"
-                    >
-                        <div className="p-6 flex flex-col h-full">
-                            <div className="flex items-center justify-between mb-6">
-                                <span className="font-bold text-lg tracking-tight text-foreground truncate max-w-[200px]">
-                                    {storeName || 'FASHION STORE'}
-                                </span>
-                                <button onClick={onClose} className="p-2 rounded-lg hover:bg-accent hover:text-accent-foreground">
-                                    <X className="w-5 h-5" />
-                                </button>
-                            </div>
+        <>
+            <button
+                type="button"
+                aria-label="Fechar menu"
+                onClick={onClose}
+                className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm"
+            />
 
-                            {/* Barra de Busca Mobile */}
-                            <form onSubmit={handleSearch} className="mb-6">
-                                <div className="relative">
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                                    <input
-                                        type="text"
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        placeholder="Buscar produtos..."
-                                        className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-muted border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
-                                    />
-                                </div>
-                            </form>
-
-                            <nav className="flex flex-col gap-1 flex-1">
-                                {categories.map((cat, i) => (
-                                    <motion.div
-                                        key={cat.id}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: i * 0.05 }}
-                                    >
-                                        <Link
-                                            href={`/${cat.slug}`}
-                                            onClick={onClose}
-                                            className="block px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground font-medium transition-colors"
-                                        >
-                                            {cat.name}
-                                        </Link>
-                                    </motion.div>
-                                ))}
-
-                                <div className="w-full h-px bg-border my-2" />
-
-                                <motion.div
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: categories.length * 0.05 }}
-                                >
-                                    <Link
-                                        href="/sobre"
-                                        onClick={onClose}
-                                        className="block px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground font-medium transition-colors"
-                                    >
-                                        Sobre
-                                    </Link>
-                                </motion.div>
-
-                                <motion.div
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: (categories.length + 1) * 0.05 }}
-                                >
-                                    <Link
-                                        href="/contato"
-                                        onClick={onClose}
-                                        className="block px-4 py-3 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground font-medium transition-colors"
-                                    >
-                                        <span className="flex items-center gap-2">
-                                            <Phone className="w-4 h-4" /> Contato
-                                        </span>
-                                    </Link>
-                                </motion.div>
-                            </nav>
+            <aside className="fixed inset-y-0 left-0 z-[60] w-[21rem] max-w-[88vw] border-r border-border bg-background px-5 py-5 shadow-[0_24px_60px_rgba(43,32,24,0.18)]">
+                <div className="flex h-full flex-col">
+                    <div className="mb-8 flex items-center justify-between">
+                        <div>
+                            <span className="eyebrow mb-2">navegacao</span>
+                            <p className="font-display text-[1.45rem] leading-none text-foreground">
+                                {storeName || 'FASHION STORE'}
+                            </p>
                         </div>
-                    </motion.div>
-                </>
-            )}
-        </AnimatePresence>
+                        <button onClick={onClose} className="rounded-full border border-border bg-card p-2.5 transition-colors hover:bg-accent">
+                            <X className="h-5 w-5" />
+                        </button>
+                    </div>
+
+                    <form action="/search" onSubmit={onClose} className="mb-8">
+                        <div className="relative">
+                            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                            <input
+                                type="search"
+                                name="q"
+                                placeholder="Buscar produtos"
+                                className="h-11 w-full rounded-full border border-border bg-card pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
+                            />
+                        </div>
+                    </form>
+
+                    <nav className="flex flex-1 flex-col gap-1">
+                        {categories.map((cat) => (
+                            <Link
+                                key={cat.id}
+                                href={`/${cat.slug}`}
+                                onClick={onClose}
+                                className="rounded-[1rem] px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                            >
+                                {cat.name}
+                            </Link>
+                        ))}
+
+                        <div className="subtle-divider my-4" />
+
+                        <Link
+                            href="/sobre"
+                            onClick={onClose}
+                            className="rounded-[1rem] px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                        >
+                            Sobre
+                        </Link>
+
+                        <Link
+                            href="/contato"
+                            onClick={onClose}
+                            className="rounded-[1rem] px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                        >
+                            <span className="flex items-center gap-2">
+                                <Phone className="h-4 w-4" /> Contato
+                            </span>
+                        </Link>
+                    </nav>
+
+                    <div className="surface-card-soft mt-6 rounded-[1.4rem] p-4">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Curadoria da semana</p>
+                        <p className="mt-2 text-sm leading-6 text-foreground/80">
+                            Pecas com textura, caimento limpo e uma linguagem mais tranquila.
+                        </p>
+                    </div>
+                </div>
+            </aside>
+        </>
     )
 }

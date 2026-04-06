@@ -1,27 +1,29 @@
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { login } from "./actions"
 
 export default async function AdminLogin({
     searchParams,
 }: {
-    searchParams: { error?: string }
+    searchParams: Promise<{ error?: string }>
 }) {
-    const { error } = searchParams
+    const { error } = await searchParams
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4 py-12 sm:px-6 lg:px-8">
-            <Card className="w-full max-w-md">
-                <CardHeader className="space-y-1 text-center">
-                    <CardTitle className="text-2xl font-bold tracking-tight">Painel Administrativo</CardTitle>
-                    <CardDescription>
-                        Entre com suas credenciais para gerenciar a loja
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <form action={login} className="space-y-4">
+        <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
+            <Card className="paper-panel w-full max-w-md border-none shadow-[0_24px_60px_rgba(68,48,31,0.12)]">
+                <CardContent className="px-6 py-8 md:px-8">
+                    <div className="text-center">
+                        <span className="eyebrow justify-center">admin</span>
+                        <h1 className="mt-5 font-display text-4xl text-foreground">Painel da loja</h1>
+                        <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                            Entre com suas credenciais para gerenciar catalogo, pedidos e conteudo.
+                        </p>
+                    </div>
+
+                    <form action={login} className="mt-8 space-y-5">
                         <div className="space-y-2">
                             <Label htmlFor="email">E-mail</Label>
                             <Input
@@ -30,21 +32,27 @@ export default async function AdminLogin({
                                 type="email"
                                 placeholder="nome@exemplo.com"
                                 required
+                                className="h-12 rounded-[1rem] bg-background"
                             />
                         </div>
                         <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="password">Senha</Label>
-                            </div>
+                            <Label htmlFor="password">Senha</Label>
                             <Input
                                 id="password"
                                 name="password"
                                 type="password"
                                 required
+                                className="h-12 rounded-[1rem] bg-background"
                             />
                         </div>
-                        {error && <p className="text-sm font-medium text-red-500 text-center">{error}</p>}
-                        <Button type="submit" className="w-full cursor-pointer">
+
+                        {error && (
+                            <p className="rounded-[1rem] border border-red-200 bg-red-50 px-4 py-3 text-sm text-center text-red-700">
+                                {error}
+                            </p>
+                        )}
+
+                        <Button type="submit" className="h-12 w-full rounded-full cursor-pointer">
                             Entrar
                         </Button>
                     </form>
