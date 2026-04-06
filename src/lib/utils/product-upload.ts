@@ -1,6 +1,7 @@
 'use client'
 
 import { createClient } from "@/lib/supabase/client"
+import { validateImageFile } from "@/lib/uploads"
 
 export async function uploadProductImages(files: FileList | null, productId: string) {
     if (!files || files.length === 0) return []
@@ -10,6 +11,7 @@ export async function uploadProductImages(files: FileList | null, productId: str
 
     for (let i = 0; i < files.length; i++) {
         const file = files[i]
+        validateImageFile(file)
         const fileExt = file.name.split('.').pop()
         const fileName = `${productId || 'new'}-${Date.now()}-${i}.${fileExt}`
 

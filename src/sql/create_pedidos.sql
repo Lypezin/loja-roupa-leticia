@@ -18,17 +18,25 @@ CREATE TABLE IF NOT EXISTS public.orders (
 
 ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Usuarios podem ver seus proprios pedidos" ON public.orders
+REVOKE ALL ON TABLE public.orders FROM anon;
+REVOKE ALL ON TABLE public.orders FROM authenticated;
+GRANT SELECT ON TABLE public.orders TO authenticated;
+
+CREATE POLICY "Authenticated users can read own orders" ON public.orders
 FOR SELECT
+TO authenticated
 USING (auth.uid() = user_id);
 
-CREATE POLICY "Admin pode gerenciar pedidos" ON public.orders
+CREATE POLICY "Admins can manage orders" ON public.orders
 FOR ALL
+TO authenticated
 USING (
     COALESCE(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'admin'
+    OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ? 'admin'
 )
 WITH CHECK (
     COALESCE(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'admin'
+    OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ? 'admin'
 );
 
 -- 2. Tabela de itens do pedido
@@ -44,19 +52,27 @@ CREATE TABLE IF NOT EXISTS public.order_items (
 
 ALTER TABLE public.order_items ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Usuarios podem ver itens de seus pedidos" ON public.order_items
+REVOKE ALL ON TABLE public.order_items FROM anon;
+REVOKE ALL ON TABLE public.order_items FROM authenticated;
+GRANT SELECT ON TABLE public.order_items TO authenticated;
+
+CREATE POLICY "Authenticated users can read own order items" ON public.order_items
 FOR SELECT
+TO authenticated
 USING (
     order_id IN (
         SELECT id FROM public.orders WHERE user_id = auth.uid()
     )
 );
 
-CREATE POLICY "Admin pode ver e gerenciar itens" ON public.order_items
+CREATE POLICY "Admins can manage order items" ON public.order_items
 FOR ALL
+TO authenticated
 USING (
     COALESCE(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'admin'
+    OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ? 'admin'
 )
 WITH CHECK (
     COALESCE(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'admin'
+    OR COALESCE(auth.jwt() -> 'app_metadata' -> 'roles', '[]'::jsonb) ? 'admin'
 );

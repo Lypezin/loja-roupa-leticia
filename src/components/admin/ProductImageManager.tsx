@@ -1,5 +1,6 @@
 'use client'
 
+import { ACCEPTED_IMAGE_INPUT } from "@/lib/uploads"
 import { X, Image as ImageIcon } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -59,7 +60,7 @@ export function ProductImageManager({ existingImages, onRemoveExisting }: Produc
                 id="images"
                 name="images"
                 type="file"
-                accept="image/*"
+                accept={ACCEPTED_IMAGE_INPUT}
                 multiple
                 className="cursor-pointer"
             />

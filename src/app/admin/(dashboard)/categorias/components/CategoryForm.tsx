@@ -1,5 +1,6 @@
 'use client'
 
+import { ACCEPTED_IMAGE_INPUT } from "@/lib/uploads"
 import { Plus, ImageIcon, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -67,7 +68,7 @@ export function CategoryForm({
                         <input
                             id="image"
                             type="file"
-                            accept="image/*"
+                            accept={ACCEPTED_IMAGE_INPUT}
                             onChange={handleImageChange}
                             disabled={isLoading}
                             className="absolute inset-0 opacity-0 cursor-pointer"

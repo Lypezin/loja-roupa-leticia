@@ -1,10 +1,10 @@
 'use server'
 
 import type Stripe from "stripe"
-import { stripe } from "@/lib/stripe"
+import { getSiteUrl } from "@/lib/site-url"
+import { getStripeClient } from "@/lib/stripe-client"
 import { createClient } from "@/lib/supabase/server"
-import { headers } from "next/headers"
-import { buildOrderMetadata, parseCheckoutCartItems, type OrderMetadataItem } from "@/lib/checkout"
+import { parseCheckoutCartItems } from "@/lib/checkout"
 
 type ProductRecord = {
     id: string
@@ -24,8 +24,8 @@ type VariationRecord = {
 export async function createCheckoutSession(cartItems: unknown) {
     try {
         const supabase = await createClient()
-        const headersList = await headers()
-        const origin = process.env.NEXT_PUBLIC_SITE_URL || headersList.get('origin') || 'http://localhost:3000'
+        const stripe = getStripeClient()
+        const origin = getSiteUrl()
         const normalizedCartItems = parseCheckoutCartItems(cartItems)
 
         const productIds = [...new Set(normalizedCartItems.map((item) => item.product_id))]
@@ -108,16 +108,6 @@ export async function createCheckoutSession(cartItems: unknown) {
             quantity: item.quantity,
         }))
 
-        const orderMetadataItems: OrderMetadataItem[] = validatedItems.map((item) => ({
-            product_id: item.product_id,
-            variation_id: item.variation_id,
-            quantity: item.quantity,
-            unit_price: item.unit_price,
-            product_name: item.product_name,
-            size: item.size,
-            color: item.color,
-        }))
-
         const { data: { user } } = await supabase.auth.getUser()
 
         const sessionParams: Stripe.Checkout.SessionCreateParams = {
@@ -126,9 +116,6 @@ export async function createCheckoutSession(cartItems: unknown) {
             mode: 'payment',
             success_url: `${origin}/sucesso?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${origin}/carrinho`,
-            metadata: {
-                cartDetails: buildOrderMetadata(orderMetadataItems),
-            },
             shipping_address_collection: {
                 allowed_countries: ['BR'],
             },

@@ -1,5 +1,6 @@
 'use client'
 
+import { ACCEPTED_IMAGE_INPUT } from "@/lib/uploads"
 import { TableCell, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -56,7 +57,7 @@ export function CategoryTableRow({
                             )}
                             <input
                                 type="file"
-                                accept="image/*"
+                                accept={ACCEPTED_IMAGE_INPUT}
                                 onChange={(e) => handleImageChange(e, true)}
                                 className="absolute inset-0 opacity-0 cursor-pointer"
                             />

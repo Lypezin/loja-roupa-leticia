@@ -3,17 +3,23 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Loader2 } from "lucide-react"
 import { saveProduct } from "@/app/admin/(dashboard)/produtos/actions"
-import { createClient } from "@/lib/supabase/client"
 import { toast } from "sonner"
 import { ProductImageManager } from "./ProductImageManager"
 import { VariationsEditor } from "./VariationsEditor"
 
 import { ProductBasicInfo } from "./ProductBasicInfo"
 import { uploadProductImages } from "@/lib/utils/product-upload"
+
+function getErrorMessage(error: unknown) {
+    if (error instanceof Error && error.message) {
+        return error.message
+    }
+
+    return 'Falha ao salvar produto.'
+}
 
 // types simplified for brevity
 type Category = { id: string; name: string }
@@ -57,8 +63,8 @@ export function ProductForm({ categories, product }: ProductFormProps) {
 
             toast.success(isEditing ? "Produto atualizado!" : "Produto criado!")
             router.push('/admin/produtos'); router.refresh()
-        } catch (error: any) {
-            toast.error(`Erro: ${error.message}`)
+        } catch (error: unknown) {
+            toast.error(`Erro: ${getErrorMessage(error)}`)
         } finally { setIsLoading(false) }
     }
 

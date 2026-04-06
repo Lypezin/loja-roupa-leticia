@@ -1,23 +1,80 @@
 import Stripe from 'stripe'
-import { createClient } from '@supabase/supabase-js'
-import { stripe } from '@/lib/stripe'
-import { parseOrderMetadataItems } from '@/lib/checkout'
+import { getStripeClient } from '@/lib/stripe-client'
+import type { Json } from '@/lib/supabase/database.types'
+import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 
-function createSupabaseAdminClient() {
-    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        throw new Error('SUPABASE_SERVICE_ROLE_KEY ausente.')
+type TrustedCheckoutItem = {
+    product_id: string
+    variation_id: string
+    quantity: number
+    unit_price: number
+}
+
+function normalizeShippingAddress(address: Stripe.Address | null | undefined): Json | null {
+    if (!address) {
+        return null
     }
 
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-        throw new Error('NEXT_PUBLIC_SUPABASE_URL ausente.')
+    return {
+        city: address.city,
+        country: address.country,
+        line1: address.line1,
+        line2: address.line2,
+        postal_code: address.postal_code,
+        state: address.state,
+    }
+}
+
+function getLineItemProduct(lineItem: Stripe.LineItem) {
+    const product = lineItem.price?.product
+
+    if (!product || typeof product === 'string' || ('deleted' in product && product.deleted)) {
+        throw new Error(`Line item ${lineItem.id} sem produto expandido confiavel.`)
     }
 
-    return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL,
-        process.env.SUPABASE_SERVICE_ROLE_KEY
-    )
+    return product
+}
+
+async function getTrustedCheckoutItems(sessionId: string) {
+    const stripe = getStripeClient()
+    const { data: lineItems } = await stripe.checkout.sessions.listLineItems(sessionId, {
+        expand: ['data.price.product'],
+    })
+
+    if (!lineItems.length) {
+        throw new Error(`Sessao ${sessionId} sem line items.`)
+    }
+
+    return lineItems.map((lineItem): TrustedCheckoutItem => {
+        const product = getLineItemProduct(lineItem)
+        const productId = product.metadata.product_id
+        const variationId = product.metadata.variation_id
+        const quantity = lineItem.quantity ?? 0
+        const lineAmount = typeof lineItem.amount_subtotal === 'number'
+            ? lineItem.amount_subtotal
+            : lineItem.amount_total
+
+        if (!productId || !variationId) {
+            throw new Error(`Line item ${lineItem.id} sem metadados confiaveis de produto.`)
+        }
+
+        if (!Number.isInteger(quantity) || quantity <= 0) {
+            throw new Error(`Quantidade invalida no line item ${lineItem.id}.`)
+        }
+
+        if (typeof lineAmount !== 'number') {
+            throw new Error(`Line item ${lineItem.id} sem valor confiavel.`)
+        }
+
+        return {
+            product_id: productId,
+            variation_id: variationId,
+            quantity,
+            unit_price: Number((lineAmount / quantity / 100).toFixed(2)),
+        }
+    })
 }
 
 async function persistPaidOrder(session: Stripe.Checkout.Session) {
@@ -30,11 +87,7 @@ async function persistPaidOrder(session: Stripe.Checkout.Session) {
         return NextResponse.json({ received: true, pending: true }, { status: 200 })
     }
 
-    if (!session.metadata?.cartDetails) {
-        throw new Error(`Sessao ${session.id} sem cartDetails nos metadados.`)
-    }
-
-    const supabaseAdmin = createSupabaseAdminClient()
+    const supabaseAdmin = createServiceRoleClient('stripe-webhook.persistPaidOrder')
 
     const { data: existingOrder } = await supabaseAdmin
         .from('orders')
@@ -47,9 +100,39 @@ async function persistPaidOrder(session: Stripe.Checkout.Session) {
         return NextResponse.json({ received: true, duplicate: true }, { status: 200 })
     }
 
-    const metadataItems = parseOrderMetadataItems(JSON.parse(session.metadata.cartDetails))
+    const trustedItems = await getTrustedCheckoutItems(session.id)
     const userId = typeof session.client_reference_id === 'string' ? session.client_reference_id : null
-    const totalAmount = typeof session.amount_total === 'number' ? session.amount_total / 100 : 0
+    const totalAmount = typeof session.amount_total === 'number'
+        ? session.amount_total / 100
+        : trustedItems.reduce((total, item) => total + (item.unit_price * item.quantity), 0)
+
+    const productIds = [...new Set(trustedItems.map((item) => item.product_id))]
+    const variationIds = [...new Set(trustedItems.map((item) => item.variation_id))]
+
+    const [
+        { data: products, error: productsError },
+        { data: variations, error: variationsError },
+    ] = await Promise.all([
+        supabaseAdmin
+            .from('products')
+            .select('id')
+            .in('id', productIds),
+        supabaseAdmin
+            .from('product_variations')
+            .select('id, product_id')
+            .in('id', variationIds),
+    ])
+
+    if (productsError) {
+        throw new Error(`Erro ao carregar produtos confiaveis: ${productsError.message}`)
+    }
+
+    if (variationsError) {
+        throw new Error(`Erro ao carregar variacoes confiaveis: ${variationsError.message}`)
+    }
+
+    const existingProductIds = new Set((products ?? []).map((product) => product.id))
+    const existingVariations = new Map((variations ?? []).map((variation) => [variation.id, variation]))
 
     const { data: insertedOrder, error: orderError } = await supabaseAdmin
         .from('orders')
@@ -60,7 +143,9 @@ async function persistPaidOrder(session: Stripe.Checkout.Session) {
             status: 'paid',
             customer_email: session.customer_details?.email || session.customer_email,
             customer_name: session.customer_details?.name,
-            shipping_address: session.collected_information?.shipping_details?.address || session.customer_details?.address,
+            shipping_address: normalizeShippingAddress(
+                session.collected_information?.shipping_details?.address || session.customer_details?.address
+            ),
         })
         .select('id')
         .single()
@@ -69,13 +154,19 @@ async function persistPaidOrder(session: Stripe.Checkout.Session) {
         throw new Error(`Erro ao salvar pedido: ${orderError.message}`)
     }
 
-    const orderItemsToInsert = metadataItems.map((item) => ({
-        order_id: insertedOrder.id,
-        product_id: item.product_id,
-        variation_id: item.variation_id,
-        quantity: item.quantity,
-        price: item.unit_price,
-    }))
+    const orderItemsToInsert = trustedItems.map((item) => {
+        const variation = existingVariations.get(item.variation_id)
+        const productId = existingProductIds.has(item.product_id) ? item.product_id : null
+        const variationId = variation?.product_id === item.product_id ? item.variation_id : null
+
+        return {
+            order_id: insertedOrder.id,
+            product_id: productId,
+            variation_id: variationId,
+            quantity: item.quantity,
+            price: item.unit_price,
+        }
+    })
 
     const { error: itemsError } = await supabaseAdmin.from('order_items').insert(orderItemsToInsert)
 
@@ -83,7 +174,12 @@ async function persistPaidOrder(session: Stripe.Checkout.Session) {
         throw new Error(`Erro ao registrar itens do pedido: ${itemsError.message}`)
     }
 
-    for (const item of metadataItems) {
+    for (const item of orderItemsToInsert) {
+        if (!item.variation_id) {
+            console.error(`Variacao indisponivel para baixa de estoque no pedido ${insertedOrder.id}.`)
+            continue
+        }
+
         const { data: stockUpdated, error: stockError } = await supabaseAdmin.rpc('decrement_stock', {
             p_variation_id: item.variation_id,
             p_quantity: item.quantity,
@@ -116,6 +212,7 @@ export async function POST(req: Request) {
     let event: Stripe.Event
 
     try {
+        const stripe = getStripeClient()
         event = stripe.webhooks.constructEvent(body, signature, endpointSecret)
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown error'

@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from "@/lib/supabase/server"
+import { getSiteUrl } from "@/lib/site-url"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
@@ -43,7 +44,7 @@ export async function cadastrarCliente(formData: FormData) {
             data: {
                 full_name: name,
             },
-            emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/auth/confirm`
+            emailRedirectTo: `${getSiteUrl()}/auth/confirm`
         }
     })
 

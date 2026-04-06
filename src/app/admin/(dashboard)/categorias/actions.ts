@@ -1,6 +1,7 @@
 'use server'
 
-import { createClient, requireAdmin } from "@/lib/supabase/server"
+import { requireAdmin } from "@/lib/supabase/server"
+import { validateImageFile } from "@/lib/uploads"
 import { revalidatePath } from "next/cache"
 
 export async function createCategory(formData: FormData) {
@@ -15,6 +16,8 @@ export async function createCategory(formData: FormData) {
 
         let image_url = null
         if (image && image.size > 0) {
+            validateImageFile(image)
+
             const fileExt = image.name.split('.').pop()
             const fileName = `category-${Date.now()}.${fileExt}`
             const filePath = `categories/${slug}/${fileName}`
@@ -113,6 +116,8 @@ export async function updateCategory(id: string, formData: FormData) {
         const updateData: Record<string, string> = { name, slug }
 
         if (image && image.size > 0) {
+            validateImageFile(image)
+
             // 1. Buscar a categoria antiga para saber se temos que deletar a imagem velha
             const { data: oldCategory } = await supabase
                 .from('categories')

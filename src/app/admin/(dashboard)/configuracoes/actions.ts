@@ -1,6 +1,7 @@
 'use server'
 
-import { createClient, requireAdmin } from "@/lib/supabase/server"
+import { requireAdmin } from "@/lib/supabase/server"
+import { validateImageFile } from "@/lib/uploads"
 import { revalidatePath } from "next/cache"
 
 export async function saveProfile(formData: FormData) {
@@ -48,6 +49,7 @@ export async function saveBanner(formData: FormData) {
 
         const heroImage = formData.get('hero_image') as File | null
         if (heroImage && heroImage.size > 0) {
+            validateImageFile(heroImage)
             // 1. Buscar as configurações atuais para saber se temos que deletar a imagem velha
             const { data: currentSettings } = await supabase
                 .from('store_settings')

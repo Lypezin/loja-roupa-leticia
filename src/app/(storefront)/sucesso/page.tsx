@@ -1,5 +1,5 @@
 import type Stripe from 'stripe'
-import { stripe } from '@/lib/stripe'
+import { getStripeClient } from '@/lib/stripe-client'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
@@ -26,6 +26,7 @@ export default async function SucessoPage({
     let lineItems: Stripe.LineItem[] = []
 
     try {
+        const stripe = getStripeClient()
         session = await stripe.checkout.sessions.retrieve(sessionId)
         const items = await stripe.checkout.sessions.listLineItems(sessionId)
         lineItems = items.data || []

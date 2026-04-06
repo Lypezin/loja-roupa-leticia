@@ -1,5 +1,6 @@
 'use client'
 
+import { ACCEPTED_IMAGE_INPUT } from "@/lib/uploads"
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -114,7 +115,7 @@ export function BannerSection({ settings }: BannerSectionProps) {
                         <input
                             type="file"
                             name="hero_image"
-                            accept="image/*"
+                            accept={ACCEPTED_IMAGE_INPUT}
                             onChange={handleImageChange}
                             className="absolute inset-0 opacity-0 cursor-pointer"
                         />
