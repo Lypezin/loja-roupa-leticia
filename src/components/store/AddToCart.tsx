@@ -5,13 +5,7 @@ import { Button } from "@/components/ui/button"
 import { useCartStore } from "@/store/useCartStore"
 import { ColorSelector } from "./ColorSelector"
 import { SizeSelector } from "./SizeSelector"
-
-type Variation = {
-    id: string
-    size: string | null
-    color: string | null
-    stock_quantity: number
-}
+import { useVariationSelector, Variation } from "@/hooks/use-variation-selector"
 
 type AddToCartProps = {
     productId: string
@@ -22,23 +16,18 @@ type AddToCartProps = {
 }
 
 export function AddToCart({ productId, productName, price, imageUrl, variations }: AddToCartProps) {
-    const addItem = useCartStore((state) => state.addItem)
-    const availableColors = Array.from(new Set(variations.map((variation) => variation.color).filter(Boolean))) as string[]
-    const availableSizes = Array.from(new Set(variations.map((variation) => variation.size).filter(Boolean))) as string[]
-
-    const [selectedColor, setSelectedColor] = useState<string>(availableColors[0] || "")
-    const sizesForColor = variations
-        .filter((variation) => !selectedColor || variation.color === selectedColor)
-        .map((variation) => variation.size)
-        .filter(Boolean) as string[]
-    const [selectedSize, setSelectedSize] = useState<string>(sizesForColor[0] || "")
+    const addItem = useCartStore((state: any) => state.addItem)
     const [added, setAdded] = useState(false)
 
-    const selectedVariation = variations.find((variation) => {
-        const colorMatch = !availableColors.length || variation.color === selectedColor
-        const sizeMatch = !availableSizes.length || variation.size === selectedSize
-        return colorMatch && sizeMatch
-    })
+    const {
+        selectedColor,
+        handleColorChange,
+        selectedSize,
+        setSelectedSize,
+        sizesForColor,
+        availableColors,
+        selectedVariation,
+    } = useVariationSelector(variations)
 
     const handleAddToCart = () => {
         if (!selectedVariation || selectedVariation.stock_quantity <= 0) return
@@ -66,17 +55,7 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
                     availableColors={availableColors}
                     selectedColor={selectedColor}
                     variations={variations}
-                    onSelect={(color) => {
-                        setSelectedColor(color)
-                        const nextSizes = variations
-                            .filter((variation) => variation.color === color)
-                            .map((variation) => variation.size)
-                            .filter(Boolean) as string[]
-
-                        if (nextSizes.length > 0 && !nextSizes.includes(selectedSize)) {
-                            setSelectedSize(nextSizes[0])
-                        }
-                    }}
+                    onSelect={handleColorChange}
                 />
 
                 <SizeSelector

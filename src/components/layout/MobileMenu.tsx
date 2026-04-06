@@ -1,7 +1,8 @@
 'use client'
 
-import Link from "next/link"
-import { X, Search, Phone } from "lucide-react"
+import { X } from "lucide-react"
+import { MobileSearch } from "./MobileSearch"
+import { MobileNav } from "./MobileNav"
 
 interface Category {
     id: string
@@ -17,9 +18,7 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ isOpen, onClose, categories, storeName }: MobileMenuProps) {
-    if (!isOpen) {
-        return null
-    }
+    if (!isOpen) return null
 
     return (
         <>
@@ -44,50 +43,9 @@ export function MobileMenu({ isOpen, onClose, categories, storeName }: MobileMen
                         </button>
                     </div>
 
-                    <form action="/search" onSubmit={onClose} className="mb-8">
-                        <div className="relative">
-                            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                            <input
-                                type="search"
-                                name="q"
-                                placeholder="Buscar produtos"
-                                className="h-11 w-full rounded-full border border-border bg-card pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
-                            />
-                        </div>
-                    </form>
+                    <MobileSearch onClose={onClose} />
 
-                    <nav className="flex flex-1 flex-col gap-1">
-                        {categories.map((cat) => (
-                            <Link
-                                key={cat.id}
-                                href={`/${cat.slug}`}
-                                onClick={onClose}
-                                className="rounded-[1rem] px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                            >
-                                {cat.name}
-                            </Link>
-                        ))}
-
-                        <div className="subtle-divider my-4" />
-
-                        <Link
-                            href="/sobre"
-                            onClick={onClose}
-                            className="rounded-[1rem] px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                        >
-                            Sobre
-                        </Link>
-
-                        <Link
-                            href="/contato"
-                            onClick={onClose}
-                            className="rounded-[1rem] px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                        >
-                            <span className="flex items-center gap-2">
-                                <Phone className="h-4 w-4" /> Contato
-                            </span>
-                        </Link>
-                    </nav>
+                    <MobileNav categories={categories} onClose={onClose} />
 
                     <div className="surface-card-soft mt-6 rounded-[1.4rem] p-4">
                         <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">atalho rapido</p>

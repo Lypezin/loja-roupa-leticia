@@ -1,0 +1,84 @@
+@layer utilities {
+  .page-shell {
+    @apply container mx-auto px-4;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground;
+  }
+
+  .eyebrow::before {
+    @apply w-10 h-px;
+    content: "";
+    background: color-mix(in oklab, var(--primary) 40%, transparent);
+  }
+
+  .glass {
+    @apply border;
+    background: rgba(255, 255, 255, 0.72);
+    border-color: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 18px 40px rgba(68, 48, 31, 0.08);
+  }
+
+  .paper-panel {
+    border: 1px solid rgba(121, 96, 70, 0.12);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(249, 245, 239, 0.98)),
+      radial-gradient(circle at top left, rgba(155, 115, 79, 0.06), transparent 34%);
+    box-shadow: 0 20px 46px rgba(74, 52, 33, 0.08);
+  }
+
+  .surface-card {
+    border: 1px solid rgba(121, 96, 70, 0.12);
+    background: rgba(255, 255, 255, 0.84);
+    box-shadow: 0 16px 38px rgba(74, 52, 33, 0.06);
+    backdrop-filter: blur(6px);
+  }
+
+  .surface-card-soft {
+    border: 1px solid rgba(121, 96, 70, 0.1);
+    background: rgba(255, 255, 255, 0.68);
+  }
+
+  .subtle-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(92, 70, 50, 0.18), transparent);
+  }
+
+  .brand-gradient {
+    background-image: linear-gradient(135deg, #5a3f2b 0%, #8a6648 52%, #d6b08c 100%);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #3d2c20 0%, #7d5a40 52%, #c69a6d 100%);
+  }
+
+  .mesh-gradient {
+    background:
+      radial-gradient(circle at top left, rgba(160, 120, 82, 0.12), transparent 28%),
+      linear-gradient(180deg, rgba(250, 247, 241, 0.82), rgba(244, 239, 232, 0.96));
+  }
+
+  .admin-mesh {
+    background:
+      radial-gradient(circle at top left, rgba(121, 91, 61, 0.08), transparent 36%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(247, 243, 238, 0.96));
+  }
+
+  .admin-grid {
+    background-image:
+      linear-gradient(rgba(92, 72, 52, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(92, 72, 52, 0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .section-lead {
+    @apply max-w-2xl text-sm leading-7 text-muted-foreground md:text-base;
+  }
+
+  .ink-link {
+    @apply inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-opacity hover:opacity-70;
+  }
+}
