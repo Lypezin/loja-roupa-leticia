@@ -27,15 +27,15 @@ export function HeroBackground({ backgroundUrl, title }: HeroBackgroundProps) {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/22 via-transparent to-white/10" />
                 </div>
 
-                <div className="absolute left-5 top-5 rounded-full border border-white/60 bg-white/82 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-foreground/76">
+                <div className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/82 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-foreground/76 md:left-5 md:top-5">
                     colecao atual
                 </div>
 
-                <div className="absolute bottom-5 left-5 right-5">
+                <div className="absolute bottom-4 left-4 right-4 md:bottom-5 md:left-5 md:right-5">
                     <div className="glass rounded-[1.6rem] px-5 py-4">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Direcao da semana</p>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">em destaque</p>
                         <p className="mt-2 max-w-sm text-sm leading-6 text-foreground/82">
-                            Silhueta limpa, contraste suave e imagem mais proxima de editorial do que de vitrine automatica.
+                            Imagem principal da colecao para mostrar textura, cor e proporcao sem excesso de elemento na tela.
                         </p>
                     </div>
                 </div>

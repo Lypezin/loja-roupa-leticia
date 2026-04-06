@@ -13,7 +13,7 @@ export function Footer({
 }) {
     const currentYear = new Date().getFullYear()
     const storeName = settings?.store_name || "FASHION STORE"
-    const aboutText = settings?.footer_about_text || "Curadoria de roupas com desenho limpo, materia escolhida com cuidado e um ritmo mais calmo."
+    const aboutText = settings?.footer_about_text || "Loja online com selecao atual, boas fotos e atendimento direto quando voce precisar."
     const newsletterTitle = settings?.footer_newsletter_title || "Receba a edicao da semana"
     const newsletterSubtitle = settings?.footer_newsletter_subtitle || "Novidades, reposicoes e lancamentos sem excesso."
 
@@ -60,7 +60,7 @@ export function Footer({
                 <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
                     <div className="col-span-2 md:col-span-1">
                         <Link href="/" className="mb-4 block font-display text-2xl text-foreground">{storeName}</Link>
-                        <p className="mb-6 text-sm leading-7 text-muted-foreground">Colecoes construidas com presenca serena, acabamento atento e menos ruido.</p>
+                        <p className="mb-6 text-sm leading-7 text-muted-foreground">Produtos organizados para facilitar busca, comparacao e compra.</p>
                     </div>
                     {sections.map((section) => (
                         <FooterLinksSection key={section.title} title={section.title} links={section.links} />
@@ -70,10 +70,10 @@ export function Footer({
 
             <div className="border-t border-border/70">
                 <div className="container mx-auto flex flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-muted-foreground md:flex-row">
-                    <span>© {currentYear} {storeName}. Todos os direitos reservados.</span>
+                    <span>&copy; {currentYear} {storeName}. Todos os direitos reservados.</span>
                     <div className="flex items-center gap-2">
                         <span className="h-2 w-2 rounded-full bg-primary" />
-                        <span>Curadoria online com atendimento humano</span>
+                        <span>Loja online com atendimento humano</span>
                     </div>
                 </div>
             </div>

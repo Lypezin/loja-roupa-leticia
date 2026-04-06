@@ -53,7 +53,7 @@ export default async function CategoryPage(props: {
                         <span className="eyebrow">categoria</span>
                         <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">{category.name}</h1>
                         <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">
-                            Uma selecao pensada para quem procura {category.name.toLowerCase()} com acabamento, caimento e facilidade no dia a dia.
+                            Modelos organizados por tipo de peca para ficar mais rapido comparar imagem, preco e disponibilidade.
                         </p>
                     </div>
                     <div className="w-full md:w-auto">

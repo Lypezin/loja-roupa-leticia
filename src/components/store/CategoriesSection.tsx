@@ -18,8 +18,8 @@ export function CategoriesSection({ categories, sectionLabel = "Colecoes", secti
                     <span className="eyebrow">{sectionLabel}</span>
                     <h2 className="mt-4 font-display text-4xl text-foreground md:text-5xl">{sectionTitle}</h2>
                 </div>
-                <p className="section-lead">
-                    Entradas de vitrine com leitura mais limpa, menos efeito e mais foco no que faz cada categoria parecer desejavel.
+                <p className="max-w-xl text-sm leading-7 text-muted-foreground md:text-base">
+                    Cada categoria organiza a loja por tipo de peca e deixa a busca mais rapida.
                 </p>
             </div>
 
@@ -38,12 +38,12 @@ export function CategoriesSection({ categories, sectionLabel = "Colecoes", secti
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/46 via-black/10 to-white/6" />
                             </div>
 
-                            <div className="relative -mt-20 p-5">
+                            <div className="relative -mt-16 p-4 md:-mt-20 md:p-5">
                                 <div className="glass rounded-[1.6rem] px-5 py-5">
-                                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">curadoria</p>
+                                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">categoria</p>
                                     <h3 className="mt-3 font-display text-3xl text-foreground">{category.name}</h3>
                                     <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                                        Corte visual mais calmo, com foco em material, forma e repeticao coerente.
+                                        Veja modelos do mesmo grupo com imagem limpa e navegacao mais simples.
                                     </p>
                                 </div>
                             </div>

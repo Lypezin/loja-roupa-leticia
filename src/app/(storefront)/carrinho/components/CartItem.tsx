@@ -20,13 +20,13 @@ interface CartItemProps {
 }
 
 export function CartItem({ item, removeItem, updateQuantity }: CartItemProps) {
-    const itemPrice = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price * item.quantity)
+    const itemPrice = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(item.price * item.quantity)
 
     return (
         <div className="surface-card flex flex-col gap-5 rounded-[1.8rem] p-4 sm:flex-row sm:items-center">
             <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded-[1.2rem] bg-muted sm:h-32 sm:w-28">
                 <Image
-                    src={item.image_url || '/placeholder-image.jpg'}
+                    src={item.image_url || "/placeholder-image.jpg"}
                     alt={item.product_name}
                     fill
                     className="object-cover"
@@ -34,17 +34,17 @@ export function CartItem({ item, removeItem, updateQuantity }: CartItemProps) {
                 />
             </div>
 
-            <div className="flex flex-1 flex-col justify-center">
+            <div className="min-w-0 flex flex-1 flex-col justify-center">
                 <h3 className="font-display text-2xl leading-tight text-foreground">{item.product_name}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                    {[item.color && `Cor: ${item.color}`, item.size && `Tam: ${item.size}`].filter(Boolean).join(' · ')}
+                <p className="mt-2 break-words text-sm text-muted-foreground">
+                    {[item.color && `Cor: ${item.color}`, item.size && `Tam: ${item.size}`].filter(Boolean).join(" · ")}
                 </p>
             </div>
 
             <div className="flex flex-col gap-4 sm:items-end">
                 <span className="text-base font-semibold text-foreground">{itemPrice}</span>
 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3 sm:justify-end">
                     <div className="flex items-center overflow-hidden rounded-full border border-border bg-card">
                         <button
                             onClick={() => {

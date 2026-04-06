@@ -36,7 +36,7 @@ export function MobileMenu({ isOpen, onClose, categories, storeName }: MobileMen
                         <div>
                             <span className="eyebrow mb-2">navegacao</span>
                             <p className="font-display text-[1.45rem] leading-none text-foreground">
-                                {storeName || 'FASHION STORE'}
+                                {storeName || "FASHION STORE"}
                             </p>
                         </div>
                         <button onClick={onClose} className="rounded-full border border-border bg-card p-2.5 transition-colors hover:bg-accent">
@@ -90,9 +90,9 @@ export function MobileMenu({ isOpen, onClose, categories, storeName }: MobileMen
                     </nav>
 
                     <div className="surface-card-soft mt-6 rounded-[1.4rem] p-4">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Curadoria da semana</p>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">atalho rapido</p>
                         <p className="mt-2 text-sm leading-6 text-foreground/80">
-                            Pecas com textura, caimento limpo e uma linguagem mais tranquila.
+                            Use a busca ou abra uma categoria para encontrar a peca com menos rolagem.
                         </p>
                     </div>
                 </div>

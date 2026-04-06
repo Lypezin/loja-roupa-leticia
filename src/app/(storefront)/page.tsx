@@ -35,7 +35,7 @@ export default async function StorefrontHome() {
     ])
 
     const heroTitle = settings?.hero_title || "Colecao autoral"
-    const heroSubtitle = settings?.hero_subtitle || "Pecas com leitura mais calma, material honesto e um desenho que fica melhor ao vivo do que em excesso de efeito."
+    const heroSubtitle = settings?.hero_subtitle || "Novidades e reposicoes com foto clara, bom caimento e compra simples do inicio ao fim."
     const heroButton = settings?.hero_button_text || "Ver colecao"
     const heroBg = settings?.hero_image_url || "/placeholder-image.jpg"
     const heroBadge = settings?.hero_badge_text || "Capsula de estacao"
@@ -80,10 +80,10 @@ export default async function StorefrontHome() {
                         </div>
                         <div className="max-w-xl">
                             <p className="section-lead">
-                                Uma vitrine com menos ruido e mais criterio: preco legivel, imagem limpa e navegacao sem peso desnecessario.
+                                Pecas novas e reposicoes em uma grade direta, com imagem limpa, preco visivel e leitura mais facil.
                             </p>
                             <Link href="/produtos" className="ink-link mt-4">
-                                Ver todas as pecas <span aria-hidden="true">→</span>
+                                Ver todas as pecas
                             </Link>
                         </div>
                     </div>

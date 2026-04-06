@@ -1,4 +1,4 @@
-import { Metadata } from 'next'
+import { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight, RefreshCcw, ShieldCheck, Truck } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
@@ -32,15 +32,15 @@ export async function generateMetadata({
     const supabase = await createClient()
 
     const { data: product } = await supabase
-        .from('products')
-        .select('name, description, product_images(image_url, is_primary)')
-        .eq('id', id)
+        .from("products")
+        .select("name, description, product_images(image_url, is_primary)")
+        .eq("id", id)
         .single()
 
     if (!product) return {}
 
     const images = (product.product_images || []) as ProductImage[]
-    const description = product.description || "Confira este produto em nossa curadoria."
+    const description = product.description || "Veja detalhes, variacoes disponiveis e informacoes desta peca."
     const imageUrl = images.find((img) => img.is_primary)?.image_url || images[0]?.image_url
 
     return {
@@ -63,14 +63,14 @@ export default async function ProductPage({
     const supabase = await createClient()
 
     const { data: product } = await supabase
-        .from('products')
+        .from("products")
         .select(`
             *,
             category:categories(name, slug),
             variations:product_variations(*),
             images:product_images(image_url, is_primary)
         `)
-        .eq('id', id)
+        .eq("id", id)
         .single()
 
     if (!product) {
@@ -83,16 +83,16 @@ export default async function ProductPage({
     const primaryImage = images.find((img) => img.is_primary)?.image_url
         || images[0]?.image_url
         || "/placeholder-image.jpg"
-    const categoryHref = category.slug ? `/${category.slug}` : '/produtos'
+    const categoryHref = category.slug ? `/${category.slug}` : "/produtos"
 
-    const formattedPrice = new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
+    const formattedPrice = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL"
     }).format(product.base_price)
 
-    const installmentPrice = new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
+    const installmentPrice = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL"
     }).format(product.base_price / 3)
 
     const highlights = [
@@ -103,26 +103,26 @@ export default async function ProductPage({
 
     return (
         <div className="page-shell py-8 md:py-12">
-            <nav className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground">
+            <nav className="mb-8 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
                 <Link href="/" className="transition-colors hover:text-foreground">Inicio</Link>
                 <ChevronRight className="h-3.5 w-3.5" />
                 <Link href={categoryHref} className="transition-colors hover:text-foreground">
-                    {category.name || 'Catalogo'}
+                    {category.name || "Catalogo"}
                 </Link>
                 <ChevronRight className="h-3.5 w-3.5" />
-                <span className="text-foreground">{product.name}</span>
+                <span className="min-w-0 max-w-full break-words text-foreground">{product.name}</span>
             </nav>
 
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
                 <ProductGallery images={images} />
 
                 <div className="flex flex-col py-2">
-                    <span className="eyebrow">{category.name || 'peca selecionada'}</span>
+                    <span className="eyebrow">{category.name || "produto"}</span>
                     <h1 className="mt-4 font-display text-4xl leading-tight text-foreground md:text-5xl">
                         {product.name}
                     </h1>
 
-                    <div className="mt-5 flex items-end gap-4">
+                    <div className="mt-5 flex flex-wrap items-end gap-x-4 gap-y-2">
                         <p className="text-3xl font-semibold text-foreground">
                             {formattedPrice}
                         </p>
@@ -132,7 +132,7 @@ export default async function ProductPage({
                     </div>
 
                     <p className="mt-6 text-base leading-8 text-muted-foreground">
-                        {product.description || "Peca com desenho limpo, conforto diario e acabamento pensado para durar mais do que uma tendencia."}
+                        {product.description || "Confira fotos, opcoes de tamanho e variacoes disponiveis antes de adicionar ao carrinho."}
                     </p>
 
                     <AddToCart

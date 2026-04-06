@@ -32,7 +32,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
 
                 <div className="flex flex-1 flex-col px-2 pb-2 pt-4">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-                        {product.category?.name || "Colecao principal"}
+                        {product.category?.name || "produto"}
                     </p>
                     <h3 className="mt-3 font-display text-[1.7rem] leading-tight text-foreground">
                         {product.name}

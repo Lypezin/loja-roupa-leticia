@@ -62,7 +62,7 @@ export default function CarrinhoPage() {
                     </div>
                     <h1 className="mt-6 font-display text-4xl text-foreground">Sua sacola esta vazia</h1>
                     <p className="mt-3 text-base leading-7 text-muted-foreground">
-                        Explore nossas pecas e monte uma selecao com mais calma.
+                        Volte para a loja e escolha os itens que deseja adicionar.
                     </p>
                     <Link href="/" className="mt-7 inline-flex">
                         <Button className="gap-2 rounded-full">
