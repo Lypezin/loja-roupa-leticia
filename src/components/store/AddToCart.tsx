@@ -16,7 +16,7 @@ type AddToCartProps = {
 }
 
 export function AddToCart({ productId, productName, price, imageUrl, variations }: AddToCartProps) {
-    const addItem = useCartStore((state: any) => state.addItem)
+    const addItem = useCartStore((state) => state.addItem)
     const [added, setAdded] = useState(false)
 
     const {
@@ -72,11 +72,11 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
                     size="lg"
                     className="h-12 w-full rounded-full text-sm font-semibold uppercase tracking-[0.16em]"
                 >
-                    {added ? "Na sacola" : !selectedVariation ? "Selecione as opcoes" : selectedVariation.stock_quantity <= 0 ? "Esgotado" : "Adicionar a sacola"}
+                    {added ? "Na sacola" : !selectedVariation ? "Selecione as opções" : selectedVariation.stock_quantity <= 0 ? "Esgotado" : "Adicionar à sacola"}
                 </Button>
 
                 <p className="text-center text-xs leading-6 text-muted-foreground">
-                    Frete gratis acima de R$ 300 e troca assistida em ate 7 dias.
+                    Frete grátis acima de R$ 300 e troca assistida em até 7 dias.
                 </p>
             </div>
         </div>

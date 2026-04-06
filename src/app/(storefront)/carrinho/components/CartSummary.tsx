@@ -51,7 +51,7 @@ export function CartSummary({ formattedTotal, installment, handleWhatsAppCheckou
                     </div>
                     <div className="flex justify-between text-muted-foreground">
                         <span>Frete</span>
-                        <span className="font-medium text-emerald-600">Gratis</span>
+                        <span className="font-medium text-emerald-600">Grátis</span>
                     </div>
                     <div className="flex justify-between border-t border-border pt-4 text-lg font-semibold text-card-foreground">
                         <span>Total</span>

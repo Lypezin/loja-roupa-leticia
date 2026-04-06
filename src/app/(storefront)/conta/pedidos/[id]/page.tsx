@@ -45,7 +45,7 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
         .single()
 
     if (!order) {
-        return <div className="page-shell py-20 text-center">Pedido nao encontrado.</div>
+        return <div className="page-shell py-20 text-center">Pedido não encontrado.</div>
     }
 
     const currentStepIndex = statusSteps.indexOf(order.status)

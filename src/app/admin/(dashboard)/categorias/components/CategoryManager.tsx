@@ -1,13 +1,8 @@
 'use client'
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Plus, Trash2, Loader2, Pencil, Save, LayoutGrid, Image as ImageIcon, ArrowRight } from "lucide-react"
 import { createCategory, deleteCategory, updateCategory } from "../actions"
 import { toast } from "sonner"
-import Image from "next/image"
 
 import { CategoryForm } from "./CategoryForm"
 import { CategoryTable } from "./CategoryTable"
@@ -117,11 +112,11 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
         <div className="flex flex-col gap-8">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight text-foreground">Categorias</h1>
-                <p className="text-muted-foreground text-sm mt-1">Organize seus produtos em {initialCategories.length} coleções.</p>
+                <p className="mt-1 text-sm text-muted-foreground">Organize seus produtos em {initialCategories.length} coleções.</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <CategoryForm 
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                <CategoryForm
                     name={name}
                     setName={setName}
                     imagePreview={imagePreview}
@@ -131,7 +126,7 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                 />
 
                 <div className="lg:col-span-2">
-                    <CategoryTable 
+                    <CategoryTable
                         categories={initialCategories}
                         editingId={editingId}
                         editName={editName}

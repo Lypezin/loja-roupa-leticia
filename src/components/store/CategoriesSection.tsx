@@ -8,7 +8,7 @@ interface CategoriesSectionProps {
     sectionTitle?: string
 }
 
-export function CategoriesSection({ categories, sectionLabel = "Colecoes", sectionTitle = "Explore por categoria" }: CategoriesSectionProps) {
+export function CategoriesSection({ categories, sectionLabel = "Coleções", sectionTitle = "Explore por categoria" }: CategoriesSectionProps) {
     if (!categories || categories.length === 0) return null
 
     return (
@@ -19,7 +19,7 @@ export function CategoriesSection({ categories, sectionLabel = "Colecoes", secti
                     <h2 className="mt-4 font-display text-4xl text-foreground md:text-5xl">{sectionTitle}</h2>
                 </div>
                 <p className="max-w-xl text-sm leading-7 text-muted-foreground md:text-base">
-                    Cada categoria organiza a loja por tipo de peca e deixa a busca mais rapida.
+                    Cada categoria organiza a loja por tipo de peça e deixa a busca mais rápida.
                 </p>
             </div>
 
@@ -43,7 +43,7 @@ export function CategoriesSection({ categories, sectionLabel = "Colecoes", secti
                                     <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">categoria</p>
                                     <h3 className="mt-3 font-display text-3xl text-foreground">{category.name}</h3>
                                     <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                                        Veja modelos do mesmo grupo com imagem limpa e navegacao mais simples.
+                                        Veja modelos do mesmo grupo com imagem limpa e navegação mais simples.
                                     </p>
                                 </div>
                             </div>

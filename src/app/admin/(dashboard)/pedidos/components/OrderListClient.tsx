@@ -10,7 +10,6 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { formatCurrency } from '@/lib/utils'
 
@@ -23,14 +22,6 @@ type Order = {
     customer_name: string | null
     created_at: string
     order_items: { id: string, quantity: number, price: number, products: { name: string } | null }[]
-}
-
-const statusMap: Record<string, string> = {
-    'paid': 'Pago',
-    'processing': 'Processando',
-    'shipped': 'Enviado',
-    'delivered': 'Entregue',
-    'cancelled': 'Cancelado',
 }
 
 export default function OrderListClient({ orders }: { orders: Order[] }) {
@@ -62,7 +53,7 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                 {orders.map((order) => {
                     const clientName = order.customer_name || 'Alguém'
                     const clientEmail = order.customer_email || 'Oculto na Stripe'
-                    
+
                     return (
                         <TableRow key={order.id}>
                             <TableCell className="font-medium">
@@ -73,7 +64,7 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                                 <div className="text-sm text-muted-foreground">{clientEmail}</div>
                             </TableCell>
                             <TableCell>
-                                <div className="text-sm text-balance max-w-[200px]">
+                                <div className="max-w-[200px] text-balance text-sm">
                                     {order.order_items?.map(i => `${i.quantity}x ${i.products?.name || 'Item'}`).join(', ') || 'Nenhum item'}
                                 </div>
                             </TableCell>
@@ -81,8 +72,8 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                                 {formatCurrency(order.total_amount)}
                             </TableCell>
                             <TableCell>
-                                <Select 
-                                    defaultValue={order.status} 
+                                <Select
+                                    defaultValue={order.status}
                                     onValueChange={(val) => handleStatusChange(order.id, val)}
                                     disabled={updating === order.id}
                                 >

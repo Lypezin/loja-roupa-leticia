@@ -13,7 +13,7 @@ interface HeroContentProps {
 export function HeroContent({ title, subtitle, buttonText, badgeText, secondaryButtonText, countdownEnd }: HeroContentProps) {
     return (
         <div className="flex flex-col justify-center py-2 md:py-4">
-            <span className="eyebrow">{badgeText || "capsula atual"}</span>
+            <span className="eyebrow">{badgeText || "cápsula atual"}</span>
 
             <h1 className="mt-5 max-w-3xl font-display text-[3rem] leading-[0.92] text-foreground sm:text-[4rem] md:text-[5.2rem]">
                 {title}
@@ -43,7 +43,7 @@ export function HeroContent({ title, subtitle, buttonText, badgeText, secondaryB
 
             <div className="mt-10 grid gap-3 sm:grid-cols-3">
                 {[
-                    { label: "Materia", value: "toque atento" },
+                    { label: "Matéria", value: "toque atento" },
                     { label: "Entrega", value: "todo o Brasil" },
                     { label: "Troca", value: "assistida" },
                 ].map((item) => (
@@ -56,7 +56,7 @@ export function HeroContent({ title, subtitle, buttonText, badgeText, secondaryB
 
             {countdownEnd && (
                 <div className="mt-8 max-w-sm rounded-[1.6rem] border border-border bg-card px-5 py-5 shadow-[0_14px_30px_rgba(68,48,31,0.05)]">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">janela de lancamento</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">janela de lançamento</p>
                     <div className="mt-4">
                         <CountdownTimer targetDate={countdownEnd} />
                     </div>

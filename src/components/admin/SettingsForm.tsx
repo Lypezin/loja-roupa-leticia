@@ -16,15 +16,15 @@ export function SettingsForm({ settings }: SettingsFormProps) {
     const [activeTab, setActiveTab] = useState("perfil")
 
     if (!settings) {
-        return <p className="text-sm text-muted-foreground">Nenhuma configuracao encontrada.</p>
+        return <p className="text-sm text-muted-foreground">Nenhuma configuração encontrada.</p>
     }
 
     const tabs = [
         { id: "perfil", label: "Perfil e SEO", icon: User, desc: "identidade e busca" },
         { id: "banner", label: "Banner hero", icon: ImageIcon, desc: "destaque principal" },
-        { id: "conteudo", label: "Pagina inicial", icon: Type, desc: "titulos e secoes" },
-        { id: "rodape", label: "Rodape", icon: LayoutTemplate, desc: "links e contatos" },
-        { id: "logistica", label: "Logistica", icon: Truck, desc: "fretes e prazos" },
+        { id: "conteudo", label: "Página inicial", icon: Type, desc: "títulos e seções" },
+        { id: "rodape", label: "Rodapé", icon: LayoutTemplate, desc: "links e contatos" },
+        { id: "logistica", label: "Logística", icon: Truck, desc: "fretes e prazos" },
     ]
 
     const renderContent = () => {

@@ -40,7 +40,7 @@ export async function generateMetadata({
     if (!product) return {}
 
     const images = (product.product_images || []) as ProductImage[]
-    const description = product.description || "Veja detalhes, variacoes disponiveis e informacoes desta peca."
+    const description = product.description || "Veja detalhes, variações disponíveis e informações desta peça."
     const imageUrl = images.find((img) => img.is_primary)?.image_url || images[0]?.image_url
 
     return {
@@ -97,17 +97,17 @@ export default async function ProductPage({
 
     const highlights = [
         { icon: Truck, title: "Envio nacional", desc: "Entrega com acompanhamento direto." },
-        { icon: RefreshCcw, title: "Troca assistida", desc: "Apoio humano em ate 7 dias." },
-        { icon: ShieldCheck, title: "Compra protegida", desc: "Pagamento seguro do inicio ao fim." },
+        { icon: RefreshCcw, title: "Troca assistida", desc: "Apoio humano em até 7 dias." },
+        { icon: ShieldCheck, title: "Compra protegida", desc: "Pagamento seguro do início ao fim." },
     ]
 
     return (
         <div className="page-shell py-8 md:py-12">
             <nav className="mb-8 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
-                <Link href="/" className="transition-colors hover:text-foreground">Inicio</Link>
+                <Link href="/" className="transition-colors hover:text-foreground">Início</Link>
                 <ChevronRight className="h-3.5 w-3.5" />
                 <Link href={categoryHref} className="transition-colors hover:text-foreground">
-                    {category.name || "Catalogo"}
+                    {category.name || "Catálogo"}
                 </Link>
                 <ChevronRight className="h-3.5 w-3.5" />
                 <span className="min-w-0 max-w-full break-words text-foreground">{product.name}</span>
@@ -132,7 +132,7 @@ export default async function ProductPage({
                     </div>
 
                     <p className="mt-6 text-base leading-8 text-muted-foreground">
-                        {product.description || "Confira fotos, opcoes de tamanho e variacoes disponiveis antes de adicionar ao carrinho."}
+                        {product.description || "Confira fotos, opções de tamanho e variações disponíveis antes de adicionar ao carrinho."}
                     </p>
 
                     <AddToCart

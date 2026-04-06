@@ -2,6 +2,12 @@ import type Stripe from "stripe"
 import { createClient } from "@/lib/supabase/server"
 import { ProductRecord, VariationRecord, ValidatedCheckoutItem } from "@/types/checkout"
 
+type CheckoutCartItem = {
+  product_id: string
+  variation_id: string
+  quantity: number
+}
+
 export async function validateCheckoutItems(productIds: string[], variationIds: string[]) {
   const supabase = await createClient()
 
@@ -13,17 +19,20 @@ export async function validateCheckoutItems(productIds: string[], variationIds: 
   if (pe || !ps || ps.length !== productIds.length) throw new Error('Falha ao validar produtos selecionados.')
   if (ve || !vs || vs.length !== variationIds.length) throw new Error('Falha ao validar variacoes do carrinho.')
 
+  const products = ps as ProductRecord[]
+  const variations = vs as VariationRecord[]
+
   return {
-    productsById: new Map<string, ProductRecord>(ps.map((p: any) => [p.id, p as ProductRecord])),
-    variationsById: new Map<string, VariationRecord>(vs.map((v: any) => [v.id, v as VariationRecord]))
+    productsById: new Map<string, ProductRecord>(products.map((product) => [product.id, product])),
+    variationsById: new Map<string, VariationRecord>(variations.map((variation) => [variation.id, variation]))
   }
 }
 
 export function getValidatedItems(
-  normalizedCartItems: any[],
+  normalizedCartItems: CheckoutCartItem[],
   productsById: Map<string, ProductRecord>,
   variationsById: Map<string, VariationRecord>
-) {
+): ValidatedCheckoutItem[] {
   return normalizedCartItems.map((cartItem) => {
     const productInfo = productsById.get(cartItem.product_id)
     const variationInfo = variationsById.get(cartItem.variation_id)
@@ -53,7 +62,7 @@ export function getValidatedItems(
 }
 
 export function buildStripeLineItems(
-  validatedItems: any[]
+  validatedItems: ValidatedCheckoutItem[]
 ): Stripe.Checkout.SessionCreateParams.LineItem[] {
   return validatedItems.map((item) => ({
     price_data: {

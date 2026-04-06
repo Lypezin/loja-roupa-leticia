@@ -1,18 +1,23 @@
 import { createClient } from "@/lib/supabase/server"
 import { FilterSort } from "@/components/store/FilterSort"
 import { ProductCard, type Product } from "@/components/store/ProductCard"
+import { PaginationControls } from "@/components/store/PaginationControls"
 import { notFound } from "next/navigation"
 
 export const revalidate = 60
+const PRODUCTS_PER_PAGE = 12
 
 export default async function CategoryPage(props: {
     params: Promise<{ slug: string }>
-    searchParams: Promise<{ sort?: string; minPrice?: string; maxPrice?: string }>
+    searchParams: Promise<{ sort?: string; minPrice?: string; maxPrice?: string; page?: string }>
 }) {
     const params = await props.params
     const searchParams = await props.searchParams
     const slug = params.slug
     const { sort, minPrice, maxPrice } = searchParams
+    const currentPage = Math.max(1, Number.parseInt(searchParams.page || "1", 10) || 1)
+    const from = (currentPage - 1) * PRODUCTS_PER_PAGE
+    const to = from + PRODUCTS_PER_PAGE - 1
     const supabase = await createClient()
 
     const { data: category } = await supabase
@@ -35,15 +40,34 @@ export default async function CategoryPage(props: {
         .eq("is_active", true)
         .eq("category_id", category.id)
 
-    if (minPrice) query = query.gte("base_price", parseFloat(minPrice))
-    if (maxPrice) query = query.lte("base_price", parseFloat(maxPrice))
+    let countQuery = supabase
+        .from("products")
+        .select("id", { count: "exact", head: true })
+        .eq("is_active", true)
+        .eq("category_id", category.id)
+
+    if (minPrice) {
+        query = query.gte("base_price", parseFloat(minPrice))
+        countQuery = countQuery.gte("base_price", parseFloat(minPrice))
+    }
+
+    if (maxPrice) {
+        query = query.lte("base_price", parseFloat(maxPrice))
+        countQuery = countQuery.lte("base_price", parseFloat(maxPrice))
+    }
 
     if (sort === "price-asc") query = query.order("base_price", { ascending: true })
     else if (sort === "price-desc") query = query.order("base_price", { ascending: false })
     else query = query.order("created_at", { ascending: false })
 
-    const { data: products } = await query
+    const [{ data: products }, { count }] = await Promise.all([
+        query.range(from, to),
+        countQuery,
+    ])
+
     const filteredProducts = (products ?? []) as Product[]
+    const totalProducts = count || 0
+    const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE))
 
     return (
         <div className="page-shell py-10 md:py-14">
@@ -53,7 +77,7 @@ export default async function CategoryPage(props: {
                         <span className="eyebrow">categoria</span>
                         <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">{category.name}</h1>
                         <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">
-                            Modelos organizados por tipo de peca para ficar mais rapido comparar imagem, preco e disponibilidade.
+                            Modelos organizados por tipo de peça para ficar mais rápido comparar imagem, preço e disponibilidade.
                         </p>
                     </div>
                     <div className="w-full md:w-auto">
@@ -63,14 +87,23 @@ export default async function CategoryPage(props: {
             </div>
 
             {filteredProducts.length > 0 ? (
-                <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-                    {filteredProducts.map((product, index) => (
-                        <ProductCard key={product.id} product={product} index={index} />
-                    ))}
-                </div>
+                <>
+                    <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+                        {filteredProducts.map((product, index) => (
+                            <ProductCard key={product.id} product={product} index={index} />
+                        ))}
+                    </div>
+
+                    <PaginationControls
+                        basePath={`/${slug}`}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        searchParams={{ sort, minPrice, maxPrice }}
+                    />
+                </>
             ) : (
                 <div className="py-20 text-center text-muted-foreground">
-                    Nenhum produto disponivel nesta categoria no momento.
+                    Nenhum produto disponível nesta categoria no momento.
                 </div>
             )}
         </div>

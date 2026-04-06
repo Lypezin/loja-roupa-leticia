@@ -12,7 +12,7 @@ export function Footer({
 }) {
     const currentYear = new Date().getFullYear()
     const storeName = settings?.store_name || "FASHION STORE"
-    const aboutText = settings?.footer_about_text || "Loja online com selecao atual, boas fotos e atendimento direto quando voce precisar."
+    const aboutText = settings?.footer_about_text || "Loja online com seleção atual, boas fotos e atendimento direto quando você precisar."
 
     const categoryLinks = categories.length > 0
         ? categories.slice(0, 4).map((cat) => ({
@@ -23,7 +23,7 @@ export function Footer({
 
     const sections = [
         { title: "Loja", links: [...categoryLinks, { href: "/produtos", label: "Ver Tudo" }] },
-        { title: "Institucional", links: [{ href: "/sobre", label: "Sobre Nos" }, { href: "/contato", label: "Contato" }, { href: "/termos", label: "Termos de Uso" }] },
+        { title: "Institucional", links: [{ href: "/sobre", label: "Sobre Nós" }, { href: "/contato", label: "Contato" }, { href: "/termos", label: "Termos de Uso" }] },
         { title: "Atendimento", links: [{ href: "/conta", label: "Minha Conta" }, { href: "/conta/pedidos", label: "Meus Pedidos" }, { href: "/carrinho", label: "Meu Carrinho" }] },
     ]
 
@@ -55,7 +55,7 @@ export function Footer({
                 <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
                     <div className="col-span-2 md:col-span-1">
                         <Link href="/" className="mb-4 block font-display text-2xl text-foreground">{storeName}</Link>
-                        <p className="mb-6 text-sm leading-7 text-muted-foreground">Produtos organizados para facilitar busca, comparacao e compra.</p>
+                        <p className="mb-6 text-sm leading-7 text-muted-foreground">Produtos organizados para facilitar busca, comparação e compra.</p>
                     </div>
                     {sections.map((section) => (
                         <FooterLinksSection key={section.title} title={section.title} links={section.links} />

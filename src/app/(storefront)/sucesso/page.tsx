@@ -37,8 +37,8 @@ export default async function SucessoPage({
                     <div className="w-20 h-20 bg-red-100 dark:bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
                         <AlertTriangle className="w-10 h-10 text-red-600 dark:text-red-400" />
                     </div>
-                    <h1 className="text-2xl font-bold tracking-tight text-foreground">Sessao invalida</h1>
-                    <p className="text-muted-foreground">Nao foi possivel verificar este pagamento. Verifique seus pedidos na sua conta.</p>
+                    <h1 className="text-2xl font-bold tracking-tight text-foreground">Sessão inválida</h1>
+                    <p className="text-muted-foreground">Não foi possível verificar este pagamento. Verifique seus pedidos na sua conta.</p>
                     <Link href="/">
                         <Button className="w-full h-12 bg-foreground hover:bg-foreground/90 text-background rounded-xl font-medium gap-2">
                             Voltar para a Loja
@@ -81,10 +81,10 @@ export default async function SucessoPage({
                     {canViewOrderDetails
                         ? (
                             isPaid
-                                ? 'Seu pagamento foi processado com sucesso. Voce pode acompanhar o status do seu pedido na sua conta.'
-                                : 'Seu pagamento esta sendo processado. Assim que for confirmado, voce recebera uma notificacao.'
+                                ? 'Seu pagamento foi processado com sucesso. Você pode acompanhar o status do seu pedido na sua conta.'
+                                : 'Seu pagamento está sendo processado. Assim que for confirmado, você receberá uma notificação.'
                         )
-                        : 'Para proteger os dados do pedido, o resumo detalhado so e exibido para a conta usada na compra.'}
+                        : 'Para proteger os dados do pedido, o resumo detalhado só é exibido para a conta usada na compra.'}
                 </p>
 
                 {canViewOrderDetails && lineItems.length > 0 && (

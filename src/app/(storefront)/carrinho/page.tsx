@@ -26,14 +26,14 @@ export default function CarrinhoPage() {
         const cleanPhone = phone.replace(/\D/g, "")
 
         let message = `*Novo Pedido - ${settings?.store_name || "Loja"}*\n\n`
-        message += "Ola! Gostaria de finalizar a compra dos seguintes itens:\n\n"
+        message += "Olá! Gostaria de finalizar a compra dos seguintes itens:\n\n"
 
         items.forEach((item, index) => {
             message += `${index + 1}. *${item.product_name}*\n`
             message += `   Qtd: ${item.quantity}\n`
             if (item.color) message += `   Cor: ${item.color}\n`
             if (item.size) message += `   Tam: ${item.size}\n`
-            message += `   Preco: ${new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(item.price)}\n\n`
+            message += `   Preço: ${new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(item.price)}\n\n`
         })
 
         message += `*Total: ${new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(total)}*`
@@ -60,7 +60,7 @@ export default function CarrinhoPage() {
                     <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-border bg-card text-muted-foreground">
                         <ShoppingBag className="h-7 w-7" />
                     </div>
-                    <h1 className="mt-6 font-display text-4xl text-foreground">Sua sacola esta vazia</h1>
+                    <h1 className="mt-6 font-display text-4xl text-foreground">Sua sacola está vazia</h1>
                     <p className="mt-3 text-base leading-7 text-muted-foreground">
                         Volte para a loja e escolha os itens que deseja adicionar.
                     </p>

@@ -1,10 +1,8 @@
 'use client'
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Pencil, Trash2, LayoutGrid, ArrowRight, Save, Image as ImageIcon, Loader2 } from "lucide-react"
-import Image from "next/image"
+import { LayoutGrid } from "lucide-react"
+import { CategoryTableRow } from "./CategoryTableRow"
 
 type Category = {
     id: string
@@ -15,20 +13,18 @@ type Category = {
 }
 
 interface CategoryTableProps {
-    categories: Category[];
-    editingId: string | null;
-    editName: string;
-    setEditName: (val: string) => void;
-    editImagePreview: string | null;
-    handleImageChange: (e: React.ChangeEvent<HTMLInputElement>, isEdit: boolean) => void;
-    handleUpdate: (id: string) => void;
-    handleDelete: (id: string, name: string, count: number) => void;
-    startEditing: (cat: Category) => void;
-    cancelEditing: () => void;
-    loadingId: string | null;
+    categories: Category[]
+    editingId: string | null
+    editName: string
+    setEditName: (val: string) => void
+    editImagePreview: string | null
+    handleImageChange: (e: React.ChangeEvent<HTMLInputElement>, isEdit: boolean) => void
+    handleUpdate: (id: string) => void
+    handleDelete: (id: string, name: string, count: number) => void
+    startEditing: (cat: Category) => void
+    cancelEditing: () => void
+    loadingId: string | null
 }
-
-import { CategoryTableRow } from "./CategoryTableRow"
 
 export function CategoryTable({
     categories,
@@ -44,13 +40,13 @@ export function CategoryTable({
     loadingId
 }: CategoryTableProps) {
     return (
-        <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             <Table>
                 <TableHeader className="bg-muted/30">
                     <TableRow className="hover:bg-transparent">
-                        <TableHead className="font-bold text-foreground py-4 uppercase text-[11px] tracking-widest pl-6">Coleção</TableHead>
-                        <TableHead className="font-bold text-foreground py-4 uppercase text-[11px] tracking-widest">Produtos</TableHead>
-                        <TableHead className="text-right font-bold text-foreground py-4 uppercase text-[11px] tracking-widest pr-6">Ações</TableHead>
+                        <TableHead className="py-4 pl-6 text-[11px] font-bold uppercase tracking-widest text-foreground">Coleção</TableHead>
+                        <TableHead className="py-4 text-[11px] font-bold uppercase tracking-widest text-foreground">Produtos</TableHead>
+                        <TableHead className="py-4 pr-6 text-right text-[11px] font-bold uppercase tracking-widest text-foreground">Ações</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -58,7 +54,7 @@ export function CategoryTable({
                         <TableRow>
                             <TableCell colSpan={3} className="h-40 text-center text-muted-foreground">
                                 <div className="flex flex-col items-center justify-center gap-2">
-                                    <LayoutGrid className="w-8 h-8 opacity-20" />
+                                    <LayoutGrid className="h-8 w-8 opacity-20" />
                                     <p>Nenhuma categoria encontrada.</p>
                                 </div>
                             </TableCell>

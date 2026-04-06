@@ -7,6 +7,14 @@ import { TrustSection } from "@/components/store/TrustSection"
 
 export const revalidate = 60
 
+type HomeProduct = {
+    id: string
+    name: string
+    base_price: number
+    category?: { name?: string | null } | null
+    images?: { image_url: string; is_primary: boolean | null }[]
+}
+
 export default async function StorefrontHome() {
     const supabase = await createClient()
 
@@ -25,16 +33,16 @@ export default async function StorefrontHome() {
             .limit(12),
     ])
 
-    const heroTitle = settings?.hero_title || "Colecao autoral"
-    const heroSubtitle = settings?.hero_subtitle || "Novidades e reposicoes com foto clara, bom caimento e compra simples do inicio ao fim."
-    const heroButton = settings?.hero_button_text || "Ver colecao"
+    const heroTitle = settings?.hero_title || "Coleção autoral"
+    const heroSubtitle = settings?.hero_subtitle || "Novidades e reposições com foto clara, bom caimento e compra simples do início ao fim."
+    const heroButton = settings?.hero_button_text || "Ver coleção"
     const heroBg = settings?.hero_image_url || "/placeholder-image.jpg"
-    const heroBadge = settings?.hero_badge_text || "Capsula de estacao"
-    const heroSecondaryButton = settings?.hero_secondary_button_text || "Conheca a marca"
+    const heroBadge = settings?.hero_badge_text || "Cápsula da estação"
+    const heroSecondaryButton = settings?.hero_secondary_button_text || "Conheça a marca"
 
-    const productsSectionLabel = settings?.products_section_label || "Selecao"
+    const productsSectionLabel = settings?.products_section_label || "Seleção"
     const productsSectionTitle = settings?.products_section_title || "Entradas da semana"
-    const categoriesSectionLabel = settings?.categories_section_label || "Colecoes"
+    const categoriesSectionLabel = settings?.categories_section_label || "Coleções"
     const categoriesSectionTitle = settings?.categories_section_title || "Explore por categoria"
 
     return (
@@ -56,7 +64,7 @@ export default async function StorefrontHome() {
             />
 
             <LatestProductsSection
-                products={products as any}
+                products={(products ?? []) as HomeProduct[]}
                 sectionLabel={productsSectionLabel}
                 sectionTitle={productsSectionTitle}
             />

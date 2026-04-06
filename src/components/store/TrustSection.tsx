@@ -3,8 +3,8 @@ import { MessageCircle, RefreshCcw, ShieldCheck, Truck } from "lucide-react"
 const trustItems = [
   { icon: Truck, title: "Entrega para todo o Brasil", desc: "Frete claro e acompanhamento direto." },
   { icon: ShieldCheck, title: "Compra protegida", desc: "Pagamento seguro e fluxo objetivo." },
-  { icon: RefreshCcw, title: "Troca assistida", desc: "Atendimento humano quando voce precisa." },
-  { icon: MessageCircle, title: "Suporte rapido", desc: "Resposta com linguagem simples e direta." },
+  { icon: RefreshCcw, title: "Troca assistida", desc: "Atendimento humano quando você precisa." },
+  { icon: MessageCircle, title: "Suporte rápido", desc: "Resposta com linguagem simples e direta." },
 ]
 
 export function TrustSection() {

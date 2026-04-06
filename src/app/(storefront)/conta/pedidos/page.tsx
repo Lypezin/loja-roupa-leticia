@@ -83,7 +83,7 @@ export default async function MeusPedidosPage() {
                         </div>
                         <h2 className="mt-6 font-display text-3xl text-foreground">Nenhum pedido ainda</h2>
                         <p className="mt-3 text-base leading-7 text-muted-foreground">
-                            Quando voce finalizar uma compra, ela aparece aqui com o status atualizado.
+                            Quando você finalizar uma compra, ela aparece aqui com o status atualizado.
                         </p>
                     </div>
                 ) : (

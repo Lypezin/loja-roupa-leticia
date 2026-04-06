@@ -62,9 +62,9 @@ export default async function ContatoPage() {
                 </div>
 
                 <div className="surface-card mt-8 rounded-[1.8rem] p-6 text-center">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Horario de atendimento</p>
-                    <p className="mt-3 text-sm leading-7 text-foreground">Segunda a sexta, das 9h as 18h.</p>
-                    <p className="text-sm leading-7 text-muted-foreground">Sabado, das 9h as 13h.</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Horário de atendimento</p>
+                    <p className="mt-3 text-sm leading-7 text-foreground">Segunda a sexta, das 9h às 18h.</p>
+                    <p className="text-sm leading-7 text-muted-foreground">Sábado, das 9h às 13h.</p>
                 </div>
             </div>
         </div>

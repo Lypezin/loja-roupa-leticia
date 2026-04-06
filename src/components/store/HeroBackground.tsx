@@ -47,7 +47,7 @@ export function HeroBackground({ backgroundUrl, title }: HeroBackgroundProps) {
                 </div>
 
                 <div className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/82 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-foreground/76 md:left-5 md:top-5">
-                    colecao atual
+                    coleção atual
                 </div>
             </div>
         </div>

@@ -15,7 +15,7 @@ function LoginForm() {
 
     return (
         <div className="page-shell flex min-h-[80vh] items-center justify-center py-12">
-            <div className="w-full max-w-md paper-panel rounded-[2rem] px-6 py-8 md:px-8">
+            <div className="paper-panel w-full max-w-md rounded-[2rem] px-6 py-8 md:px-8">
                 <div className="text-center">
                     <span className="eyebrow justify-center">acesso</span>
                     <Link href="/" className="mt-5 block font-display text-4xl text-foreground">
@@ -23,7 +23,7 @@ function LoginForm() {
                     </Link>
                     <h1 className="mt-6 font-display text-4xl text-foreground">Entrar</h1>
                     <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                        Acompanhe seus pedidos e suas informacoes de conta.
+                        Acompanhe seus pedidos e suas informações de conta.
                     </p>
                 </div>
 
@@ -86,7 +86,7 @@ function LoginForm() {
                 </form>
 
                 <p className="mt-8 text-center text-sm text-muted-foreground">
-                    Nao tem uma conta?{" "}
+                    Não tem uma conta?{" "}
                     <Link href="/conta/cadastro" className="font-semibold text-foreground hover:underline">
                         Criar conta
                     </Link>
@@ -100,7 +100,7 @@ export default function LoginPage() {
     return (
         <Suspense fallback={
             <div className="page-shell flex min-h-[80vh] items-center justify-center">
-                <div className="h-8 w-8 rounded-full border-2 border-muted border-t-foreground animate-spin" />
+                <div className="h-8 w-8 animate-spin rounded-full border-2 border-muted border-t-foreground" />
             </div>
         }>
             <LoginForm />

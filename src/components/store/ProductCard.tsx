@@ -1,4 +1,7 @@
+'use client'
+
 import Link from "next/link"
+import { useState } from "react"
 import { ProductCardImage } from "./ProductCardImage"
 
 type ProductImage = {
@@ -15,6 +18,7 @@ export type Product = {
 }
 
 export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
+    const [showSecondaryImage, setShowSecondaryImage] = useState(false)
     const images = product.images && product.images.length > 0
         ? [...product.images].sort((a, b) => Number(Boolean(b.is_primary)) - Number(Boolean(a.is_primary)))
         : [{ image_url: "/placeholder-image.jpg", is_primary: true }]
@@ -23,11 +27,19 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
 
     return (
         <article className="group surface-card flex h-full flex-col rounded-[1.85rem] p-3 transition-transform duration-300 hover:-translate-y-1">
-            <Link href={`/produto/${product.id}`} className="flex h-full flex-col">
+            <Link
+                href={`/produto/${product.id}`}
+                className="flex h-full flex-col"
+                onMouseEnter={() => setShowSecondaryImage(true)}
+                onFocus={() => setShowSecondaryImage(true)}
+                onMouseLeave={() => setShowSecondaryImage(false)}
+                onBlur={() => setShowSecondaryImage(false)}
+            >
                 <ProductCardImage
                     images={images}
                     productName={product.name}
                     isPriority={index < 4}
+                    showSecondaryImage={showSecondaryImage}
                 />
 
                 <div className="flex flex-1 flex-col px-2 pb-2 pt-4">
@@ -40,7 +52,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
                     <div className="mt-auto flex items-end justify-between gap-3 pt-5">
                         <p className="text-lg font-semibold text-foreground">{formattedPrice}</p>
                         <span className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-                            ver peca
+                            {"ver pe\u00E7a"}
                         </span>
                     </div>
                 </div>

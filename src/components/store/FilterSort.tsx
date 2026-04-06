@@ -16,6 +16,8 @@ export function FilterSort({ currentSort }: { currentSort?: string }) {
             params.delete("sort")
         }
 
+        params.delete("page")
+
         router.push(`?${params.toString()}`)
     }
 
@@ -29,8 +31,8 @@ export function FilterSort({ currentSort }: { currentSort?: string }) {
                     className="h-11 w-full appearance-none rounded-full border border-border bg-card pl-11 pr-16 text-sm text-card-foreground shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring/40 sm:min-w-56"
                 >
                     <option value="">Ordenar por</option>
-                    <option value="price-asc">Menor preco</option>
-                    <option value="price-desc">Maior preco</option>
+                    <option value="price-asc">Menor preço</option>
+                    <option value="price-desc">Maior preço</option>
                     <option value="newest">Mais recentes</option>
                 </select>
                 <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
