@@ -27,7 +27,7 @@ export async function createCheckoutSession(cartItems: unknown) {
         const { data: { user } } = await supabase.auth.getUser()
 
         const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card', 'boleto'],
+            payment_method_types: ['card', 'pix'],
             line_items: lineItems,
             mode: 'payment',
             success_url: `${origin}/sucesso?session_id={CHECKOUT_SESSION_ID}`,
