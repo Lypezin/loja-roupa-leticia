@@ -1,4 +1,4 @@
-export const ORDER_STATUS_VALUES = ['paid', 'processing', 'shipped', 'delivered', 'cancelled'] as const
+export const ORDER_STATUS_VALUES = ['paid', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded'] as const
 
 export type OrderStatus = (typeof ORDER_STATUS_VALUES)[number]
 

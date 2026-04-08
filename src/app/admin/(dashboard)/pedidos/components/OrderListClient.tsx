@@ -86,6 +86,7 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                                         <SelectItem value="shipped">Enviado</SelectItem>
                                         <SelectItem value="delivered">Entregue</SelectItem>
                                         <SelectItem value="cancelled">Cancelado</SelectItem>
+                                        <SelectItem value="refunded">Reembolsado</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </TableCell>

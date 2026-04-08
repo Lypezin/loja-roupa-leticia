@@ -13,6 +13,11 @@ const stepLabels: Record<string, string> = {
     delivered: 'Entregue',
 }
 
+const statusBadge: Record<string, string> = {
+    cancelled: 'Cancelado',
+    refunded: 'Reembolsado',
+}
+
 const stepIcons = [CreditCard, Package, Truck, CheckCircle]
 
 type OrderItem = {
@@ -49,7 +54,7 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
     }
 
     const currentStepIndex = statusSteps.indexOf(order.status)
-    const isCancelled = order.status === 'cancelled'
+    const terminalStatus = order.status === 'cancelled' || order.status === 'refunded' ? order.status : null
     const orderItems = (order.order_items || []) as OrderItem[]
 
     const address = order.shipping_address && typeof order.shipping_address === 'object' && !Array.isArray(order.shipping_address)
@@ -82,15 +87,15 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
                                 Realizado em {new Date(order.created_at).toLocaleString('pt-BR')}
                             </p>
                         </div>
-                        {isCancelled && (
+                        {terminalStatus && (
                             <span className="rounded-full bg-red-100 px-4 py-2 text-xs font-medium text-red-700">
-                                Cancelado
+                                {statusBadge[terminalStatus] || terminalStatus}
                             </span>
                         )}
                     </div>
                 </div>
 
-                {!isCancelled && (
+                {!terminalStatus && (
                     <div className="surface-card rounded-[1.8rem] p-6">
                         <div className="grid gap-4 md:grid-cols-4">
                             {statusSteps.map((step, index) => {

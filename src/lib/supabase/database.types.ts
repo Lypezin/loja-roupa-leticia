@@ -96,6 +96,7 @@ export type Database = {
           id: string
           shipping_address: Json | null
           status: string
+          stripe_payment_intent_id: string | null
           stripe_session_id: string
           total_amount: number
           updated_at: string
@@ -108,6 +109,7 @@ export type Database = {
           id?: string
           shipping_address?: Json | null
           status?: string
+          stripe_payment_intent_id?: string | null
           stripe_session_id: string
           total_amount: number
           updated_at?: string
@@ -120,6 +122,7 @@ export type Database = {
           id?: string
           shipping_address?: Json | null
           status?: string
+          stripe_payment_intent_id?: string | null
           stripe_session_id?: string
           total_amount?: number
           updated_at?: string
@@ -333,6 +336,22 @@ export type Database = {
       decrement_stock: {
         Args: { p_quantity: number; p_variation_id: string }
         Returns: boolean
+      }
+      finalize_checkout_order: {
+        Args: {
+          p_customer_email: string | null
+          p_customer_name: string | null
+          p_items: Json
+          p_payment_intent_id: string | null
+          p_shipping_address: Json | null
+          p_stripe_session_id: string
+          p_total_amount: number
+          p_user_id: string | null
+        }
+        Returns: {
+          action: string
+          order_id: string
+        }[]
       }
     }
     Enums: {

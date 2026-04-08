@@ -12,6 +12,17 @@ type TrustedCheckoutItem = {
     unit_price: number
 }
 
+type FinalizeCheckoutOrderResult = {
+    order_id: string
+    action: 'created' | 'duplicate' | 'recovered'
+}
+
+const REFUNDABLE_CHECKOUT_CONFLICT_CODES = new Set([
+    'CHECKOUT_ITEM_INVALID',
+    'CHECKOUT_ITEMS_INVALID',
+    'CHECKOUT_STOCK_CONFLICT',
+])
+
 function normalizeShippingAddress(address: Stripe.Address | null | undefined): Json | null {
     if (!address) {
         return null
@@ -77,6 +88,114 @@ async function getTrustedCheckoutItems(sessionId: string) {
     })
 }
 
+function getCheckoutConflictCode(message: string) {
+    return message.split(':', 1)[0]?.trim() || ''
+}
+
+function isRefundableCheckoutConflict(message: string) {
+    return REFUNDABLE_CHECKOUT_CONFLICT_CODES.has(getCheckoutConflictCode(message))
+}
+
+async function refundConflictedSessionPayment(session: Stripe.Checkout.Session, message: string) {
+    if (!session.id) {
+        throw new Error('Sessao Stripe sem identificador para reembolso automatico.')
+    }
+
+    if (typeof session.payment_intent !== 'string' || session.payment_intent.length === 0) {
+        throw new Error(`Nao foi possivel reembolsar a sessao ${session.id}: payment_intent ausente.`)
+    }
+
+    const stripe = getStripeClient()
+    const metadataMessage = message.length > 400 ? `${message.slice(0, 397)}...` : message
+
+    await stripe.refunds.create(
+        {
+            payment_intent: session.payment_intent,
+            metadata: {
+                checkout_session_id: session.id,
+                conflict_code: getCheckoutConflictCode(message) || 'UNKNOWN',
+                origin: 'stripe-webhook',
+                reason: metadataMessage,
+            },
+        },
+        {
+            idempotencyKey: `checkout-conflict-refund:${session.id}`,
+        }
+    )
+
+    console.warn(`Sessao ${session.id} reembolsada automaticamente por conflito permanente: ${message}`)
+}
+
+async function finalizeTrustedOrder(
+    session: Stripe.Checkout.Session,
+    trustedItems: TrustedCheckoutItem[],
+    totalAmount: number,
+    userId: string | null
+) {
+    if (!session.id) {
+        throw new Error('Sessao do checkout sem identificador.')
+    }
+
+    const supabaseAdmin = createServiceRoleClient('stripe-webhook.finalizeTrustedOrder')
+    const paymentIntentId = typeof session.payment_intent === 'string' ? session.payment_intent : null
+
+    const { data, error } = await supabaseAdmin.rpc('finalize_checkout_order', {
+        p_customer_email: session.customer_details?.email || session.customer_email || null,
+        p_customer_name: session.customer_details?.name || null,
+        p_items: trustedItems,
+        p_payment_intent_id: paymentIntentId,
+        p_shipping_address: normalizeShippingAddress(
+            session.collected_information?.shipping_details?.address || session.customer_details?.address
+        ),
+        p_stripe_session_id: session.id,
+        p_total_amount: totalAmount,
+        p_user_id: userId,
+    })
+
+    if (error) {
+        throw new Error(error.message)
+    }
+
+    const [result] = (data ?? []) as FinalizeCheckoutOrderResult[]
+
+    if (!result) {
+        throw new Error(`Finalizacao do pedido ${session.id} retornou vazia.`)
+    }
+
+    return result
+}
+
+async function markOrderAsRefunded(charge: Stripe.Charge) {
+    const paymentIntentId = typeof charge.payment_intent === 'string' ? charge.payment_intent : null
+
+    if (!paymentIntentId) {
+        console.log(`Charge ${charge.id} reembolsada sem payment_intent vinculado.`)
+        return
+    }
+
+    const supabaseAdmin = createServiceRoleClient('stripe-webhook.markOrderAsRefunded')
+    const { data: refundedOrder, error } = await supabaseAdmin
+        .from('orders')
+        .update({
+            status: 'refunded',
+            updated_at: new Date().toISOString(),
+        })
+        .eq('stripe_payment_intent_id', paymentIntentId)
+        .select('id')
+        .maybeSingle()
+
+    if (error) {
+        throw new Error(`Erro ao sincronizar reembolso ${charge.id}: ${error.message}`)
+    }
+
+    if (!refundedOrder) {
+        console.log(`Nenhum pedido encontrado para o payment_intent ${paymentIntentId} apos charge.refunded.`)
+        return
+    }
+
+    console.log(`Pedido ${refundedOrder.id} marcado como reembolsado via Stripe.`)
+}
+
 async function persistPaidOrder(session: Stripe.Checkout.Session) {
     if (!session.id) {
         throw new Error('Sessao do checkout sem identificador.')
@@ -87,115 +206,39 @@ async function persistPaidOrder(session: Stripe.Checkout.Session) {
         return NextResponse.json({ received: true, pending: true }, { status: 200 })
     }
 
-    const supabaseAdmin = createServiceRoleClient('stripe-webhook.persistPaidOrder')
-
-    const { data: existingOrder } = await supabaseAdmin
-        .from('orders')
-        .select('id')
-        .eq('stripe_session_id', session.id)
-        .maybeSingle()
-
-    if (existingOrder) {
-        console.log(`Pedido ja existe para session ${session.id}. Ignorando duplicata.`)
-        return NextResponse.json({ received: true, duplicate: true }, { status: 200 })
-    }
-
     const trustedItems = await getTrustedCheckoutItems(session.id)
     const userId = typeof session.client_reference_id === 'string' ? session.client_reference_id : null
     const totalAmount = typeof session.amount_total === 'number'
         ? session.amount_total / 100
         : trustedItems.reduce((total, item) => total + (item.unit_price * item.quantity), 0)
 
-    const productIds = [...new Set(trustedItems.map((item) => item.product_id))]
-    const variationIds = [...new Set(trustedItems.map((item) => item.variation_id))]
+    try {
+        const result = await finalizeTrustedOrder(session, trustedItems, totalAmount, userId)
 
-    const [
-        { data: products, error: productsError },
-        { data: variations, error: variationsError },
-    ] = await Promise.all([
-        supabaseAdmin
-            .from('products')
-            .select('id')
-            .in('id', productIds),
-        supabaseAdmin
-            .from('product_variations')
-            .select('id, product_id')
-            .in('id', variationIds),
-    ])
-
-    if (productsError) {
-        throw new Error(`Erro ao carregar produtos confiaveis: ${productsError.message}`)
-    }
-
-    if (variationsError) {
-        throw new Error(`Erro ao carregar variacoes confiaveis: ${variationsError.message}`)
-    }
-
-    const existingProductIds = new Set((products ?? []).map((product) => product.id))
-    const existingVariations = new Map((variations ?? []).map((variation) => [variation.id, variation]))
-
-    const { data: insertedOrder, error: orderError } = await supabaseAdmin
-        .from('orders')
-        .insert({
-            stripe_session_id: session.id,
-            user_id: userId,
-            total_amount: totalAmount,
-            status: 'paid',
-            customer_email: session.customer_details?.email || session.customer_email,
-            customer_name: session.customer_details?.name,
-            shipping_address: normalizeShippingAddress(
-                session.collected_information?.shipping_details?.address || session.customer_details?.address
-            ),
-        })
-        .select('id')
-        .single()
-
-    if (orderError) {
-        throw new Error(`Erro ao salvar pedido: ${orderError.message}`)
-    }
-
-    const orderItemsToInsert = trustedItems.map((item) => {
-        const variation = existingVariations.get(item.variation_id)
-        const productId = existingProductIds.has(item.product_id) ? item.product_id : null
-        const variationId = variation?.product_id === item.product_id ? item.variation_id : null
-
-        return {
-            order_id: insertedOrder.id,
-            product_id: productId,
-            variation_id: variationId,
-            quantity: item.quantity,
-            price: item.unit_price,
-        }
-    })
-
-    const { error: itemsError } = await supabaseAdmin.from('order_items').insert(orderItemsToInsert)
-
-    if (itemsError) {
-        throw new Error(`Erro ao registrar itens do pedido: ${itemsError.message}`)
-    }
-
-    for (const item of orderItemsToInsert) {
-        if (!item.variation_id) {
-            console.error(`Variacao indisponivel para baixa de estoque no pedido ${insertedOrder.id}.`)
-            continue
+        if (result.action === 'duplicate') {
+            console.log(`Pedido ja existe para session ${session.id}. Ignorando duplicata.`)
+            return NextResponse.json({ received: true, duplicate: true }, { status: 200 })
         }
 
-        const { data: stockUpdated, error: stockError } = await supabaseAdmin.rpc('decrement_stock', {
-            p_variation_id: item.variation_id,
-            p_quantity: item.quantity,
-        })
+        console.log(`Pedido ${result.order_id} finalizado com acao ${result.action} para session ${session.id}.`)
+        return NextResponse.json({ received: true, action: result.action }, { status: 200 })
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'Erro interno ao finalizar pedido.'
 
-        if (stockError) {
-            console.error(`Erro ao descontar estoque da variacao ${item.variation_id}:`, stockError.message)
-            continue
+        if (isRefundableCheckoutConflict(message)) {
+            await refundConflictedSessionPayment(session, message)
+            return NextResponse.json(
+                {
+                    received: true,
+                    refunded: true,
+                    reason: getCheckoutConflictCode(message),
+                },
+                { status: 200 }
+            )
         }
 
-        if (stockUpdated !== true) {
-            console.error(`Sem estoque suficiente para a variacao ${item.variation_id} no pedido ${insertedOrder.id}.`)
-        }
+        throw error
     }
-
-    return NextResponse.json({ received: true }, { status: 200 })
 }
 
 export async function POST(req: Request) {
@@ -236,7 +279,7 @@ export async function POST(req: Request) {
 
             case 'charge.refunded': {
                 const charge = event.data.object as Stripe.Charge
-                console.log(`Pagamento reembolsado: ${charge.id}`)
+                await markOrderAsRefunded(charge)
                 break
             }
 

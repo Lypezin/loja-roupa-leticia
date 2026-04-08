@@ -11,6 +11,7 @@ const statusMap: Record<string, string> = {
     shipped: 'Enviado',
     delivered: 'Entregue',
     cancelled: 'Cancelado',
+    refunded: 'Reembolsado',
 }
 
 const statusColor: Record<string, string> = {
@@ -19,6 +20,7 @@ const statusColor: Record<string, string> = {
     shipped: 'bg-violet-100 text-violet-700',
     delivered: 'bg-emerald-100 text-emerald-700',
     cancelled: 'bg-red-100 text-red-700',
+    refunded: 'bg-stone-200 text-stone-700',
 }
 
 type OrderLine = {
