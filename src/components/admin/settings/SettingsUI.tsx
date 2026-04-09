@@ -1,8 +1,8 @@
 'use client'
 
+import type { ElementType } from "react"
+import { CheckCircle2, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Loader2, CheckCircle2 } from "lucide-react"
-import { ElementType } from "react"
 
 interface SectionHeaderProps {
     icon: ElementType
@@ -40,7 +40,7 @@ export function SaveButton({ isLoading, success, label }: SaveButtonProps) {
         <div className="mt-8 flex items-center justify-end gap-4 border-t border-border pt-6">
             {success ? (
                 <span className="flex items-center gap-1.5 text-sm font-medium text-emerald-700">
-                    <CheckCircle2 className="h-4 w-4" /> Alteracoes salvas
+                    <CheckCircle2 className="h-4 w-4" /> Alterações salvas
                 </span>
             ) : null}
             <Button

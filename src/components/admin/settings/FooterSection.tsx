@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from "react"
+import { Info, LayoutTemplate } from "lucide-react"
+import { toast } from "sonner"
+import { saveFooter } from "@/app/admin/(dashboard)/configuracoes/actions"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { LayoutTemplate, Info } from "lucide-react"
-import { saveFooter } from "@/app/admin/(dashboard)/configuracoes/actions"
-import { toast } from "sonner"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
 
 interface FooterSectionProps {
@@ -32,26 +32,26 @@ export function FooterSection({ settings }: FooterSectionProps) {
     }
 
     return (
-        <form action={handleSubmit} className="bg-white p-6 md:p-8 rounded-2xl border border-zinc-100 shadow-sm space-y-8">
+        <form action={handleSubmit} className="space-y-8 rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm md:p-8">
             <input type="hidden" name="id" value={settings.id || ''} />
 
             <SectionHeader
                 icon={LayoutTemplate}
-                title="Configuração do Rodapé"
-                description="Personalize as informações institucionais exibidas no rodape da loja."
+                title="Configuração do rodapé"
+                description="Personalize as informações institucionais exibidas no rodapé da loja."
             />
 
             <div className="space-y-3">
                 <div className="flex items-center gap-2">
-                    <Info className="w-4 h-4 text-zinc-400" />
-                    <Label htmlFor="footer_about_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Sobre a Loja (Rodapé)</Label>
+                    <Info className="h-4 w-4 text-zinc-400" />
+                    <Label htmlFor="footer_about_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Sobre a loja</Label>
                 </div>
                 <Textarea
                     id="footer_about_text"
                     name="footer_about_text"
                     defaultValue={settings.footer_about_text || ''}
                     rows={4}
-                    className="rounded-xl border-zinc-200 focus-visible:ring-zinc-200 resize-none pt-3"
+                    className="resize-none rounded-xl border-zinc-200 pt-3 focus-visible:ring-zinc-200"
                 />
             </div>
 

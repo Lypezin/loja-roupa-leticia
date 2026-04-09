@@ -20,13 +20,19 @@ export async function updateProductVariations(
 
     if (deleteError) throw deleteError
 
-    const varsToInsert: Database["public"]["Tables"]["product_variations"]["Insert"][] = variations.map((variation) => ({
-        color: variation.color ?? null,
-        size: variation.size ?? null,
-        sku: variation.sku ?? null,
-        stock_quantity: variation.stock_quantity ?? 0,
-        product_id: productId,
-    }))
+    const varsToInsert: Database["public"]["Tables"]["product_variations"]["Insert"][] = variations
+        .map((variation) => ({
+            color: variation.color?.trim() || null,
+            size: variation.size?.trim() || null,
+            sku: variation.sku?.trim() || null,
+            stock_quantity: variation.stock_quantity ?? 0,
+            product_id: productId,
+        }))
+        .filter((variation) => variation.color || variation.size)
+
+    if (varsToInsert.length === 0) {
+        throw new Error('Adicione pelo menos uma variação válida.')
+    }
 
     const { error: insertError } = await supabase.from("product_variations").insert(varsToInsert)
     if (insertError) throw insertError

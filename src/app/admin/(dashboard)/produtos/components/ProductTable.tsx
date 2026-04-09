@@ -1,10 +1,9 @@
-import { Table, TableBody, TableHeader, TableRow, TableHead, TableCell } from "@/components/ui/table"
 import Image from "next/image"
-import Link from "next/link"
-import { Package, Pencil, MoreVertical } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { DeleteProductButton } from "./DeleteProductButton"
+import { Loader2, MoreVertical, Package, Pencil } from "lucide-react"
+import { AdminRouteButton } from "@/components/admin/AdminRouteButton"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import type { Database } from "@/lib/supabase/database.types"
+import { DeleteProductButton } from "./DeleteProductButton"
 
 type ProductImageRow = Database["public"]["Tables"]["product_images"]["Row"]
 type CategoryRelation = { name: string | null } | Array<{ name: string | null }> | null
@@ -30,9 +29,9 @@ export function ProductTable({ products }: ProductTableProps) {
                     <TableRow className="hover:bg-transparent">
                         <TableHead className="h-auto py-4 font-semibold text-foreground">Produto</TableHead>
                         <TableHead className="h-auto py-4 font-semibold text-foreground">Categoria</TableHead>
-                        <TableHead className="h-auto py-4 font-semibold text-foreground">Preco base</TableHead>
+                        <TableHead className="h-auto py-4 font-semibold text-foreground">Preço base</TableHead>
                         <TableHead className="h-auto py-4 font-semibold text-foreground">Status</TableHead>
-                        <TableHead className="h-auto py-4 text-right font-semibold text-foreground">Acoes</TableHead>
+                        <TableHead className="h-auto py-4 text-right font-semibold text-foreground">Ações</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -81,15 +80,20 @@ export function ProductTable({ products }: ProductTableProps) {
                                     </span>
                                 </TableCell>
                                 <TableCell className="py-4 text-right">
-                                    <div className="flex items-center justify-end gap-2 pr-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                                        <Button asChild variant="ghost" size="icon" className="h-9 w-9 cursor-pointer rounded-xl border border-transparent hover:border-border hover:bg-background">
-                                            <Link href={`/admin/produtos/${product.id}/editar`}>
-                                                <Pencil className="h-3.5 w-3.5 text-muted-foreground" />
-                                            </Link>
-                                        </Button>
+                                    <div className="flex items-center justify-end gap-2 pr-2 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100">
+                                        <AdminRouteButton
+                                            href={`/admin/produtos/${product.id}/editar`}
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-9 w-9 rounded-xl border border-transparent hover:border-border hover:bg-background"
+                                            pendingContent={<Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />}
+                                            aria-label={`Editar ${product.name}`}
+                                        >
+                                            <Pencil className="h-3.5 w-3.5 text-muted-foreground" />
+                                        </AdminRouteButton>
                                         <DeleteProductButton productId={product.id} productName={product.name} />
                                     </div>
-                                    <div className="pr-2 group-hover:hidden">
+                                    <div className="hidden pr-2 sm:block sm:group-hover:hidden">
                                         <MoreVertical className="ml-auto h-4 w-4 text-muted-foreground/40" />
                                     </div>
                                 </TableCell>

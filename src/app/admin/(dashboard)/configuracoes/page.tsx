@@ -17,9 +17,9 @@ export default async function ConfiguracoesPage() {
         <div className="flex w-full max-w-6xl flex-col gap-6">
             <div className="paper-panel rounded-[2rem] px-6 py-6 md:px-8">
                 <span className="eyebrow">operacao</span>
-                <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">Configuracoes da loja</h1>
+                <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">Configurações da loja</h1>
                 <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground">
-                    Ajuste identidade, destaque da home, contatos e logistica em um painel mais limpo e facil de manter.
+                    Ajuste identidade, destaque da home, contatos e logística em um painel mais limpo e fácil de manter.
                 </p>
             </div>
 

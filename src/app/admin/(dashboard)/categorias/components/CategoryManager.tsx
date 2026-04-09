@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from "react"
-import { createCategory, deleteCategory, updateCategory } from "../actions"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-
+import { createCategory, deleteCategory, updateCategory } from "../actions"
 import { CategoryForm } from "./CategoryForm"
 import { CategoryTable } from "./CategoryTable"
 
@@ -20,8 +20,10 @@ interface CategoryManagerProps {
 }
 
 export function CategoryManager({ initialCategories }: CategoryManagerProps) {
+    const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
-    const [loadingId, setLoadingId] = useState<string | null>(null)
+    const [updatingId, setUpdatingId] = useState<string | null>(null)
+    const [deletingId, setDeletingId] = useState<string | null>(null)
     const [name, setName] = useState('')
     const [image, setImage] = useState<File | null>(null)
     const [imagePreview, setImagePreview] = useState<string | null>(null)
@@ -35,13 +37,16 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
         const file = e.target.files?.[0] || null
         if (isEdit) {
             setEditImage(file)
-            if (file) setEditImagePreview(URL.createObjectURL(file))
-            else setEditImagePreview(null)
-        } else {
-            setImage(file)
-            if (file) setImagePreview(URL.createObjectURL(file))
-            else setImagePreview(null)
+            setEditImagePreview(file ? URL.createObjectURL(file) : null)
+            return
         }
+
+        setImage(file)
+        setImagePreview(file ? URL.createObjectURL(file) : null)
+    }
+
+    const refreshPage = () => {
+        router.refresh()
     }
 
     const handleCreate = async (e: React.FormEvent) => {
@@ -57,17 +62,19 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
         if (res?.error) {
             toast.error(res.error)
         } else {
-            toast.success("Categoria criada com sucesso!")
+            toast.success("Categoria criada com sucesso.")
             setName('')
             setImage(null)
             setImagePreview(null)
+            refreshPage()
         }
         setIsLoading(false)
     }
 
     const handleUpdate = async (id: string) => {
         if (!editName.trim()) return
-        setLoadingId(id)
+
+        setUpdatingId(id)
         const formData = new FormData()
         formData.append('name', editName.trim())
         if (editImage) formData.append('image', editImage)
@@ -76,10 +83,11 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
         if (res?.error) {
             toast.error(res.error)
         } else {
-            toast.success("Categoria atualizada com sucesso!")
+            toast.success("Categoria atualizada com sucesso.")
             cancelEditing()
+            refreshPage()
         }
-        setLoadingId(null)
+        setUpdatingId(null)
     }
 
     const startEditing = (cat: Category) => {
@@ -101,18 +109,25 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
             toast.error(`A categoria "${name}" tem ${count} produto(s). Remova os produtos dela antes de excluir.`)
             return
         }
-        if (confirm(`Tem certeza que deseja excluir a categoria "${name}"?`)) {
-            const res = await deleteCategory(id)
-            if (res?.error) toast.error(res.error)
-            else toast.success("Categoria excluída com sucesso!")
+
+        setDeletingId(id)
+        const res = await deleteCategory(id)
+        if (res?.error) {
+            toast.error(res.error)
+        } else {
+            toast.success("Categoria excluída com sucesso.")
+            refreshPage()
         }
+        setDeletingId(null)
     }
 
     return (
         <div className="flex flex-col gap-8">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight text-foreground">Categorias</h1>
-                <p className="mt-1 text-sm text-muted-foreground">Organize seus produtos em {initialCategories.length} coleções.</p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                    Organize seus produtos em {initialCategories.length} coleção(ões).
+                </p>
             </div>
 
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -137,7 +152,8 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                         handleDelete={handleDelete}
                         startEditing={startEditing}
                         cancelEditing={cancelEditing}
-                        loadingId={loadingId}
+                        updatingId={updatingId}
+                        deletingId={deletingId}
                     />
                 </div>
             </div>

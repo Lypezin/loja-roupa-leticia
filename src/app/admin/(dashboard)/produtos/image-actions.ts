@@ -48,7 +48,7 @@ export async function manageProductImages(
         await supabase.from("product_images").insert({
             product_id: productId,
             image_url: imageUrl,
-            is_primary: index === 0 && !existingImagesJson,
+            is_primary: index === 0 && keptImages.length === 0,
             display_order: index + 10,
         })
     }

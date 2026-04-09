@@ -1,12 +1,12 @@
 'use client'
 
 import { useState } from "react"
-import { ProfileSection } from "./settings/ProfileSection"
+import { ChevronRight, Image as ImageIcon, LayoutTemplate, Truck, Type, User } from "lucide-react"
 import { BannerSection } from "./settings/BannerSection"
 import { ContentSection } from "./settings/ContentSection"
 import { FooterSection } from "./settings/FooterSection"
 import { LogisticsSection } from "./settings/LogisticsSection"
-import { User, Image as ImageIcon, Type, LayoutTemplate, Truck, ChevronRight } from "lucide-react"
+import { ProfileSection } from "./settings/ProfileSection"
 
 interface SettingsFormProps {
     settings: Record<string, string | null>

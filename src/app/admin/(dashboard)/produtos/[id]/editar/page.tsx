@@ -1,12 +1,11 @@
+import { notFound } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { ProductForm } from "@/components/admin/ProductForm"
-import { notFound } from "next/navigation"
 
 export default async function EditarProdutoPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const supabase = await createClient()
 
-    // Buscar Produto, Variações (Grade de Estoque) e Imagens
     const { data: product, error } = await supabase
         .from('products')
         .select(`
@@ -21,13 +20,11 @@ export default async function EditarProdutoPage({ params }: { params: Promise<{ 
         return notFound()
     }
 
-    // Buscar Categorias para o Select do form
     const { data: categories } = await supabase.from('categories').select('*').order('name')
 
-    // Formatar o objeto product para se adequar ao que o ProductForm espera
     const formattedProduct = {
         ...product,
-        variations: product.product_variations
+        variations: product.product_variations,
     }
 
     return (
@@ -35,7 +32,7 @@ export default async function EditarProdutoPage({ params }: { params: Promise<{ 
             <div>
                 <h1 className="text-3xl font-bold tracking-tight">Editar Produto</h1>
                 <p className="text-zinc-500">
-                    Modifique informações, categorias, ou adicione novo estoque na grade.
+                    Atualize informações, imagens e grade de estoque sem sair do painel.
                 </p>
             </div>
 

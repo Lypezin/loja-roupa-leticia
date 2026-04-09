@@ -8,7 +8,6 @@ export const metadata = {
 export default async function CategoriasPage() {
     const supabase = await createClient()
 
-    // Busca as categorias existentes e contagem de produtos atrelados (opcional para exibir)
     const { data: categories, error } = await supabase
         .from('categories')
         .select(`
@@ -25,7 +24,6 @@ export default async function CategoriasPage() {
         console.error(error)
     }
 
-    // Formatando dados para o Client Component
     const formattedCategories = (categories || []).map(cat => ({
         id: cat.id,
         name: cat.name,
@@ -39,7 +37,7 @@ export default async function CategoriasPage() {
             <div>
                 <h1 className="text-3xl font-bold tracking-tight">Categorias</h1>
                 <p className="text-muted-foreground">
-                    Crie e gerencie as categorias da sua loja.
+                    Crie, edite e organize as categorias da sua loja.
                 </p>
             </div>
 

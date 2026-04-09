@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { updateOrderStatus } from '../actions'
+import { Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
     Table,
     TableBody,
@@ -10,8 +12,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { formatCurrency } from '@/lib/utils'
+import { updateOrderStatus } from '../actions'
 
 type Order = {
     id: string
@@ -32,8 +34,10 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
         try {
             setUpdating(orderId)
             await updateOrderStatus(orderId, newStatus)
+            toast.success('Status do pedido atualizado.')
         } catch (error) {
             console.error("Erro ao alterar status:", error)
+            toast.error('Não foi possível atualizar o status do pedido.')
         } finally {
             setUpdating(null)
         }
@@ -53,8 +57,9 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
             <TableBody>
                 {orders.map((order) => {
                     const clientName = order.customer_name || 'Cliente'
-                    const clientEmail = order.customer_email || 'E-mail nao informado'
+                    const clientEmail = order.customer_email || 'E-mail não informado'
                     const providerLabel = order.payment_provider || (order.payment_receipt_url ? 'abacatepay' : 'legado')
+                    const isUpdating = updating === order.id
 
                     return (
                         <TableRow key={order.id}>
@@ -89,24 +94,32 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                                 {formatCurrency(order.total_amount)}
                             </TableCell>
                             <TableCell>
-                                <Select
-                                    defaultValue={order.status}
-                                    onValueChange={(value) => handleStatusChange(order.id, value)}
-                                    disabled={updating === order.id}
-                                >
-                                    <SelectTrigger className="w-[140px]">
-                                        <SelectValue placeholder="Status" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="paid">Pago</SelectItem>
-                                        <SelectItem value="processing">Processando</SelectItem>
-                                        <SelectItem value="shipped">Enviado</SelectItem>
-                                        <SelectItem value="delivered">Entregue</SelectItem>
-                                        <SelectItem value="disputed">Em disputa</SelectItem>
-                                        <SelectItem value="cancelled">Cancelado</SelectItem>
-                                        <SelectItem value="refunded">Reembolsado</SelectItem>
-                                    </SelectContent>
-                                </Select>
+                                <div className="space-y-1">
+                                    <Select
+                                        defaultValue={order.status}
+                                        onValueChange={(value) => handleStatusChange(order.id, value)}
+                                        disabled={isUpdating}
+                                    >
+                                        <SelectTrigger className="w-[160px]">
+                                            <SelectValue placeholder="Status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="paid">Pago</SelectItem>
+                                            <SelectItem value="processing">Processando</SelectItem>
+                                            <SelectItem value="shipped">Enviado</SelectItem>
+                                            <SelectItem value="delivered">Entregue</SelectItem>
+                                            <SelectItem value="disputed">Em disputa</SelectItem>
+                                            <SelectItem value="cancelled">Cancelado</SelectItem>
+                                            <SelectItem value="refunded">Reembolsado</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    {isUpdating ? (
+                                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                                            <Loader2 className="h-3 w-3 animate-spin" />
+                                            Salvando...
+                                        </span>
+                                    ) : null}
+                                </div>
                             </TableCell>
                         </TableRow>
                     )

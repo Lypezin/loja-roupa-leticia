@@ -1,7 +1,8 @@
 'use client'
 
-import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 
 type Category = {
     id: string
@@ -22,18 +23,24 @@ export function ProductBasicInfo({ product, categories }: ProductBasicInfoProps)
     return (
         <div className="space-y-4">
             <div>
-                <Label htmlFor="name">Nome do Produto</Label>
+                <Label htmlFor="name">Nome do produto</Label>
                 <Input id="name" name="name" defaultValue={product?.name} required />
             </div>
 
             <div>
                 <Label htmlFor="description">Descrição</Label>
-                <Input id="description" name="description" defaultValue={product?.description} />
+                <Textarea
+                    id="description"
+                    name="description"
+                    defaultValue={product?.description}
+                    rows={4}
+                    className="min-h-28 resize-y"
+                />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                    <Label htmlFor="base_price">Preço Base (R$)</Label>
+                    <Label htmlFor="base_price">Preço base (R$)</Label>
                     <Input
                         id="base_price"
                         name="base_price"
@@ -54,7 +61,7 @@ export function ProductBasicInfo({ product, categories }: ProductBasicInfoProps)
                         required
                     >
                         <option value="" disabled>Selecione uma categoria</option>
-                        {categories.map(cat => (
+                        {categories.map((cat) => (
                             <option key={cat.id} value={cat.id}>{cat.name}</option>
                         ))}
                     </select>

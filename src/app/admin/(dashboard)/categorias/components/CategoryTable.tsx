@@ -1,7 +1,7 @@
 'use client'
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { LayoutGrid } from "lucide-react"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { CategoryTableRow } from "./CategoryTableRow"
 
 type Category = {
@@ -23,7 +23,8 @@ interface CategoryTableProps {
     handleDelete: (id: string, name: string, count: number) => void
     startEditing: (cat: Category) => void
     cancelEditing: () => void
-    loadingId: string | null
+    updatingId: string | null
+    deletingId: string | null
 }
 
 export function CategoryTable({
@@ -37,7 +38,8 @@ export function CategoryTable({
     handleDelete,
     startEditing,
     cancelEditing,
-    loadingId
+    updatingId,
+    deletingId,
 }: CategoryTableProps) {
     return (
         <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
@@ -73,7 +75,8 @@ export function CategoryTable({
                                 handleDelete={handleDelete}
                                 startEditing={startEditing}
                                 cancelEditing={cancelEditing}
-                                loadingId={loadingId}
+                                updatingId={updatingId}
+                                deletingId={deletingId}
                             />
                         ))
                     )}

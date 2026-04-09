@@ -1,9 +1,9 @@
 'use client'
 
-import { ACCEPTED_IMAGE_INPUT } from "@/lib/uploads"
-import { X, Image as ImageIcon } from "lucide-react"
+import { Image as ImageIcon, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { ACCEPTED_IMAGE_INPUT } from "@/lib/uploads"
 
 type ExistingImage = {
     id?: string
@@ -17,33 +17,38 @@ interface ProductImageManagerProps {
 }
 
 export function ProductImageManager({ existingImages, onRemoveExisting }: ProductImageManagerProps) {
+    const existingCountLabel = existingImages.length === 0
+        ? "Nenhuma imagem cadastrada ainda."
+        : `${existingImages.length} imagem(ns) atualmente vinculada(s) ao produto.`
+
     return (
-        <div className="pt-4 border-t">
-            <Label htmlFor="images" className="flex items-center gap-2 mb-2 font-semibold">
-                <ImageIcon className="w-4 h-4 text-zinc-500" />
-                Imagens do Produto
+        <div className="border-t pt-4">
+            <Label htmlFor="images" className="mb-2 flex items-center gap-2 font-semibold">
+                <ImageIcon className="h-4 w-4 text-zinc-500" />
+                Imagens do produto
             </Label>
 
-            {/* Imagens já cadastradas */}
+            <p className="mb-3 text-sm text-zinc-500">{existingCountLabel}</p>
+
             {existingImages.length > 0 && (
                 <div className="mb-4">
-                    <p className="text-sm text-zinc-500 mb-2">Imagens atuais:</p>
-                    <div className="flex gap-3 flex-wrap">
-                        {existingImages.map((img, i) => (
-                            <div key={i} className="relative w-20 h-24 rounded-lg overflow-hidden border-2 border-zinc-200 group">
+                    <p className="mb-2 text-sm text-zinc-500">Imagens atuais:</p>
+                    <div className="flex flex-wrap gap-3">
+                        {existingImages.map((img, index) => (
+                            <div key={index} className="group relative h-24 w-20 overflow-hidden rounded-lg border-2 border-zinc-200">
                                 <div
                                     className="absolute inset-0 bg-cover bg-center"
                                     style={{ backgroundImage: `url(${img.image_url})` }}
                                 />
                                 <button
                                     type="button"
-                                    onClick={() => onRemoveExisting(i)}
-                                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    onClick={() => onRemoveExisting(index)}
+                                    className="absolute right-1 top-1 rounded-full bg-red-500 p-0.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
                                 >
-                                    <X className="w-3 h-3" />
+                                    <X className="h-3 w-3" />
                                 </button>
                                 {img.is_primary && (
-                                    <span className="absolute bottom-1 left-1 bg-zinc-900 text-white text-[9px] px-1.5 py-0.5 rounded-full">
+                                    <span className="absolute bottom-1 left-1 rounded-full bg-zinc-900 px-1.5 py-0.5 text-[9px] text-white">
                                         Capa
                                     </span>
                                 )}
@@ -53,7 +58,7 @@ export function ProductImageManager({ existingImages, onRemoveExisting }: Produc
                 </div>
             )}
 
-            <div className="text-sm text-zinc-500 mb-4">
+            <div className="mb-4 text-sm text-zinc-500">
                 Selecione novas fotos para adicionar. A primeira será a capa se não houver imagens.
             </div>
             <Input
