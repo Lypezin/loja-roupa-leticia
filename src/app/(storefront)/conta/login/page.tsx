@@ -10,8 +10,14 @@ function LoginForm() {
     const searchParams = useSearchParams()
     const errorMsg = searchParams.get("error")
     const successMsg = searchParams.get("success")
+    const nextPath = searchParams.get("next") || "/conta"
+    const reason = searchParams.get("reason")
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
+
+    const reasonMessage = reason === 'checkout_login_required'
+        ? 'Entre na sua conta para continuar com o pagamento.'
+        : null
 
     return (
         <div className="page-shell flex min-h-[80vh] items-center justify-center py-12">
@@ -23,9 +29,15 @@ function LoginForm() {
                     </Link>
                     <h1 className="mt-6 font-display text-4xl text-foreground">Entrar</h1>
                     <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                        Acompanhe seus pedidos e suas informações de conta.
+                        Acompanhe seus pedidos e suas informacoes de conta.
                     </p>
                 </div>
+
+                {reasonMessage && (
+                    <div className="mt-6 rounded-[1.2rem] border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">
+                        {reasonMessage}
+                    </div>
+                )}
 
                 {errorMsg && (
                     <div className="mt-6 rounded-[1.2rem] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -43,6 +55,7 @@ function LoginForm() {
                     setIsLoading(true)
                     try { await loginCliente(formData) } catch { } finally { setIsLoading(false) }
                 }} className="mt-6 space-y-4">
+                    <input type="hidden" name="next" value={nextPath} />
                     <div className="relative">
                         <Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <input
@@ -86,7 +99,7 @@ function LoginForm() {
                 </form>
 
                 <p className="mt-8 text-center text-sm text-muted-foreground">
-                    Não tem uma conta?{" "}
+                    Nao tem uma conta?{" "}
                     <Link href="/conta/cadastro" className="font-semibold text-foreground hover:underline">
                         Criar conta
                     </Link>

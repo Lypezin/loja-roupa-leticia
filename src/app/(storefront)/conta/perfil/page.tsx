@@ -2,13 +2,14 @@ import Link from "next/link"
 import { ArrowLeft, FileText, Mail, Phone, User } from "lucide-react"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { readCustomerProfile } from "@/lib/customer-profile"
 import { createClient } from "@/lib/supabase/server"
 import { atualizarPerfil } from "./actions"
 
 export default async function PerfilPage({
     searchParams,
 }: {
-    searchParams: Promise<{ success?: string; error?: string }>
+    searchParams: Promise<{ success?: string; error?: string; reason?: string; next?: string }>
 }) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
@@ -20,10 +21,15 @@ export default async function PerfilPage({
     const params = await searchParams
     const successMessage = params?.success
     const errorMessage = params?.error
-
-    const fullName = user.user_metadata?.full_name || ''
-    const phone = user.user_metadata?.phone || ''
-    const cpf = user.user_metadata?.cpf || ''
+    const nextPath = params?.next || ''
+    const reason = params?.reason
+    const profile = readCustomerProfile(user)
+    const metadata = user.user_metadata && typeof user.user_metadata === 'object'
+        ? user.user_metadata as Record<string, string | undefined>
+        : {}
+    const warningMessage = reason === 'checkout_profile_required'
+        ? 'Preencha seus dados para continuar com o pagamento na AbacatePay.'
+        : null
     const email = user.email || ''
 
     return (
@@ -40,6 +46,12 @@ export default async function PerfilPage({
                     <p className="mt-3 text-sm leading-7 text-muted-foreground">Atualize os dados basicos da sua conta com seguranca.</p>
                 </div>
 
+                {warningMessage && (
+                    <div className="rounded-[1.2rem] border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">
+                        {warningMessage}
+                    </div>
+                )}
+
                 {successMessage && (
                     <div className="rounded-[1.2rem] border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
                         {successMessage}
@@ -54,6 +66,8 @@ export default async function PerfilPage({
 
                 <div className="surface-card rounded-[1.8rem] p-6 md:p-8">
                     <form action={atualizarPerfil} className="space-y-6">
+                        <input type="hidden" name="next" value={nextPath} />
+
                         <div className="grid gap-6 sm:grid-cols-2">
                             <div className="space-y-2 sm:col-span-2">
                                 <label htmlFor="fullName" className="flex items-center gap-2 text-sm font-medium text-foreground">
@@ -64,7 +78,7 @@ export default async function PerfilPage({
                                     type="text"
                                     id="fullName"
                                     name="fullName"
-                                    defaultValue={fullName}
+                                    defaultValue={profile?.fullName || ''}
                                     placeholder="Seu nome completo"
                                     required
                                     className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
@@ -80,8 +94,9 @@ export default async function PerfilPage({
                                     type="tel"
                                     id="phone"
                                     name="phone"
-                                    defaultValue={phone}
-                                    placeholder="(11) 90000-0000"
+                                    defaultValue={profile?.phone || ''}
+                                    placeholder="+55 11 90000-0000"
+                                    required
                                     className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
                                 />
                             </div>
@@ -95,8 +110,9 @@ export default async function PerfilPage({
                                     type="text"
                                     id="cpf"
                                     name="cpf"
-                                    defaultValue={cpf}
+                                    defaultValue={profile?.cpf || ''}
                                     placeholder="000.000.000-00"
+                                    required
                                     className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
                                 />
                             </div>
@@ -112,6 +128,85 @@ export default async function PerfilPage({
                                     value={email}
                                     disabled
                                     className="h-12 w-full rounded-[1rem] border border-border bg-muted px-4 text-muted-foreground"
+                                />
+                            </div>
+
+                            <div className="space-y-2 sm:col-span-2">
+                                <label htmlFor="addressLine1" className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                    <FileText className="h-4 w-4 text-muted-foreground" />
+                                    Endereco
+                                </label>
+                                <input
+                                    type="text"
+                                    id="addressLine1"
+                                    name="addressLine1"
+                                    defaultValue={profile?.shippingAddress?.line1 || metadata.address_line1 || ''}
+                                    placeholder="Rua, numero e complemento principal"
+                                    required
+                                    className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
+                                />
+                            </div>
+
+                            <div className="space-y-2 sm:col-span-2">
+                                <label htmlFor="addressLine2" className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                    <FileText className="h-4 w-4 text-muted-foreground" />
+                                    Complemento
+                                </label>
+                                <input
+                                    type="text"
+                                    id="addressLine2"
+                                    name="addressLine2"
+                                    defaultValue={profile?.shippingAddress?.line2 || metadata.address_line2 || ''}
+                                    placeholder="Apartamento, bloco, referencia"
+                                    className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label htmlFor="city" className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                    <FileText className="h-4 w-4 text-muted-foreground" />
+                                    Cidade
+                                </label>
+                                <input
+                                    type="text"
+                                    id="city"
+                                    name="city"
+                                    defaultValue={profile?.shippingAddress?.city || metadata.city || ''}
+                                    placeholder="Cidade"
+                                    required
+                                    className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label htmlFor="state" className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                    <FileText className="h-4 w-4 text-muted-foreground" />
+                                    Estado
+                                </label>
+                                <input
+                                    type="text"
+                                    id="state"
+                                    name="state"
+                                    defaultValue={profile?.shippingAddress?.state || metadata.state || ''}
+                                    placeholder="UF"
+                                    required
+                                    className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label htmlFor="postalCode" className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                    <FileText className="h-4 w-4 text-muted-foreground" />
+                                    CEP
+                                </label>
+                                <input
+                                    type="text"
+                                    id="postalCode"
+                                    name="postalCode"
+                                    defaultValue={profile?.shippingAddress?.postal_code || metadata.postal_code || ''}
+                                    placeholder="00000-000"
+                                    required
+                                    className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
                                 />
                             </div>
                         </div>

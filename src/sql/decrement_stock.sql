@@ -1,5 +1,5 @@
 -- Funcao RPC para decrementar o estoque de uma variacao.
--- O webhook Stripe e o unico fluxo de aplicacao autorizado a executa-la.
+-- O webhook de pagamento e o unico fluxo de aplicacao autorizado a executa-la.
 DROP FUNCTION IF EXISTS public.decrement_stock(UUID, INT);
 
 CREATE OR REPLACE FUNCTION public.decrement_stock(p_variation_id UUID, p_quantity INT)

@@ -15,13 +15,14 @@ import { formatCurrency } from '@/lib/utils'
 
 type Order = {
     id: string
-    stripe_session_id: string
     total_amount: number
     status: string
     customer_email: string | null
     customer_name: string | null
     created_at: string
-    order_items: { id: string, quantity: number, price: number, products: { name: string } | null }[]
+    payment_provider?: string | null
+    payment_receipt_url?: string | null
+    order_items: { id: string; quantity: number; price: number; products: { name: string } | null }[]
 }
 
 export default function OrderListClient({ orders }: { orders: Order[] }) {
@@ -44,15 +45,16 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                 <TableRow>
                     <TableHead>Data</TableHead>
                     <TableHead>Cliente</TableHead>
-                    <TableHead>Itens / Recibo</TableHead>
+                    <TableHead>Itens / Pagamento</TableHead>
                     <TableHead>Total</TableHead>
                     <TableHead>Status</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
                 {orders.map((order) => {
-                    const clientName = order.customer_name || 'Alguém'
-                    const clientEmail = order.customer_email || 'Oculto na Stripe'
+                    const clientName = order.customer_name || 'Cliente'
+                    const clientEmail = order.customer_email || 'E-mail nao informado'
+                    const providerLabel = order.payment_provider || (order.payment_receipt_url ? 'abacatepay' : 'legado')
 
                     return (
                         <TableRow key={order.id}>
@@ -64,8 +66,23 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                                 <div className="text-sm text-muted-foreground">{clientEmail}</div>
                             </TableCell>
                             <TableCell>
-                                <div className="max-w-[200px] text-balance text-sm">
-                                    {order.order_items?.map(i => `${i.quantity}x ${i.products?.name || 'Item'}`).join(', ') || 'Nenhum item'}
+                                <div className="max-w-[220px] space-y-1 text-sm">
+                                    <div className="text-balance text-sm">
+                                        {order.order_items?.map((item) => `${item.quantity}x ${item.products?.name || 'Item'}`).join(', ') || 'Nenhum item'}
+                                    </div>
+                                    <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                                        {providerLabel}
+                                    </div>
+                                    {order.payment_receipt_url && (
+                                        <a
+                                            href={order.payment_receipt_url}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="text-xs text-primary hover:underline"
+                                        >
+                                            Ver recibo
+                                        </a>
+                                    )}
                                 </div>
                             </TableCell>
                             <TableCell>
@@ -74,7 +91,7 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                             <TableCell>
                                 <Select
                                     defaultValue={order.status}
-                                    onValueChange={(val) => handleStatusChange(order.id, val)}
+                                    onValueChange={(value) => handleStatusChange(order.id, value)}
                                     disabled={updating === order.id}
                                 >
                                     <SelectTrigger className="w-[140px]">

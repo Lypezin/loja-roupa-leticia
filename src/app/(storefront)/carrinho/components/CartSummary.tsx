@@ -4,8 +4,8 @@ import Link from "next/link"
 import { ArrowRight, Loader2, MessageSquare } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { useCartStore } from "@/store/useCartStore"
 import { createCheckoutSession } from "@/app/(storefront)/actions"
+import { useCartStore } from "@/store/useCartStore"
 
 interface CartSummaryProps {
     formattedTotal: string
@@ -15,18 +15,23 @@ interface CartSummaryProps {
 
 export function CartSummary({ formattedTotal, installment, handleWhatsAppCheckout }: CartSummaryProps) {
     const { items } = useCartStore()
-    const [isLoadingStripe, setIsLoadingStripe] = useState(false)
+    const [isLoadingCheckout, setIsLoadingCheckout] = useState(false)
 
-    const handleStripeCheckout = async () => {
+    const handleHostedCheckout = async () => {
         if (items.length === 0) return
 
-        setIsLoadingStripe(true)
+        setIsLoadingCheckout(true)
         try {
             const result = await createCheckoutSession(items)
 
             if (result.error) {
                 alert(result.error)
-                setIsLoadingStripe(false)
+                setIsLoadingCheckout(false)
+                return
+            }
+
+            if (result.redirectTo) {
+                window.location.href = result.redirectTo
                 return
             }
 
@@ -35,7 +40,7 @@ export function CartSummary({ formattedTotal, installment, handleWhatsAppCheckou
             }
         } catch {
             alert("Falha interna ao redirecionar para pagamentos.")
-            setIsLoadingStripe(false)
+            setIsLoadingCheckout(false)
         }
     }
 
@@ -51,7 +56,7 @@ export function CartSummary({ formattedTotal, installment, handleWhatsAppCheckou
                     </div>
                     <div className="flex justify-between text-muted-foreground">
                         <span>Frete</span>
-                        <span className="font-medium text-emerald-600">Grátis</span>
+                        <span className="font-medium text-emerald-600">Gratis</span>
                     </div>
                     <div className="flex justify-between border-t border-border pt-4 text-lg font-semibold text-card-foreground">
                         <span>Total</span>
@@ -63,24 +68,28 @@ export function CartSummary({ formattedTotal, installment, handleWhatsAppCheckou
                 </div>
 
                 <Button
-                    onClick={handleStripeCheckout}
-                    disabled={isLoadingStripe}
+                    onClick={handleHostedCheckout}
+                    disabled={isLoadingCheckout}
                     className="mt-6 h-12 w-full rounded-full text-sm font-semibold uppercase tracking-[0.16em]"
                 >
-                    {isLoadingStripe ? (
+                    {isLoadingCheckout ? (
                         <>
                             Processando <Loader2 className="h-4 w-4 animate-spin" />
                         </>
                     ) : (
                         <>
-                            Finalizar compra <ArrowRight className="h-4 w-4" />
+                            Pagar com Pix ou Cartao <ArrowRight className="h-4 w-4" />
                         </>
                     )}
                 </Button>
 
+                <p className="mt-3 text-center text-xs text-muted-foreground">
+                    Checkout hospedado pela AbacatePay.
+                </p>
+
                 <Button
                     onClick={handleWhatsAppCheckout}
-                    disabled={isLoadingStripe}
+                    disabled={isLoadingCheckout}
                     variant="outline"
                     className="mt-3 h-12 w-full rounded-full border-emerald-500/30 text-sm font-semibold uppercase tracking-[0.16em] text-emerald-700 hover:bg-emerald-50"
                 >

@@ -5,11 +5,20 @@ import { getSiteUrl } from "@/lib/site-url"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
+function getSafeRedirectPath(value: FormDataEntryValue | null, fallback: string) {
+    if (typeof value !== 'string' || value.length === 0 || !value.startsWith('/')) {
+        return fallback
+    }
+
+    return value
+}
+
 export async function loginCliente(formData: FormData) {
     const supabase = await createClient()
 
     const email = (formData.get('email') as string)?.trim()
     const password = formData.get('password') as string
+    const nextPath = getSafeRedirectPath(formData.get('next'), '/conta')
 
     const { error } = await supabase.auth.signInWithPassword({ email, password })
 
@@ -23,11 +32,11 @@ export async function loginCliente(formData: FormData) {
             mensagem = 'E-mail ou senha incorretos'
         }
 
-        redirect(`/conta/login?error=${encodeURIComponent(mensagem)}`)
+        redirect(`/conta/login?error=${encodeURIComponent(mensagem)}&next=${encodeURIComponent(nextPath)}`)
     }
 
     revalidatePath('/', 'layout')
-    redirect('/conta')
+    redirect(nextPath)
 }
 
 export async function cadastrarCliente(formData: FormData) {

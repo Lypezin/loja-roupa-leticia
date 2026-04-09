@@ -53,7 +53,7 @@ export default async function MinhaContaPage({
                         </div>
                         <h2 className="mt-5 text-xl font-semibold text-foreground">Meus dados</h2>
                         <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                            Nome, telefone, CPF e os dados principais da sua conta.
+                            Nome, telefone, CPF e endereco para finalizar suas compras.
                         </p>
                     </Link>
 
