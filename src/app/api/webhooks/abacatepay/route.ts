@@ -1,5 +1,5 @@
 import type { Json } from '@/lib/supabase/database.types'
-import { verifyAbacatePaySignature } from '@/lib/abacatepay'
+import { normalizeAbacatePayStatus, verifyAbacatePaySignature } from '@/lib/abacatepay'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { NextResponse } from 'next/server'
 
@@ -255,6 +255,24 @@ async function handleDisputedEvent(details: PaymentEventDetails) {
     return NextResponse.json({ received: true, action: 'disputed' }, { status: 200 })
 }
 
+async function handleFailedEvent(details: PaymentEventDetails) {
+    const attempt = await findPaymentAttempt(details.externalId, details.checkoutId)
+    const normalizedStatus = normalizeAbacatePayStatus(details.status)
+
+    if (attempt) {
+        await markAttemptStatus(attempt.id, {
+            status: normalizedStatus === 'pending' ? 'failed' : normalizedStatus,
+            checkout_id: details.checkoutId,
+            receipt_url: details.receiptUrl,
+            payment_method: details.paymentMethod,
+            raw_response: details.payload,
+        })
+    }
+
+    await markOrderStatus(details.externalId, details.checkoutId, 'cancelled', details.status, details.receiptUrl)
+    return NextResponse.json({ received: true, action: 'failed' }, { status: 200 })
+}
+
 export async function POST(req: Request) {
     const configuredSecret = process.env.ABACATEPAY_WEBHOOK_SECRET?.trim()
     const requestUrl = new URL(req.url)
@@ -297,6 +315,12 @@ export async function POST(req: Request) {
             case 'checkout.disputed':
             case 'billing.disputed':
                 return await handleDisputedEvent(details)
+
+            case 'checkout.failed':
+            case 'checkout.cancelled':
+            case 'billing.failed':
+            case 'billing.cancelled':
+                return await handleFailedEvent(details)
 
             default:
                 return NextResponse.json({ received: true, ignored: details.event }, { status: 200 })

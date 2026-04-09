@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { AlertTriangle, CheckCircle, Package, ShoppingBag } from 'lucide-react'
+import { AlertTriangle, CheckCircle, Package, ShoppingBag, XCircle } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/server'
@@ -108,27 +108,65 @@ export default async function SucessoPage({
     }
 
     const attemptItems = typedAttempt?.trusted_items || []
-    const shouldPoll = Boolean(typedAttempt && !typedOrder && typedAttempt.status !== 'failed' && typedAttempt.status !== 'refunded' && typedAttempt.status !== 'disputed')
+    const currentStatus = typedOrder?.status || typedAttempt?.status || 'pending'
+    const isFailureState = currentStatus === 'failed' || currentStatus === 'cancelled'
+    const isWarningState = currentStatus === 'refunded' || currentStatus === 'disputed'
+    const shouldPoll = Boolean(
+        typedAttempt
+        && !typedOrder
+        && currentStatus !== 'failed'
+        && currentStatus !== 'refunded'
+        && currentStatus !== 'disputed'
+        && currentStatus !== 'cancelled'
+    )
     const receiptUrl = typedOrder?.payment_receipt_url || typedAttempt?.receipt_url || null
     const paymentMethod = typedOrder?.payment_method || typedAttempt?.payment_method
     const orderItems = typedOrder?.order_items || []
+    const canClearCart = Boolean(typedOrder)
+    const title = typedOrder
+        ? 'Pedido confirmado!'
+        : isFailureState
+            ? 'Pagamento nao concluido'
+            : currentStatus === 'refunded'
+                ? 'Pagamento reembolsado'
+                : currentStatus === 'disputed'
+                    ? 'Pagamento em analise'
+                    : 'Pagamento recebido'
+    const description = typedOrder
+        ? 'Seu pagamento foi confirmado e o pedido ja esta salvo na sua conta.'
+        : isFailureState
+            ? 'Nao conseguimos confirmar este pagamento. Voce pode voltar ao carrinho e tentar novamente.'
+            : currentStatus === 'refunded'
+                ? 'O pagamento foi reembolsado e nao gerou um pedido ativo.'
+                : currentStatus === 'disputed'
+                    ? 'Recebemos uma sinalizacao sobre este pagamento e o pedido foi pausado para analise.'
+                    : 'Aguardando a confirmacao final do webhook da AbacatePay. Esta pagina atualiza sozinha em alguns segundos.'
+    const Icon = typedOrder ? CheckCircle : isFailureState ? XCircle : isWarningState ? AlertTriangle : CheckCircle
+    const iconWrapperClassName = typedOrder
+        ? 'bg-emerald-100'
+        : isFailureState
+            ? 'bg-red-100'
+            : isWarningState
+                ? 'bg-amber-100'
+                : 'bg-emerald-100'
+    const iconClassName = typedOrder
+        ? 'text-emerald-600'
+        : isFailureState
+            ? 'text-red-600'
+            : isWarningState
+                ? 'text-amber-600'
+                : 'text-emerald-600'
 
     return (
         <div className="container mx-auto px-4 py-20 min-h-[70vh] flex flex-col items-center justify-center">
             <div className="max-w-lg w-full bg-card p-8 rounded-3xl border border-border text-center space-y-6 shadow-sm">
-                <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle className="w-10 h-10 text-emerald-600" />
+                <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 ${iconWrapperClassName}`}>
+                    <Icon className={`w-10 h-10 ${iconClassName}`} />
                 </div>
 
-                <h1 className="text-3xl font-bold tracking-tight text-foreground">
-                    {typedOrder ? 'Pedido confirmado!' : 'Pagamento recebido'}
-                </h1>
+                <h1 className="text-3xl font-bold tracking-tight text-foreground">{title}</h1>
 
-                <p className="text-muted-foreground">
-                    {typedOrder
-                        ? 'Seu pagamento foi confirmado e o pedido ja esta salvo na sua conta.'
-                        : 'Aguardando a confirmacao final do webhook da AbacatePay. Esta pagina atualiza sozinha em alguns segundos.'}
-                </p>
+                <p className="text-muted-foreground">{description}</p>
 
                 <div className="bg-muted/40 rounded-xl p-4 text-left space-y-3 border">
                     <h3 className="font-semibold text-sm text-foreground">Resumo da compra</h3>
@@ -171,6 +209,12 @@ export default async function SucessoPage({
                                 <Package className="w-5 h-5" /> Ver meus pedidos
                             </Button>
                         </Link>
+                    ) : isFailureState ? (
+                        <Link href="/carrinho">
+                            <Button className="w-full h-12 bg-foreground hover:bg-foreground/90 text-background rounded-xl font-medium gap-2">
+                                <ShoppingBag className="w-5 h-5" /> Voltar ao carrinho
+                            </Button>
+                        </Link>
                     ) : (
                         <Button disabled className="w-full h-12 rounded-xl font-medium gap-2">
                             <Package className="w-5 h-5" /> Aguardando confirmacao
@@ -194,7 +238,7 @@ export default async function SucessoPage({
             </div>
 
             <PaymentStatusPoll enabled={shouldPoll} />
-            <ClearCartOnSuccess />
+            <ClearCartOnSuccess enabled={canClearCart} />
         </div>
     )
 }

@@ -3,14 +3,18 @@
 import { useEffect } from 'react'
 import { useCartStore } from '@/store/useCartStore'
 
-export function ClearCartOnSuccess() {
+type ClearCartOnSuccessProps = {
+    enabled: boolean
+}
+
+export function ClearCartOnSuccess({ enabled }: ClearCartOnSuccessProps) {
     const { clearCart, items } = useCartStore()
 
     useEffect(() => {
-        if (items.length > 0) {
+        if (enabled && items.length > 0) {
             clearCart()
         }
-    }, [clearCart, items])
+    }, [clearCart, enabled, items])
 
     return null
 }

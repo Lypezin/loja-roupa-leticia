@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LS Store Vendas Online
 
-## Getting Started
+E-commerce em Next.js com Supabase no backend e checkout hospedado pela AbacatePay.
 
-First, run the development server:
+## Stack principal
+
+- Next.js App Router
+- Supabase para auth, banco e storage
+- AbacatePay para checkout hospedado e webhooks
+- Tailwind CSS + componentes customizados
+
+## Setup local
+
+1. Instale as dependencias:
+
+```bash
+npm ci
+```
+
+2. Copie `.env.example` para `.env.local` e preencha:
+
+```bash
+NEXT_PUBLIC_SITE_URL=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+ABACATEPAY_API_KEY=
+ABACATEPAY_WEBHOOK_SECRET=
+ABACATEPAY_HMAC_PUBLIC_KEY=
+ABACATEPAY_PAYMENT_METHODS=PIX,CARD
+```
+
+3. Rode o projeto:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Pagamentos
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+O checkout do storefront cria uma `payment_attempt` confiavel no Supabase, gera a cobranca na AbacatePay e aguarda a confirmacao do webhook para transformar a tentativa em pedido real.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Endpoint de webhook
 
-## Learn More
+Use este endpoint na AbacatePay:
 
-To learn more about Next.js, take a look at the following resources:
+```text
+https://SEU-DOMINIO/api/webhooks/abacatepay?webhookSecret=SEU_SEGREDO
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Requisitos:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `ABACATEPAY_WEBHOOK_SECRET` deve bater com o `webhookSecret` enviado na URL
+- `ABACATEPAY_HMAC_PUBLIC_KEY` valida o header `X-Webhook-Signature`
+- o servidor precisa de `SUPABASE_SERVICE_ROLE_KEY` para finalizar pedidos com a RPC `finalize_payment_order`
 
-## Deploy on Vercel
+### Metodos de pagamento
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `PIX` e `CARD` sao suportados no codigo
+- se sua conta ainda nao tiver cartao liberado, configure `ABACATEPAY_PAYMENT_METHODS=PIX`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Banco e migrations
+
+As migrations oficiais ficam em `supabase/migrations`.
+
+Arquivos SQL em `src/sql/` servem como referencia operacional. O arquivo `src/sql/create_pedidos.sql` foi mantido apenas como historico neutro e nao deve mais ser executado.
+
+## Validacoes uteis
+
+```bash
+npx tsc --noEmit
+npx eslint src/app/api/webhooks/abacatepay/route.ts src/app/(storefront)/sucesso/page.tsx src/app/(storefront)/sucesso/ClearCart.tsx
+npm run build
+```

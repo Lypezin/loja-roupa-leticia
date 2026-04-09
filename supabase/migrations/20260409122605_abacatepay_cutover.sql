@@ -1,3 +1,6 @@
+-- Register the AbacatePay checkout cutover as an official migration and
+-- restrict the finalization function to service_role only.
+
 ALTER TABLE public.orders
     ALTER COLUMN stripe_session_id DROP NOT NULL;
 
