@@ -2,6 +2,7 @@ CREATE OR REPLACE FUNCTION public.jsonb_text_array_to_csv(p_value JSONB)
 RETURNS TEXT
 LANGUAGE sql
 IMMUTABLE
+SET search_path = public
 AS $$
     SELECT NULLIF(string_agg(value, ', ' ORDER BY ordinality), '')
     FROM jsonb_array_elements_text(
@@ -15,6 +16,7 @@ $$;
 CREATE OR REPLACE FUNCTION public.normalize_abacatepay_attempt_metadata()
 RETURNS trigger
 LANGUAGE plpgsql
+SET search_path = public
 AS $$
 DECLARE
     v_data JSONB := CASE WHEN jsonb_typeof(NEW.raw_response) = 'object' THEN COALESCE(NEW.raw_response -> 'data', '{}'::jsonb) ELSE '{}'::jsonb END;
@@ -85,6 +87,7 @@ $$;
 CREATE OR REPLACE FUNCTION public.sync_abacatepay_order_metadata()
 RETURNS trigger
 LANGUAGE plpgsql
+SET search_path = public
 AS $$
 DECLARE
     v_data JSONB := CASE WHEN jsonb_typeof(NEW.raw_response) = 'object' THEN COALESCE(NEW.raw_response -> 'data', '{}'::jsonb) ELSE '{}'::jsonb END;

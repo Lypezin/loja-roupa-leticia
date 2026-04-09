@@ -25,16 +25,20 @@
 - Testar upload por admin.
 - Testar bloqueio de upload, update e delete para usuario autenticado comum.
 
-## Stripe
+## AbacatePay
 
-- Confirmar `STRIPE_SECRET_KEY` e `STRIPE_WEBHOOK_SECRET` no ambiente server-side.
-- Conferir no dashboard Stripe que o endpoint de webhook aponta para a URL oficial da aplicacao.
-- Garantir assinatura ativa para eventos:
-  - `checkout.session.completed`
-  - `checkout.session.async_payment_succeeded`
-  - `checkout.session.async_payment_failed`
-  - `charge.refunded`
-- Executar replay controlado de webhook e confirmar idempotencia por `stripe_session_id`.
+- Confirmar `ABACATEPAY_API_KEY`, `ABACATEPAY_WEBHOOK_SECRET` e `ABACATEPAY_HMAC_PUBLIC_KEY` no ambiente server-side.
+- Conferir no dashboard AbacatePay que o webhook aponta para `https://SEU-DOMINIO/api/webhooks/abacatepay?webhookSecret=SEU_SEGREDO`.
+- Garantir que o evento `billing.paid` esteja ativo no webhook principal.
+- Se a conta emitir eventos adicionais, validar tambem:
+  - `billing.disputed`
+  - `billing.failed`
+  - `billing.cancelled`
+- Executar replay controlado do webhook e confirmar:
+  - atualizacao de `payment_attempts`
+  - criacao/atualizacao de `orders`
+  - criacao de `order_items`
+  - baixa de estoque
 
 ## Deploy e secrets
 

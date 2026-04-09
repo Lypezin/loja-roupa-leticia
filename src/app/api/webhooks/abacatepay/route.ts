@@ -137,7 +137,7 @@ async function markAttemptStatus(attemptId: string, values: Record<string, Json 
 async function markOrderStatus(
     externalId: string | null,
     checkoutId: string | null,
-    status: 'refunded' | 'cancelled',
+    status: 'refunded' | 'cancelled' | 'disputed',
     paymentRawStatus: string | null,
     receiptUrl: string | null
 ) {
@@ -257,7 +257,7 @@ async function handleDisputedEvent(details: PaymentEventDetails) {
         })
     }
 
-    await markOrderStatus(details.externalId, details.checkoutId, 'cancelled', details.status, details.receiptUrl)
+    await markOrderStatus(details.externalId, details.checkoutId, 'disputed', details.status, details.receiptUrl)
     return NextResponse.json({ received: true, action: 'disputed' }, { status: 200 })
 }
 

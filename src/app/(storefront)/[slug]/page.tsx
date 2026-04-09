@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { createClient } from "@/lib/supabase/server"
 import { FilterSort } from "@/components/store/FilterSort"
 import { ProductCard, type Product } from "@/components/store/ProductCard"
@@ -6,6 +7,33 @@ import { notFound } from "next/navigation"
 
 export const revalidate = 60
 const PRODUCTS_PER_PAGE = 12
+
+async function getCategoryBySlug(slug: string) {
+    const supabase = await createClient()
+    const { data } = await supabase
+        .from("categories")
+        .select("id, name")
+        .eq("slug", slug)
+        .maybeSingle()
+
+    return data
+}
+
+export async function generateMetadata(props: {
+    params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+    const { slug } = await props.params
+    const category = await getCategoryBySlug(slug)
+
+    if (!category) {
+        notFound()
+    }
+
+    return {
+        title: category.name,
+        description: `Modelos organizados em ${category.name} para comparar imagem, preço e disponibilidade com mais rapidez.`,
+    }
+}
 
 export default async function CategoryPage(props: {
     params: Promise<{ slug: string }>
@@ -18,17 +46,13 @@ export default async function CategoryPage(props: {
     const currentPage = Math.max(1, Number.parseInt(searchParams.page || "1", 10) || 1)
     const from = (currentPage - 1) * PRODUCTS_PER_PAGE
     const to = from + PRODUCTS_PER_PAGE - 1
-    const supabase = await createClient()
-
-    const { data: category } = await supabase
-        .from("categories")
-        .select("id, name")
-        .eq("slug", slug)
-        .single()
+    const category = await getCategoryBySlug(slug)
 
     if (!category) {
         notFound()
     }
+
+    const supabase = await createClient()
 
     let query = supabase
         .from("products")

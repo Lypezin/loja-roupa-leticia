@@ -16,6 +16,13 @@ const stepLabels: Record<string, string> = {
 const statusBadge: Record<string, string> = {
     cancelled: 'Cancelado',
     refunded: 'Reembolsado',
+    disputed: 'Em disputa',
+}
+
+const statusBadgeColor: Record<string, string> = {
+    cancelled: 'bg-red-100 text-red-700',
+    refunded: 'bg-stone-200 text-stone-700',
+    disputed: 'bg-amber-100 text-amber-700',
 }
 
 const stepIcons = [CreditCard, Package, Truck, CheckCircle]
@@ -54,7 +61,7 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
     }
 
     const currentStepIndex = statusSteps.indexOf(order.status)
-    const terminalStatus = order.status === 'cancelled' || order.status === 'refunded' ? order.status : null
+    const terminalStatus = order.status === 'cancelled' || order.status === 'refunded' || order.status === 'disputed' ? order.status : null
     const orderItems = (order.order_items || []) as OrderItem[]
 
     const address = order.shipping_address && typeof order.shipping_address === 'object' && !Array.isArray(order.shipping_address)
@@ -88,7 +95,7 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
                             </p>
                         </div>
                         {terminalStatus && (
-                            <span className="rounded-full bg-red-100 px-4 py-2 text-xs font-medium text-red-700">
+                            <span className={`rounded-full px-4 py-2 text-xs font-medium ${statusBadgeColor[terminalStatus] || 'bg-muted text-foreground'}`}>
                                 {statusBadge[terminalStatus] || terminalStatus}
                             </span>
                         )}

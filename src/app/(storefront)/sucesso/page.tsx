@@ -122,8 +122,9 @@ export default async function SucessoPage({
     const receiptUrl = typedOrder?.payment_receipt_url || typedAttempt?.receipt_url || null
     const paymentMethod = typedOrder?.payment_method || typedAttempt?.payment_method
     const orderItems = typedOrder?.order_items || []
+    const hasConfirmedOrder = Boolean(typedOrder) && !isFailureState && !isWarningState
     const canClearCart = Boolean(typedOrder)
-    const title = typedOrder
+    const title = hasConfirmedOrder
         ? 'Pedido confirmado!'
         : isFailureState
             ? 'Pagamento nao concluido'
@@ -132,7 +133,7 @@ export default async function SucessoPage({
                 : currentStatus === 'disputed'
                     ? 'Pagamento em analise'
                     : 'Pagamento recebido'
-    const description = typedOrder
+    const description = hasConfirmedOrder
         ? 'Seu pagamento foi confirmado e o pedido ja esta salvo na sua conta.'
         : isFailureState
             ? 'Nao conseguimos confirmar este pagamento. Voce pode voltar ao carrinho e tentar novamente.'
@@ -141,15 +142,15 @@ export default async function SucessoPage({
                 : currentStatus === 'disputed'
                     ? 'Recebemos uma sinalizacao sobre este pagamento e o pedido foi pausado para analise.'
                     : 'Aguardando a confirmacao final do webhook da AbacatePay. Esta pagina atualiza sozinha em alguns segundos.'
-    const Icon = typedOrder ? CheckCircle : isFailureState ? XCircle : isWarningState ? AlertTriangle : CheckCircle
-    const iconWrapperClassName = typedOrder
+    const Icon = hasConfirmedOrder ? CheckCircle : isFailureState ? XCircle : isWarningState ? AlertTriangle : CheckCircle
+    const iconWrapperClassName = hasConfirmedOrder
         ? 'bg-emerald-100'
         : isFailureState
             ? 'bg-red-100'
             : isWarningState
                 ? 'bg-amber-100'
                 : 'bg-emerald-100'
-    const iconClassName = typedOrder
+    const iconClassName = hasConfirmedOrder
         ? 'text-emerald-600'
         : isFailureState
             ? 'text-red-600'

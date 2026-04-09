@@ -35,9 +35,11 @@ export async function generateMetadata({
         .from("products")
         .select("name, description, product_images(image_url, is_primary)")
         .eq("id", id)
-        .single()
+        .maybeSingle()
 
-    if (!product) return {}
+    if (!product) {
+        notFound()
+    }
 
     const images = (product.product_images || []) as ProductImage[]
     const description = product.description || "Veja detalhes, variações disponíveis e informações desta peça."
@@ -71,7 +73,7 @@ export default async function ProductPage({
             images:product_images(image_url, is_primary)
         `)
         .eq("id", id)
-        .single()
+        .maybeSingle()
 
     if (!product) {
         notFound()

@@ -102,6 +102,7 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                                         <SelectItem value="processing">Processando</SelectItem>
                                         <SelectItem value="shipped">Enviado</SelectItem>
                                         <SelectItem value="delivered">Entregue</SelectItem>
+                                        <SelectItem value="disputed">Em disputa</SelectItem>
                                         <SelectItem value="cancelled">Cancelado</SelectItem>
                                         <SelectItem value="refunded">Reembolsado</SelectItem>
                                     </SelectContent>

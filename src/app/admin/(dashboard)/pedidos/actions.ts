@@ -91,6 +91,7 @@ export async function getAdminStats() {
             .select('total_amount')
             .gte('created_at', firstDayOfMonth)
             .neq('status', 'cancelled')
+            .neq('status', 'disputed')
             .neq('status', 'refunded')
 
         const totalSales = monthOrders?.reduce((sum, order) => sum + Number(order.total_amount), 0) || 0
