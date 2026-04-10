@@ -42,6 +42,10 @@ export function Header({
                     <div className="flex items-center gap-3 md:gap-4">
                         <button
                             onClick={() => setMobileMenu(true)}
+                            aria-label="Abrir menu"
+                            aria-controls="store-mobile-menu"
+                            aria-expanded={mobileMenu}
+                            aria-haspopup="dialog"
                             className="rounded-full border border-border bg-card p-2.5 text-foreground transition-colors hover:bg-accent lg:hidden"
                         >
                             <Menu className="h-5 w-5" />

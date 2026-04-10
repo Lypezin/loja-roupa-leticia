@@ -1,10 +1,10 @@
-import { Metadata } from "next"
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight, RefreshCcw, ShieldCheck, Truck } from "lucide-react"
-import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import { AddToCart } from "@/components/store/AddToCart"
 import { ProductGallery } from "@/components/store/ProductGallery"
+import { createPublicClient } from "@/lib/supabase/public"
 
 type ProductImage = {
     image_url: string
@@ -29,7 +29,7 @@ export async function generateMetadata({
     params: Promise<{ id: string }>
 }): Promise<Metadata> {
     const { id } = await params
-    const supabase = await createClient()
+    const supabase = createPublicClient()
 
     const { data: product } = await supabase
         .from("products")
@@ -62,7 +62,7 @@ export default async function ProductPage({
     params: Promise<{ id: string }>
 }) {
     const { id } = await params
-    const supabase = await createClient()
+    const supabase = createPublicClient()
 
     const { data: product } = await supabase
         .from("products")
@@ -89,12 +89,12 @@ export default async function ProductPage({
 
     const formattedPrice = new Intl.NumberFormat("pt-BR", {
         style: "currency",
-        currency: "BRL"
+        currency: "BRL",
     }).format(product.base_price)
 
     const installmentPrice = new Intl.NumberFormat("pt-BR", {
         style: "currency",
-        currency: "BRL"
+        currency: "BRL",
     }).format(product.base_price / 3)
 
     const highlights = [
@@ -116,7 +116,7 @@ export default async function ProductPage({
             </nav>
 
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
-                <ProductGallery images={images} />
+                <ProductGallery images={images} productName={product.name} />
 
                 <div className="flex flex-col py-2">
                     <span className="eyebrow">{category.name || "produto"}</span>

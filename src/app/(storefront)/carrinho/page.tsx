@@ -1,8 +1,9 @@
 'use client'
 
-import { useSyncExternalStore } from "react"
 import Link from "next/link"
 import { ArrowLeft, ShoppingBag } from "lucide-react"
+import { useSyncExternalStore } from "react"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/client"
 import { useCartStore } from "@/store/useCartStore"
@@ -22,10 +23,14 @@ export default function CarrinhoPage() {
         const supabase = createClient()
         const { data: settings } = await supabase.from("store_settings").select("whatsapp_number, store_name").single()
 
-        const phone = settings?.whatsapp_number || "5500000000000"
-        const cleanPhone = phone.replace(/\D/g, "")
+        const cleanPhone = settings?.whatsapp_number?.replace(/\D/g, "") || ""
 
-        let message = `*Novo Pedido - ${settings?.store_name || "Loja"}*\n\n`
+        if (cleanPhone.length < 10) {
+            toast.error("O WhatsApp da loja ainda não está configurado.")
+            return
+        }
+
+        let message = `*Novo pedido - ${settings?.store_name || "Loja"}*\n\n`
         message += "Olá! Gostaria de finalizar a compra dos seguintes itens:\n\n"
 
         items.forEach((item, index) => {
@@ -40,7 +45,7 @@ export default function CarrinhoPage() {
 
         const encodedMessage = encodeURIComponent(message)
         const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodedMessage}`
-        window.open(whatsappUrl, "_blank")
+        window.open(whatsappUrl, "_blank", "noopener,noreferrer")
     }
 
     if (!mounted) {

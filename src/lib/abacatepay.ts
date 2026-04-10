@@ -1,10 +1,8 @@
-import { createHmac, timingSafeEqual } from 'node:crypto'
+import { createHmac, timingSafeEqual } from "node:crypto"
 
-const ABACATEPAY_API_BASE_URL = 'https://api.abacatepay.com/v1'
+const ABACATEPAY_API_BASE_URL = "https://api.abacatepay.com/v1"
 
-export const DEFAULT_ABACATEPAY_HMAC_PUBLIC_KEY = 't9dXRhHHo3yDEj5pVDYz0frf7q6bMKyMRmxxCPIPp3RCplBfXRxqlC6ZpiWmOqj4L63qEaeUOtrCI8P0VMUgo6iIga2ri9ogaHFs0WIIywSMg0q7RmBfybe1E5XJcfC4IW3alNqym0tXoAKkzvfEjZxV6bE0oG2zJrNNYmUCKZyV0KZ3JS8Votf9EAWWYdiDkMkpbMdPggfh1EqHlVkMiTady6jOR3hyzGEHrIz2Ret0xHKMbiqkr9HS1JhNHDX9'
-
-export type AbacatePayMethod = 'PIX' | 'CARD'
+export type AbacatePayMethod = "PIX" | "CARD"
 
 type AbacatePayApiResponse<T> = {
     success: boolean
@@ -28,7 +26,7 @@ export type AbacatePayBillingProduct = {
 }
 
 type CreateBillingPayload = {
-    frequency: 'ONE_TIME'
+    frequency: "ONE_TIME"
     methods: AbacatePayMethod[]
     products: AbacatePayBillingProduct[]
     returnUrl: string
@@ -54,7 +52,7 @@ function getAbacatePayApiKey() {
     const apiKey = process.env.ABACATEPAY_API_KEY?.trim()
 
     if (!apiKey) {
-        throw new Error('ABACATEPAY_API_KEY ausente.')
+        throw new Error("ABACATEPAY_API_KEY ausente.")
     }
 
     return apiKey
@@ -64,16 +62,16 @@ export function getAbacatePayMethods() {
     const configuredMethods = process.env.ABACATEPAY_PAYMENT_METHODS?.trim()
 
     if (!configuredMethods) {
-        return ['PIX', 'CARD'] satisfies AbacatePayMethod[]
+        return ["PIX", "CARD"] satisfies AbacatePayMethod[]
     }
 
     const methods = configuredMethods
-        .split(',')
+        .split(",")
         .map((method) => method.trim().toUpperCase())
-        .filter((method): method is AbacatePayMethod => method === 'PIX' || method === 'CARD')
+        .filter((method): method is AbacatePayMethod => method === "PIX" || method === "CARD")
 
     if (methods.length === 0) {
-        return ['PIX', 'CARD'] satisfies AbacatePayMethod[]
+        return ["PIX", "CARD"] satisfies AbacatePayMethod[]
     }
 
     return methods
@@ -84,10 +82,10 @@ async function abacatePayRequest<T>(path: string, init: RequestInit) {
         ...init,
         headers: {
             Authorization: `Bearer ${getAbacatePayApiKey()}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             ...(init.headers || {}),
         },
-        cache: 'no-store',
+        cache: "no-store",
     })
 
     const payload = await response.json() as AbacatePayApiResponse<T>
@@ -101,43 +99,48 @@ async function abacatePayRequest<T>(path: string, init: RequestInit) {
 }
 
 export async function createAbacatePayBilling(payload: CreateBillingPayload) {
-    return abacatePayRequest<AbacatePayBilling>('/billing/create', {
-        method: 'POST',
+    return abacatePayRequest<AbacatePayBilling>("/billing/create", {
+        method: "POST",
         body: JSON.stringify(payload),
     })
 }
 
 export function normalizeAbacatePayStatus(status: string | null | undefined) {
     if (!status) {
-        return 'pending'
+        return "pending"
     }
 
     const normalized = status.toLowerCase()
 
-    if (normalized === 'paid' || normalized === 'completed' || normalized === 'complete') {
-        return 'completed'
+    if (normalized === "paid" || normalized === "completed" || normalized === "complete") {
+        return "completed"
     }
 
-    if (normalized === 'refunded') {
-        return 'refunded'
+    if (normalized === "refunded") {
+        return "refunded"
     }
 
-    if (normalized === 'disputed' || normalized === 'chargeback') {
-        return 'disputed'
+    if (normalized === "disputed" || normalized === "chargeback") {
+        return "disputed"
     }
 
-    if (normalized === 'failed' || normalized === 'cancelled') {
-        return 'failed'
+    if (normalized === "failed" || normalized === "cancelled") {
+        return "failed"
     }
 
-    return 'pending'
+    return "pending"
 }
 
 export function verifyAbacatePaySignature(rawBody: string, signatureFromHeader: string) {
-    const publicKey = process.env.ABACATEPAY_HMAC_PUBLIC_KEY?.trim() || DEFAULT_ABACATEPAY_HMAC_PUBLIC_KEY
-    const expectedSignature = createHmac('sha256', publicKey)
-        .update(Buffer.from(rawBody, 'utf8'))
-        .digest('base64')
+    const publicKey = process.env.ABACATEPAY_HMAC_PUBLIC_KEY?.trim()
+
+    if (!publicKey || !signatureFromHeader.trim()) {
+        return false
+    }
+
+    const expectedSignature = createHmac("sha256", publicKey)
+        .update(Buffer.from(rawBody, "utf8"))
+        .digest("base64")
 
     const expectedBuffer = Buffer.from(expectedSignature)
     const receivedBuffer = Buffer.from(signatureFromHeader)

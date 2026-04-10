@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server"
+import { createPublicClient } from "@/lib/supabase/public"
 import { getStoreCategories, getStoreSettings } from "@/lib/storefront"
 import { HeroSection } from "@/components/store/HeroSection"
 import { CategoriesSection } from "@/components/store/CategoriesSection"
@@ -16,7 +16,7 @@ type HomeProduct = {
 }
 
 export default async function StorefrontHome() {
-    const supabase = await createClient()
+    const supabase = createPublicClient()
 
     const [settings, categories, { data: products }] = await Promise.all([
         getStoreSettings(),

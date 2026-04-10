@@ -1,5 +1,5 @@
 import { Search } from "lucide-react"
-import { createClient } from "@/lib/supabase/server"
+import { createPublicClient } from "@/lib/supabase/public"
 import { ProductCard } from "@/components/store/ProductCard"
 import { PaginationControls } from "@/components/store/PaginationControls"
 
@@ -13,18 +13,32 @@ type SearchProduct = {
     images?: { image_url: string; is_primary: boolean | null }[]
 }
 
+export const revalidate = 60
+
+function buildSearchFilter(term: string, categoryIds: string[]) {
+    if (categoryIds.length === 0) {
+        return null
+    }
+
+    const safeTerm = term.replace(/[(),]/g, " ").trim()
+    const encodedCategoryIds = categoryIds.join(",")
+
+    return `name.ilike.%${safeTerm}%,category_id.in.(${encodedCategoryIds})`
+}
+
 export default async function SearchPage({
     searchParams
 }: {
     searchParams: Promise<{ q?: string; page?: string }>
 }) {
     const { q, page } = await searchParams
+    const queryTerm = q?.trim() || ""
     const currentPage = Math.max(1, Number.parseInt(page || "1", 10) || 1)
     const from = (currentPage - 1) * SEARCH_RESULTS_PER_PAGE
     const to = from + SEARCH_RESULTS_PER_PAGE - 1
-    const supabase = await createClient()
+    const supabase = createPublicClient()
 
-    if (!q) {
+    if (!queryTerm) {
         return (
             <div className="page-shell py-20 text-center">
                 <div className="mx-auto max-w-xl">
@@ -33,30 +47,44 @@ export default async function SearchPage({
                     </div>
                     <h1 className="mt-6 font-display text-4xl text-foreground">O que você está procurando?</h1>
                     <p className="mt-3 text-base leading-7 text-muted-foreground">
-                        Use a busca no topo para encontrar peças por nome, linha ou categoria.
+                        Use a busca no topo para encontrar peças por nome ou coleção.
                     </p>
                 </div>
             </div>
         )
     }
 
+    const { data: matchingCategories } = await supabase
+        .from("categories")
+        .select("id")
+        .ilike("name", `%${queryTerm}%`)
+
+    const matchingCategoryIds = (matchingCategories || []).map((category) => category.id)
+    const searchFilter = buildSearchFilter(queryTerm, matchingCategoryIds)
+
+    const productQuery = supabase
+        .from("products")
+        .select(`
+            id, name, base_price,
+            category:categories(name),
+            images:product_images(image_url, is_primary)
+        `)
+        .eq("is_active", true)
+        .order("created_at", { ascending: false })
+        .range(from, to)
+
+    const countQuery = supabase
+        .from("products")
+        .select("id", { count: "exact", head: true })
+        .eq("is_active", true)
+
     const [{ data: products }, { count }] = await Promise.all([
-        supabase
-            .from("products")
-            .select(`
-                id, name, base_price,
-                category:categories(name),
-                images:product_images(image_url, is_primary)
-            `)
-            .ilike("name", `%${q}%`)
-            .eq("is_active", true)
-            .order("created_at", { ascending: false })
-            .range(from, to),
-        supabase
-            .from("products")
-            .select("id", { count: "exact", head: true })
-            .ilike("name", `%${q}%`)
-            .eq("is_active", true),
+        searchFilter
+            ? productQuery.or(searchFilter)
+            : productQuery.ilike("name", `%${queryTerm}%`),
+        searchFilter
+            ? countQuery.or(searchFilter)
+            : countQuery.ilike("name", `%${queryTerm}%`),
     ])
 
     const results = (products || []) as SearchProduct[]
@@ -68,7 +96,7 @@ export default async function SearchPage({
             <div className="paper-panel rounded-[2rem] px-6 py-6 md:px-8">
                 <span className="eyebrow">resultados</span>
                 <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">
-                    Busca por {q}
+                    Busca por {queryTerm}
                 </h1>
                 <p className="mt-3 text-sm text-muted-foreground">
                     Encontramos {totalResults} produto(s).
@@ -87,7 +115,7 @@ export default async function SearchPage({
                         basePath="/search"
                         currentPage={currentPage}
                         totalPages={totalPages}
-                        searchParams={{ q }}
+                        searchParams={{ q: queryTerm }}
                     />
                 </>
             ) : (
@@ -97,7 +125,7 @@ export default async function SearchPage({
                     </div>
                     <h2 className="mt-6 font-display text-3xl text-foreground">Nenhum resultado encontrado</h2>
                     <p className="mt-3 text-base leading-7 text-muted-foreground">
-                        Tente buscar por um termo diferente ou navegue pelas categorias.
+                        Tente buscar por um termo diferente ou navegue pelas coleções.
                     </p>
                 </div>
             )}

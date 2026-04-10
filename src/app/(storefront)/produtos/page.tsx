@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server"
+import { createPublicClient } from "@/lib/supabase/public"
 import { ProductCard } from "@/components/store/ProductCard"
 import { FilterSort } from "@/components/store/FilterSort"
 import { PaginationControls } from "@/components/store/PaginationControls"
@@ -24,7 +24,7 @@ export default async function ProdutosPage({
     const currentPage = Math.max(1, Number.parseInt(params.page || "1", 10) || 1)
     const from = (currentPage - 1) * PRODUCTS_PER_PAGE
     const to = from + PRODUCTS_PER_PAGE - 1
-    const supabase = await createClient()
+    const supabase = createPublicClient()
 
     let query = supabase
         .from("products")

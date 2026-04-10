@@ -4,12 +4,17 @@ import { Search } from "lucide-react"
 
 export function SearchBar() {
     return (
-        <form action="/search" className="relative group">
+        <form action="/search" className="group relative">
+            <label htmlFor="desktop-store-search" className="sr-only">
+                Buscar produtos
+            </label>
             <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
             <input
+                id="desktop-store-search"
                 type="search"
                 name="q"
-                placeholder="Buscar por nome ou categoria"
+                aria-label="Buscar produtos"
+                placeholder="Buscar por nome ou coleção"
                 className="h-11 w-full rounded-full border border-border bg-card pl-11 pr-20 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
             />
             <button

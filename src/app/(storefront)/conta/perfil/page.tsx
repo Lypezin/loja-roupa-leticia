@@ -15,22 +15,22 @@ export default async function PerfilPage({
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
-        redirect('/conta/login')
+        redirect("/conta/login")
     }
 
     const params = await searchParams
     const successMessage = params?.success
     const errorMessage = params?.error
-    const nextPath = params?.next || ''
+    const nextPath = params?.next || ""
     const reason = params?.reason
     const profile = readCustomerProfile(user)
-    const metadata = user.user_metadata && typeof user.user_metadata === 'object'
+    const metadata = user.user_metadata && typeof user.user_metadata === "object"
         ? user.user_metadata as Record<string, string | undefined>
         : {}
-    const warningMessage = reason === 'checkout_profile_required'
-        ? 'Preencha seus dados para continuar com o pagamento na AbacatePay.'
+    const warningMessage = reason === "checkout_profile_required"
+        ? "Preencha seus dados para continuar com o pagamento na AbacatePay."
         : null
-    const email = user.email || ''
+    const email = user.email || ""
 
     return (
         <div className="page-shell py-10 md:py-14">
@@ -43,7 +43,7 @@ export default async function PerfilPage({
                 <div className="paper-panel rounded-[2rem] px-6 py-8 md:px-8">
                     <span className="eyebrow">dados pessoais</span>
                     <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">Editar perfil</h1>
-                    <p className="mt-3 text-sm leading-7 text-muted-foreground">Atualize os dados basicos da sua conta com seguranca.</p>
+                    <p className="mt-3 text-sm leading-7 text-muted-foreground">Atualize os dados básicos da sua conta com segurança.</p>
                 </div>
 
                 {warningMessage && (
@@ -78,7 +78,7 @@ export default async function PerfilPage({
                                     type="text"
                                     id="fullName"
                                     name="fullName"
-                                    defaultValue={profile?.fullName || ''}
+                                    defaultValue={profile?.fullName || ""}
                                     placeholder="Seu nome completo"
                                     required
                                     className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
@@ -94,7 +94,7 @@ export default async function PerfilPage({
                                     type="tel"
                                     id="phone"
                                     name="phone"
-                                    defaultValue={profile?.phone || ''}
+                                    defaultValue={profile?.phone || ""}
                                     placeholder="+55 11 90000-0000"
                                     required
                                     className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
@@ -110,7 +110,7 @@ export default async function PerfilPage({
                                     type="text"
                                     id="cpf"
                                     name="cpf"
-                                    defaultValue={profile?.cpf || ''}
+                                    defaultValue={profile?.cpf || ""}
                                     placeholder="000.000.000-00"
                                     required
                                     className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
@@ -134,14 +134,14 @@ export default async function PerfilPage({
                             <div className="space-y-2 sm:col-span-2">
                                 <label htmlFor="addressLine1" className="flex items-center gap-2 text-sm font-medium text-foreground">
                                     <FileText className="h-4 w-4 text-muted-foreground" />
-                                    Endereco
+                                    Endereço
                                 </label>
                                 <input
                                     type="text"
                                     id="addressLine1"
                                     name="addressLine1"
-                                    defaultValue={profile?.shippingAddress?.line1 || metadata.address_line1 || ''}
-                                    placeholder="Rua, numero e complemento principal"
+                                    defaultValue={profile?.shippingAddress?.line1 || metadata.address_line1 || ""}
+                                    placeholder="Rua, número e complemento principal"
                                     required
                                     className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
                                 />
@@ -156,8 +156,8 @@ export default async function PerfilPage({
                                     type="text"
                                     id="addressLine2"
                                     name="addressLine2"
-                                    defaultValue={profile?.shippingAddress?.line2 || metadata.address_line2 || ''}
-                                    placeholder="Apartamento, bloco, referencia"
+                                    defaultValue={profile?.shippingAddress?.line2 || metadata.address_line2 || ""}
+                                    placeholder="Apartamento, bloco, referência"
                                     className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
                                 />
                             </div>
@@ -171,7 +171,7 @@ export default async function PerfilPage({
                                     type="text"
                                     id="city"
                                     name="city"
-                                    defaultValue={profile?.shippingAddress?.city || metadata.city || ''}
+                                    defaultValue={profile?.shippingAddress?.city || metadata.city || ""}
                                     placeholder="Cidade"
                                     required
                                     className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
@@ -187,7 +187,7 @@ export default async function PerfilPage({
                                     type="text"
                                     id="state"
                                     name="state"
-                                    defaultValue={profile?.shippingAddress?.state || metadata.state || ''}
+                                    defaultValue={profile?.shippingAddress?.state || metadata.state || ""}
                                     placeholder="UF"
                                     required
                                     className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
@@ -203,7 +203,7 @@ export default async function PerfilPage({
                                     type="text"
                                     id="postalCode"
                                     name="postalCode"
-                                    defaultValue={profile?.shippingAddress?.postal_code || metadata.postal_code || ''}
+                                    defaultValue={profile?.shippingAddress?.postal_code || metadata.postal_code || ""}
                                     placeholder="00000-000"
                                     required
                                     className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
@@ -213,7 +213,7 @@ export default async function PerfilPage({
 
                         <div className="pt-4">
                             <Button type="submit" className="rounded-full">
-                                Salvar alteracoes
+                                Salvar alterações
                             </Button>
                         </div>
                     </form>

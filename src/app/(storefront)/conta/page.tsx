@@ -14,12 +14,12 @@ export default async function MinhaContaPage({
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
-        redirect('/conta/login')
+        redirect("/conta/login")
     }
 
     const params = await searchParams
     const successMessage = params?.success
-    const userName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Cliente'
+    const userName = user.user_metadata?.full_name || user.email?.split("@")[0] || "Cliente"
 
     return (
         <div className="page-shell py-10 md:py-14">
@@ -34,7 +34,7 @@ export default async function MinhaContaPage({
                     <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                         <div>
                             <span className="eyebrow">minha conta</span>
-                            <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">Ola, {userName}</h1>
+                            <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">Olá, {userName}</h1>
                             <p className="mt-3 text-sm leading-7 text-muted-foreground">{user.email}</p>
                         </div>
                         <form action={logoutCliente}>
@@ -53,7 +53,7 @@ export default async function MinhaContaPage({
                         </div>
                         <h2 className="mt-5 text-xl font-semibold text-foreground">Meus dados</h2>
                         <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                            Nome, telefone, CPF e endereco para finalizar suas compras.
+                            Nome, telefone, CPF e endereço para finalizar suas compras.
                         </p>
                     </Link>
 
@@ -63,7 +63,7 @@ export default async function MinhaContaPage({
                         </div>
                         <h2 className="mt-5 text-xl font-semibold text-foreground">Meus pedidos</h2>
                         <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                            Acompanhe o historico e o andamento de cada compra.
+                            Acompanhe o histórico e o andamento de cada compra.
                         </p>
                     </Link>
                 </div>

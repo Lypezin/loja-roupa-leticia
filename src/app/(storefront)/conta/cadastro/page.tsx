@@ -16,8 +16,8 @@ function CadastroForm() {
             <div className="w-full max-w-md paper-panel rounded-[2rem] px-6 py-8 md:px-8">
                 <div className="text-center">
                     <span className="eyebrow justify-center">cadastro</span>
-                    <Link href="/" className="mt-5 block font-display text-4xl text-foreground">
-                        FASHION STORE
+                    <Link href="/" className="mt-5 inline-flex text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+                        Voltar para a loja
                     </Link>
                     <h1 className="mt-6 font-display text-4xl text-foreground">Criar conta</h1>
                     <p className="mt-3 text-sm leading-7 text-muted-foreground">
@@ -31,10 +31,17 @@ function CadastroForm() {
                     </div>
                 )}
 
-                <form action={async (formData) => {
-                    setIsLoading(true)
-                    try { await cadastrarCliente(formData) } catch { } finally { setIsLoading(false) }
-                }} className="mt-6 space-y-4">
+                <form
+                    action={async (formData) => {
+                        setIsLoading(true)
+                        try {
+                            await cadastrarCliente(formData)
+                        } catch {
+                            setIsLoading(false)
+                        }
+                    }}
+                    className="mt-6 space-y-4"
+                >
                     <div className="relative">
                         <User className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <input
@@ -62,7 +69,7 @@ function CadastroForm() {
                         <input
                             name="password"
                             type="password"
-                            placeholder="Senha (minimo 6 caracteres)"
+                            placeholder="Senha (mínimo de 6 caracteres)"
                             required
                             minLength={6}
                             className="h-12 w-full rounded-[1rem] border border-border bg-background pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
@@ -83,7 +90,7 @@ function CadastroForm() {
                 </form>
 
                 <p className="mt-8 text-center text-sm text-muted-foreground">
-                    Ja tem uma conta?{" "}
+                    Já tem uma conta?{" "}
                     <Link href="/conta/login" className="font-semibold text-foreground hover:underline">
                         Fazer login
                     </Link>

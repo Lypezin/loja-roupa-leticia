@@ -1,11 +1,10 @@
-import { createClient } from "@/lib/supabase/server"
 import Link from "next/link"
+import { getStoreSettings } from "@/lib/storefront"
 
 export const revalidate = 60
 
 export default async function TermosPage() {
-    const supabase = await createClient()
-    const { data: settings } = await supabase.from('store_settings').select('store_name').single()
+    const settings = await getStoreSettings()
     const storeName = settings?.store_name || 'Fashion Store'
 
     const sections = [

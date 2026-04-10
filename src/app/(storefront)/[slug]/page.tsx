@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { createClient } from "@/lib/supabase/server"
+import { createPublicClient } from "@/lib/supabase/public"
 import { FilterSort } from "@/components/store/FilterSort"
 import { ProductCard, type Product } from "@/components/store/ProductCard"
 import { PaginationControls } from "@/components/store/PaginationControls"
@@ -9,7 +9,7 @@ export const revalidate = 60
 const PRODUCTS_PER_PAGE = 12
 
 async function getCategoryBySlug(slug: string) {
-    const supabase = await createClient()
+    const supabase = createPublicClient()
     const { data } = await supabase
         .from("categories")
         .select("id, name")
@@ -52,7 +52,7 @@ export default async function CategoryPage(props: {
         notFound()
     }
 
-    const supabase = await createClient()
+    const supabase = createPublicClient()
 
     let query = supabase
         .from("products")

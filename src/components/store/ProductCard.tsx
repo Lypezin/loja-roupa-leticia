@@ -38,7 +38,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
                 <ProductCardImage
                     images={images}
                     productName={product.name}
-                    isPriority={index < 4}
+                    isPriority={index < 2}
                     showSecondaryImage={showSecondaryImage}
                 />
 

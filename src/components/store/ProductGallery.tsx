@@ -8,9 +8,10 @@ interface ProductGalleryProps {
         image_url: string
         is_primary?: boolean | null
     }[]
+    productName: string
 }
 
-export function ProductGallery({ images }: ProductGalleryProps) {
+export function ProductGallery({ images, productName }: ProductGalleryProps) {
     const galleryImages = images.length > 0
         ? [...images].sort((a, b) => Number(Boolean(b.is_primary)) - Number(Boolean(a.is_primary)))
         : [{ image_url: "/placeholder-image.jpg", is_primary: true }]
@@ -24,7 +25,9 @@ export function ProductGallery({ images }: ProductGalleryProps) {
                     {galleryImages.map((image, index) => (
                         <button
                             key={`${image.image_url}-${index}`}
+                            type="button"
                             onClick={() => setSelectedIndex(index)}
+                            aria-label={`Ver foto ${index + 1} de ${productName}`}
                             className={`relative h-20 w-16 shrink-0 overflow-hidden rounded-[1rem] border transition-all md:h-24 md:w-20 ${
                                 selectedIndex === index
                                     ? "border-primary shadow-[0_12px_28px_rgba(70,52,35,0.12)]"
@@ -33,7 +36,7 @@ export function ProductGallery({ images }: ProductGalleryProps) {
                         >
                             <Image
                                 src={image.image_url}
-                                alt={`Imagem ${index + 1}`}
+                                alt={`${productName} - foto ${index + 1}`}
                                 fill
                                 className="object-cover"
                                 sizes="(max-width: 768px) 64px, 80px"
@@ -47,7 +50,7 @@ export function ProductGallery({ images }: ProductGalleryProps) {
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem] bg-card">
                     <Image
                         src={galleryImages[selectedIndex]?.image_url || "/placeholder-image.jpg"}
-                        alt="Produto"
+                        alt={productName}
                         fill
                         priority
                         className="object-cover"

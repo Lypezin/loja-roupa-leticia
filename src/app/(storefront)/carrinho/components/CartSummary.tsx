@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { ArrowRight, Loader2, MessageSquare } from "lucide-react"
 import { useState } from "react"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { createCheckoutSession } from "@/app/(storefront)/actions"
 import { useCartStore } from "@/store/useCartStore"
@@ -18,14 +19,17 @@ export function CartSummary({ formattedTotal, installment, handleWhatsAppCheckou
     const [isLoadingCheckout, setIsLoadingCheckout] = useState(false)
 
     const handleHostedCheckout = async () => {
-        if (items.length === 0) return
+        if (items.length === 0) {
+            return
+        }
 
         setIsLoadingCheckout(true)
+
         try {
             const result = await createCheckoutSession(items)
 
             if (result.error) {
-                alert(result.error)
+                toast.error(result.error)
                 setIsLoadingCheckout(false)
                 return
             }
@@ -37,9 +41,13 @@ export function CartSummary({ formattedTotal, installment, handleWhatsAppCheckou
 
             if (result.url) {
                 window.location.href = result.url
+                return
             }
+
+            toast.error("Não foi possível iniciar o pagamento.")
+            setIsLoadingCheckout(false)
         } catch {
-            alert("Falha interna ao redirecionar para pagamentos.")
+            toast.error("Falha interna ao redirecionar para o pagamento.")
             setIsLoadingCheckout(false)
         }
     }
@@ -56,7 +64,7 @@ export function CartSummary({ formattedTotal, installment, handleWhatsAppCheckou
                     </div>
                     <div className="flex justify-between text-muted-foreground">
                         <span>Frete</span>
-                        <span className="font-medium text-emerald-600">Gratis</span>
+                        <span className="font-medium text-emerald-600">Grátis</span>
                     </div>
                     <div className="flex justify-between border-t border-border pt-4 text-lg font-semibold text-card-foreground">
                         <span>Total</span>
@@ -78,7 +86,7 @@ export function CartSummary({ formattedTotal, installment, handleWhatsAppCheckou
                         </>
                     ) : (
                         <>
-                            Pagar com Pix ou Cartao <ArrowRight className="h-4 w-4" />
+                            Pagar com Pix ou cartão <ArrowRight className="h-4 w-4" />
                         </>
                     )}
                 </Button>

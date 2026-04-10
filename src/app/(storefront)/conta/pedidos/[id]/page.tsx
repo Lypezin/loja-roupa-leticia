@@ -1,28 +1,29 @@
-import Link from 'next/link'
-import { ArrowLeft, CheckCircle, CreditCard, Package, Truck } from 'lucide-react'
-import { redirect } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { formatCurrency } from '@/lib/utils'
-import { createClient } from '@/lib/supabase/server'
+import Link from "next/link"
+import { ArrowLeft, CheckCircle, CreditCard, Package, Truck } from "lucide-react"
+import { redirect } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { formatCurrency } from "@/lib/utils"
+import { createClient } from "@/lib/supabase/server"
 
-const statusSteps = ['paid', 'processing', 'shipped', 'delivered']
+const statusSteps = ["paid", "processing", "shipped", "delivered"]
+
 const stepLabels: Record<string, string> = {
-    paid: 'Pago',
-    processing: 'Preparando',
-    shipped: 'Enviado',
-    delivered: 'Entregue',
+    paid: "Pago",
+    processing: "Preparando",
+    shipped: "Enviado",
+    delivered: "Entregue",
 }
 
 const statusBadge: Record<string, string> = {
-    cancelled: 'Cancelado',
-    refunded: 'Reembolsado',
-    disputed: 'Em disputa',
+    cancelled: "Cancelado",
+    refunded: "Reembolsado",
+    disputed: "Em disputa",
 }
 
 const statusBadgeColor: Record<string, string> = {
-    cancelled: 'bg-red-100 text-red-700',
-    refunded: 'bg-stone-200 text-stone-700',
-    disputed: 'bg-amber-100 text-amber-700',
+    cancelled: "bg-red-100 text-red-700",
+    refunded: "bg-stone-200 text-stone-700",
+    disputed: "bg-amber-100 text-amber-700",
 }
 
 const stepIcons = [CreditCard, Package, Truck, CheckCircle]
@@ -39,10 +40,12 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    if (!user) return redirect('/conta/login')
+    if (!user) {
+        return redirect("/conta/login")
+    }
 
     const { data: order } = await supabase
-        .from('orders')
+        .from("orders")
         .select(`
             *,
             order_items (
@@ -52,8 +55,8 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
                 products ( id, name )
             )
         `)
-        .eq('id', id)
-        .eq('user_id', user.id)
+        .eq("id", id)
+        .eq("user_id", user.id)
         .single()
 
     if (!order) {
@@ -61,17 +64,17 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
     }
 
     const currentStepIndex = statusSteps.indexOf(order.status)
-    const terminalStatus = order.status === 'cancelled' || order.status === 'refunded' || order.status === 'disputed' ? order.status : null
+    const terminalStatus = order.status === "cancelled" || order.status === "refunded" || order.status === "disputed" ? order.status : null
     const orderItems = (order.order_items || []) as OrderItem[]
 
-    const address = order.shipping_address && typeof order.shipping_address === 'object' && !Array.isArray(order.shipping_address)
+    const address = order.shipping_address && typeof order.shipping_address === "object" && !Array.isArray(order.shipping_address)
         ? order.shipping_address as Record<string, string | null | undefined>
         : null
 
     const addressStr = address
         ? [address.line1, address.line2, address.city, address.state, address.postal_code, address.country]
             .filter(Boolean)
-            .join(', ')
+            .join(", ")
         : null
 
     return (
@@ -88,14 +91,14 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
                         <div>
                             <span className="eyebrow">pedido</span>
                             <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">
-                                #{order.id.split('-')[0].toUpperCase()}
+                                #{order.id.split("-")[0].toUpperCase()}
                             </h1>
                             <p className="mt-3 text-sm text-muted-foreground">
-                                Realizado em {new Date(order.created_at).toLocaleString('pt-BR')}
+                                Realizado em {new Date(order.created_at).toLocaleString("pt-BR")}
                             </p>
                         </div>
                         {terminalStatus && (
-                            <span className={`rounded-full px-4 py-2 text-xs font-medium ${statusBadgeColor[terminalStatus] || 'bg-muted text-foreground'}`}>
+                            <span className={`rounded-full px-4 py-2 text-xs font-medium ${statusBadgeColor[terminalStatus] || "bg-muted text-foreground"}`}>
                                 {statusBadge[terminalStatus] || terminalStatus}
                             </span>
                         )}
@@ -111,7 +114,7 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
 
                                 return (
                                     <div key={step} className="surface-card-soft rounded-[1.4rem] p-4">
-                                        <div className={`flex h-11 w-11 items-center justify-center rounded-full ${isCompleted ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground'}`}>
+                                        <div className={`flex h-11 w-11 items-center justify-center rounded-full ${isCompleted ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground"}`}>
                                             <Icon className="h-4 w-4" />
                                         </div>
                                         <p className="mt-4 text-sm font-semibold text-foreground">{stepLabels[step]}</p>
@@ -129,7 +132,7 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
                             {orderItems.map((item) => (
                                 <div key={item.id} className="flex items-center justify-between rounded-[1.2rem] border border-border bg-card px-4 py-4">
                                     <div>
-                                        <p className="font-medium text-foreground">{item.products?.name || 'Produto removido'}</p>
+                                        <p className="font-medium text-foreground">{item.products?.name || "Produto removido"}</p>
                                         <p className="mt-1 text-sm text-muted-foreground">Quantidade: {item.quantity}</p>
                                     </div>
                                     <p className="font-semibold text-foreground">{formatCurrency(item.price * item.quantity)}</p>

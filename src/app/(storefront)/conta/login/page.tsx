@@ -15,8 +15,8 @@ function LoginForm() {
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
 
-    const reasonMessage = reason === 'checkout_login_required'
-        ? 'Entre na sua conta para continuar com o pagamento.'
+    const reasonMessage = reason === "checkout_login_required"
+        ? "Entre na sua conta para continuar com o pagamento."
         : null
 
     return (
@@ -24,12 +24,12 @@ function LoginForm() {
             <div className="paper-panel w-full max-w-md rounded-[2rem] px-6 py-8 md:px-8">
                 <div className="text-center">
                     <span className="eyebrow justify-center">acesso</span>
-                    <Link href="/" className="mt-5 block font-display text-4xl text-foreground">
-                        FASHION STORE
+                    <Link href="/" className="mt-5 inline-flex text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+                        Voltar para a loja
                     </Link>
                     <h1 className="mt-6 font-display text-4xl text-foreground">Entrar</h1>
                     <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                        Acompanhe seus pedidos e suas informacoes de conta.
+                        Acompanhe seus pedidos e suas informações de conta.
                     </p>
                 </div>
 
@@ -51,10 +51,17 @@ function LoginForm() {
                     </div>
                 )}
 
-                <form action={async (formData) => {
-                    setIsLoading(true)
-                    try { await loginCliente(formData) } catch { } finally { setIsLoading(false) }
-                }} className="mt-6 space-y-4">
+                <form
+                    action={async (formData) => {
+                        setIsLoading(true)
+                        try {
+                            await loginCliente(formData)
+                        } catch {
+                            setIsLoading(false)
+                        }
+                    }}
+                    className="mt-6 space-y-4"
+                >
                     <input type="hidden" name="next" value={nextPath} />
                     <div className="relative">
                         <Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -79,6 +86,7 @@ function LoginForm() {
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
+                            aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
                             className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
                         >
                             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -99,7 +107,7 @@ function LoginForm() {
                 </form>
 
                 <p className="mt-8 text-center text-sm text-muted-foreground">
-                    Nao tem uma conta?{" "}
+                    Não tem uma conta?{" "}
                     <Link href="/conta/cadastro" className="font-semibold text-foreground hover:underline">
                         Criar conta
                     </Link>

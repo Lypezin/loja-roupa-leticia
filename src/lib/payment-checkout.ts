@@ -1,6 +1,6 @@
+import type { AbacatePayBillingProduct } from "@/lib/abacatepay"
 import { createClient } from "@/lib/supabase/server"
 import { ProductRecord, VariationRecord, ValidatedCheckoutItem } from "@/types/checkout"
-import type { AbacatePayBillingProduct } from "@/lib/abacatepay"
 
 type CheckoutCartItem = {
     product_id: string
@@ -13,22 +13,22 @@ export async function validateCheckoutItems(productIds: string[], variationIds: 
 
     const [{ data: products, error: productError }, { data: variations, error: variationError }] = await Promise.all([
         supabase
-            .from('products')
-            .select('id, name, base_price, is_active')
-            .in('id', productIds)
-            .eq('is_active', true),
+            .from("products")
+            .select("id, name, base_price, is_active")
+            .in("id", productIds)
+            .eq("is_active", true),
         supabase
-            .from('product_variations')
-            .select('id, product_id, size, color, stock_quantity')
-            .in('id', variationIds),
+            .from("product_variations")
+            .select("id, product_id, size, color, stock_quantity")
+            .in("id", variationIds),
     ])
 
     if (productError || !products || products.length !== productIds.length) {
-        throw new Error('Falha ao validar produtos selecionados.')
+        throw new Error("Falha ao validar os produtos selecionados.")
     }
 
     if (variationError || !variations || variations.length !== variationIds.length) {
-        throw new Error('Falha ao validar variacoes do carrinho.')
+        throw new Error("Falha ao validar as variações do carrinho.")
     }
 
     return {
@@ -47,11 +47,11 @@ export function getValidatedItems(
         const variationInfo = variationsById.get(cartItem.variation_id)
 
         if (!productInfo || !productInfo.is_active) {
-            throw new Error('Produto indisponivel para checkout.')
+            throw new Error("Produto indisponível para checkout.")
         }
 
         if (!variationInfo || variationInfo.product_id !== productInfo.id) {
-            throw new Error(`Variacao invalida para o produto ${productInfo.name}.`)
+            throw new Error(`Variação inválida para o produto ${productInfo.name}.`)
         }
 
         if (variationInfo.stock_quantity < cartItem.quantity) {
@@ -72,13 +72,13 @@ export function getValidatedItems(
 
 export function buildAbacatePayProducts(validatedItems: ValidatedCheckoutItem[]): AbacatePayBillingProduct[] {
     return validatedItems.map((item) => {
-        const descriptionParts = [item.color ? `Cor: ${item.color}` : '', item.size ? `Tamanho: ${item.size}` : '']
+        const descriptionParts = [item.color ? `Cor: ${item.color}` : "", item.size ? `Tamanho: ${item.size}` : ""]
             .filter(Boolean)
 
         return {
             externalId: `${item.product_id}:${item.variation_id}`,
             name: item.product_name,
-            description: descriptionParts.join(' | ') || undefined,
+            description: descriptionParts.join(" | ") || undefined,
             quantity: item.quantity,
             price: Math.round(item.unit_price * 100),
         }
