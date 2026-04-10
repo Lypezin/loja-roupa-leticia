@@ -11,9 +11,9 @@ export default async function CategoriasPage() {
     const { data: categories, error } = await supabase
         .from('categories')
         .select(`
-            id, 
-            name, 
-            slug, 
+            id,
+            name,
+            slug,
             image_url,
             created_at,
             products(count)
@@ -24,7 +24,7 @@ export default async function CategoriasPage() {
         console.error(error)
     }
 
-    const formattedCategories = (categories || []).map(cat => ({
+    const formattedCategories = (categories || []).map((cat) => ({
         id: cat.id,
         name: cat.name,
         slug: cat.slug,
@@ -34,10 +34,11 @@ export default async function CategoriasPage() {
 
     return (
         <div className="flex flex-col gap-6">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight">Categorias</h1>
-                <p className="text-muted-foreground">
-                    Crie, edite e organize as categorias da sua loja.
+            <div className="paper-panel rounded-[2rem] px-6 py-6 md:px-8">
+                <span className="eyebrow">organização da vitrine</span>
+                <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">Categorias</h1>
+                <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground">
+                    Crie, edite e organize as coleções da loja. Hoje a navegação conta com {formattedCategories.length} categoria(s) cadastrada(s).
                 </p>
             </div>
 

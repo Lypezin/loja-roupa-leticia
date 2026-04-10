@@ -19,7 +19,7 @@ export default async function AdminLogin({
                         <span className="eyebrow justify-center">admin</span>
                         <h1 className="mt-5 font-display text-4xl text-foreground">Painel da loja</h1>
                         <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                            Entre com suas credenciais para gerenciar catalogo, pedidos e conteudo.
+                            {"Entre com suas credenciais para gerenciar cat\u00e1logo, pedidos e conte\u00fado."}
                         </p>
                     </div>
 

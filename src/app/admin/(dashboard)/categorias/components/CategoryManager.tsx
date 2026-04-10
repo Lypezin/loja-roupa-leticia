@@ -123,13 +123,6 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
 
     return (
         <div className="flex flex-col gap-8">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight text-foreground">Categorias</h1>
-                <p className="mt-1 text-sm text-muted-foreground">
-                    Organize seus produtos em {initialCategories.length} coleção(ões).
-                </p>
-            </div>
-
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
                 <CategoryForm
                     name={name}

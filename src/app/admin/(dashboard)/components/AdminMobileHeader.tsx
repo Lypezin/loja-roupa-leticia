@@ -14,16 +14,21 @@ import { AdminNavLinks, type AdminNavLink } from "@/components/admin/layout/Admi
 
 interface AdminMobileHeaderProps {
     navLinks: AdminNavLink[]
+    summary: {
+        eyebrow: string
+        primary: string
+        secondary: string
+    }
 }
 
-export function AdminMobileHeader({ navLinks }: AdminMobileHeaderProps) {
+export function AdminMobileHeader({ navLinks, summary }: AdminMobileHeaderProps) {
     return (
         <header className="flex h-16 items-center gap-4 border-b border-border bg-background/88 px-4 backdrop-blur-xl lg:hidden">
             <Sheet>
                 <SheetTrigger asChild>
                     <Button variant="outline" size="icon" className="rounded-full">
                         <Menu className="h-5 w-5" />
-                        <span className="sr-only">Menu de navegacao</span>
+                        <span className="sr-only">{"Menu de navega\u00e7\u00e3o"}</span>
                     </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="flex w-72 flex-col border-sidebar-border bg-sidebar text-sidebar-foreground">
@@ -34,8 +39,13 @@ export function AdminMobileHeader({ navLinks }: AdminMobileHeaderProps) {
                         </div>
                         <div>
                             <p className="font-display text-3xl leading-none">Admin</p>
-                            <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-sidebar-foreground/45">operacao</p>
+                            <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-sidebar-foreground/45">{"opera\u00e7\u00e3o"}</p>
                         </div>
+                    </div>
+
+                    <div className="mt-6 rounded-[1.4rem] border border-sidebar-border bg-white/55 p-4">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-sidebar-foreground/45">{summary.eyebrow}</p>
+                        <p className="mt-2 text-sm leading-6 text-sidebar-foreground/76">{summary.primary}</p>
                     </div>
 
                     <nav className="mt-8 flex flex-col gap-1">
@@ -62,7 +72,7 @@ export function AdminMobileHeader({ navLinks }: AdminMobileHeaderProps) {
             </Sheet>
 
             <Link href="/admin" className="flex items-center gap-2">
-                <span className="eyebrow hidden sm:inline-flex">operacao</span>
+                <span className="eyebrow hidden sm:inline-flex">{"opera\u00e7\u00e3o"}</span>
                 <span className="font-display text-3xl leading-none text-foreground">Admin</span>
             </Link>
         </header>

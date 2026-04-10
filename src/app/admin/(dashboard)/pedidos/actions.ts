@@ -54,7 +54,7 @@ export async function updateOrderStatus(orderId: string, status: string) {
     try {
         await requireAdmin()
         if (!isOrderStatus(status)) {
-            throw new Error('Status de pedido invalido.')
+            throw new Error('Status de pedido inválido.')
         }
 
         const supabase = getAdminSupabase('admin-orders.update-status')
@@ -66,7 +66,7 @@ export async function updateOrderStatus(orderId: string, status: string) {
 
         if (error) {
             console.error('Erro DB ao atualizar pedido:', error)
-            throw new Error('Nao foi possivel atualizar o pedido')
+            throw new Error('Não foi possível atualizar o pedido.')
         }
 
         revalidatePath('/admin/pedidos')
@@ -99,7 +99,7 @@ export async function getAdminStats() {
 
         return { totalSales, totalOrders }
     } catch (error: unknown) {
-        console.error('Erro nas estatisticas do painel Admin:', getErrorMessage(error, 'Falha ao carregar estatisticas.'))
+        console.error('Erro nas estatisticas do painel Admin:', getErrorMessage(error, 'Falha ao carregar estatísticas.'))
         return { totalSales: 0, totalOrders: 0 }
     }
 }

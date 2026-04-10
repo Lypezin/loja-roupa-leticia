@@ -25,11 +25,11 @@ export async function saveProduct(formData: FormData) {
         const variations = JSON.parse(formData.get('variations_json') as string)
 
         if (!name?.trim()) {
-            throw new Error('Nome do produto e obrigatorio.')
+            throw new Error('Nome do produto é obrigatório.')
         }
 
         if (!Number.isFinite(base_price) || base_price < 0) {
-            throw new Error('Preco do produto invalido.')
+            throw new Error('Preço do produto inválido.')
         }
 
         let finalId = productId

@@ -7,9 +7,14 @@ import { AdminNavLinks, type AdminNavLink } from "@/components/admin/layout/Admi
 
 interface AdminSidebarProps {
     navLinks: AdminNavLink[]
+    summary: {
+        eyebrow: string
+        primary: string
+        secondary: string
+    }
 }
 
-export function AdminSidebar({ navLinks }: AdminSidebarProps) {
+export function AdminSidebar({ navLinks, summary }: AdminSidebarProps) {
     return (
         <aside className="hidden border-r border-sidebar-border bg-sidebar text-sidebar-foreground lg:flex lg:flex-col">
             <div className="border-b border-sidebar-border px-6 py-6">
@@ -21,14 +26,17 @@ export function AdminSidebar({ navLinks }: AdminSidebarProps) {
                         <Link href="/admin" className="font-display text-3xl leading-none text-sidebar-foreground">
                             Admin
                         </Link>
-                        <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-sidebar-foreground/45">operacao da loja</p>
+                        <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-sidebar-foreground/45">{"opera\u00e7\u00e3o da loja"}</p>
                     </div>
                 </div>
 
                 <div className="mt-6 rounded-[1.4rem] border border-sidebar-border bg-white/55 p-4">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-sidebar-foreground/45">Painel</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-sidebar-foreground/45">{summary.eyebrow}</p>
                     <p className="mt-2 text-sm leading-6 text-sidebar-foreground/76">
-                        Catalogo, pedidos e conteudo num fluxo mais leve e mais claro.
+                        {summary.primary}
+                    </p>
+                    <p className="mt-2 text-xs leading-5 text-sidebar-foreground/58">
+                        {summary.secondary}
                     </p>
                 </div>
             </div>
