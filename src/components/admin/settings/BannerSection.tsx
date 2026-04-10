@@ -32,7 +32,9 @@ export function BannerSection({ settings }: BannerSectionProps) {
         setIsLoading(true)
         try {
             const res = await saveBanner(formData)
-            if (res?.error) throw new Error(res.error)
+            if (res?.error) {
+                throw new Error(res.error)
+            }
             showSuccess(setSuccess)
             toast.success("Banner hero atualizado!")
         } catch (error: unknown) {
@@ -50,46 +52,46 @@ export function BannerSection({ settings }: BannerSectionProps) {
             <SectionHeader
                 icon={ImageIcon}
                 title="Banner hero"
-                description="Ocupa a primeira dobra da loja. Use imagens de alta qualidade e chamadas impactantes."
+                description="Ocupa a primeira dobra da loja. Use imagem forte e texto direto."
             />
 
             <div className="space-y-6">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
                     <div className="space-y-2">
                         <Label htmlFor="hero_badge_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Badge / etiqueta</Label>
-                        <Input id="hero_badge_text" name="hero_badge_text" defaultValue={settings.hero_badge_text || 'Nova Coleção 2025'} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                        <Input id="hero_badge_text" name="hero_badge_text" defaultValue={String(settings.hero_badge_text || 'Novidades da semana')} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="hero_title" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Título principal</Label>
-                        <Input id="hero_title" name="hero_title" defaultValue={settings.hero_title || ''} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                        <Label htmlFor="hero_title" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Titulo principal</Label>
+                        <Input id="hero_title" name="hero_title" defaultValue={String(settings.hero_title || '')} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="hero_subtitle" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Subtítulo</Label>
-                        <Input id="hero_subtitle" name="hero_subtitle" defaultValue={settings.hero_subtitle || ''} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                        <Label htmlFor="hero_subtitle" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Subtitulo</Label>
+                        <Input id="hero_subtitle" name="hero_subtitle" defaultValue={String(settings.hero_subtitle || '')} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="hero_button_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Botão principal</Label>
-                        <Input id="hero_button_text" name="hero_button_text" defaultValue={settings.hero_button_text || ''} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                        <Label htmlFor="hero_button_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Botao principal</Label>
+                        <Input id="hero_button_text" name="hero_button_text" defaultValue={String(settings.hero_button_text || '')} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="hero_secondary_button_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Botão secundário</Label>
-                        <Input id="hero_secondary_button_text" name="hero_secondary_button_text" defaultValue={settings.hero_secondary_button_text || 'Conheça a marca'} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                        <Label htmlFor="hero_secondary_button_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Botao secundario</Label>
+                        <Input id="hero_secondary_button_text" name="hero_secondary_button_text" defaultValue={String(settings.hero_secondary_button_text || 'Sobre a marca')} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
 
                     <div className="space-y-2 border-t border-zinc-50 pt-4 md:col-span-2">
-                        <Label htmlFor="countdown_end" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Término da oferta (cronômetro)</Label>
+                        <Label htmlFor="countdown_end" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Termino da oferta (cronometro)</Label>
                         <Input
                             id="countdown_end"
                             name="countdown_end"
                             type="datetime-local"
-                            defaultValue={settings.countdown_end ? new Date(settings.countdown_end).toISOString().slice(0, 16) : ''}
+                            defaultValue={typeof settings.countdown_end === "string" ? new Date(settings.countdown_end).toISOString().slice(0, 16) : ''}
                             className="h-11 w-full rounded-xl border-zinc-200 focus-visible:ring-zinc-200 md:w-1/2"
                         />
-                        <p className="text-[10px] text-zinc-400">Deixe vazio para desativar o cronômetro na página inicial.</p>
+                        <p className="text-[10px] text-zinc-400">Deixe vazio para desativar o cronometro na pagina inicial.</p>
                     </div>
                 </div>
 
@@ -111,7 +113,7 @@ export function BannerSection({ settings }: BannerSectionProps) {
                                     <ImageIcon className="h-6 w-6 text-zinc-400" />
                                 </div>
                                 <p className="text-sm font-semibold text-zinc-600">Upload de imagem de fundo</p>
-                                <p className="text-xs text-zinc-400">Recomendado: 1920x1080px (alta resolução)</p>
+                                <p className="text-xs text-zinc-400">Recomendado: 1920x1080px</p>
                             </div>
                         )}
                         <input

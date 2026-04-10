@@ -51,7 +51,7 @@ export function Header({
                             <Menu className="h-5 w-5" />
                         </button>
                         <Link href="/" className="min-w-0">
-                            <span className="eyebrow mb-2 hidden md:inline-flex">atelier online</span>
+                            <span className="eyebrow mb-2 hidden md:inline-flex">loja online</span>
                             <span className="block max-w-[150px] truncate font-display text-[1.4rem] leading-none text-foreground sm:max-w-none md:text-[1.8rem]">
                                 {storeName || "FASHION STORE"}
                             </span>

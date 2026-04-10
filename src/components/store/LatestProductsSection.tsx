@@ -22,7 +22,7 @@ export function LatestProductsSection({
 }: LatestProductsSectionProps) {
   return (
     <section className="page-shell py-8 md:py-14">
-      <div className="paper-panel rounded-[2rem] border border-muted/20 bg-paper/30 px-6 py-6 backdrop-blur-sm md:px-8">
+      <div className="paper-panel animate-enter-soft rounded-[2rem] border border-muted/20 bg-paper/30 px-6 py-6 backdrop-blur-sm md:px-8">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <span className="eyebrow">{sectionLabel}</span>
@@ -32,10 +32,10 @@ export function LatestProductsSection({
           </div>
           <div className="max-w-xl">
             <p className="section-lead">
-              Peças novas e reposições em uma grade direta, com imagem limpa, preço visível e leitura mais fácil.
+              Entradas recentes, reposicoes e pecas que voltaram para o estoque.
             </p>
             <Link href="/produtos" className="ink-link mt-4 inline-block font-medium transition-transform hover:translate-x-1">
-              Ver todas as peças -
+              Ver todas as pecas -
             </Link>
           </div>
         </div>
@@ -49,7 +49,7 @@ export function LatestProductsSection({
         </div>
       ) : (
         <div className="mt-8 rounded-3xl bg-surface-muted/10 py-16 text-center text-muted-foreground">
-          Nenhum produto disponível no momento.
+          Nenhum produto disponivel no momento.
         </div>
       )}
     </section>

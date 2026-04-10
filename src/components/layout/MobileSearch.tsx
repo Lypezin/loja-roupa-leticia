@@ -19,7 +19,7 @@ export function MobileSearch({ onClose }: MobileSearchProps) {
                     type="search"
                     name="q"
                     aria-label="Buscar produtos"
-                    placeholder="Buscar por nome ou coleção"
+                    placeholder="Buscar por nome, cor ou categoria"
                     className="h-11 w-full rounded-full border border-border bg-card pl-11 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
                 />
             </div>

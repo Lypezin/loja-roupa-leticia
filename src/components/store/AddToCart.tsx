@@ -30,7 +30,9 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
     } = useVariationSelector(variations)
 
     const handleAddToCart = () => {
-        if (!selectedVariation || selectedVariation.stock_quantity <= 0) return
+        if (!selectedVariation || selectedVariation.stock_quantity <= 0) {
+            return
+        }
 
         addItem({
             id: selectedVariation.id,
@@ -72,11 +74,11 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
                     size="lg"
                     className="h-12 w-full rounded-full text-sm font-semibold uppercase tracking-[0.16em]"
                 >
-                    {added ? "Na sacola" : !selectedVariation ? "Selecione as opções" : selectedVariation.stock_quantity <= 0 ? "Esgotado" : "Adicionar à sacola"}
+                    {added ? "Na sacola" : !selectedVariation ? "Selecione as opcoes" : selectedVariation.stock_quantity <= 0 ? "Esgotado" : "Adicionar a sacola"}
                 </Button>
 
                 <p className="text-center text-xs leading-6 text-muted-foreground">
-                    Frete grátis acima de R$ 300 e troca assistida em até 7 dias.
+                    O frete aparece no carrinho antes do pagamento e o pedido segue com acompanhamento por status.
                 </p>
             </div>
         </div>

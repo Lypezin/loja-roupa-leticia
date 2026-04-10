@@ -41,7 +41,9 @@ export function MobileMenu({ isOpen, onClose, categories, storeName }: MobileMen
         }
     }, [isOpen, onClose])
 
-    if (!isOpen) return null
+    if (!isOpen) {
+        return null
+    }
 
     return (
         <>
@@ -57,12 +59,12 @@ export function MobileMenu({ isOpen, onClose, categories, storeName }: MobileMen
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="store-mobile-menu-title"
-                className="fixed inset-y-0 left-0 z-[60] w-[21rem] max-w-[88vw] overflow-y-auto border-r border-border bg-background px-5 py-5 shadow-[0_24px_60px_rgba(43,32,24,0.18)]"
+                className="animate-slide-in-soft fixed inset-y-0 left-0 z-[60] w-[21rem] max-w-[88vw] overflow-y-auto border-r border-border bg-background px-5 py-5 shadow-[0_24px_60px_rgba(43,32,24,0.18)]"
             >
                 <div className="flex min-h-full flex-col">
                     <div className="mb-8 flex items-center justify-between">
                         <div>
-                            <span className="eyebrow mb-2">navegação</span>
+                            <span className="eyebrow mb-2">menu</span>
                             <p id="store-mobile-menu-title" className="font-display text-[1.45rem] leading-none text-foreground">
                                 {storeName || "FASHION STORE"}
                             </p>
@@ -82,9 +84,9 @@ export function MobileMenu({ isOpen, onClose, categories, storeName }: MobileMen
                     <MobileNav categories={categories} onClose={onClose} />
 
                     <div className="surface-card-soft mt-6 rounded-[1.4rem] p-4">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">atalho rápido</p>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">atalho rapido</p>
                         <p className="mt-2 text-sm leading-6 text-foreground/80">
-                            Use a busca ou abra uma categoria para encontrar a peça com menos rolagem.
+                            Use a busca ou escolha uma categoria para chegar mais rapido ao que voce quer.
                         </p>
                     </div>
                 </div>

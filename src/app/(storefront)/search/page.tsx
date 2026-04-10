@@ -45,9 +45,9 @@ export default async function SearchPage({
                     <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-border bg-card text-muted-foreground">
                         <Search className="h-7 w-7" />
                     </div>
-                    <h1 className="mt-6 font-display text-4xl text-foreground">O que você está procurando?</h1>
+                    <h1 className="mt-6 font-display text-4xl text-foreground">O que voce quer encontrar?</h1>
                     <p className="mt-3 text-base leading-7 text-muted-foreground">
-                        Use a busca no topo para encontrar peças por nome ou coleção.
+                        Use a busca no topo para procurar por nome da peca, cor ou categoria.
                     </p>
                 </div>
             </div>
@@ -123,9 +123,9 @@ export default async function SearchPage({
                     <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-border bg-card text-muted-foreground">
                         <Search className="h-7 w-7" />
                     </div>
-                    <h2 className="mt-6 font-display text-3xl text-foreground">Nenhum resultado encontrado</h2>
+                    <h2 className="mt-6 font-display text-3xl text-foreground">Nada apareceu nessa busca</h2>
                     <p className="mt-3 text-base leading-7 text-muted-foreground">
-                        Tente buscar por um termo diferente ou navegue pelas coleções.
+                        Tente outro nome, cor ou categoria.
                     </p>
                 </div>
             )}

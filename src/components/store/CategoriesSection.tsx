@@ -8,24 +8,26 @@ interface CategoriesSectionProps {
     sectionTitle?: string
 }
 
-export function CategoriesSection({ categories, sectionLabel = "Coleções", sectionTitle = "Explore por categoria" }: CategoriesSectionProps) {
-    if (!categories || categories.length === 0) return null
+export function CategoriesSection({ categories, sectionLabel = "Categorias", sectionTitle = "Escolha por tipo de peca" }: CategoriesSectionProps) {
+    if (!categories || categories.length === 0) {
+        return null
+    }
 
     return (
         <section className="page-shell py-10 md:py-16">
             <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-                <div>
+                <div className="animate-enter-soft">
                     <span className="eyebrow">{sectionLabel}</span>
                     <h2 className="mt-4 font-display text-4xl text-foreground md:text-5xl">{sectionTitle}</h2>
                 </div>
-                <p className="max-w-xl text-sm leading-7 text-muted-foreground md:text-base">
-                    Cada categoria organiza a loja por tipo de peça e deixa a busca mais rápida.
+                <p className="animate-enter-soft animate-enter-delay-1 max-w-xl text-sm leading-7 text-muted-foreground md:text-base">
+                    Comece pelo tipo de peca. Depois a loja mostra so o que faz sentido para aquela busca.
                 </p>
             </div>
 
             <div className="grid gap-5 md:grid-cols-3">
-                {categories.slice(0, 3).map((category) => (
-                    <article key={category.id} className="group surface-card overflow-hidden rounded-[2rem]">
+                {categories.slice(0, 3).map((category, index) => (
+                    <article key={category.id} className={`group surface-card hover-lift-soft animate-enter-soft overflow-hidden rounded-[2rem] ${index === 0 ? "" : index === 1 ? "animate-enter-delay-1" : "animate-enter-delay-2"}`}>
                         <Link href={`/${category.slug}`} className="block">
                             <div className="relative aspect-[4/5] overflow-hidden">
                                 <Image
@@ -41,9 +43,9 @@ export function CategoriesSection({ categories, sectionLabel = "Coleções", sec
                             <div className="relative -mt-16 p-4 md:-mt-20 md:p-5">
                                 <div className="glass rounded-[1.6rem] px-5 py-5">
                                     <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">categoria</p>
-                                    <h3 className="mt-3 font-display text-3xl text-foreground">{category.name}</h3>
+                                    <h3 className="mt-3 font-display text-2xl text-foreground md:text-3xl">{category.name}</h3>
                                     <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                                        Veja modelos do mesmo grupo com imagem limpa e navegação mais simples.
+                                        Veja os modelos desta secao com foto clara, cores disponiveis e compra direta.
                                     </p>
                                 </div>
                             </div>

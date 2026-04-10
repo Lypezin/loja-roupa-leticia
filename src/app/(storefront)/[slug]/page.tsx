@@ -31,7 +31,7 @@ export async function generateMetadata(props: {
 
     return {
         title: category.name,
-        description: `Modelos organizados em ${category.name} para comparar imagem, preço e disponibilidade com mais rapidez.`,
+        description: `Pecas organizadas em ${category.name} para comparar foto, preco e disponibilidade com mais rapidez.`,
     }
 }
 
@@ -80,9 +80,13 @@ export default async function CategoryPage(props: {
         countQuery = countQuery.lte("base_price", parseFloat(maxPrice))
     }
 
-    if (sort === "price-asc") query = query.order("base_price", { ascending: true })
-    else if (sort === "price-desc") query = query.order("base_price", { ascending: false })
-    else query = query.order("created_at", { ascending: false })
+    if (sort === "price-asc") {
+        query = query.order("base_price", { ascending: true })
+    } else if (sort === "price-desc") {
+        query = query.order("base_price", { ascending: false })
+    } else {
+        query = query.order("created_at", { ascending: false })
+    }
 
     const [{ data: products }, { count }] = await Promise.all([
         query.range(from, to),
@@ -95,13 +99,13 @@ export default async function CategoryPage(props: {
 
     return (
         <div className="page-shell py-10 md:py-14">
-            <div className="paper-panel rounded-[2rem] px-6 py-6 md:px-8">
+            <div className="paper-panel animate-enter-soft rounded-[2rem] px-6 py-6 md:px-8">
                 <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                     <div>
                         <span className="eyebrow">categoria</span>
                         <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">{category.name}</h1>
                         <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">
-                            Modelos organizados por tipo de peça para ficar mais rápido comparar imagem, preço e disponibilidade.
+                            Veja somente as pecas desta categoria, com preco, foto e disponibilidade em leitura direta.
                         </p>
                     </div>
                     <div className="w-full md:w-auto">
@@ -127,7 +131,7 @@ export default async function CategoryPage(props: {
                 </>
             ) : (
                 <div className="py-20 text-center text-muted-foreground">
-                    Nenhum produto disponível nesta categoria no momento.
+                    Nenhum produto disponivel nesta categoria no momento.
                 </div>
             )}
         </div>

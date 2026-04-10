@@ -42,7 +42,7 @@ export async function generateMetadata({
     }
 
     const images = (product.product_images || []) as ProductImage[]
-    const description = product.description || "Veja detalhes, variações disponíveis e informações desta peça."
+    const description = product.description || "Veja fotos, variacoes disponiveis e informacoes desta peca."
     const imageUrl = images.find((img) => img.is_primary)?.image_url || images[0]?.image_url
 
     return {
@@ -98,18 +98,18 @@ export default async function ProductPage({
     }).format(product.base_price / 3)
 
     const highlights = [
-        { icon: Truck, title: "Envio nacional", desc: "Entrega com acompanhamento direto." },
-        { icon: RefreshCcw, title: "Troca assistida", desc: "Apoio humano em até 7 dias." },
-        { icon: ShieldCheck, title: "Compra protegida", desc: "Pagamento seguro do início ao fim." },
+        { icon: Truck, title: "Envio com rastreio", desc: "Prazo e valor aparecem antes do pagamento." },
+        { icon: RefreshCcw, title: "Troca em ate 7 dias", desc: "Suporte direto para orientar o pos-compra." },
+        { icon: ShieldCheck, title: "Pagamento protegido", desc: "Checkout seguro do pedido ao recibo." },
     ]
 
     return (
         <div className="page-shell py-8 md:py-12">
             <nav className="mb-8 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
-                <Link href="/" className="transition-colors hover:text-foreground">Início</Link>
+                <Link href="/" className="transition-colors hover:text-foreground">Inicio</Link>
                 <ChevronRight className="h-3.5 w-3.5" />
                 <Link href={categoryHref} className="transition-colors hover:text-foreground">
-                    {category.name || "Catálogo"}
+                    {category.name || "Catalogo"}
                 </Link>
                 <ChevronRight className="h-3.5 w-3.5" />
                 <span className="min-w-0 max-w-full break-words text-foreground">{product.name}</span>
@@ -134,7 +134,7 @@ export default async function ProductPage({
                     </div>
 
                     <p className="mt-6 text-base leading-8 text-muted-foreground">
-                        {product.description || "Confira fotos, opções de tamanho e variações disponíveis antes de adicionar ao carrinho."}
+                        {product.description || "Confira fotos, escolha a variacao ideal e adicione a peca na sacola com o frete calculado no carrinho."}
                     </p>
 
                     <AddToCart
@@ -146,8 +146,8 @@ export default async function ProductPage({
                     />
 
                     <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                        {highlights.map((item) => (
-                            <div key={item.title} className="surface-card-soft rounded-[1.4rem] p-4">
+                        {highlights.map((item, index) => (
+                            <div key={item.title} className={`surface-card-soft hover-lift-soft animate-enter-soft rounded-[1.4rem] p-4 ${index === 0 ? "" : index === 1 ? "animate-enter-delay-1" : "animate-enter-delay-2"}`}>
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
                                     <item.icon className="h-4 w-4" />
                                 </div>

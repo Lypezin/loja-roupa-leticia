@@ -442,11 +442,11 @@ export type Database = {
         }
         Relationships: []
       }
-      store_settings: {
-        Row: {
-          categories_section_label: string | null
-          categories_section_title: string | null
-          countdown_end: string | null
+        store_settings: {
+          Row: {
+            categories_section_label: string | null
+            categories_section_title: string | null
+            countdown_end: string | null
           footer_about_text: string | null
           footer_newsletter_subtitle: string | null
           footer_newsletter_title: string | null
@@ -463,13 +463,21 @@ export type Database = {
           products_section_label: string | null
           products_section_title: string | null
           shipping_origin_zip: string | null
-          store_description: string | null
-          store_name: string
-          support_email: string | null
-          updated_at: string | null
-          whatsapp_number: string | null
-        }
-        Insert: {
+            store_description: string | null
+            store_name: string
+            support_email: string | null
+            trust_banner_1_desc: string | null
+            trust_banner_1_title: string | null
+            trust_banner_2_desc: string | null
+            trust_banner_2_title: string | null
+            trust_banner_3_desc: string | null
+            trust_banner_3_title: string | null
+            trust_banner_4_desc: string | null
+            trust_banner_4_title: string | null
+            updated_at: string | null
+            whatsapp_number: string | null
+          }
+          Insert: {
           categories_section_label?: string | null
           categories_section_title?: string | null
           countdown_end?: string | null
@@ -489,13 +497,21 @@ export type Database = {
           products_section_label?: string | null
           products_section_title?: string | null
           shipping_origin_zip?: string | null
-          store_description?: string | null
-          store_name?: string
-          support_email?: string | null
-          updated_at?: string | null
-          whatsapp_number?: string | null
-        }
-        Update: {
+            store_description?: string | null
+            store_name?: string
+            support_email?: string | null
+            trust_banner_1_desc?: string | null
+            trust_banner_1_title?: string | null
+            trust_banner_2_desc?: string | null
+            trust_banner_2_title?: string | null
+            trust_banner_3_desc?: string | null
+            trust_banner_3_title?: string | null
+            trust_banner_4_desc?: string | null
+            trust_banner_4_title?: string | null
+            updated_at?: string | null
+            whatsapp_number?: string | null
+          }
+          Update: {
           categories_section_label?: string | null
           categories_section_title?: string | null
           countdown_end?: string | null
@@ -515,12 +531,20 @@ export type Database = {
           products_section_label?: string | null
           products_section_title?: string | null
           shipping_origin_zip?: string | null
-          store_description?: string | null
-          store_name?: string
-          support_email?: string | null
-          updated_at?: string | null
-          whatsapp_number?: string | null
-        }
+            store_description?: string | null
+            store_name?: string
+            support_email?: string | null
+            trust_banner_1_desc?: string | null
+            trust_banner_1_title?: string | null
+            trust_banner_2_desc?: string | null
+            trust_banner_2_title?: string | null
+            trust_banner_3_desc?: string | null
+            trust_banner_3_title?: string | null
+            trust_banner_4_desc?: string | null
+            trust_banner_4_title?: string | null
+            updated_at?: string | null
+            whatsapp_number?: string | null
+          }
         Relationships: []
       }
     }

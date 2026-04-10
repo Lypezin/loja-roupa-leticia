@@ -11,7 +11,7 @@ export function HeroBackground({ backgroundUrl, title }: HeroBackgroundProps) {
     const imageSrc = backgroundUrl || FALLBACK_HERO_IMAGE
 
     return (
-        <div className="relative">
+        <div className="animate-enter-soft animate-enter-delay-2 relative">
             <div className="absolute -left-4 top-8 hidden h-32 w-32 rounded-full border border-primary/10 bg-primary/6 blur-3xl lg:block" />
             <div className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-card shadow-[0_26px_60px_rgba(68,48,31,0.12)]">
                 <div className="relative aspect-[4/5] bg-[linear-gradient(180deg,rgba(247,242,236,0.92),rgba(235,225,214,0.92))] md:aspect-[5/6]">
@@ -36,7 +36,7 @@ export function HeroBackground({ backgroundUrl, title }: HeroBackgroundProps) {
                                 alt={title}
                                 fill
                                 priority
-                                className="object-contain object-center"
+                                className="animate-float-slow object-contain object-center"
                                 sizes="(max-width: 1024px) 100vw, 42vw"
                                 quality={90}
                             />
@@ -47,7 +47,7 @@ export function HeroBackground({ backgroundUrl, title }: HeroBackgroundProps) {
                 </div>
 
                 <div className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/82 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-foreground/76 md:left-5 md:top-5">
-                    coleção atual
+                    em destaque
                 </div>
             </div>
         </div>
