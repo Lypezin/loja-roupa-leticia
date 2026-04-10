@@ -3,6 +3,10 @@ export type ProductRecord = {
   name: string
   base_price: number
   is_active: boolean
+  weight_kg: number | null
+  height_cm: number | null
+  width_cm: number | null
+  length_cm: number | null
 }
 
 export type VariationRecord = {
@@ -21,4 +25,8 @@ export type ValidatedCheckoutItem = {
   color: string | null
   unit_price: number
   quantity: number
+  weight_kg: number
+  height_cm: number
+  width_cm: number
+  length_cm: number
 }

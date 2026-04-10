@@ -1,4 +1,5 @@
 import { SettingsForm } from "@/components/admin/SettingsForm"
+import { getMelhorEnvioIntegrationStatus } from "@/lib/melhor-envio"
 import { createClient } from "@/lib/supabase/server"
 
 export const dynamic = "force-dynamic"
@@ -7,11 +8,14 @@ export const revalidate = 0
 export default async function ConfiguracoesPage() {
     const supabase = await createClient()
 
-    const { data: settings } = await supabase
-        .from("store_settings")
-        .select("*")
-        .limit(1)
-        .maybeSingle()
+    const [{ data: settings }, melhorEnvio] = await Promise.all([
+        supabase
+            .from("store_settings")
+            .select("*")
+            .limit(1)
+            .maybeSingle(),
+        getMelhorEnvioIntegrationStatus(),
+    ])
 
     return (
         <div className="flex w-full max-w-6xl flex-col gap-6">
@@ -23,7 +27,7 @@ export default async function ConfiguracoesPage() {
                 </p>
             </div>
 
-            <SettingsForm settings={settings || {}} />
+            <SettingsForm settings={settings || {}} melhorEnvio={melhorEnvio} />
         </div>
     )
 }

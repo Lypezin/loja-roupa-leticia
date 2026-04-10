@@ -13,6 +13,16 @@ function getErrorMessage(error: unknown, fallback: string) {
     return fallback
 }
 
+function parsePositiveDecimal(value: FormDataEntryValue | null, label: string) {
+    const parsedValue = Number.parseFloat(typeof value === "string" ? value : "")
+
+    if (!Number.isFinite(parsedValue) || parsedValue <= 0) {
+        throw new Error(`${label} invalido.`)
+    }
+
+    return parsedValue
+}
+
 export async function saveProduct(formData: FormData) {
     try {
         const supabase = await requireAdmin()
@@ -21,6 +31,10 @@ export async function saveProduct(formData: FormData) {
         const description = formData.get('description') as string
         const base_price = parseFloat(formData.get('base_price') as string)
         const category_id = formData.get('category_id') as string
+        const weight_kg = parsePositiveDecimal(formData.get("weight_kg"), "Peso")
+        const length_cm = parsePositiveDecimal(formData.get("length_cm"), "Comprimento")
+        const width_cm = parsePositiveDecimal(formData.get("width_cm"), "Largura")
+        const height_cm = parsePositiveDecimal(formData.get("height_cm"), "Altura")
         const is_active = formData.get('is_active') === 'true'
         const variations = JSON.parse(formData.get('variations_json') as string)
 
@@ -37,7 +51,7 @@ export async function saveProduct(formData: FormData) {
         if (productId) {
             const { error } = await supabase
                 .from('products')
-                .update({ name, description, base_price, category_id, is_active })
+                .update({ name, description, base_price, category_id, weight_kg, length_cm, width_cm, height_cm, is_active })
                 .eq('id', productId)
 
             if (error) {
@@ -46,7 +60,7 @@ export async function saveProduct(formData: FormData) {
         } else {
             const { data, error } = await supabase
                 .from('products')
-                .insert([{ name, description, base_price, category_id, is_active }])
+                .insert([{ name, description, base_price, category_id, weight_kg, length_cm, width_cm, height_cm, is_active }])
                 .select('id')
                 .single()
 

@@ -7,12 +7,14 @@ import { ContentSection } from "./settings/ContentSection"
 import { FooterSection } from "./settings/FooterSection"
 import { LogisticsSection } from "./settings/LogisticsSection"
 import { ProfileSection } from "./settings/ProfileSection"
+import type { MelhorEnvioIntegrationStatus } from "@/types/shipping"
 
 interface SettingsFormProps {
-    settings: Record<string, string | null>
+    settings: Record<string, string | number | null>
+    melhorEnvio: MelhorEnvioIntegrationStatus
 }
 
-export function SettingsForm({ settings }: SettingsFormProps) {
+export function SettingsForm({ settings, melhorEnvio }: SettingsFormProps) {
     const [activeTab, setActiveTab] = useState("perfil")
 
     if (!settings) {
@@ -38,7 +40,7 @@ export function SettingsForm({ settings }: SettingsFormProps) {
             case "rodape":
                 return <FooterSection settings={settings} />
             case "logistica":
-                return <LogisticsSection settings={settings} />
+                return <LogisticsSection settings={settings} melhorEnvio={melhorEnvio} />
             default:
                 return <ProfileSection settings={settings} />
         }

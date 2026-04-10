@@ -9,11 +9,10 @@ type StatusSummaryProps = {
     isWarningState: boolean
     isExpiredPending: boolean
     hasConfirmedOrder: boolean
-    waitingWebhook: boolean
     checkoutRef: string
 }
 
-export function StatusSummary({ order, attempt, isFailureState, isWarningState, isExpiredPending, hasConfirmedOrder, waitingWebhook, checkoutRef }: StatusSummaryProps) {
+export function StatusSummary({ order, attempt, isFailureState, isWarningState, isExpiredPending, hasConfirmedOrder, checkoutRef }: StatusSummaryProps) {
     const currentStatus = order?.status || attempt?.status || "pending"
     
     // Configurações de UI baseadas no estado

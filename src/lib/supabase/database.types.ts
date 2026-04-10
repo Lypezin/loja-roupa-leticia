@@ -101,7 +101,15 @@ export type Database = {
           payment_raw_status: string | null
           payment_receipt_url: string | null
           payment_transaction_id: string | null
+          shipping_company_name: string | null
           shipping_address: Json | null
+          shipping_cost: number | null
+          shipping_delivery_days: number | null
+          shipping_provider: string | null
+          shipping_provider_cost: number | null
+          shipping_quote_payload: Json | null
+          shipping_service_id: string | null
+          shipping_service_name: string | null
           status: string
           stripe_payment_intent_id: string | null
           stripe_session_id: string | null
@@ -121,7 +129,15 @@ export type Database = {
           payment_raw_status?: string | null
           payment_receipt_url?: string | null
           payment_transaction_id?: string | null
+          shipping_company_name?: string | null
           shipping_address?: Json | null
+          shipping_cost?: number | null
+          shipping_delivery_days?: number | null
+          shipping_provider?: string | null
+          shipping_provider_cost?: number | null
+          shipping_quote_payload?: Json | null
+          shipping_service_id?: string | null
+          shipping_service_name?: string | null
           status?: string
           stripe_payment_intent_id?: string | null
           stripe_session_id?: string | null
@@ -141,7 +157,15 @@ export type Database = {
           payment_raw_status?: string | null
           payment_receipt_url?: string | null
           payment_transaction_id?: string | null
+          shipping_company_name?: string | null
           shipping_address?: Json | null
+          shipping_cost?: number | null
+          shipping_delivery_days?: number | null
+          shipping_provider?: string | null
+          shipping_provider_cost?: number | null
+          shipping_quote_payload?: Json | null
+          shipping_service_id?: string | null
+          shipping_service_name?: string | null
           status?: string
           stripe_payment_intent_id?: string | null
           stripe_session_id?: string | null
@@ -166,7 +190,15 @@ export type Database = {
           provider: string
           raw_response: Json | null
           receipt_url: string | null
+          shipping_company_name: string | null
           shipping_address: Json | null
+          shipping_cost: number | null
+          shipping_delivery_days: number | null
+          shipping_provider: string | null
+          shipping_provider_cost: number | null
+          shipping_quote_payload: Json | null
+          shipping_service_id: string | null
+          shipping_service_name: string | null
           status: string
           total_amount: number
           trusted_items: Json
@@ -187,7 +219,15 @@ export type Database = {
           provider: string
           raw_response?: Json | null
           receipt_url?: string | null
+          shipping_company_name?: string | null
           shipping_address?: Json | null
+          shipping_cost?: number | null
+          shipping_delivery_days?: number | null
+          shipping_provider?: string | null
+          shipping_provider_cost?: number | null
+          shipping_quote_payload?: Json | null
+          shipping_service_id?: string | null
+          shipping_service_name?: string | null
           status?: string
           total_amount: number
           trusted_items: Json
@@ -208,7 +248,15 @@ export type Database = {
           provider?: string
           raw_response?: Json | null
           receipt_url?: string | null
+          shipping_company_name?: string | null
           shipping_address?: Json | null
+          shipping_cost?: number | null
+          shipping_delivery_days?: number | null
+          shipping_provider?: string | null
+          shipping_provider_cost?: number | null
+          shipping_quote_payload?: Json | null
+          shipping_service_id?: string | null
+          shipping_service_name?: string | null
           status?: string
           total_amount?: number
           trusted_items?: Json
@@ -296,33 +344,45 @@ export type Database = {
           category_id: string | null
           created_at: string | null
           description: string | null
+          height_cm: number | null
           id: string
           is_active: boolean | null
+          length_cm: number | null
           name: string
           stripe_price_id: string | null
           stripe_product_id: string | null
+          weight_kg: number | null
+          width_cm: number | null
         }
         Insert: {
           base_price: number
           category_id?: string | null
           created_at?: string | null
           description?: string | null
+          height_cm?: number | null
           id?: string
           is_active?: boolean | null
+          length_cm?: number | null
           name: string
           stripe_price_id?: string | null
           stripe_product_id?: string | null
+          weight_kg?: number | null
+          width_cm?: number | null
         }
         Update: {
           base_price?: number
           category_id?: string | null
           created_at?: string | null
           description?: string | null
+          height_cm?: number | null
           id?: string
           is_active?: boolean | null
+          length_cm?: number | null
           name?: string
           stripe_price_id?: string | null
           stripe_product_id?: string | null
+          weight_kg?: number | null
+          width_cm?: number | null
         }
         Relationships: [
           {
@@ -333,6 +393,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      shipping_integrations: {
+        Row: {
+          access_token: string
+          account_email: string | null
+          account_name: string | null
+          created_at: string
+          environment: string
+          expires_at: string
+          id: string
+          metadata: Json | null
+          provider: string
+          refresh_token: string
+          scope: string | null
+          token_type: string | null
+          updated_at: string
+        }
+        Insert: {
+          access_token: string
+          account_email?: string | null
+          account_name?: string | null
+          created_at?: string
+          environment: string
+          expires_at: string
+          id?: string
+          metadata?: Json | null
+          provider: string
+          refresh_token: string
+          scope?: string | null
+          token_type?: string | null
+          updated_at?: string
+        }
+        Update: {
+          access_token?: string
+          account_email?: string | null
+          account_name?: string | null
+          created_at?: string
+          environment?: string
+          expires_at?: string
+          id?: string
+          metadata?: Json | null
+          provider?: string
+          refresh_token?: string
+          scope?: string | null
+          token_type?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       store_settings: {
         Row: {

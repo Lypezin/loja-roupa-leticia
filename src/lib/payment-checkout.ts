@@ -1,6 +1,7 @@
 import type { AbacatePayBillingProduct } from "@/lib/abacatepay"
 import { createClient } from "@/lib/supabase/server"
 import { ProductRecord, VariationRecord, ValidatedCheckoutItem } from "@/types/checkout"
+import type { CheckoutShippingSelection } from "@/types/shipping"
 
 type CheckoutCartItem = {
     product_id: string
@@ -14,7 +15,7 @@ export async function validateCheckoutItems(productIds: string[], variationIds: 
     const [{ data: products, error: productError }, { data: variations, error: variationError }] = await Promise.all([
         supabase
             .from("products")
-            .select("id, name, base_price, is_active")
+            .select("id, name, base_price, is_active, weight_kg, height_cm, width_cm, length_cm")
             .in("id", productIds)
             .eq("is_active", true),
         supabase
@@ -58,6 +59,15 @@ export function getValidatedItems(
             throw new Error(`Estoque insuficiente para ${productInfo.name}.`)
         }
 
+        const weightKg = productInfo.weight_kg
+        const heightCm = productInfo.height_cm
+        const widthCm = productInfo.width_cm
+        const lengthCm = productInfo.length_cm
+
+        if (!weightKg || !heightCm || !widthCm || !lengthCm) {
+            throw new Error(`O produto ${productInfo.name} ainda nao possui peso e dimensoes configurados.`)
+        }
+
         return {
             product_id: productInfo.id,
             product_name: productInfo.name,
@@ -66,6 +76,10 @@ export function getValidatedItems(
             color: variationInfo.color,
             unit_price: productInfo.base_price,
             quantity: cartItem.quantity,
+            weight_kg: weightKg,
+            height_cm: heightCm,
+            width_cm: widthCm,
+            length_cm: lengthCm,
         }
     })
 }
@@ -85,8 +99,30 @@ export function buildAbacatePayProducts(validatedItems: ValidatedCheckoutItem[])
     })
 }
 
-export function calculateCheckoutTotal(validatedItems: ValidatedCheckoutItem[]) {
+export function buildAbacatePayBillingProducts(
+    validatedItems: ValidatedCheckoutItem[],
+    shippingSelection?: CheckoutShippingSelection | null,
+): AbacatePayBillingProduct[] {
+    const products = buildAbacatePayProducts(validatedItems)
+
+    if (!shippingSelection || shippingSelection.cost <= 0) {
+        return products
+    }
+
+    return [
+        ...products,
+        {
+            externalId: `shipping:${shippingSelection.service_id}`,
+            name: `Frete ${shippingSelection.service_name}`,
+            description: `${shippingSelection.company_name} | CEP ${shippingSelection.postal_code}`,
+            quantity: 1,
+            price: Math.round(shippingSelection.cost * 100),
+        },
+    ]
+}
+
+export function calculateCheckoutTotal(validatedItems: ValidatedCheckoutItem[], shippingCost = 0) {
     return Number(
-        validatedItems.reduce((total, item) => total + (item.unit_price * item.quantity), 0).toFixed(2)
+        (validatedItems.reduce((total, item) => total + (item.unit_price * item.quantity), 0) + shippingCost).toFixed(2)
     )
 }

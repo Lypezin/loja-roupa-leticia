@@ -35,6 +35,8 @@ type OrderItem = {
     products?: { id?: string | null; name?: string | null } | null
 }
 
+type OrderAddress = Record<string, string | null | undefined>
+
 export default async function DetalhesPedidoPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const supabase = await createClient()
@@ -66,9 +68,13 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
     const currentStepIndex = statusSteps.indexOf(order.status)
     const terminalStatus = order.status === "cancelled" || order.status === "refunded" || order.status === "disputed" ? order.status : null
     const orderItems = (order.order_items || []) as OrderItem[]
+    const itemsSubtotal = orderItems.reduce((total, item) => total + (item.price * item.quantity), 0)
+    const shippingAmount = typeof order.shipping_cost === "number"
+        ? order.shipping_cost
+        : Math.max(Number((order.total_amount - itemsSubtotal).toFixed(2)), 0)
 
     const address = order.shipping_address && typeof order.shipping_address === "object" && !Array.isArray(order.shipping_address)
-        ? order.shipping_address as Record<string, string | null | undefined>
+        ? order.shipping_address as OrderAddress
         : null
 
     const addressStr = address
@@ -147,7 +153,11 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
                             <div className="mt-6 space-y-3 text-sm">
                                 <div className="flex justify-between text-muted-foreground">
                                     <span>Subtotal</span>
-                                    <span>{formatCurrency(order.total_amount)}</span>
+                                    <span>{formatCurrency(itemsSubtotal)}</span>
+                                </div>
+                                <div className="flex justify-between text-muted-foreground">
+                                    <span>Frete</span>
+                                    <span>{shippingAmount > 0 ? formatCurrency(shippingAmount) : "Gratis"}</span>
                                 </div>
                                 <div className="flex justify-between border-t border-border pt-4 text-lg font-semibold text-foreground">
                                     <span>Total</span>
@@ -159,6 +169,11 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
                         {addressStr && (
                             <div className="surface-card rounded-[1.8rem] p-6">
                                 <h2 className="font-display text-3xl text-foreground">Entrega</h2>
+                                {(order.shipping_company_name || order.shipping_service_name) && (
+                                    <p className="mt-4 text-sm font-medium text-foreground">
+                                        {[order.shipping_company_name, order.shipping_service_name].filter(Boolean).join(" - ")}
+                                    </p>
+                                )}
                                 <p className="mt-4 text-sm leading-7 text-muted-foreground">{addressStr}</p>
                             </div>
                         )}

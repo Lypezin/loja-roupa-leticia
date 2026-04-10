@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
 
 interface ContentSectionProps {
-    settings: Record<string, string | null>
+    settings: Record<string, string | number | null>
 }
 
 export function ContentSection({ settings }: ContentSectionProps) {

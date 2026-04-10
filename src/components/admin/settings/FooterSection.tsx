@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
 
 interface FooterSectionProps {
-    settings: Record<string, string | null>
+    settings: Record<string, string | number | null>
 }
 
 export function FooterSection({ settings }: FooterSectionProps) {

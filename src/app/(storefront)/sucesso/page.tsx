@@ -77,7 +77,6 @@ export default async function SucessoPage({
                     isWarningState={isWarningState}
                     isExpiredPending={isExpiredPending}
                     hasConfirmedOrder={hasConfirmedOrder}
-                    waitingWebhook={waitingWebhook}
                     checkoutRef={checkoutRef}
                 />
 

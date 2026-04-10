@@ -4,16 +4,29 @@ import type { Json } from "@/lib/supabase/database.types"
 import { createAbacatePayBilling, getAbacatePayMethods, normalizeAbacatePayStatus } from "@/lib/abacatepay"
 import { parseCheckoutCartItems } from "@/lib/checkout"
 import { getCheckoutProfile, normalizeBrazilPhone, normalizeCpf } from "@/lib/customer-profile"
-import { calculateCheckoutTotal, buildAbacatePayProducts, getValidatedItems, validateCheckoutItems } from "@/lib/payment-checkout"
+import { calculateCheckoutTotal, buildAbacatePayBillingProducts, getValidatedItems, validateCheckoutItems } from "@/lib/payment-checkout"
 import { getSiteUrl } from "@/lib/site-url"
+import { getShippingChargedAmount, quoteShippingOptionsForCart, resolveCheckoutShippingSelection } from "@/lib/store-shipping"
 import { createServiceRoleClient } from "@/lib/supabase/service-role"
 import { createClient } from "@/lib/supabase/server"
+import type { CheckoutShippingSelection } from "@/types/shipping"
 
 function getCheckoutRedirectPath(path: string) {
     return encodeURIComponent(path)
 }
 
-export async function createCheckoutSession(cartItems: unknown) {
+export async function quoteShippingOptions(cartItems: unknown, destinationPostalCode: string) {
+    try {
+        const options = await quoteShippingOptionsForCart(cartItems, destinationPostalCode)
+        return { options }
+    } catch (error) {
+        return {
+            error: error instanceof Error ? error.message : "Nao foi possivel calcular o frete.",
+        }
+    }
+}
+
+export async function createCheckoutSession(cartItems: unknown, shippingSelection?: CheckoutShippingSelection | null) {
     let externalId: string | null = null
 
     try {
@@ -43,6 +56,14 @@ export async function createCheckoutSession(cartItems: unknown) {
             }
         }
 
+        const shippingAddress = profile.shippingAddress
+
+        if (!shippingAddress) {
+            return {
+                redirectTo: `/conta/perfil?reason=checkout_profile_required&next=${getCheckoutRedirectPath("/carrinho")}`,
+            }
+        }
+
         const origin = getSiteUrl()
         const normalizedCartItems = parseCheckoutCartItems(cartItems)
         const productIds = [...new Set(normalizedCartItems.map((item) => item.product_id))]
@@ -50,7 +71,13 @@ export async function createCheckoutSession(cartItems: unknown) {
 
         const { productsById, variationsById } = await validateCheckoutItems(productIds, variationIds)
         const validatedItems = getValidatedItems(normalizedCartItems, productsById, variationsById)
-        const totalAmount = calculateCheckoutTotal(validatedItems)
+        const selectedShipping = await resolveCheckoutShippingSelection(
+            normalizedCartItems,
+            shippingAddress.postal_code,
+            shippingSelection,
+        )
+        const shippingCost = getShippingChargedAmount(selectedShipping)
+        const totalAmount = calculateCheckoutTotal(validatedItems, shippingCost)
         const paymentMethods = getAbacatePayMethods()
         const serviceRole = createServiceRoleClient("checkout.create-payment-attempt")
 
@@ -68,7 +95,15 @@ export async function createCheckoutSession(cartItems: unknown) {
                 customer_name: profile.fullName,
                 customer_phone: normalizedPhone,
                 customer_tax_id: normalizedCpf,
-                shipping_address: (profile.shippingAddress as Json | null) ?? null,
+                shipping_address: (shippingAddress as Json | null) ?? null,
+                shipping_provider: selectedShipping.provider,
+                shipping_service_id: selectedShipping.service_id,
+                shipping_service_name: selectedShipping.service_name,
+                shipping_company_name: selectedShipping.company_name,
+                shipping_cost: shippingCost,
+                shipping_provider_cost: selectedShipping.provider_cost,
+                shipping_delivery_days: selectedShipping.delivery_days,
+                shipping_quote_payload: (selectedShipping.quote_payload as Json | null) ?? null,
                 status: "creating",
             })
 
@@ -80,7 +115,7 @@ export async function createCheckoutSession(cartItems: unknown) {
             const billing = await createAbacatePayBilling({
                 frequency: "ONE_TIME",
                 methods: paymentMethods,
-                products: buildAbacatePayProducts(validatedItems),
+                products: buildAbacatePayBillingProducts(validatedItems, selectedShipping),
                 returnUrl: `${origin}/carrinho`,
                 completionUrl: `${origin}/sucesso?checkout_ref=${externalId}`,
                 customer: {

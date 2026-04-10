@@ -11,13 +11,15 @@ import { Label } from "@/components/ui/label"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
 
 interface BannerSectionProps {
-    settings: Record<string, string | null>
+    settings: Record<string, string | number | null>
 }
 
 export function BannerSection({ settings }: BannerSectionProps) {
     const [isLoading, setIsLoading] = useState(false)
     const [success, setSuccess] = useState(false)
-    const [imagePreview, setImagePreview] = useState<string | null>(settings.hero_image_url || null)
+    const [imagePreview, setImagePreview] = useState<string | null>(
+        typeof settings.hero_image_url === "string" ? settings.hero_image_url : null
+    )
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]

@@ -1,5 +1,6 @@
 'use server'
 
+import { disconnectMelhorEnvioIntegration } from "@/lib/melhor-envio"
 import { requireAdmin } from "@/lib/supabase/server"
 import { validateImageFile } from "@/lib/uploads"
 import { revalidatePath } from "next/cache"
@@ -185,6 +186,18 @@ export async function saveContent(formData: FormData) {
 
         revalidatePath('/admin/configuracoes')
         revalidatePath('/')
+        return { success: true }
+    } catch (error: unknown) {
+        const err = error as Error
+        return { error: err.message || 'Erro Interno no Servidor.' }
+    }
+}
+
+export async function disconnectMelhorEnvioAccount() {
+    try {
+        await requireAdmin()
+        await disconnectMelhorEnvioIntegration()
+        revalidatePath('/admin/configuracoes')
         return { success: true }
     } catch (error: unknown) {
         const err = error as Error

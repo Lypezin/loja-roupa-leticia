@@ -2,22 +2,47 @@
 
 import Link from "next/link"
 import { ArrowLeft, ShoppingBag } from "lucide-react"
-import { useSyncExternalStore } from "react"
+import { useEffect, useState, useSyncExternalStore } from "react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/client"
+import { normalizePostalCode } from "@/lib/customer-profile"
+import { formatCurrency } from "@/lib/utils"
 import { useCartStore } from "@/store/useCartStore"
 import { CartItem } from "./components/CartItem"
 import { CartSummary } from "./components/CartSummary"
 
 export default function CarrinhoPage() {
-    const { items, removeItem, updateQuantity, totalPrice } = useCartStore()
+    const { items, removeItem, updateQuantity, totalPrice, selectedShipping } = useCartStore()
+    const [defaultPostalCode, setDefaultPostalCode] = useState<string | null>(null)
     const mounted = useSyncExternalStore(
         () => () => undefined,
         () => true,
         () => false,
     )
-    const total = totalPrice()
+    const subtotal = totalPrice()
+    const shippingCost = selectedShipping?.cost ?? 0
+    const total = Number((subtotal + shippingCost).toFixed(2))
+
+    useEffect(() => {
+        const supabase = createClient()
+
+        void supabase.auth.getUser().then(({ data }) => {
+            const metadata = data.user?.user_metadata
+
+            if (!metadata || typeof metadata !== "object") {
+                return
+            }
+
+            const postalCode = typeof metadata.postal_code === "string"
+                ? normalizePostalCode(metadata.postal_code)
+                : null
+
+            if (postalCode) {
+                setDefaultPostalCode(postalCode)
+            }
+        })
+    }, [])
 
     const handleWhatsAppCheckout = async () => {
         const supabase = createClient()
@@ -26,22 +51,35 @@ export default function CarrinhoPage() {
         const cleanPhone = settings?.whatsapp_number?.replace(/\D/g, "") || ""
 
         if (cleanPhone.length < 10) {
-            toast.error("O WhatsApp da loja ainda não está configurado.")
+            toast.error("O WhatsApp da loja ainda nao esta configurado.")
             return
         }
 
         let message = `*Novo pedido - ${settings?.store_name || "Loja"}*\n\n`
-        message += "Olá! Gostaria de finalizar a compra dos seguintes itens:\n\n"
+        message += "Ola! Gostaria de finalizar a compra dos seguintes itens:\n\n"
 
         items.forEach((item, index) => {
             message += `${index + 1}. *${item.product_name}*\n`
             message += `   Qtd: ${item.quantity}\n`
-            if (item.color) message += `   Cor: ${item.color}\n`
-            if (item.size) message += `   Tam: ${item.size}\n`
-            message += `   Preço: ${new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(item.price)}\n\n`
+            if (item.color) {
+                message += `   Cor: ${item.color}\n`
+            }
+            if (item.size) {
+                message += `   Tam: ${item.size}\n`
+            }
+            message += `   Preco: ${formatCurrency(item.price)}\n\n`
         })
 
-        message += `*Total: ${new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(total)}*`
+        if (selectedShipping) {
+            message += "*Frete selecionado*\n"
+            message += `   ${selectedShipping.company_name} - ${selectedShipping.service_name}\n`
+            message += `   Prazo: ${selectedShipping.delivery_days} dia(s) uteis\n`
+            message += `   Valor: ${selectedShipping.is_free_shipping ? "Gratis" : formatCurrency(selectedShipping.cost)}\n\n`
+        } else {
+            message += "*Frete*: ainda nao calculado\n\n"
+        }
+
+        message += `*Total: ${formatCurrency(total)}*`
 
         const encodedMessage = encodeURIComponent(message)
         const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodedMessage}`
@@ -65,7 +103,7 @@ export default function CarrinhoPage() {
                     <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-border bg-card text-muted-foreground">
                         <ShoppingBag className="h-7 w-7" />
                     </div>
-                    <h1 className="mt-6 font-display text-4xl text-foreground">Sua sacola está vazia</h1>
+                    <h1 className="mt-6 font-display text-4xl text-foreground">Sua sacola esta vazia</h1>
                     <p className="mt-3 text-base leading-7 text-muted-foreground">
                         Volte para a loja e escolha os itens que deseja adicionar.
                     </p>
@@ -80,8 +118,14 @@ export default function CarrinhoPage() {
         )
     }
 
-    const formattedTotal = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(total)
-    const installment = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(total / 3)
+    const formattedSubtotal = formatCurrency(subtotal)
+    const formattedShipping = !selectedShipping
+        ? "Calcular"
+        : selectedShipping.is_free_shipping
+            ? "Gratis"
+            : formatCurrency(shippingCost)
+    const formattedTotal = formatCurrency(total)
+    const installment = formatCurrency(total / 3)
 
     return (
         <div className="page-shell py-10 md:py-14">
@@ -104,8 +148,11 @@ export default function CarrinhoPage() {
                 </div>
 
                 <CartSummary
+                    formattedSubtotal={formattedSubtotal}
+                    formattedShipping={formattedShipping}
                     formattedTotal={formattedTotal}
                     installment={installment}
+                    defaultPostalCode={defaultPostalCode}
                     handleWhatsAppCheckout={handleWhatsAppCheckout}
                 />
             </div>

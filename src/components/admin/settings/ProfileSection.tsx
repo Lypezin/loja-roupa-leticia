@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { SectionHeader, SaveButton, showSuccess } from "./SettingsUI"
 
 interface ProfileSectionProps {
-    settings: Record<string, string | null>
+    settings: Record<string, string | number | null>
 }
 
 export function ProfileSection({ settings }: ProfileSectionProps) {
