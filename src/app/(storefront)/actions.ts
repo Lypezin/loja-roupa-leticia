@@ -4,7 +4,7 @@ import type { Json } from "@/lib/supabase/database.types"
 import { createAbacatePayBilling, getAbacatePayMethods, normalizeAbacatePayStatus } from "@/lib/abacatepay"
 import { parseCheckoutCartItems } from "@/lib/checkout"
 import { getCheckoutProfile, normalizeBrazilPhone, normalizeCpf } from "@/lib/customer-profile"
-import { calculateCheckoutTotal, buildAbacatePayBillingProducts, getValidatedItems, validateCheckoutItems } from "@/lib/payment-checkout"
+import { buildAbacatePayBillingProducts, calculateCheckoutTotal, getValidatedItems, validateCheckoutItems } from "@/lib/payment-checkout"
 import { getSiteUrl } from "@/lib/site-url"
 import { getShippingChargedAmount, quoteShippingOptionsForCart, resolveCheckoutShippingSelection } from "@/lib/store-shipping"
 import { createServiceRoleClient } from "@/lib/supabase/service-role"
@@ -21,7 +21,7 @@ export async function quoteShippingOptions(cartItems: unknown, destinationPostal
         return { options }
     } catch (error) {
         return {
-            error: error instanceof Error ? error.message : "Nao foi possivel calcular o frete.",
+            error: error instanceof Error ? error.message : "Não foi possível calcular o frete.",
         }
     }
 }

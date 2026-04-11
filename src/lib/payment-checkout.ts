@@ -41,7 +41,7 @@ export async function validateCheckoutItems(productIds: string[], variationIds: 
 export function getValidatedItems(
     normalizedCartItems: CheckoutCartItem[],
     productsById: Map<string, ProductRecord>,
-    variationsById: Map<string, VariationRecord>
+    variationsById: Map<string, VariationRecord>,
 ): ValidatedCheckoutItem[] {
     return normalizedCartItems.map((cartItem) => {
         const productInfo = productsById.get(cartItem.product_id)
@@ -65,7 +65,7 @@ export function getValidatedItems(
         const lengthCm = productInfo.length_cm
 
         if (!weightKg || !heightCm || !widthCm || !lengthCm) {
-            throw new Error(`O produto ${productInfo.name} ainda nao possui peso e dimensoes configurados.`)
+            throw new Error(`O produto ${productInfo.name} ainda não possui o peso e as dimensões do pacote configurados.`)
         }
 
         return {
@@ -123,6 +123,6 @@ export function buildAbacatePayBillingProducts(
 
 export function calculateCheckoutTotal(validatedItems: ValidatedCheckoutItem[], shippingCost = 0) {
     return Number(
-        (validatedItems.reduce((total, item) => total + (item.unit_price * item.quantity), 0) + shippingCost).toFixed(2)
+        (validatedItems.reduce((total, item) => total + (item.unit_price * item.quantity), 0) + shippingCost).toFixed(2),
     )
 }

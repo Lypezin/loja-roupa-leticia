@@ -1,7 +1,7 @@
 'use server'
 
-import { requireAdmin } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
+import { requireAdmin } from "@/lib/supabase/server"
 import { manageProductImages } from "./image-actions"
 import { updateProductVariations } from "./variation-actions"
 
@@ -14,10 +14,10 @@ function getErrorMessage(error: unknown, fallback: string) {
 }
 
 function parsePositiveDecimal(value: FormDataEntryValue | null, label: string) {
-    const parsedValue = Number.parseFloat(typeof value === "string" ? value : "")
+    const parsedValue = Number.parseFloat(typeof value === "string" ? value.replace(",", ".") : "")
 
     if (!Number.isFinite(parsedValue) || parsedValue <= 0) {
-        throw new Error(`${label} invalido.`)
+        throw new Error(`${label} inválido.`)
     }
 
     return parsedValue
@@ -26,46 +26,70 @@ function parsePositiveDecimal(value: FormDataEntryValue | null, label: string) {
 export async function saveProduct(formData: FormData) {
     try {
         const supabase = await requireAdmin()
-        const productId = formData.get('product_id') as string | null
-        const name = formData.get('name') as string
-        const description = formData.get('description') as string
-        const base_price = parseFloat(formData.get('base_price') as string)
-        const category_id = formData.get('category_id') as string
-        const weight_kg = parsePositiveDecimal(formData.get("weight_kg"), "Peso")
-        const length_cm = parsePositiveDecimal(formData.get("length_cm"), "Comprimento")
-        const width_cm = parsePositiveDecimal(formData.get("width_cm"), "Largura")
-        const height_cm = parsePositiveDecimal(formData.get("height_cm"), "Altura")
-        const is_active = formData.get('is_active') === 'true'
-        const variations = JSON.parse(formData.get('variations_json') as string)
+        const productId = formData.get("product_id") as string | null
+        const name = formData.get("name") as string
+        const description = formData.get("description") as string
+        const basePrice = Number.parseFloat(String(formData.get("base_price") || "").replace(",", "."))
+        const categoryId = formData.get("category_id") as string
+        const weightKg = parsePositiveDecimal(formData.get("weight_kg"), "Peso")
+        const lengthCm = parsePositiveDecimal(formData.get("length_cm"), "Comprimento")
+        const widthCm = parsePositiveDecimal(formData.get("width_cm"), "Largura")
+        const heightCm = parsePositiveDecimal(formData.get("height_cm"), "Altura")
+        const isActive = formData.get("is_active") === "true"
+        const variations = JSON.parse(formData.get("variations_json") as string)
 
         if (!name?.trim()) {
-            throw new Error('Nome do produto é obrigatório.')
+            throw new Error("Nome do produto é obrigatório.")
         }
 
-        if (!Number.isFinite(base_price) || base_price < 0) {
-            throw new Error('Preço do produto inválido.')
+        if (!categoryId) {
+            throw new Error("Selecione uma categoria para o produto.")
+        }
+
+        if (!Number.isFinite(basePrice) || basePrice < 0) {
+            throw new Error("Preço do produto inválido.")
         }
 
         let finalId = productId
 
         if (productId) {
             const { error } = await supabase
-                .from('products')
-                .update({ name, description, base_price, category_id, weight_kg, length_cm, width_cm, height_cm, is_active })
-                .eq('id', productId)
+                .from("products")
+                .update({
+                    name,
+                    description,
+                    base_price: basePrice,
+                    category_id: categoryId,
+                    weight_kg: weightKg,
+                    length_cm: lengthCm,
+                    width_cm: widthCm,
+                    height_cm: heightCm,
+                    is_active: isActive,
+                })
+                .eq("id", productId)
 
             if (error) {
                 throw error
             }
         } else {
             const { data, error } = await supabase
-                .from('products')
-                .insert([{ name, description, base_price, category_id, weight_kg, length_cm, width_cm, height_cm, is_active }])
-                .select('id')
+                .from("products")
+                .insert([{
+                    name,
+                    description,
+                    base_price: basePrice,
+                    category_id: categoryId,
+                    weight_kg: weightKg,
+                    length_cm: lengthCm,
+                    width_cm: widthCm,
+                    height_cm: heightCm,
+                    is_active: isActive,
+                }])
+                .select("id")
                 .single()
 
             if (error || !data) {
-                throw new Error(error?.message || 'Erro ao criar produto no banco.')
+                throw new Error(error?.message || "Erro ao criar produto no banco.")
             }
 
             finalId = data.id
@@ -75,15 +99,15 @@ export async function saveProduct(formData: FormData) {
         await manageProductImages(
             supabase,
             finalId!,
-            formData.get('existing_images_json') as string,
-            formData.get('uploaded_image_urls') as string
+            formData.get("existing_images_json") as string,
+            formData.get("uploaded_image_urls") as string,
         )
 
-        revalidatePath('/admin/produtos')
-        revalidatePath('/')
+        revalidatePath("/admin/produtos")
+        revalidatePath("/")
         return { success: true }
     } catch (error: unknown) {
-        return { error: getErrorMessage(error, 'Erro ao salvar produto.') }
+        return { error: getErrorMessage(error, "Erro ao salvar produto.") }
     }
 }
 
@@ -92,9 +116,9 @@ export async function deleteProduct(productId: string) {
         const supabase = await requireAdmin()
 
         const { data: productImages, error: productImagesError } = await supabase
-            .from('product_images')
-            .select('image_url')
-            .eq('product_id', productId)
+            .from("product_images")
+            .select("image_url")
+            .eq("product_id", productId)
 
         if (productImagesError) {
             throw productImagesError
@@ -102,14 +126,14 @@ export async function deleteProduct(productId: string) {
 
         const storagePaths = (productImages ?? [])
             .map((image) => {
-                const parts = image.image_url.split('/product-images/')
+                const parts = image.image_url.split("/product-images/")
                 return parts.length > 1 ? parts[1] : null
             })
             .filter((path): path is string => Boolean(path))
 
         if (storagePaths.length > 0) {
             const { error: storageError } = await supabase.storage
-                .from('product-images')
+                .from("product-images")
                 .remove(storagePaths)
 
             if (storageError) {
@@ -118,30 +142,30 @@ export async function deleteProduct(productId: string) {
         }
 
         const { error: imagesDeleteError } = await supabase
-            .from('product_images')
+            .from("product_images")
             .delete()
-            .eq('product_id', productId)
+            .eq("product_id", productId)
 
         if (imagesDeleteError) {
             throw imagesDeleteError
         }
 
         const { error: variationsDeleteError } = await supabase
-            .from('product_variations')
+            .from("product_variations")
             .delete()
-            .eq('product_id', productId)
+            .eq("product_id", productId)
 
         if (variationsDeleteError) {
             throw variationsDeleteError
         }
 
-        const { error } = await supabase.from('products').delete().eq('id', productId)
+        const { error } = await supabase.from("products").delete().eq("id", productId)
 
         if (error) throw error
-        revalidatePath('/admin/produtos')
-        revalidatePath('/')
+        revalidatePath("/admin/produtos")
+        revalidatePath("/")
         return { success: true }
     } catch (error: unknown) {
-        return { error: getErrorMessage(error, 'Erro ao excluir produto.') }
+        return { error: getErrorMessage(error, "Erro ao excluir produto.") }
     }
 }

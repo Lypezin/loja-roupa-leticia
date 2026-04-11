@@ -19,20 +19,28 @@ interface ProductImageManagerProps {
 export function ProductImageManager({ existingImages, onRemoveExisting }: ProductImageManagerProps) {
     const existingCountLabel = existingImages.length === 0
         ? "Nenhuma imagem cadastrada ainda."
-        : `${existingImages.length} imagem(ns) atualmente vinculada(s) ao produto.`
+        : `${existingImages.length} imagem(ns) vinculada(s) a este produto.`
 
     return (
-        <div className="border-t pt-4">
-            <Label htmlFor="images" className="mb-2 flex items-center gap-2 font-semibold">
-                <ImageIcon className="h-4 w-4 text-zinc-500" />
-                Imagens do produto
-            </Label>
+        <section className="rounded-[1.6rem] border border-zinc-200 bg-white p-5 md:p-6">
+            <div className="flex items-start gap-3">
+                <span className="mt-0.5 flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-700">
+                    <ImageIcon className="h-5 w-5" />
+                </span>
+                <div className="min-w-0">
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">Imagens</p>
+                    <h3 className="mt-2 text-lg font-semibold text-zinc-950">Galeria do produto</h3>
+                    <p className="mt-2 text-sm leading-6 text-zinc-600">
+                        Envie as fotos que vão aparecer na vitrine. A primeira imagem vira a capa quando ainda não existe nenhuma salva.
+                    </p>
+                </div>
+            </div>
 
-            <p className="mb-3 text-sm text-zinc-500">{existingCountLabel}</p>
+            <p className="mt-5 text-sm text-zinc-500">{existingCountLabel}</p>
 
             {existingImages.length > 0 && (
-                <div className="mb-4">
-                    <p className="mb-2 text-sm text-zinc-500">Imagens atuais:</p>
+                <div className="mt-4">
+                    <p className="mb-3 text-sm font-medium text-zinc-600">Imagens atuais</p>
                     <div className="flex flex-wrap gap-3">
                         {existingImages.map((img, index) => (
                             <div key={index} className="group relative h-24 w-20 overflow-hidden rounded-lg border-2 border-zinc-200">
@@ -44,6 +52,7 @@ export function ProductImageManager({ existingImages, onRemoveExisting }: Produc
                                     type="button"
                                     onClick={() => onRemoveExisting(index)}
                                     className="absolute right-1 top-1 rounded-full bg-red-500 p-0.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                                    aria-label="Remover imagem"
                                 >
                                     <X className="h-3 w-3" />
                                 </button>
@@ -58,17 +67,20 @@ export function ProductImageManager({ existingImages, onRemoveExisting }: Produc
                 </div>
             )}
 
-            <div className="mb-4 text-sm text-zinc-500">
-                Selecione novas fotos para adicionar. A primeira será a capa se não houver imagens.
+            <div className="mt-5 space-y-2">
+                <Label htmlFor="images">Novas imagens</Label>
+                <Input
+                    id="images"
+                    name="images"
+                    type="file"
+                    accept={ACCEPTED_IMAGE_INPUT}
+                    multiple
+                    className="cursor-pointer"
+                />
+                <p className="text-xs leading-5 text-zinc-500">
+                    Formatos aceitos: JPG, PNG, WEBP, AVIF e GIF. Se algum upload falhar, o formulário agora avisa antes de salvar.
+                </p>
             </div>
-            <Input
-                id="images"
-                name="images"
-                type="file"
-                accept={ACCEPTED_IMAGE_INPUT}
-                multiple
-                className="cursor-pointer"
-            />
-        </div>
+        </section>
     )
 }

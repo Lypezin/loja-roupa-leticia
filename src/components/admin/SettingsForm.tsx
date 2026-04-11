@@ -7,14 +7,15 @@ import { ContentSection } from "./settings/ContentSection"
 import { FooterSection } from "./settings/FooterSection"
 import { LogisticsSection } from "./settings/LogisticsSection"
 import { ProfileSection } from "./settings/ProfileSection"
-import type { MelhorEnvioIntegrationStatus } from "@/types/shipping"
+import type { MelhorEnvioIntegrationStatus, ShippingCoverageSummary } from "@/types/shipping"
 
 interface SettingsFormProps {
     settings: Record<string, string | number | null>
     melhorEnvio: MelhorEnvioIntegrationStatus
+    shippingCoverage: ShippingCoverageSummary
 }
 
-export function SettingsForm({ settings, melhorEnvio }: SettingsFormProps) {
+export function SettingsForm({ settings, melhorEnvio, shippingCoverage }: SettingsFormProps) {
     const [activeTab, setActiveTab] = useState("perfil")
 
     if (!settings) {
@@ -40,7 +41,7 @@ export function SettingsForm({ settings, melhorEnvio }: SettingsFormProps) {
             case "rodape":
                 return <FooterSection settings={settings} />
             case "logistica":
-                return <LogisticsSection settings={settings} melhorEnvio={melhorEnvio} />
+                return <LogisticsSection settings={settings} melhorEnvio={melhorEnvio} shippingCoverage={shippingCoverage} />
             default:
                 return <ProfileSection settings={settings} />
         }

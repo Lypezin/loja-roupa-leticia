@@ -1,16 +1,23 @@
-import { calculateMelhorEnvioShippingQuotes } from "@/lib/melhor-envio"
 import { parseCheckoutCartItems } from "@/lib/checkout"
-import { calculateCheckoutTotal, getValidatedItems, validateCheckoutItems } from "@/lib/payment-checkout"
 import { normalizePostalCode } from "@/lib/customer-profile"
+import { calculateMelhorEnvioShippingQuotes } from "@/lib/melhor-envio"
+import { calculateCheckoutTotal, getValidatedItems, validateCheckoutItems } from "@/lib/payment-checkout"
 import { createClient } from "@/lib/supabase/server"
 import type { CheckoutShippingSelection, ShippingQuoteOption } from "@/types/shipping"
 
 type StoreShippingSettings = {
     shipping_origin_zip: string | null
     processing_days: number | null
-    free_shipping_threshold: number | null
+    free_shipping_threshold: number | string | null
     support_email: string | null
     store_name: string | null
+}
+
+function normalizeFreeShippingThreshold(value: number | string | null) {
+    const parsedValue = typeof value === "string" ? Number.parseFloat(value) : value
+    return typeof parsedValue === "number" && Number.isFinite(parsedValue) && parsedValue > 0
+        ? parsedValue
+        : null
 }
 
 async function getStoreShippingSettings(): Promise<StoreShippingSettings> {
@@ -22,11 +29,11 @@ async function getStoreShippingSettings(): Promise<StoreShippingSettings> {
         .maybeSingle()
 
     if (error) {
-        throw new Error(`Falha ao carregar as configuracoes de frete: ${error.message}`)
+        throw new Error(`Falha ao carregar as configurações de frete: ${error.message}`)
     }
 
     if (!data?.shipping_origin_zip) {
-        throw new Error("Configure o CEP de origem da loja no painel antes de calcular fretes.")
+        throw new Error("Configure o CEP de origem do despacho no painel antes de calcular fretes.")
     }
 
     return data
@@ -36,7 +43,7 @@ export async function quoteShippingOptionsForCart(cartItems: unknown, destinatio
     const normalizedPostalCode = normalizePostalCode(destinationPostalCode)
 
     if (!normalizedPostalCode) {
-        throw new Error("Informe um CEP valido para calcular o frete.")
+        throw new Error("Informe um CEP válido para calcular o frete.")
     }
 
     const normalizedCartItems = parseCheckoutCartItems(cartItems)
@@ -48,14 +55,14 @@ export async function quoteShippingOptionsForCart(cartItems: unknown, destinatio
     const originPostalCode = shippingSettings.shipping_origin_zip
 
     if (!originPostalCode) {
-        throw new Error("Configure o CEP de origem da loja no painel antes de calcular fretes.")
+        throw new Error("Configure o CEP de origem do despacho no painel antes de calcular fretes.")
     }
 
     return calculateMelhorEnvioShippingQuotes({
         originPostalCode,
         destinationPostalCode: normalizedPostalCode,
         subtotal: calculateCheckoutTotal(validatedItems),
-        freeShippingThreshold: shippingSettings.free_shipping_threshold,
+        freeShippingThreshold: normalizeFreeShippingThreshold(shippingSettings.free_shipping_threshold),
         processingDays: shippingSettings.processing_days,
         items: validatedItems,
         storeName: shippingSettings.store_name,
@@ -69,13 +76,13 @@ export async function resolveCheckoutShippingSelection(
     selection: CheckoutShippingSelection | null | undefined,
 ) {
     if (!selection?.service_id) {
-        throw new Error("Selecione uma opcao de frete antes de finalizar a compra.")
+        throw new Error("Selecione uma opção de frete antes de finalizar a compra.")
     }
 
     const normalizedPostalCode = normalizePostalCode(destinationPostalCode)
 
     if (!normalizedPostalCode) {
-        throw new Error("O CEP de entrega do perfil e invalido. Atualize seus dados para continuar.")
+        throw new Error("O CEP de entrega do perfil é inválido. Atualize seus dados para continuar.")
     }
 
     const quotedPostalCode = normalizePostalCode(selection.postal_code)
@@ -88,7 +95,7 @@ export async function resolveCheckoutShippingSelection(
     const selectedQuote = quotes.find((quote) => quote.service_id === selection.service_id)
 
     if (!selectedQuote) {
-        throw new Error("A opcao de frete selecionada nao esta mais disponivel. Recalcule o frete.")
+        throw new Error("A opção de frete selecionada não está mais disponível. Recalcule o frete.")
     }
 
     return selectedQuote

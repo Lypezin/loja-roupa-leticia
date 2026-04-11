@@ -1,4 +1,5 @@
 import { getSiteUrl } from "@/lib/site-url"
+import type { Json } from "@/lib/supabase/database.types"
 import { createServiceRoleClient } from "@/lib/supabase/service-role"
 import type { Database } from "@/lib/supabase/database.types"
 import type { ValidatedCheckoutItem } from "@/types/checkout"
@@ -16,6 +17,12 @@ type MelhorEnvioTokenResponse = {
     expires_in: number
     token_type?: string
     scope?: string
+}
+
+type MelhorEnvioAccountProfile = {
+    email: string | null
+    name: string | null
+    raw: Record<string, unknown> | null
 }
 
 type MelhorEnvioIntegrationRow = Database["public"]["Tables"]["shipping_integrations"]["Row"]
@@ -125,6 +132,25 @@ function buildTokenExpiry(expiresInSeconds: number | null | undefined) {
     return new Date(Date.now() + expiresIn * 1000).toISOString()
 }
 
+function readOptionalString(record: Record<string, unknown>, key: string) {
+    const value = record[key]
+    return typeof value === "string" && value.trim() ? value.trim() : null
+}
+
+function buildMelhorEnvioAccountName(payload: Record<string, unknown>) {
+    const directName = readOptionalString(payload, "name")
+
+    if (directName) {
+        return directName
+    }
+
+    const firstName = readOptionalString(payload, "firstname") || readOptionalString(payload, "first_name")
+    const lastName = readOptionalString(payload, "lastname") || readOptionalString(payload, "last_name")
+    const combinedName = [firstName, lastName].filter(Boolean).join(" ").trim()
+
+    return combinedName || null
+}
+
 async function getStoredIntegration(environment = getMelhorEnvioEnvironment()) {
     const supabase = createServiceRoleClient("melhor-envio.get-integration")
 
@@ -199,6 +225,41 @@ async function tokenRequest(
     return payload
 }
 
+async function fetchMelhorEnvioAccountProfile(
+    accessToken: string,
+    environment = getMelhorEnvioEnvironment(),
+): Promise<MelhorEnvioAccountProfile> {
+    try {
+        const response = await fetch(`${getMelhorEnvioBaseUrl(environment)}/api/v2/me`, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${accessToken}`,
+                "User-Agent": buildMelhorEnvioUserAgent(),
+            },
+            cache: "no-store",
+        })
+
+        if (!response.ok) {
+            return { email: null, name: null, raw: null }
+        }
+
+        const payload = await response.json().catch(() => null) as Record<string, unknown> | null
+
+        if (!payload || !isRecord(payload)) {
+            return { email: null, name: null, raw: null }
+        }
+
+        return {
+            email: readOptionalString(payload, "email"),
+            name: buildMelhorEnvioAccountName(payload),
+            raw: payload,
+        }
+    } catch {
+        return { email: null, name: null, raw: null }
+    }
+}
+
 export function buildMelhorEnvioAuthorizeUrl(state: string, environment = getMelhorEnvioEnvironment()) {
     const authorizeUrl = new URL(`${getMelhorEnvioBaseUrl(environment)}/oauth/authorize`)
 
@@ -236,6 +297,7 @@ export async function refreshMelhorEnvioToken(refreshToken: string, environment 
 
 export async function saveMelhorEnvioTokensFromCode(code: string, environment = getMelhorEnvioEnvironment()) {
     const tokenPayload = await exchangeMelhorEnvioCode(code, environment)
+    const accountProfile = await fetchMelhorEnvioAccountProfile(tokenPayload.access_token, environment)
 
     await persistIntegration({
         environment,
@@ -244,9 +306,9 @@ export async function saveMelhorEnvioTokensFromCode(code: string, environment = 
         expires_at: buildTokenExpiry(tokenPayload.expires_in),
         token_type: tokenPayload.token_type || "Bearer",
         scope: tokenPayload.scope || getMelhorEnvioScopes(),
-        account_email: null,
-        account_name: null,
-        metadata: {},
+        account_email: accountProfile.email,
+        account_name: accountProfile.name,
+        metadata: (accountProfile.raw || {}) as Json,
     })
 }
 
@@ -284,7 +346,29 @@ async function getValidAccessToken(environment = getMelhorEnvioEnvironment()) {
 export async function getMelhorEnvioIntegrationStatus(
     environment = getMelhorEnvioEnvironment(),
 ): Promise<MelhorEnvioIntegrationStatus> {
-    const integration = await getStoredIntegration(environment)
+    let integration = await getStoredIntegration(environment)
+
+    if (integration?.access_token && (!integration.account_email || !integration.account_name)) {
+        const profile = await fetchMelhorEnvioAccountProfile(integration.access_token, environment)
+
+        if (profile.email || profile.name || profile.raw) {
+            await persistIntegration({
+                environment,
+                access_token: integration.access_token,
+                refresh_token: integration.refresh_token,
+                expires_at: integration.expires_at,
+                token_type: integration.token_type,
+                scope: integration.scope,
+                account_email: profile.email || integration.account_email,
+                account_name: profile.name || integration.account_name,
+                metadata: integration.metadata && Object.keys(integration.metadata).length > 0
+                    ? integration.metadata
+                    : (profile.raw || {}) as Json,
+            })
+
+            integration = await getStoredIntegration(environment)
+        }
+    }
 
     return {
         connected: Boolean(integration?.refresh_token),

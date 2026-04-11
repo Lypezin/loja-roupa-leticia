@@ -20,8 +20,7 @@ export async function uploadProductImages(files: FileList | null, productId: str
             .upload(fileName, file)
 
         if (uploadError) {
-            console.error("Erro no upload:", uploadError)
-            continue
+            throw new Error(`Falha ao enviar "${file.name}": ${uploadError.message}`)
         }
 
         const { data: { publicUrl } } = supabase.storage

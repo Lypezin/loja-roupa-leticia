@@ -38,3 +38,9 @@ export type MelhorEnvioIntegrationStatus = {
     account_email: string | null
     account_name: string | null
 }
+
+export type ShippingCoverageSummary = {
+    totalProducts: number
+    productsReadyForShipping: number
+    productsMissingShippingData: number
+}

@@ -31,7 +31,7 @@ export async function updateProductVariations(
         .filter((variation) => variation.color || variation.size)
 
     if (varsToInsert.length === 0) {
-        throw new Error('Adicione pelo menos uma variação válida.')
+        throw new Error("Adicione pelo menos uma variação válida.")
     }
 
     const { error: insertError } = await supabase.from("product_variations").insert(varsToInsert)
