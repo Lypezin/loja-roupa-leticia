@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react"
-import { Package2, RefreshCcw, Sparkles, Truck } from "lucide-react"
+import { Copy, Package2, RefreshCcw, Truck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -166,7 +166,7 @@ export function ProductBasicInfo({ product, categories, shippingDefaults }: Prod
                     <div className="flex flex-wrap gap-2 lg:justify-end">
                         {shippingDefaults ? (
                             <Button type="button" variant="outline" size="sm" className="rounded-full" onClick={applyShippingDefaults}>
-                                <Sparkles className="h-4 w-4" />
+                                <Copy className="h-4 w-4" />
                                 Usar últimas medidas salvas
                             </Button>
                         ) : null}

@@ -11,7 +11,6 @@ import {
   Tags,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Card, CardContent } from "@/components/ui/card"
 
 const ICONS = {
   DollarSign,
@@ -38,18 +37,16 @@ export function AdminStatCard({
   const Icon = ICONS[icon]
 
   return (
-    <Card className="surface-card rounded-[1.8rem] border-none">
-      <CardContent className="flex items-start justify-between gap-4 p-5">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">{label}</p>
-          <p className="mt-4 text-3xl font-semibold tracking-tight text-foreground">{value}</p>
-          <p className="mt-2 text-xs text-muted-foreground">{change}</p>
+    <div className="rounded-xl border border-border bg-card p-5">
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-medium text-muted-foreground">{label}</p>
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+          <Icon className="h-4 w-4" />
         </div>
-        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
-          <Icon className="h-4.5 w-4.5" />
-        </div>
-      </CardContent>
-    </Card>
+      </div>
+      <p className="mt-3 text-2xl font-semibold tracking-tight text-foreground">{value}</p>
+      <p className="mt-1 text-xs text-muted-foreground">{change}</p>
+    </div>
   )
 }
 
@@ -68,23 +65,21 @@ export function AdminActionCard({
 
   return (
     <Link href={href} className="group block">
-      <Card className="surface-card rounded-[1.8rem] border-none transition-transform duration-200 group-hover:-translate-y-0.5">
-        <CardContent className="flex items-center gap-4 p-5">
-          <div
-            className={cn(
-              "flex h-12 w-12 items-center justify-center rounded-full",
-              "bg-primary/10 text-primary",
-            )}
-          >
-            <Icon className="h-5 w-5" />
-          </div>
-          <div className="flex-1">
-            <p className="font-semibold tracking-tight text-foreground">{label}</p>
-            <p className="mt-0.5 text-xs leading-6 text-muted-foreground">{desc}</p>
-          </div>
-          <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-foreground" />
-        </CardContent>
-      </Card>
+      <div className="flex items-center gap-3 rounded-lg border border-border bg-background p-4 transition-colors hover:bg-muted/50">
+        <div
+          className={cn(
+            "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg",
+            "bg-muted text-muted-foreground",
+          )}
+        >
+          <Icon className="h-4 w-4" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-medium text-foreground">{label}</p>
+          <p className="mt-0.5 text-xs text-muted-foreground truncate">{desc}</p>
+        </div>
+        <ArrowUpRight className="h-4 w-4 shrink-0 text-muted-foreground/50 transition-colors group-hover:text-foreground" />
+      </div>
     </Link>
   )
 }

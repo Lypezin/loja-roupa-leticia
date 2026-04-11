@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link"
-import { ExternalLink, LogOut, Menu, Package } from "lucide-react"
+import { ExternalLink, LogOut, Menu, Store } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     Sheet,
@@ -14,56 +14,46 @@ import { AdminNavLinks, type AdminNavLink } from "@/components/admin/layout/Admi
 
 interface AdminMobileHeaderProps {
     navLinks: AdminNavLink[]
-    summary: {
-        eyebrow: string
-        primary: string
-        secondary: string
-    }
 }
 
-export function AdminMobileHeader({ navLinks, summary }: AdminMobileHeaderProps) {
+export function AdminMobileHeader({ navLinks }: AdminMobileHeaderProps) {
     return (
-        <header className="flex h-16 items-center gap-4 border-b border-border bg-background/88 px-4 backdrop-blur-xl lg:hidden">
+        <header className="flex h-14 items-center gap-4 border-b border-border bg-background px-4 lg:hidden">
             <Sheet>
                 <SheetTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full">
-                        <Menu className="h-5 w-5" />
-                        <span className="sr-only">{"Menu de navega\u00e7\u00e3o"}</span>
+                    <Button variant="outline" size="icon" className="h-9 w-9 rounded-lg">
+                        <Menu className="h-4 w-4" />
+                        <span className="sr-only">Menu</span>
                     </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="flex w-72 flex-col border-sidebar-border bg-sidebar text-sidebar-foreground">
                     <SheetTitle className="sr-only">Menu lateral</SheetTitle>
                     <div className="mt-2 flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sidebar-primary text-sidebar-primary-foreground">
-                            <Package className="h-4 w-4" />
+                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                            <Store className="h-4 w-4" />
                         </div>
                         <div>
-                            <p className="font-display text-3xl leading-none">Admin</p>
-                            <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-sidebar-foreground/45">{"opera\u00e7\u00e3o"}</p>
+                            <p className="text-sm font-semibold">Painel Admin</p>
+                            <p className="text-[11px] text-sidebar-foreground/50">Gerenciamento da loja</p>
                         </div>
                     </div>
 
-                    <div className="mt-6 rounded-[1.4rem] border border-sidebar-border bg-white/55 p-4">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-sidebar-foreground/45">{summary.eyebrow}</p>
-                        <p className="mt-2 text-sm leading-6 text-sidebar-foreground/76">{summary.primary}</p>
-                    </div>
-
-                    <nav className="mt-8 flex flex-col gap-1">
+                    <nav className="mt-6 flex flex-col gap-1">
                         <AdminNavLinks links={navLinks} variant="mobile" />
                     </nav>
 
-                    <div className="mt-auto space-y-1 border-t border-sidebar-border pt-3">
+                    <div className="mt-auto space-y-0.5 border-t border-sidebar-border pt-3">
                         <Link
                             href="/"
                             target="_blank"
-                            className="flex items-center gap-3 rounded-[1rem] px-3 py-3 text-sm text-sidebar-foreground/72 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
                         >
-                            <ExternalLink className="h-5 w-5" />
+                            <ExternalLink className="h-4 w-4" />
                             Ver loja
                         </Link>
                         <form action={logout}>
-                            <button type="submit" className="flex w-full cursor-pointer items-center gap-3 rounded-[1rem] px-3 py-3 text-sm text-sidebar-foreground/65 transition-colors hover:bg-red-50 hover:text-red-600">
-                                <LogOut className="h-5 w-5" />
+                            <button type="submit" className="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/60 transition-colors hover:bg-red-50 hover:text-red-600">
+                                <LogOut className="h-4 w-4" />
                                 Sair
                             </button>
                         </form>
@@ -72,8 +62,8 @@ export function AdminMobileHeader({ navLinks, summary }: AdminMobileHeaderProps)
             </Sheet>
 
             <Link href="/admin" className="flex items-center gap-2">
-                <span className="eyebrow hidden sm:inline-flex">{"opera\u00e7\u00e3o"}</span>
-                <span className="font-display text-3xl leading-none text-foreground">Admin</span>
+                <Store className="h-4 w-4 text-foreground/70" />
+                <span className="text-sm font-semibold text-foreground">Painel Admin</span>
             </Link>
         </header>
     )

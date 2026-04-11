@@ -34,11 +34,10 @@ export default async function CategoriasPage() {
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="paper-panel rounded-[2rem] px-6 py-6 md:px-8">
-                <span className="eyebrow">organização da vitrine</span>
-                <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">Categorias</h1>
-                <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground">
-                    Crie, edite e organize as coleções da loja. Hoje a navegação conta com {formattedCategories.length} categoria(s) cadastrada(s).
+            <div>
+                <h1 className="text-2xl font-semibold tracking-tight text-foreground">Categorias</h1>
+                <p className="mt-1 text-sm text-muted-foreground">
+                    {formattedCategories.length} categoria(s) cadastrada(s). Crie, edite e organize as coleções da loja.
                 </p>
             </div>
 

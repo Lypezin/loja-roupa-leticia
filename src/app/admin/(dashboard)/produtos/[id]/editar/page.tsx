@@ -49,9 +49,9 @@ export default async function EditarProdutoPage({ params }: { params: Promise<{ 
     return (
         <div className="flex flex-col gap-6">
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Editar produto</h1>
-                <p className="text-zinc-500">
-                    Atualize conteúdo, pacote de envio, imagens e grade de estoque sem sair do painel.
+                <h1 className="text-2xl font-semibold tracking-tight text-foreground">Editar produto</h1>
+                <p className="mt-1 text-sm text-muted-foreground">
+                    Atualize informações, imagens, variações e dados de frete.
                 </p>
             </div>
 

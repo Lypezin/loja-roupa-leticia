@@ -5,20 +5,18 @@ export default async function AdminPedidos() {
     const orders = await getAdminOrders()
 
     return (
-        <div className="flex flex-col gap-8">
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Pedidos</h1>
-                    <p className="text-muted-foreground">
-                        Acompanhe as vendas e status de entrega.
-                    </p>
-                </div>
+        <div className="flex flex-col gap-6">
+            <div>
+                <h1 className="text-2xl font-semibold tracking-tight text-foreground">Pedidos</h1>
+                <p className="mt-1 text-sm text-muted-foreground">
+                    Acompanhe vendas e gerencie status de entrega.
+                </p>
             </div>
 
-            <div className="rounded-xl border bg-card text-card-foreground shadow-sm">
+            <div className="overflow-hidden rounded-xl border border-border bg-card">
                 {orders.length === 0 ? (
-                    <div className="p-8 text-center text-muted-foreground">
-                        Nenhum pedido recebido ainda.
+                    <div className="px-6 py-12 text-center">
+                        <p className="text-sm text-muted-foreground">Nenhum pedido recebido ainda.</p>
                     </div>
                 ) : (
                     <OrderListClient orders={orders} />

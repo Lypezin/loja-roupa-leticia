@@ -39,7 +39,7 @@ export function ProductListClient({ products }: ProductListClientProps) {
         <div className="flex flex-col gap-6">
             <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-foreground">Produtos</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight text-foreground">Produtos</h1>
                     <p className="mt-1 text-sm text-muted-foreground">
                         Gerencie seu catálogo de {products.length} produto(s).
                     </p>

@@ -23,11 +23,11 @@ export function SettingsForm({ settings, melhorEnvio, shippingCoverage }: Settin
     }
 
     const tabs = [
-        { id: "perfil", label: "Perfil e SEO", icon: User, desc: "identidade e busca" },
-        { id: "banner", label: "Banner hero", icon: ImageIcon, desc: "destaque principal" },
-        { id: "conteudo", label: "Página inicial", icon: Type, desc: "títulos e seções" },
-        { id: "rodape", label: "Rodapé", icon: LayoutTemplate, desc: "links e contatos" },
-        { id: "logistica", label: "Logística", icon: Truck, desc: "fretes e prazos" },
+        { id: "perfil", label: "Perfil e SEO", icon: User },
+        { id: "banner", label: "Banner hero", icon: ImageIcon },
+        { id: "conteudo", label: "Página inicial", icon: Type },
+        { id: "rodape", label: "Rodapé", icon: LayoutTemplate },
+        { id: "logistica", label: "Logística", icon: Truck },
     ]
 
     const renderContent = () => {
@@ -48,12 +48,12 @@ export function SettingsForm({ settings, melhorEnvio, shippingCoverage }: Settin
     }
 
     return (
-        <div className="flex flex-col items-start gap-6 lg:grid lg:grid-cols-[280px_1fr] lg:gap-8">
-            <aside className="paper-panel w-full rounded-[1.8rem] p-4 lg:sticky lg:top-8">
-                <p className="px-3 text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                    Ajustes principais
+        <div className="flex flex-col items-start gap-6 lg:grid lg:grid-cols-[240px_1fr] lg:gap-6">
+            <aside className="w-full rounded-xl border border-border bg-card p-3 lg:sticky lg:top-6">
+                <p className="px-3 pb-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                    Seções
                 </p>
-                <nav className="mt-4 flex gap-2 overflow-x-auto pb-2 scrollbar-hide lg:flex-col lg:overflow-x-visible lg:pb-0">
+                <nav className="flex gap-1 overflow-x-auto pb-1 scrollbar-hide lg:flex-col lg:overflow-x-visible lg:pb-0">
                     {tabs.map((tab) => {
                         const isActive = activeTab === tab.id
 
@@ -61,24 +61,14 @@ export function SettingsForm({ settings, melhorEnvio, shippingCoverage }: Settin
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
-                                className={`group flex shrink-0 items-center gap-3 rounded-[1.4rem] px-4 py-3 text-left transition-all ${isActive
-                                    ? "bg-foreground text-background shadow-[0_16px_30px_-22px_rgba(34,27,24,0.6)]"
-                                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                                className={`group flex shrink-0 cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${isActive
+                                    ? "bg-primary text-primary-foreground"
+                                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                                     }`}
                             >
-                                <div className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${isActive
-                                    ? "border-background/20 bg-background/10"
-                                    : "border-border bg-background group-hover:border-border/70"
-                                    }`}>
-                                    <tab.icon className={`h-4 w-4 ${isActive ? "text-background" : "text-foreground/70"}`} />
-                                </div>
-                                <div className="flex-1">
-                                    <p className="text-sm font-semibold tracking-tight">{tab.label}</p>
-                                    <p className={`text-[10px] uppercase tracking-[0.18em] ${isActive ? "text-background/70" : "text-muted-foreground group-hover:text-foreground/65"}`}>
-                                        {tab.desc}
-                                    </p>
-                                </div>
-                                {isActive ? <ChevronRight className="hidden h-4 w-4 text-background/70 lg:block" /> : null}
+                                <tab.icon className="h-4 w-4" />
+                                <span className="font-medium">{tab.label}</span>
+                                {isActive ? <ChevronRight className="ml-auto hidden h-3.5 w-3.5 opacity-70 lg:block" /> : null}
                             </button>
                         )
                     })}

@@ -29,9 +29,9 @@ export default async function NovoProdutoPage() {
     return (
         <div className="flex flex-col gap-6">
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Criar produto</h1>
-                <p className="text-zinc-500">
-                    Cadastre as informações principais, defina o pacote usado no frete e monte a grade de estoque em um fluxo mais direto.
+                <h1 className="text-2xl font-semibold tracking-tight text-foreground">Novo produto</h1>
+                <p className="mt-1 text-sm text-muted-foreground">
+                    Cadastre informações, imagens, variações e dados de frete.
                 </p>
             </div>
 

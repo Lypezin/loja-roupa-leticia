@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react"
-import { Headphones, RotateCcw, ShieldCheck, Sparkles, Truck, Type } from "lucide-react"
+import { Heading, Headphones, RotateCcw, ShieldCheck, Truck, Type } from "lucide-react"
 import { toast } from "sonner"
 import { saveContent } from "@/app/admin/(dashboard)/configuracoes/actions"
 import { Input } from "@/components/ui/input"
@@ -45,7 +45,7 @@ export function ContentSection({ settings }: ContentSectionProps) {
 
             <div className="space-y-6">
                 <div className="mb-4 flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-amber-500" />
+                    <Heading className="h-4 w-4 text-zinc-500" />
                     <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-900">Titulos da home</h3>
                 </div>
 
