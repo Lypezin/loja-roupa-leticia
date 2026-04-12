@@ -36,7 +36,7 @@ export function AdminNavLinks({
     const pathname = usePathname()
 
     return (
-        <div className={cn("flex flex-col gap-1.5", variant === "desktop" ? "py-1" : "")}>
+        <div className={cn("flex flex-col gap-2", variant === "desktop" ? "py-1" : "")}>
             {links.map((link) => {
                 const isActive =
                     pathname === link.href ||
@@ -50,7 +50,7 @@ export function AdminNavLinks({
                         href={link.href}
                         aria-current={isActive ? "page" : undefined}
                         className={cn(
-                            "group flex items-center gap-3 rounded-[1.15rem] border px-3.5 py-3 transition-all",
+                            "group flex items-center gap-3 rounded-[1.2rem] border px-3.5 py-3.5 transition-all",
                             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
                             isActive
                                 ? "border-zinc-200 bg-white text-zinc-950 shadow-[0_18px_35px_rgba(70,48,34,0.08)]"
@@ -68,10 +68,10 @@ export function AdminNavLinks({
                             <Icon className="h-4 w-4" />
                         </span>
 
-                        <span className="min-w-0 flex-1">
-                            <span className="block text-sm font-semibold">{link.label}</span>
+                            <span className="min-w-0 flex-1 pr-1">
+                                <span className="block text-sm font-semibold">{link.label}</span>
                             {link.description ? (
-                                <span className="mt-0.5 block text-xs text-zinc-500">
+                                <span className="mt-1 block text-[13px] leading-5 text-zinc-500">
                                     {link.description}
                                 </span>
                             ) : null}
