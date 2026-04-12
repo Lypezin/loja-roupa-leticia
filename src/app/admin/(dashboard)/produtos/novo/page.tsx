@@ -30,13 +30,7 @@ export default async function NovoProdutoPage() {
     return (
         <div className="flex flex-col gap-6">
             <AdminPageHeader
-                eyebrow="Catálogo"
-                title="Novo produto."
-                description="Cadastre o item por etapas: dados principais, pacote para frete, imagens, variações e publicação. O formulário já traz o último pacote salvo como referência."
-                metrics={[
-                    { label: "Categorias", value: String(categories?.length || 0), description: "Coleções disponíveis para associar o produto." },
-                    { label: "Medidas reaproveitáveis", value: shippingDefaults ? "Sim" : "Não", description: shippingDefaults ? `Base: ${shippingDefaults.sourceProductName}.` : "Nenhum pacote salvo para copiar." },
-                ]}
+                title="Novo produto"
             />
 
             <ProductForm categories={categories || []} shippingDefaults={shippingDefaults} />

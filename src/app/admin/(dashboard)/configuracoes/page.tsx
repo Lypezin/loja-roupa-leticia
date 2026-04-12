@@ -44,14 +44,7 @@ export default async function ConfiguracoesPage() {
     return (
         <div className="flex flex-col gap-6">
             <AdminPageHeader
-                eyebrow="Marca e operação"
-                title="Configurações mais organizadas."
-                description="Ajuste identidade, textos, hero, rodapé e logística em uma estrutura única. A ideia aqui é diminuir dispersão e deixar claro o impacto de cada bloco na vitrine."
-                metrics={[
-                    { label: "Melhor Envio", value: melhorEnvio.connected ? "Conectado" : "Pendente", description: `Ambiente atual: ${melhorEnvio.environment === "production" ? "produção" : "sandbox"}.` },
-                    { label: "Produtos prontos para frete", value: `${shippingCoverage.productsReadyForShipping}/${shippingCoverage.totalProducts}`, description: "Itens com peso e dimensões completas." },
-                    { label: "Origem de despacho", value: typeof settings?.shipping_origin_zip === "string" && settings.shipping_origin_zip ? settings.shipping_origin_zip : "Pendente", description: "CEP usado nas cotações." },
-                ]}
+                title="Configurações"
             />
 
             <SettingsForm
