@@ -22,11 +22,11 @@ export default async function AdminLayout({
     return (
         <div
             data-admin
-            className="min-h-screen bg-[linear-gradient(180deg,rgba(251,249,246,0.96),rgba(245,240,233,0.98))] text-foreground"
+            className="min-h-screen bg-zinc-50/50 text-zinc-950"
         >
             <AdminSidebar navLinks={navLinks} />
 
-            <div className="min-h-screen xl:pl-[348px]">
+            <div className="min-h-screen xl:pl-64">
                 <AdminMobileHeader navLinks={navLinks} />
 
                 <main className="px-4 pb-8 pt-4 md:px-6 lg:px-8 lg:py-8">
