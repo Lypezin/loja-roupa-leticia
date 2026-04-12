@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Instagram, Mail } from "lucide-react"
 import type { StoreCategory, StoreSettings } from "@/lib/storefront"
+import { getSafeAbsoluteUrl } from "@/lib/url-safety"
 import { FooterLinksSection } from "./FooterLinksSection"
 
 export function Footer({
@@ -11,8 +12,9 @@ export function Footer({
     settings?: StoreSettings | null
 }) {
     const currentYear = new Date().getFullYear()
-    const storeName = settings?.store_name || "FASHION STORE"
+    const storeName = settings?.store_name || "Loja"
     const aboutText = settings?.footer_about_text || "Peças com foto clara, descrição objetiva e compra simples do primeiro clique ao pós-venda."
+    const instagramUrl = getSafeAbsoluteUrl(settings?.instagram_url)
 
     const categoryLinks = categories.length > 0
         ? categories.slice(0, 4).map((cat) => ({
@@ -38,8 +40,8 @@ export function Footer({
                             <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">{aboutText}</p>
                         </div>
                         <div className="flex gap-3">
-                            {settings?.instagram_url && (
-                                <a href={settings.instagram_url} target="_blank" rel="noopener noreferrer" className="hover-lift-soft flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
+                            {instagramUrl && (
+                                <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="hover-lift-soft flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
                                     <Instagram className="h-4 w-4" />
                                 </a>
                             )}
@@ -68,7 +70,7 @@ export function Footer({
                     <span>&copy; {currentYear} {storeName}. Todos os direitos reservados.</span>
                     <div className="flex items-center gap-2">
                         <span className="h-2 w-2 rounded-full bg-primary" />
-                        <span>Atendimento humano em horario comercial</span>
+                        <span>Atendimento humano em horário comercial</span>
                     </div>
                 </div>
             </div>

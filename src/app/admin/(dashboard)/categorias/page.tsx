@@ -33,8 +33,6 @@ export default async function CategoriasPage() {
         productsCount: cat.products[0]?.count || 0,
     }))
 
-    const productsLinked = formattedCategories.reduce((total, category) => total + category.productsCount, 0)
-
     return (
         <div className="flex flex-col gap-6">
             <AdminPageHeader title="Categorias" />

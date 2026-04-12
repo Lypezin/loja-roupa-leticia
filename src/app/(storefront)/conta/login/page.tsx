@@ -4,13 +4,14 @@ import Link from "next/link"
 import { Suspense, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { ArrowRight, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react"
+import { getSafeRelativePath } from "@/lib/url-safety"
 import { loginCliente } from "../actions"
 
 function LoginForm() {
     const searchParams = useSearchParams()
     const errorMsg = searchParams.get("error")
     const successMsg = searchParams.get("success")
-    const nextPath = searchParams.get("next") || "/conta"
+    const nextPath = getSafeRelativePath(searchParams.get("next"), "/conta") || "/conta"
     const reason = searchParams.get("reason")
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
@@ -41,13 +42,13 @@ function LoginForm() {
 
                 {errorMsg && (
                     <div className="mt-6 rounded-[1.2rem] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                        {decodeURIComponent(errorMsg)}
+                        {errorMsg}
                     </div>
                 )}
 
                 {successMsg && (
                     <div className="mt-6 rounded-[1.2rem] border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-                        {decodeURIComponent(successMsg)}
+                        {successMsg}
                     </div>
                 )}
 

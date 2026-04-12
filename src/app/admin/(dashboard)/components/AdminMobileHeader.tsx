@@ -2,6 +2,8 @@
 
 import Link from "next/link"
 import { ExternalLink, LogOut, Menu, Store } from "lucide-react"
+import { logout } from "@/app/admin/login/actions"
+import { AdminNavLinks, type AdminNavLink } from "@/components/admin/layout/AdminNavLinks"
 import { Button } from "@/components/ui/button"
 import {
     Sheet,
@@ -9,8 +11,6 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
-import { logout } from "@/app/admin/login/actions"
-import { AdminNavLinks, type AdminNavLink } from "@/components/admin/layout/AdminNavLinks"
 
 interface AdminMobileHeaderProps {
     navLinks: AdminNavLink[]
@@ -44,7 +44,7 @@ export function AdminMobileHeader({ navLinks }: AdminMobileHeaderProps) {
                     >
                         <SheetTitle className="sr-only">Menu administrativo</SheetTitle>
 
-                        <div className="flex items-center gap-3 mb-6 mt-2 px-2">
+                        <div className="mb-6 mt-2 flex items-center gap-3 px-2">
                             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-950 text-white">
                                 <Store className="h-4 w-4" />
                             </span>
@@ -54,7 +54,7 @@ export function AdminMobileHeader({ navLinks }: AdminMobileHeaderProps) {
                         </div>
 
                         <div className="mb-4 px-2 tracking-wider">
-                            <p className="text-[11px] font-semibold text-zinc-500 uppercase">
+                            <p className="text-[11px] font-semibold uppercase text-zinc-500">
                                 Navegação
                             </p>
                         </div>
@@ -63,10 +63,11 @@ export function AdminMobileHeader({ navLinks }: AdminMobileHeaderProps) {
                             <AdminNavLinks links={navLinks} variant="mobile" />
                         </nav>
 
-                        <div className="mt-auto space-y-1 pt-4 border-t border-zinc-100">
+                        <div className="mt-auto space-y-1 border-t border-zinc-100 pt-4">
                             <Link
                                 href="/"
                                 target="_blank"
+                                rel="noopener noreferrer"
                                 className="group flex items-center gap-3 rounded-md px-3 py-2 text-sm text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
                             >
                                 <ExternalLink className="h-4 w-4 shrink-0 text-zinc-400 group-hover:text-zinc-900" />

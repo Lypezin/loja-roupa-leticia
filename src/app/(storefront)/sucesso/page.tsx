@@ -3,17 +3,22 @@ import { AlertTriangle, Package, ShoppingBag } from "lucide-react"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/server"
+import { getSafeAbsoluteUrl } from "@/lib/url-safety"
 import { ClearCartOnSuccess } from "./ClearCart"
 import { PaymentStatusPoll } from "./PaymentStatusPoll"
-import { fetchPaymentAttempt, fetchOrderDetails, type PaymentAttemptRecord } from "./queries"
 import { StatusSummary } from "./components/StatusSummary"
+import { fetchPaymentAttempt, fetchOrderDetails, type PaymentAttemptRecord } from "./queries"
 
 const PENDING_TIMEOUT_MINUTES = 10
 
 function isExpiredPendingAttempt(attempt: PaymentAttemptRecord | null) {
-    if (!attempt || attempt.status !== "pending") return false
+    if (!attempt || attempt.status !== "pending") {
+        return false
+    }
+
     const createdAt = new Date(attempt.created_at).getTime()
     const timeoutInMs = PENDING_TIMEOUT_MINUTES * 60 * 1000
+
     return Number.isFinite(createdAt) && Date.now() - createdAt > timeoutInMs
 }
 
@@ -25,7 +30,9 @@ export default async function SucessoPage({
     const params = await searchParams
     const checkoutRef = params?.checkout_ref
 
-    if (!checkoutRef) redirect("/")
+    if (!checkoutRef) {
+        redirect("/")
+    }
 
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
@@ -61,7 +68,7 @@ export default async function SucessoPage({
     const isWarningState = currentStatus === "refunded" || currentStatus === "disputed"
     const isExpiredPending = isExpiredPendingAttempt(typedAttempt)
     const shouldPoll = Boolean(typedAttempt && !typedOrder && !isFailureState && !isWarningState && !isExpiredPending)
-    const receiptUrl = typedOrder?.payment_receipt_url || typedAttempt?.receipt_url || null
+    const receiptUrl = getSafeAbsoluteUrl(typedOrder?.payment_receipt_url || typedAttempt?.receipt_url || null)
     const hasConfirmedOrder = Boolean(typedOrder) && !isFailureState && !isWarningState
     const canClearCart = Boolean(typedOrder)
     const waitingWebhook = !typedOrder && !isFailureState && !isWarningState && !isExpiredPending
@@ -69,7 +76,6 @@ export default async function SucessoPage({
     return (
         <div className="container mx-auto flex min-h-[70vh] items-center justify-center px-4 py-20">
             <div className="max-w-lg w-full rounded-3xl border border-border bg-card p-8 text-center shadow-sm">
-                
                 <StatusSummary
                     order={typedOrder}
                     attempt={typedAttempt}
@@ -100,7 +106,7 @@ export default async function SucessoPage({
                     )}
 
                     {receiptUrl && (
-                        <a href={receiptUrl} target="_blank" rel="noreferrer" className="block">
+                        <a href={receiptUrl} target="_blank" rel="noopener noreferrer" className="block">
                             <Button variant="outline" className="h-12 w-full rounded-xl font-medium">Ver recibo</Button>
                         </a>
                     )}

@@ -31,10 +31,10 @@ function getDeliveryLabel(quote: ShippingQuoteOption) {
     }
 
     if (totalDays === 1) {
-        return "1 dia util"
+        return "1 dia útil"
     }
 
-    return `${totalDays} dias uteis`
+    return `${totalDays} dias úteis`
 }
 
 export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
@@ -128,7 +128,7 @@ export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
                         )}
                     </div>
                     <p className="mt-1 text-xs leading-6 text-muted-foreground">
-                        Calcule o frete com o mesmo CEP salvo no seu cadastro para evitar divergencia no checkout.
+                        Calcule o frete com o mesmo CEP salvo no seu cadastro para evitar divergência no checkout.
                     </p>
                 </div>
             </div>
@@ -200,14 +200,14 @@ export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
                                         </p>
                                         <p className="text-xs text-muted-foreground">
                                             {getDeliveryLabel(quote)}
-                                            {quote.processing_days > 0 ? ` ja com ${quote.processing_days} dia(s) de preparo` : ""}
+                                            {quote.processing_days > 0 ? ` já com ${quote.processing_days} dia(s) de preparo` : ""}
                                         </p>
                                     </div>
                                 </div>
 
                                 <div className="text-right">
                                     <p className={`text-sm font-semibold ${quote.is_free_shipping ? "text-emerald-600" : "text-foreground"}`}>
-                                        {quote.is_free_shipping ? "Gratis" : formatCurrency(quote.cost)}
+                                        {quote.is_free_shipping ? "Grátis" : formatCurrency(quote.cost)}
                                     </p>
                                     {quote.is_free_shipping && quote.provider_cost > 0 && (
                                         <p className="text-[11px] text-muted-foreground line-through">

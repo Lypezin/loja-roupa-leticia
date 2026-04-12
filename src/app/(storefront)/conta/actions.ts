@@ -2,23 +2,16 @@
 
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { createClient } from "@/lib/supabase/server"
 import { getSiteUrl } from "@/lib/site-url"
-
-function getSafeRedirectPath(value: FormDataEntryValue | null, fallback: string) {
-    if (typeof value !== "string" || value.length === 0 || !value.startsWith("/")) {
-        return fallback
-    }
-
-    return value
-}
+import { createClient } from "@/lib/supabase/server"
+import { getSafeRelativePath } from "@/lib/url-safety"
 
 export async function loginCliente(formData: FormData) {
     const supabase = await createClient()
 
     const email = (formData.get("email") as string)?.trim()
     const password = formData.get("password") as string
-    const nextPath = getSafeRedirectPath(formData.get("next"), "/conta")
+    const nextPath = getSafeRelativePath(formData.get("next"), "/conta") || "/conta"
 
     const { error } = await supabase.auth.signInWithPassword({ email, password })
 

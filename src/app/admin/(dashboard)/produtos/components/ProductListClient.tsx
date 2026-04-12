@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from "react"
 import { Loader2, Package, Plus, Search } from "lucide-react"
-import { AdminPageHeader } from "@/components/admin/layout/AdminPageHeader"
 import { AdminRouteButton } from "@/components/admin/AdminRouteButton"
+import { AdminPageHeader } from "@/components/admin/layout/AdminPageHeader"
 import { Input } from "@/components/ui/input"
 import { ProductTable, type ProductTableProduct } from "./ProductTable"
 
@@ -39,14 +39,6 @@ export function ProductListClient({ products }: ProductListClientProps) {
     }, [normalizedQuery, products, statusFilter])
 
     const activeProducts = products.filter((product) => Boolean(product.is_active)).length
-    const hiddenProducts = products.length - activeProducts
-    const uncategorizedProducts = products.filter((product) => {
-        const category = product.category
-        if (Array.isArray(category)) {
-            return !category[0]?.name
-        }
-        return !category?.name
-    }).length
 
     return (
         <div className="flex flex-col gap-6">
@@ -81,15 +73,20 @@ export function ProductListClient({ products }: ProductListClientProps) {
                         />
                     </div>
 
-                    <select
-                        value={statusFilter}
-                        onChange={(event) => setStatusFilter(event.target.value as StatusFilter)}
-                        className="h-10 rounded-md border border-zinc-200 bg-white px-3 text-sm font-medium text-zinc-900"
-                    >
-                        <option value="all">Todos os Status</option>
-                        <option value="active">Ativos</option>
-                        <option value="hidden">Ocultos</option>
-                    </select>
+                    <div className="flex items-center gap-3">
+                        <span className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600">
+                            {activeProducts} ativo(s)
+                        </span>
+                        <select
+                            value={statusFilter}
+                            onChange={(event) => setStatusFilter(event.target.value as StatusFilter)}
+                            className="h-10 rounded-md border border-zinc-200 bg-white px-3 text-sm font-medium text-zinc-900"
+                        >
+                            <option value="all">Todos os status</option>
+                            <option value="active">Ativos</option>
+                            <option value="hidden">Ocultos</option>
+                        </select>
+                    </div>
                 </div>
 
                 {filteredProducts.length > 0 ? (

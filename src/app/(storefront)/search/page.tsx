@@ -1,7 +1,7 @@
 import { Search } from "lucide-react"
-import { createPublicClient } from "@/lib/supabase/public"
-import { ProductCard } from "@/components/store/ProductCard"
 import { PaginationControls } from "@/components/store/PaginationControls"
+import { ProductCard } from "@/components/store/ProductCard"
+import { createPublicClient } from "@/lib/supabase/public"
 
 const SEARCH_RESULTS_PER_PAGE = 12
 
@@ -13,18 +13,22 @@ type SearchProduct = {
     images?: { image_url: string; is_primary: boolean | null; display_order?: number | null }[]
 }
 
-export const revalidate = 60
+function buildSearchFilter(term: string, categoryIds: string[], productIds: string[]) {
+    const safeTerm = term.replace(/[(),]/g, " ").trim()
+    const filters = [`name.ilike.%${safeTerm}%`]
 
-function buildSearchFilter(term: string, categoryIds: string[]) {
-    if (categoryIds.length === 0) {
-        return null
+    if (categoryIds.length > 0) {
+        filters.push(`category_id.in.(${categoryIds.join(",")})`)
     }
 
-    const safeTerm = term.replace(/[(),]/g, " ").trim()
-    const encodedCategoryIds = categoryIds.join(",")
+    if (productIds.length > 0) {
+        filters.push(`id.in.(${productIds.join(",")})`)
+    }
 
-    return `name.ilike.%${safeTerm}%,category_id.in.(${encodedCategoryIds})`
+    return filters.join(",")
 }
+
+export const revalidate = 60
 
 export default async function SearchPage({
     searchParams
@@ -54,13 +58,24 @@ export default async function SearchPage({
         )
     }
 
-    const { data: matchingCategories } = await supabase
-        .from("categories")
-        .select("id")
-        .ilike("name", `%${queryTerm}%`)
+    const [{ data: matchingCategories }, { data: matchingVariationProducts }] = await Promise.all([
+        supabase
+            .from("categories")
+            .select("id")
+            .ilike("name", `%${queryTerm}%`),
+        supabase
+            .from("product_variations")
+            .select("product_id")
+            .ilike("color", `%${queryTerm}%`),
+    ])
 
     const matchingCategoryIds = (matchingCategories || []).map((category) => category.id)
-    const searchFilter = buildSearchFilter(queryTerm, matchingCategoryIds)
+    const matchingProductIds = [...new Set(
+        (matchingVariationProducts || [])
+            .map((variation) => variation.product_id)
+            .filter((productId): productId is string => typeof productId === "string" && productId.length > 0),
+    )]
+    const searchFilter = buildSearchFilter(queryTerm, matchingCategoryIds, matchingProductIds)
 
     const productQuery = supabase
         .from("products")
@@ -79,12 +94,8 @@ export default async function SearchPage({
         .eq("is_active", true)
 
     const [{ data: products }, { count }] = await Promise.all([
-        searchFilter
-            ? productQuery.or(searchFilter)
-            : productQuery.ilike("name", `%${queryTerm}%`),
-        searchFilter
-            ? countQuery.or(searchFilter)
-            : countQuery.ilike("name", `%${queryTerm}%`),
+        productQuery.or(searchFilter),
+        countQuery.or(searchFilter),
     ])
 
     const results = (products || []) as SearchProduct[]

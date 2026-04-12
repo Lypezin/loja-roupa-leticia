@@ -100,7 +100,7 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                                             <a
                                                 href={order.payment_receipt_url}
                                                 target="_blank"
-                                                rel="noreferrer"
+                                                rel="noopener noreferrer"
                                                 className="cursor-pointer text-xs font-medium text-primary hover:underline"
                                             >
                                                 Ver recibo

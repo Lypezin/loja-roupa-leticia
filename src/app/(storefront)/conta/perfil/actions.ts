@@ -4,14 +4,7 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { normalizeBrazilPhone, normalizeCpf, normalizePostalCode } from "@/lib/customer-profile"
 import { createClient } from "@/lib/supabase/server"
-
-function getSafeRedirectPath(value: FormDataEntryValue | null) {
-    if (typeof value !== "string" || value.length === 0 || !value.startsWith("/")) {
-        return null
-    }
-
-    return value
-}
+import { getSafeRelativePath } from "@/lib/url-safety"
 
 export async function atualizarPerfil(formData: FormData) {
     const supabase = await createClient()
@@ -29,7 +22,7 @@ export async function atualizarPerfil(formData: FormData) {
     const city = (formData.get("city") as string)?.trim()
     const state = (formData.get("state") as string)?.trim()
     const postalCode = (formData.get("postalCode") as string)?.trim()
-    const nextPath = getSafeRedirectPath(formData.get("next"))
+    const nextPath = getSafeRelativePath(formData.get("next"))
 
     const normalizedPhone = normalizeBrazilPhone(phone)
     const normalizedCpf = normalizeCpf(cpf)

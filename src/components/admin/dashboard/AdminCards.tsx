@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import {
-    ArrowUpRight,
     DollarSign,
     Package,
     PlusCircle,
@@ -10,7 +9,6 @@ import {
     ShoppingCart,
     Tags,
 } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 const ICONS = {
     DollarSign,
@@ -76,7 +74,7 @@ export function AdminActionCard({
                     </div>
                 </div>
 
-                <div className="space-y-1.5 flex-1">
+                <div className="flex-1 space-y-1.5">
                     <p className="text-sm font-semibold text-zinc-950">{label}</p>
                     <p className="text-sm text-zinc-500">{desc}</p>
                 </div>

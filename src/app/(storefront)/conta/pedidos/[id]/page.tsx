@@ -157,7 +157,7 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
                                 </div>
                                 <div className="flex justify-between text-muted-foreground">
                                     <span>Frete</span>
-                                    <span>{shippingAmount > 0 ? formatCurrency(shippingAmount) : "Gratis"}</span>
+                                    <span>{shippingAmount > 0 ? formatCurrency(shippingAmount) : "Grátis"}</span>
                                 </div>
                                 <div className="flex justify-between border-t border-border pt-4 text-lg font-semibold text-foreground">
                                     <span>Total</span>

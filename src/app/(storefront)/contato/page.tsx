@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ArrowUpRight, Instagram, Mail, MessageCircle } from "lucide-react"
 import { getStoreSettings } from "@/lib/storefront"
+import { getSafeAbsoluteUrl } from "@/lib/url-safety"
 
 export const revalidate = 60
 
@@ -26,19 +27,19 @@ export default async function ContatoPage() {
             icon: Mail,
             title: "E-mail",
             value: settings?.support_email || null,
-            href: settings?.support_email ? `mailto:${settings.support_email}` : null,
+            href: settings?.support_email ? getSafeAbsoluteUrl(`mailto:${settings.support_email}`, ["mailto:"]) : null,
         },
         {
             icon: MessageCircle,
             title: "WhatsApp",
             value: settings?.whatsapp_number || null,
-            href: getWhatsAppHref(settings?.whatsapp_number),
+            href: getSafeAbsoluteUrl(getWhatsAppHref(settings?.whatsapp_number)),
         },
         {
             icon: Instagram,
             title: "Instagram",
             value: getInstagramValue(settings?.instagram_url),
-            href: settings?.instagram_url || null,
+            href: getSafeAbsoluteUrl(settings?.instagram_url),
         },
     ].filter((contact) => contact.value && contact.href)
 
@@ -60,7 +61,7 @@ export default async function ContatoPage() {
                                 key={contact.title}
                                 href={contact.href!}
                                 target="_blank"
-                                rel="noreferrer"
+                                rel="noopener noreferrer"
                                 className={`surface-card hover-lift-soft animate-enter-soft group flex items-center justify-between rounded-[1.6rem] p-5 ${index === 0 ? "" : index === 1 ? "animate-enter-delay-1" : "animate-enter-delay-2"}`}
                             >
                                 <div className="flex min-w-0 items-center gap-4">
@@ -78,7 +79,7 @@ export default async function ContatoPage() {
                     </div>
                 ) : (
                     <div className="surface-card mt-8 rounded-[1.8rem] p-6 text-center">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">canais em atualizacao</p>
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">canais em atualização</p>
                         <p className="mt-3 text-sm leading-7 text-foreground">
                             Estamos ajustando os contatos públicos da loja. Em breve todos os atalhos aparecem aqui.
                         </p>

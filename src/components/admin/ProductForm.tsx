@@ -151,8 +151,6 @@ export function ProductForm({ categories, product, shippingDefaults }: ProductFo
         }
     }
 
-    const effectiveVariationCount = variations.filter((variation) => variation.size.trim() || variation.color.trim()).length
-
     return (
         <form action={handleSubmit} className="flex w-full flex-col gap-6">
             <div className="space-y-6">

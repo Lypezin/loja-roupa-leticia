@@ -27,7 +27,7 @@ function CadastroForm() {
 
                 {errorMsg && (
                     <div className="mt-6 rounded-[1.2rem] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                        {decodeURIComponent(errorMsg)}
+                        {errorMsg}
                     </div>
                 )}
 

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { readCustomerProfile } from "@/lib/customer-profile"
 import { createClient } from "@/lib/supabase/server"
+import { getSafeRelativePath } from "@/lib/url-safety"
 import { atualizarPerfil } from "./actions"
 
 export default async function PerfilPage({
@@ -21,7 +22,7 @@ export default async function PerfilPage({
     const params = await searchParams
     const successMessage = params?.success
     const errorMessage = params?.error
-    const nextPath = params?.next || ""
+    const nextPath = getSafeRelativePath(params?.next, "") || ""
     const reason = params?.reason
     const profile = readCustomerProfile(user)
     const metadata = user.user_metadata && typeof user.user_metadata === "object"

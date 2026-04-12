@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image"
-import { ImageIcon, Loader2, Plus, Upload } from "lucide-react"
+import { ImageIcon, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ACCEPTED_IMAGE_INPUT } from "@/lib/uploads"
@@ -13,7 +13,7 @@ interface CategoryFormProps {
     handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     handleCreate: (e: React.FormEvent) => void
     isLoading: boolean
-    categoriesCount: number
+    categoriesCount?: number
 }
 
 export function CategoryForm({
@@ -23,7 +23,6 @@ export function CategoryForm({
     handleImageChange,
     handleCreate,
     isLoading,
-    categoriesCount,
 }: CategoryFormProps) {
     return (
         <form
@@ -32,7 +31,7 @@ export function CategoryForm({
         >
             <div className="space-y-1">
                 <h2 className="text-lg font-semibold text-zinc-950">
-                    Nova Categoria
+                    Nova categoria
                 </h2>
                 <p className="text-sm text-zinc-500">
                     Crie uma nova coleção para organizar seus produtos.
@@ -46,7 +45,7 @@ export function CategoryForm({
                     </label>
                     <Input
                         id="name"
-                        placeholder="Ex.: Camisetas, vestidos, acessórios"
+                        placeholder="Ex.: camisetas, vestidos, acessórios"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         disabled={isLoading}
@@ -96,9 +95,7 @@ export function CategoryForm({
                         Criando...
                     </>
                 ) : (
-                    <>
-                        Criar Categoria
-                    </>
+                    "Criar categoria"
                 )}
             </Button>
         </form>

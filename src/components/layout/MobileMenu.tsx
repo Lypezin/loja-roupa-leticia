@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from "react"
 import { X } from "lucide-react"
-import { MobileSearch } from "./MobileSearch"
 import { MobileNav } from "./MobileNav"
+import { MobileSearch } from "./MobileSearch"
 
 interface Category {
     id: string
@@ -66,7 +66,7 @@ export function MobileMenu({ isOpen, onClose, categories, storeName }: MobileMen
                         <div>
                             <span className="eyebrow mb-2">menu</span>
                             <p id="store-mobile-menu-title" className="font-display text-[1.45rem] leading-none text-foreground">
-                                {storeName || "FASHION STORE"}
+                                {storeName || "Loja"}
                             </p>
                         </div>
                         <button

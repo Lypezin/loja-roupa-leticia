@@ -6,7 +6,7 @@ function normalizeSiteUrl(value: string) {
     try {
         parsedUrl = new URL(value)
     } catch {
-        throw new Error('NEXT_PUBLIC_SITE_URL invalida.')
+        throw new Error('NEXT_PUBLIC_SITE_URL inválida.')
     }
 
     if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
@@ -31,5 +31,5 @@ export function getSiteUrl() {
         return LOCAL_DEV_SITE_URL
     }
 
-    throw new Error('NEXT_PUBLIC_SITE_URL ausente em producao.')
+    throw new Error('NEXT_PUBLIC_SITE_URL ausente em produção.')
 }

@@ -12,15 +12,41 @@ type StatusSummaryProps = {
     checkoutRef: string
 }
 
-export function StatusSummary({ order, attempt, isFailureState, isWarningState, isExpiredPending, hasConfirmedOrder, checkoutRef }: StatusSummaryProps) {
+export function StatusSummary({
+    order,
+    attempt,
+    isFailureState,
+    isWarningState,
+    isExpiredPending,
+    hasConfirmedOrder,
+    checkoutRef,
+}: StatusSummaryProps) {
     const currentStatus = order?.status || attempt?.status || "pending"
-    
-    // Configurações de UI baseadas no estado
-    const title = hasConfirmedOrder ? "Pedido confirmado!" : isFailureState ? "Pagamento não concluído" : currentStatus === "refunded" ? "Pagamento reembolsado" : currentStatus === "disputed" ? "Pagamento em análise" : isExpiredPending ? "Pagamento em verificação" : "Pagamento recebido"
-    const description = hasConfirmedOrder ? "Seu pagamento foi confirmado e o pedido já está salvo na sua conta." : isFailureState ? "Não conseguimos confirmar este pagamento. Você pode voltar ao carrinho e tentar novamente." : currentStatus === "refunded" ? "O pagamento foi reembolsado e não gerou um pedido ativo." : currentStatus === "disputed" ? "Recebemos uma sinalização sobre este pagamento e o pedido foi pausado para análise." : isExpiredPending ? "O pagamento foi recebido, mas a confirmação automática demorou mais do que o esperado. Se o valor já saiu da sua conta, fale com a loja e informe o código do checkout." : "Aguardando a confirmação final do webhook da AbacatePay. Esta página atualiza sozinha em alguns segundos."
+    const title = hasConfirmedOrder
+        ? "Pedido confirmado!"
+        : isFailureState
+            ? "Pagamento não concluído"
+            : currentStatus === "refunded"
+                ? "Pagamento reembolsado"
+                : currentStatus === "disputed"
+                    ? "Pagamento em análise"
+                    : isExpiredPending
+                        ? "Pagamento em verificação"
+                        : "Pagamento recebido"
+    const description = hasConfirmedOrder
+        ? "Seu pagamento foi confirmado e o pedido já está salvo na sua conta."
+        : isFailureState
+            ? "Não conseguimos confirmar este pagamento. Você pode voltar ao carrinho e tentar novamente."
+            : currentStatus === "refunded"
+                ? "O pagamento foi reembolsado e não gerou um pedido ativo."
+                : currentStatus === "disputed"
+                    ? "Recebemos uma sinalização sobre este pagamento e o pedido foi pausado para análise."
+                    : isExpiredPending
+                        ? "O pagamento foi recebido, mas a confirmação automática demorou mais do que o esperado. Se o valor já saiu da sua conta, fale com a loja e informe o código do checkout."
+                        : "Aguardando a confirmação final do webhook da AbacatePay. Esta página atualiza sozinha em alguns segundos."
     const paymentMethod = order?.payment_method || attempt?.payment_method
     const methodLabel = paymentMethod?.includes(",") ? "Métodos aceitos" : "Método"
-    
+
     const Icon = hasConfirmedOrder ? CheckCircle : isFailureState ? XCircle : isWarningState || isExpiredPending ? AlertTriangle : CheckCircle
     const iconWrapperClassName = hasConfirmedOrder ? "bg-emerald-100" : isFailureState ? "bg-red-100" : isWarningState || isExpiredPending ? "bg-amber-100" : "bg-emerald-100"
     const iconClassName = hasConfirmedOrder ? "text-emerald-600" : isFailureState ? "text-red-600" : isWarningState || isExpiredPending ? "text-amber-600" : "text-emerald-600"

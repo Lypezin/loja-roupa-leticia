@@ -1,3 +1,4 @@
+import { timingSafeEqual } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { verifyAbacatePaySignature } from '@/lib/abacatepay'
 import { extractPaymentEventDetails } from '@/lib/abacatepay/webhook-utils'
@@ -8,6 +9,18 @@ import {
     handleFailedEvent
 } from '@/lib/abacatepay/webhook-handlers'
 
+function matchesConfiguredSecret(requestSecret: string | null, configuredSecret: string) {
+    if (!requestSecret) {
+        return false
+    }
+
+    const expectedBuffer = Buffer.from(configuredSecret)
+    const receivedBuffer = Buffer.from(requestSecret)
+
+    return expectedBuffer.length === receivedBuffer.length
+        && timingSafeEqual(expectedBuffer, receivedBuffer)
+}
+
 export async function POST(req: Request) {
     const configuredSecret = process.env.ABACATEPAY_WEBHOOK_SECRET?.trim()
     const requestUrl = new URL(req.url)
@@ -15,7 +28,7 @@ export async function POST(req: Request) {
     const signature = req.headers.get('X-Webhook-Signature')
     const rawBody = await req.text()
 
-    if (!configuredSecret || !requestSecret || requestSecret !== configuredSecret) {
+    if (!configuredSecret || !matchesConfiguredSecret(requestSecret, configuredSecret)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

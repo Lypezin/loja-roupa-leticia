@@ -25,11 +25,11 @@ export function AdminSidebar({ navLinks }: AdminSidebarProps) {
 
             <div className="flex flex-1 flex-col overflow-y-auto px-4 py-4">
                 <div className="mb-4 px-2 tracking-wider">
-                    <p className="text-[11px] font-semibold text-zinc-500 uppercase">
+                    <p className="text-[11px] font-semibold uppercase text-zinc-500">
                         Navegação
                     </p>
                 </div>
-                
+
                 <nav className="flex-1 space-y-1">
                     <AdminNavLinks links={navLinks} variant="desktop" />
                 </nav>
@@ -38,6 +38,7 @@ export function AdminSidebar({ navLinks }: AdminSidebarProps) {
                     <Link
                         href="/"
                         target="_blank"
+                        rel="noopener noreferrer"
                         className="group flex items-center gap-3 rounded-md px-3 py-2 text-sm text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
                     >
                         <ExternalLink className="h-4 w-4 shrink-0 text-zinc-400 group-hover:text-zinc-900" />

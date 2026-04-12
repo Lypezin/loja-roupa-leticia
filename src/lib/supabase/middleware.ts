@@ -4,14 +4,24 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { isAdminUser } from './auth'
 
 export async function updateSession(request: NextRequest) {
+    const pathName = request.nextUrl.pathname
+    const isAdminRoute = pathName.startsWith('/admin') && pathName !== '/admin/login'
+    const isAccountRoute = pathName.startsWith('/conta') || pathName === '/sucesso' || pathName.startsWith('/auth')
+
     let supabaseResponse = NextResponse.next({
         request,
     })
 
-    // Prevenir que o middleware quebre caso o ambiente esteja incompleto.
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-        console.warn('Variaveis de ambiente do Supabase ausentes.')
-        return supabaseResponse
+        console.warn('Variáveis de ambiente do Supabase ausentes.')
+
+        const fallbackUrl = request.nextUrl.clone()
+        fallbackUrl.pathname = isAdminRoute ? '/admin/login' : '/'
+        fallbackUrl.search = ''
+
+        return isAdminRoute || isAccountRoute
+            ? NextResponse.redirect(fallbackUrl)
+            : supabaseResponse
     }
 
     const supabase = createServerClient(
@@ -39,8 +49,7 @@ export async function updateSession(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser()
 
-    const isAdminRoute = request.nextUrl.pathname.startsWith('/admin') && request.nextUrl.pathname !== '/admin/login'
-    const isAdminLoginRoute = request.nextUrl.pathname === '/admin/login'
+    const isAdminLoginRoute = pathName === '/admin/login'
     const isAdmin = isAdminUser(user)
 
     if (isAdminRoute && !isAdmin) {

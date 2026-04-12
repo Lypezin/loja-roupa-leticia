@@ -30,6 +30,9 @@ export function createServiceRoleClient(context: string) {
         })
     }
 
-    console.info(`[supabase-service-role] ${context}`)
+    if (process.env.NODE_ENV !== 'production') {
+        console.info(`[supabase-service-role] ${context}`)
+    }
+
     return cachedClient
 }
