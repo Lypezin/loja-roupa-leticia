@@ -51,67 +51,45 @@ export function ProductListClient({ products }: ProductListClientProps) {
     return (
         <div className="flex flex-col gap-6">
             <AdminPageHeader
-                eyebrow="Catálogo"
-                title="Produtos com edição mais clara."
-                description="Gerencie o catálogo com uma leitura mais objetiva: busca, status, categoria, capa e acesso direto ao formulário completo."
+                title="Produtos"
                 actions={
                     <AdminRouteButton
                         href="/admin/produtos/novo"
-                        className="h-12 rounded-full bg-zinc-950 px-6 text-white hover:bg-zinc-800"
+                        className="h-10 rounded-md bg-zinc-950 px-4 text-sm font-medium text-white hover:bg-zinc-800"
                         pendingContent={
                             <>
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                                Abrindo formulário...
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Carregando...
                             </>
                         }
                     >
-                        <Plus className="h-4 w-4" />
-                        Cadastrar produto
+                        <Plus className="mr-2 h-4 w-4" />
+                        Cadastrar
                     </AdminRouteButton>
                 }
-                metrics={[
-                    { label: "Catálogo total", value: String(products.length), description: "Todos os itens cadastrados." },
-                    { label: "Ativos", value: String(activeProducts), description: "Produtos visíveis na loja." },
-                    { label: "Ocultos", value: String(hiddenProducts), description: "Itens fora da vitrine." },
-                    { label: "Sem categoria", value: String(uncategorizedProducts), description: "Produtos que ainda precisam de organização." },
-                ]}
             />
 
-            <section className="overflow-hidden rounded-[1.8rem] border border-zinc-200/80 bg-white/90 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
-                <div className="flex flex-col gap-4 border-b border-zinc-200/80 px-6 py-5 xl:flex-row xl:items-center xl:justify-between">
-                    <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                            Lista operacional
-                        </p>
-                        <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-zinc-950">
-                            Catálogo e filtros
-                        </h2>
-                        <p className="mt-2 text-sm leading-6 text-zinc-600">
-                            Busque por nome ou categoria e alterne rapidamente entre produtos ativos e ocultos.
-                        </p>
+            <section className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
+                <div className="flex flex-col gap-4 border-b border-zinc-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="relative w-full max-w-sm">
+                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+                        <Input
+                            value={query}
+                            onChange={(event) => setQuery(event.target.value)}
+                            placeholder="Buscar por nome ou categoria..."
+                            className="h-10 pl-9"
+                        />
                     </div>
 
-                    <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-                        <div className="relative w-full max-w-md">
-                            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
-                            <Input
-                                value={query}
-                                onChange={(event) => setQuery(event.target.value)}
-                                placeholder="Buscar por nome ou categoria..."
-                                className="h-11 rounded-full border-zinc-200 bg-zinc-50/60 pl-10"
-                            />
-                        </div>
-
-                        <select
-                            value={statusFilter}
-                            onChange={(event) => setStatusFilter(event.target.value as StatusFilter)}
-                            className="h-11 cursor-pointer rounded-full border border-zinc-200 bg-zinc-50/60 px-4 text-sm font-medium text-zinc-700"
-                        >
-                            <option value="all">Todos</option>
-                            <option value="active">Ativos</option>
-                            <option value="hidden">Ocultos</option>
-                        </select>
-                    </div>
+                    <select
+                        value={statusFilter}
+                        onChange={(event) => setStatusFilter(event.target.value as StatusFilter)}
+                        className="h-10 rounded-md border border-zinc-200 bg-white px-3 text-sm font-medium text-zinc-900"
+                    >
+                        <option value="all">Todos os Status</option>
+                        <option value="active">Ativos</option>
+                        <option value="hidden">Ocultos</option>
+                    </select>
                 </div>
 
                 {filteredProducts.length > 0 ? (

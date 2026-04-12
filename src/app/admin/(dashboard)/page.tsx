@@ -68,9 +68,9 @@ export default async function AdminDashboard() {
     ]
 
     const quickActions = [
-        { href: "/admin/produtos/novo", icon: "PlusCircle" as const, label: "Cadastrar produto", desc: "Monte o item completo com imagens, variações e frete." },
-        { href: "/admin/categorias", icon: "Tags" as const, label: "Organizar categorias", desc: "Revise coleções, capas e distribuição do catálogo." },
-        { href: "/admin/configuracoes", icon: "Settings" as const, label: "Ajustar a loja", desc: "Atualize marca, home, contatos e logística." },
+        { href: "/admin/produtos/novo", icon: "PlusCircle" as const, label: "Cadastrar produto", desc: "Adicionar novo item" },
+        { href: "/admin/categorias", icon: "Tags" as const, label: "Categorias", desc: "Gerenciar coleções" },
+        { href: "/admin/configuracoes", icon: "Settings" as const, label: "Configurações", desc: "Ajustes gerais da loja" },
     ]
 
     const activities: AdminActivityItem[] = [
@@ -112,50 +112,35 @@ export default async function AdminDashboard() {
     return (
         <div className="flex flex-col gap-6">
             <AdminPageHeader
-                eyebrow="Painel administrativo"
-                title="Operação da loja mais clara."
-                description="Acompanhe o que entrou, o que precisa de ação e onde o catálogo ainda pode ser refinado. O painel agora prioriza leitura rápida e contexto operacional."
+                eyebrow="Visão Geral"
+                title="Dashboard da loja"
+                description="Acompanhe o desempenho da loja, gerencie pedidos e produtos de forma rápida."
                 actions={
                     <Link
                         href="/admin/produtos/novo"
-                        className="inline-flex items-center justify-center rounded-full bg-zinc-950 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-800"
+                        className="inline-flex items-center justify-center rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
                     >
-                        Cadastrar produto
+                        Novo Produto
                     </Link>
                 }
-                metrics={[
-                    { label: "Vendas do mês", value: formatCurrency(salesData.totalSales), description: `${salesData.totalOrders} pedido(s) confirmados.` },
-                    { label: "Catálogo ativo", value: String(activeProducts || 0), description: `${totalProducts || 0} item(ns) cadastrados.` },
-                    { label: "Categorias", value: String(categoriesCount || 0), description: "Estrutura da navegação da loja." },
-                    { label: "Último foco", value: activities[0]?.badge || "Sem atividade", description: activities[0]?.title || "Nenhuma movimentação recente." },
-                ]}
             />
 
-            <div className="grid grid-cols-1 gap-4 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 {stats.map((stat) => (
                     <AdminStatCard key={stat.label} {...stat} />
                 ))}
             </div>
 
-            <section className="rounded-[1.8rem] border border-zinc-200/80 bg-white/90 p-6 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
-                <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+            <section className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
+                <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between mb-4">
                     <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                            Fluxos rápidos
-                        </p>
-                        <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-zinc-950">
-                            Ações mais usadas do dia
+                        <h2 className="text-lg font-semibold tracking-tight text-zinc-950">
+                            Ações Rápidas
                         </h2>
-                        <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
-                            Atalhos para catálogo, categorias e identidade da loja sem precisar navegar pelo painel inteiro.
-                        </p>
                     </div>
-                    <Link href="/admin/produtos" className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950">
-                        Ver catálogo completo
-                    </Link>
                 </div>
 
-                <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
                     {quickActions.map((action) => (
                         <AdminActionCard key={action.href} {...action} />
                     ))}

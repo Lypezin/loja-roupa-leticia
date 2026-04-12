@@ -31,23 +31,25 @@ export function AdminStatCard({
 }: {
     label: string
     value: string
-    change: string
+    change?: string
     icon: AdminDashboardIcon
 }) {
     const Icon = ICONS[icon]
 
     return (
-        <div className="rounded-[1.6rem] border border-zinc-200/80 bg-white/90 p-5 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
+        <div className="rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
             <div className="flex items-start justify-between gap-4">
-                <div className="space-y-2">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">{label}</p>
-                    <p className="text-3xl font-semibold tracking-[-0.05em] text-zinc-950">{value}</p>
+                <div className="space-y-1">
+                    <p className="text-sm font-medium text-zinc-500">{label}</p>
+                    <p className="text-2xl font-bold tracking-tight text-zinc-950">{value}</p>
                 </div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 text-zinc-700">
-                    <Icon className="h-5 w-5" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-500">
+                    <Icon className="h-4 w-4" />
                 </div>
             </div>
-            <p className="mt-4 text-sm leading-6 text-zinc-600">{change}</p>
+            {change && (
+                <p className="mt-4 text-xs text-zinc-500">{change}</p>
+            )}
         </div>
     )
 }
@@ -66,22 +68,17 @@ export function AdminActionCard({
     const Icon = ICONS[icon]
 
     return (
-        <Link href={href} className="group block">
-            <div className="flex h-full flex-col gap-4 rounded-[1.5rem] border border-zinc-200/80 bg-white/90 p-5 transition-all hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-[0_24px_50px_rgba(79,55,39,0.08)]">
+        <Link href={href} className="group block h-full">
+            <div className="flex h-full flex-col gap-4 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition-colors hover:bg-zinc-50">
                 <div className="flex items-start justify-between gap-4">
-                    <div
-                        className={cn(
-                            "flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 text-zinc-700 transition-colors group-hover:bg-zinc-950 group-hover:text-white",
-                        )}
-                    >
-                        <Icon className="h-5 w-5" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-600 transition-colors group-hover:border-zinc-300 group-hover:text-zinc-950">
+                        <Icon className="h-4 w-4" />
                     </div>
-                    <ArrowUpRight className="h-4 w-4 text-zinc-400 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-zinc-900" />
                 </div>
 
-                <div className="space-y-2">
-                    <p className="text-base font-semibold tracking-[-0.03em] text-zinc-950">{label}</p>
-                    <p className="text-sm leading-6 text-zinc-600">{desc}</p>
+                <div className="space-y-1.5 flex-1">
+                    <p className="text-sm font-semibold text-zinc-950">{label}</p>
+                    <p className="text-sm text-zinc-500">{desc}</p>
                 </div>
             </div>
         </Link>

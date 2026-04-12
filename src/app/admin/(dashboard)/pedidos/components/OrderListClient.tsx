@@ -50,11 +50,11 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
             <Table>
                 <TableHeader className="bg-zinc-50/80">
                     <TableRow className="hover:bg-transparent">
-                        <TableHead className="py-4 pl-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Data</TableHead>
-                        <TableHead className="py-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Cliente</TableHead>
-                        <TableHead className="py-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Itens e pagamento</TableHead>
-                        <TableHead className="py-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Total</TableHead>
-                        <TableHead className="py-4 pr-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Status</TableHead>
+                        <TableHead className="py-4 pl-6 text-xs font-semibold text-zinc-500">Data</TableHead>
+                        <TableHead className="py-4 text-xs font-semibold text-zinc-500">Cliente</TableHead>
+                        <TableHead className="py-4 text-xs font-semibold text-zinc-500">Itens e pagamento</TableHead>
+                        <TableHead className="py-4 text-xs font-semibold text-zinc-500">Total</TableHead>
+                        <TableHead className="py-4 pr-6 text-xs font-semibold text-zinc-500">Status</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -72,7 +72,7 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                                         <p className="text-sm font-semibold text-zinc-950">
                                             {new Date(order.created_at).toLocaleDateString("pt-BR")}
                                         </p>
-                                        <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                                        <p className="text-xs font-medium text-zinc-500">
                                             {new Date(order.created_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
                                         </p>
                                     </div>
@@ -88,7 +88,7 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                                         <div className="text-balance leading-6 text-zinc-700">
                                             {order.order_items?.map((item) => `${item.quantity}x ${item.products?.name || "Item"}`).join(", ") || "Nenhum item"}
                                         </div>
-                                        <div className="inline-flex rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-600">
+                                        <div className="inline-flex rounded-md border border-zinc-200 bg-zinc-50 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
                                             {providerLabel}
                                         </div>
                                         {shippingLabel && (
@@ -120,7 +120,7 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                                             onValueChange={(value) => handleStatusChange(order.id, value)}
                                             disabled={isUpdating}
                                         >
-                                            <SelectTrigger className="h-11 w-[180px] rounded-full border-zinc-200 bg-zinc-50/70">
+                                            <SelectTrigger className="h-10 w-[180px] rounded-md border-zinc-200 bg-zinc-50/70">
                                                 <SelectValue placeholder="Status" />
                                             </SelectTrigger>
                                             <SelectContent>

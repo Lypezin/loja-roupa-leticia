@@ -56,7 +56,7 @@ export function CategoryTableRow({
             <TableRow className="bg-zinc-50/60">
                 <TableCell colSpan={3} className="p-4 pl-6">
                     <div className="flex flex-col gap-4 xl:flex-row xl:items-center">
-                        <label className="relative flex h-24 w-full max-w-[9rem] cursor-pointer overflow-hidden rounded-[1.2rem] border border-zinc-200 bg-white">
+                        <label className="relative flex h-24 w-full max-w-[9rem] cursor-pointer overflow-hidden rounded-md border border-zinc-200 bg-white">
                             {editImagePreview ? (
                                 <Image src={editImagePreview} alt="" fill className="object-cover" />
                             ) : (
@@ -76,11 +76,11 @@ export function CategoryTableRow({
                             <Input
                                 value={editName}
                                 onChange={(e) => setEditName(e.target.value)}
-                                className="h-11 rounded-2xl border-zinc-200 bg-white"
+                                className="h-10 rounded-md border-zinc-200 bg-white"
                                 placeholder="Nome da categoria"
                             />
-                            <p className="text-xs leading-5 text-zinc-500">
-                                Clique na imagem para trocar a capa e ajuste o nome antes de salvar.
+                            <p className="text-xs text-zinc-500">
+                                Troque a capa ou ajuste o nome antes de salvar.
                             </p>
                         </div>
 
@@ -89,16 +89,16 @@ export function CategoryTableRow({
                                 size="sm"
                                 onClick={() => handleUpdate(cat.id)}
                                 disabled={isUpdating}
-                                className="h-10 rounded-full bg-zinc-950 px-5 text-white hover:bg-zinc-800"
+                                className="h-9 px-4 text-white"
                             >
-                                {isUpdating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+                                {isUpdating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
                                 Salvar
                             </Button>
                             <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={cancelEditing}
-                                className="h-10 rounded-full border-zinc-200 px-5"
+                                className="h-9 px-4"
                             >
                                 Cancelar
                             </Button>
@@ -114,7 +114,7 @@ export function CategoryTableRow({
             <TableRow className="group transition-colors hover:bg-zinc-50/70">
                 <TableCell className="py-4 pl-6">
                     <div className="flex items-center gap-4">
-                        <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-[1.1rem] border border-zinc-200 bg-zinc-50">
+                        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md border border-zinc-200 bg-zinc-50">
                             {cat.image_url ? (
                                 <Image src={cat.image_url} alt="" fill className="object-cover" />
                             ) : (
@@ -125,14 +125,14 @@ export function CategoryTableRow({
                         </div>
                         <div className="min-w-0">
                             <p className="truncate text-sm font-semibold text-zinc-950">{cat.name}</p>
-                            <p className="mt-1 text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                            <p className="mt-1 text-xs text-zinc-500">
                                 /{cat.slug}
                             </p>
                         </div>
                     </div>
                 </TableCell>
                 <TableCell className="py-4">
-                    <div className="inline-flex items-center rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-600">
+                    <div className="inline-flex items-center rounded-md border border-zinc-200 bg-zinc-50 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
                         {cat.productsCount} item(ns)
                     </div>
                 </TableCell>
@@ -142,7 +142,7 @@ export function CategoryTableRow({
                             variant="ghost"
                             size="icon"
                             onClick={() => startEditing(cat)}
-                            className="h-10 w-10 rounded-2xl border border-transparent text-zinc-500 hover:border-zinc-200 hover:bg-white hover:text-zinc-950"
+                            className="h-9 w-9 text-zinc-500"
                         >
                             <Pencil className="h-4 w-4" />
                         </Button>
@@ -150,7 +150,7 @@ export function CategoryTableRow({
                             variant="ghost"
                             size="icon"
                             onClick={() => setDeleteOpen(true)}
-                            className="h-10 w-10 rounded-2xl border border-transparent text-zinc-500 hover:border-red-100 hover:bg-red-50 hover:text-red-700"
+                            className="h-9 w-9 text-zinc-500 hover:text-red-600"
                             disabled={isDeleting}
                         >
                             {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}

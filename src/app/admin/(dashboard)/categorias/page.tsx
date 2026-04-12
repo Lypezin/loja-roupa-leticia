@@ -37,16 +37,7 @@ export default async function CategoriasPage() {
 
     return (
         <div className="flex flex-col gap-6">
-            <AdminPageHeader
-                eyebrow="Catálogo"
-                title="Categorias bem organizadas."
-                description="Crie coleções com nome, capa e slug limpos para manter a navegação da loja mais clara. O objetivo aqui é reduzir atrito entre vitrine, busca e edição."
-                metrics={[
-                    { label: "Coleções", value: String(formattedCategories.length), description: "Categorias cadastradas no momento." },
-                    { label: "Produtos vinculados", value: String(productsLinked), description: "Itens já distribuídos nas coleções." },
-                    { label: "Sem imagem", value: String(formattedCategories.filter((category) => !category.image_url).length), description: "Categorias que ainda podem ganhar capa." },
-                ]}
-            />
+            <AdminPageHeader title="Categorias" />
 
             <CategoryManager initialCategories={formattedCategories} />
         </div>
