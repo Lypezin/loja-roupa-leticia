@@ -1,3 +1,4 @@
+import { AdminPageHeader } from "@/components/admin/layout/AdminPageHeader"
 import { ProductForm } from "@/components/admin/ProductForm"
 import { createClient } from "@/lib/supabase/server"
 
@@ -28,12 +29,15 @@ export default async function NovoProdutoPage() {
 
     return (
         <div className="flex flex-col gap-6">
-            <div>
-                <h1 className="text-2xl font-semibold tracking-tight text-foreground">Novo produto</h1>
-                <p className="mt-1 text-sm text-muted-foreground">
-                    Cadastre informações, imagens, variações e dados de frete.
-                </p>
-            </div>
+            <AdminPageHeader
+                eyebrow="Catálogo"
+                title="Novo produto."
+                description="Cadastre o item por etapas: dados principais, pacote para frete, imagens, variações e publicação. O formulário já traz o último pacote salvo como referência."
+                metrics={[
+                    { label: "Categorias", value: String(categories?.length || 0), description: "Coleções disponíveis para associar o produto." },
+                    { label: "Medidas reaproveitáveis", value: shippingDefaults ? "Sim" : "Não", description: shippingDefaults ? `Base: ${shippingDefaults.sourceProductName}.` : "Nenhum pacote salvo para copiar." },
+                ]}
+            />
 
             <ProductForm categories={categories || []} shippingDefaults={shippingDefaults} />
         </div>

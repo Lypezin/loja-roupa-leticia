@@ -32,8 +32,8 @@ export function FooterSection({ settings }: FooterSectionProps) {
     }
 
     return (
-        <form action={handleSubmit} className="space-y-8 rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm md:p-8">
-            <input type="hidden" name="id" value={settings.id || ''} />
+        <form action={handleSubmit} className="space-y-8 rounded-[1.8rem] border border-zinc-200/80 bg-white/90 p-6 shadow-[0_18px_40px_rgba(79,55,39,0.05)] md:p-8">
+            <input type="hidden" name="id" value={settings.id || ""} />
 
             <SectionHeader
                 icon={LayoutTemplate}
@@ -49,13 +49,13 @@ export function FooterSection({ settings }: FooterSectionProps) {
                 <Textarea
                     id="footer_about_text"
                     name="footer_about_text"
-                    defaultValue={settings.footer_about_text || ''}
+                    defaultValue={settings.footer_about_text || ""}
                     rows={4}
                     className="resize-none rounded-xl border-zinc-200 pt-3 focus-visible:ring-zinc-200"
                 />
             </div>
 
-            <SaveButton isLoading={isLoading} success={success} label="Salvar Rodapé" />
+            <SaveButton isLoading={isLoading} success={success} label="Salvar rodapé" />
         </form>
     )
 }

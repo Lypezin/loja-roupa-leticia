@@ -23,11 +23,11 @@ export function SettingsForm({ settings, melhorEnvio, shippingCoverage }: Settin
     }
 
     const tabs = [
-        { id: "perfil", label: "Perfil e SEO", icon: User },
-        { id: "banner", label: "Banner hero", icon: ImageIcon },
-        { id: "conteudo", label: "Página inicial", icon: Type },
-        { id: "rodape", label: "Rodapé", icon: LayoutTemplate },
-        { id: "logistica", label: "Logística", icon: Truck },
+        { id: "perfil", label: "Perfil e SEO", description: "Nome, contatos e apresentação da loja.", icon: User },
+        { id: "banner", label: "Banner hero", description: "Imagem principal e chamadas da primeira dobra.", icon: ImageIcon },
+        { id: "conteudo", label: "Página inicial", description: "Textos da home e blocos de confiança.", icon: Type },
+        { id: "rodape", label: "Rodapé", description: "Informações institucionais da loja.", icon: LayoutTemplate },
+        { id: "logistica", label: "Logística", description: "Melhor Envio, despacho e frete grátis.", icon: Truck },
     ]
 
     const renderContent = () => {
@@ -48,34 +48,49 @@ export function SettingsForm({ settings, melhorEnvio, shippingCoverage }: Settin
     }
 
     return (
-        <div className="flex flex-col items-start gap-6 lg:grid lg:grid-cols-[240px_1fr] lg:gap-6">
-            <aside className="w-full rounded-xl border border-border bg-card p-3 lg:sticky lg:top-6">
-                <p className="px-3 pb-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-                    Seções
-                </p>
-                <nav className="flex gap-1 overflow-x-auto pb-1 scrollbar-hide lg:flex-col lg:overflow-x-visible lg:pb-0">
-                    {tabs.map((tab) => {
-                        const isActive = activeTab === tab.id
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[19rem_minmax(0,1fr)]">
+            <aside className="xl:sticky xl:top-8 xl:self-start">
+                <div className="rounded-[1.8rem] border border-zinc-200/80 bg-white/90 p-4 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
+                    <div className="rounded-[1.3rem] border border-zinc-200 bg-zinc-50/70 px-4 py-4">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                            Áreas de configuração
+                        </p>
+                        <p className="mt-2 text-sm leading-6 text-zinc-600">
+                            Cada seção controla uma parte específica da experiência da loja.
+                        </p>
+                    </div>
 
-                        return (
-                            <button
-                                key={tab.id}
-                                onClick={() => setActiveTab(tab.id)}
-                                className={`group flex shrink-0 cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm transition-colors ${isActive
-                                    ? "bg-primary text-primary-foreground"
-                                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                                    }`}
-                            >
-                                <tab.icon className="h-4 w-4" />
-                                <span className="font-medium">{tab.label}</span>
-                                {isActive ? <ChevronRight className="ml-auto hidden h-3.5 w-3.5 opacity-70 lg:block" /> : null}
-                            </button>
-                        )
-                    })}
-                </nav>
+                    <nav className="mt-4 flex gap-2 overflow-x-auto pb-1 xl:flex-col xl:overflow-visible">
+                        {tabs.map((tab) => {
+                            const isActive = activeTab === tab.id
+
+                            return (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveTab(tab.id)}
+                                    className={`group flex shrink-0 cursor-pointer items-start gap-3 rounded-[1.2rem] border px-4 py-3 text-left transition-all ${isActive
+                                        ? "border-zinc-200 bg-zinc-950 text-white shadow-[0_18px_35px_rgba(70,48,34,0.14)]"
+                                        : "border-transparent bg-transparent text-zinc-600 hover:border-zinc-200 hover:bg-zinc-50 hover:text-zinc-950"
+                                        }`}
+                                >
+                                    <span className={`mt-0.5 flex h-10 w-10 items-center justify-center rounded-2xl border ${isActive ? "border-white/15 bg-white/10 text-white" : "border-zinc-200 bg-white text-zinc-600"}`}>
+                                        <tab.icon className="h-4 w-4" />
+                                    </span>
+                                    <span className="min-w-0 flex-1">
+                                        <span className="block text-sm font-semibold">{tab.label}</span>
+                                        <span className={`mt-1 block text-xs leading-5 ${isActive ? "text-white/70" : "text-zinc-500"}`}>
+                                            {tab.description}
+                                        </span>
+                                    </span>
+                                    {isActive ? <ChevronRight className="mt-1 hidden h-4 w-4 xl:block" /> : null}
+                                </button>
+                            )
+                        })}
+                    </nav>
+                </div>
             </aside>
 
-            <main className="w-full">
+            <main className="min-w-0">
                 <div key={activeTab} className="min-h-[24rem]">
                     {renderContent()}
                 </div>

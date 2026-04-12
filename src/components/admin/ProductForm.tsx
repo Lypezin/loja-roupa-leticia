@@ -164,22 +164,22 @@ export function ProductForm({ categories, product, shippingDefaults }: ProductFo
     const effectiveVariationCount = variations.filter((variation) => variation.size.trim() || variation.color.trim()).length
 
     return (
-        <form action={handleSubmit} className="mx-auto grid w-full max-w-6xl gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
+        <form action={handleSubmit} className="grid w-full gap-6 xl:grid-cols-[minmax(0,1fr)_21rem]">
             <div className="space-y-6">
-                <div className="rounded-[1.8rem] border border-zinc-200 bg-white p-5 shadow-sm md:p-6">
+                <div className="rounded-[1.8rem] border border-zinc-200/80 bg-white/90 p-5 shadow-[0_18px_40px_rgba(79,55,39,0.05)] md:p-6">
                     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                         <div className="space-y-2">
-                            <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
+                            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
                                 {isEditing ? "Edição" : "Cadastro"}
                             </p>
-                            <h2 className="text-xl font-semibold text-zinc-950">
-                                {isEditing ? "Atualize o produto com mais controle" : "Monte o produto em etapas simples"}
+                            <h2 className="text-2xl font-semibold tracking-[-0.04em] text-zinc-950">
+                                {isEditing ? "Ajuste o produto com contexto completo" : "Monte o produto em etapas simples"}
                             </h2>
-                            <p className="max-w-2xl text-sm leading-6 text-zinc-600">
+                            <p className="max-w-2xl text-sm leading-7 text-zinc-600">
                                 Primeiro defina os dados principais e o pacote de frete. Depois organize imagens, variações e visibilidade.
                             </p>
                         </div>
-                        <Button asChild variant="outline" className="rounded-full">
+                        <Button asChild variant="outline" className="rounded-full border-zinc-200 px-5">
                             <Link href="/admin/produtos">Voltar para produtos</Link>
                         </Button>
                     </div>
@@ -206,18 +206,18 @@ export function ProductForm({ categories, product, shippingDefaults }: ProductFo
                         onChange={handleVariationChange}
                     />
 
-                    <section className="rounded-[1.6rem] border border-zinc-200 bg-white p-5 md:p-6">
+                    <section className="rounded-[1.6rem] border border-zinc-200/80 bg-white/90 p-5 shadow-[0_18px_40px_rgba(79,55,39,0.05)] md:p-6">
                         <div className="flex items-center gap-3">
-                            <span className="flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-700">
+                            <span className="flex h-11 w-11 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 text-zinc-700">
                                 <CheckCircle2 className="h-5 w-5" />
                             </span>
                             <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">Publicação</p>
+                                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Publicação</p>
                                 <h3 className="mt-2 text-lg font-semibold text-zinc-950">Status do produto</h3>
                             </div>
                         </div>
 
-                        <div className="mt-5 flex items-center gap-2 rounded-2xl border border-zinc-200 bg-zinc-50/70 px-4 py-3">
+                        <div className="mt-5 flex items-center gap-3 rounded-[1.2rem] border border-zinc-200 bg-zinc-50/70 px-4 py-3">
                             <input
                                 type="checkbox"
                                 id="is_active"
@@ -232,11 +232,11 @@ export function ProductForm({ categories, product, shippingDefaults }: ProductFo
                         </div>
                     </section>
 
-                    <div className="rounded-[1.8rem] border border-zinc-200 bg-zinc-950 p-5 text-white shadow-sm md:p-6">
+                    <div className="rounded-[1.8rem] border border-zinc-950 bg-zinc-950 p-5 text-white shadow-[0_18px_40px_rgba(25,20,18,0.18)] md:p-6">
                         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                             <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/60">Finalização</p>
-                                <p className="mt-2 text-sm leading-6 text-white/80">
+                                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60">Finalização</p>
+                                <p className="mt-2 text-sm leading-6 text-white/75">
                                     O cadastro só é salvo quando imagens, variações e medidas estiverem consistentes.
                                 </p>
                             </div>
@@ -260,8 +260,8 @@ export function ProductForm({ categories, product, shippingDefaults }: ProductFo
             </div>
 
             <aside className="space-y-4 xl:sticky xl:top-8 xl:self-start">
-                <div className="rounded-[1.6rem] border border-zinc-200 bg-white p-5 shadow-sm">
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">Checklist</p>
+                <div className="rounded-[1.6rem] border border-zinc-200/80 bg-white/90 p-5 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Checklist</p>
                     <div className="mt-4 space-y-3 text-sm text-zinc-600">
                         <div className="flex items-start gap-3">
                             <Package2 className="mt-0.5 h-4 w-4 text-zinc-400" />
@@ -286,10 +286,10 @@ export function ProductForm({ categories, product, shippingDefaults }: ProductFo
                     </div>
                 </div>
 
-                <div className="rounded-[1.6rem] border border-amber-200 bg-amber-50/80 p-5">
+                <div className="rounded-[1.6rem] border border-amber-200 bg-amber-50/85 p-5">
                     <div className="flex items-center gap-2">
                         <AlertCircle className="h-4 w-4 text-amber-700" />
-                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-amber-800">Ponto de atenção</p>
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-800">Ponto de atenção</p>
                     </div>
                     <p className="mt-3 text-sm leading-6 text-amber-900">
                         As medidas precisam representar o produto já embalado. Se o pacote mudar, a cotação do frete muda junto.

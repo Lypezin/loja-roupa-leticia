@@ -36,7 +36,7 @@ export function AdminConfirmDialog({
 }: AdminConfirmDialogProps) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="rounded-[1.5rem] p-6 sm:max-w-md">
+            <DialogContent className="rounded-[1.8rem] border-zinc-200/80 bg-white/95 p-6 shadow-[0_24px_80px_rgba(79,55,39,0.12)] sm:max-w-md">
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
                     <DialogDescription className="leading-6">
@@ -50,7 +50,7 @@ export function AdminConfirmDialog({
                         variant="outline"
                         onClick={() => onOpenChange(false)}
                         disabled={isLoading}
-                        className="rounded-xl"
+                        className="rounded-full border-zinc-200"
                     >
                         {cancelLabel}
                     </Button>
@@ -59,7 +59,7 @@ export function AdminConfirmDialog({
                         variant={confirmVariant}
                         onClick={onConfirm}
                         disabled={isLoading}
-                        className="rounded-xl"
+                        className="rounded-full"
                     >
                         {isLoading ? (
                             <>

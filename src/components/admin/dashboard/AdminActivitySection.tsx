@@ -23,9 +23,9 @@ const iconByKind = {
 } as const
 
 const badgeToneByKind = {
-    order: "bg-emerald-50 text-emerald-700",
-    product: "bg-amber-50 text-amber-700",
-    category: "bg-sky-50 text-sky-700",
+    order: "bg-emerald-100 text-emerald-700",
+    product: "bg-amber-100 text-amber-800",
+    category: "bg-sky-100 text-sky-700",
 } as const
 
 function formatActivityDate(value: string) {
@@ -37,16 +37,27 @@ function formatActivityDate(value: string) {
 
 export function AdminActivitySection({ items }: AdminActivitySectionProps) {
     return (
-        <div className="rounded-xl border border-border bg-card p-5">
-            <h3 className="text-base font-semibold text-foreground">Atividade recente</h3>
-            <p className="mt-0.5 text-xs text-muted-foreground">Últimos pedidos, produtos e categorias.</p>
+        <section className="rounded-[1.8rem] border border-zinc-200/80 bg-white/90 p-6 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
+            <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+                <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                        Operação recente
+                    </p>
+                    <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-zinc-950">
+                        Atividade da loja
+                    </h2>
+                    <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
+                        Últimos pedidos recebidos, produtos cadastrados e coleções criadas.
+                    </p>
+                </div>
+            </div>
 
             {items.length === 0 ? (
-                <div className="mt-5 rounded-lg border border-dashed border-border px-5 py-8 text-center">
-                    <p className="text-sm text-muted-foreground">Nenhuma atividade registrada ainda.</p>
+                <div className="mt-6 rounded-[1.4rem] border border-dashed border-zinc-200 bg-zinc-50/70 px-5 py-10 text-center">
+                    <p className="text-sm text-zinc-600">Nenhuma atividade registrada ainda.</p>
                 </div>
             ) : (
-                <div className="mt-4 divide-y divide-border">
+                <div className="mt-6 space-y-3">
                     {items.map((item) => {
                         const Icon = iconByKind[item.kind]
 
@@ -54,33 +65,35 @@ export function AdminActivitySection({ items }: AdminActivitySectionProps) {
                             <Link
                                 key={item.id}
                                 href={item.href}
-                                className="flex items-center gap-3 py-3 transition-colors hover:bg-muted/30 -mx-2 px-2 rounded-lg first:pt-0"
+                                className="group flex flex-col gap-3 rounded-[1.4rem] border border-zinc-200/80 bg-zinc-50/70 p-4 transition-all hover:border-zinc-300 hover:bg-white md:flex-row md:items-center md:gap-4"
                             >
-                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-                                    <Icon className="h-4 w-4" />
+                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-zinc-700">
+                                    <Icon className="h-5 w-5" />
                                 </div>
+
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-sm font-medium text-foreground truncate">{item.title}</p>
-                                    <p className="text-xs text-muted-foreground truncate">{item.description}</p>
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <p className="text-sm font-semibold text-zinc-950">{item.title}</p>
+                                        <span
+                                            className={cn(
+                                                "inline-flex rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em]",
+                                                badgeToneByKind[item.kind],
+                                            )}
+                                        >
+                                            {item.badge}
+                                        </span>
+                                    </div>
+                                    <p className="mt-1 text-sm leading-6 text-zinc-600">{item.description}</p>
                                 </div>
-                                <div className="flex shrink-0 flex-col items-end gap-1">
-                                    <span
-                                        className={cn(
-                                            "inline-flex rounded-md px-2 py-0.5 text-[10px] font-medium",
-                                            badgeToneByKind[item.kind]
-                                        )}
-                                    >
-                                        {item.badge}
-                                    </span>
-                                    <span className="text-[11px] text-muted-foreground">
-                                        {formatActivityDate(item.timestamp)}
-                                    </span>
-                                </div>
+
+                                <span className="shrink-0 text-xs font-medium text-zinc-500 group-hover:text-zinc-700">
+                                    {formatActivityDate(item.timestamp)}
+                                </span>
                             </Link>
                         )
                     })}
                 </div>
             )}
-        </div>
+        </section>
     )
 }

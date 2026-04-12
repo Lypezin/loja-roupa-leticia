@@ -53,14 +53,16 @@ export function CategoryTableRow({
 
     if (isEditing) {
         return (
-            <TableRow className="bg-muted/10">
+            <TableRow className="bg-zinc-50/60">
                 <TableCell colSpan={3} className="p-4 pl-6">
-                    <div className="flex flex-col items-center gap-4 md:flex-row">
-                        <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-border bg-muted">
+                    <div className="flex flex-col gap-4 xl:flex-row xl:items-center">
+                        <label className="relative flex h-24 w-full max-w-[9rem] cursor-pointer overflow-hidden rounded-[1.2rem] border border-zinc-200 bg-white">
                             {editImagePreview ? (
                                 <Image src={editImagePreview} alt="" fill className="object-cover" />
                             ) : (
-                                <ImageIcon className="h-full w-full p-4 text-muted-foreground/50" />
+                                <span className="flex h-full w-full items-center justify-center text-zinc-400">
+                                    <ImageIcon className="h-6 w-6" />
+                                </span>
                             )}
                             <input
                                 type="file"
@@ -68,22 +70,26 @@ export function CategoryTableRow({
                                 onChange={(e) => handleImageChange(e, true)}
                                 className="absolute inset-0 cursor-pointer opacity-0"
                             />
-                        </div>
-                        <div className="flex-1 space-y-1">
+                        </label>
+
+                        <div className="flex-1 space-y-2">
                             <Input
                                 value={editName}
                                 onChange={(e) => setEditName(e.target.value)}
-                                className="h-10 rounded-xl bg-background"
-                                placeholder="Novo nome..."
+                                className="h-11 rounded-2xl border-zinc-200 bg-white"
+                                placeholder="Nome da categoria"
                             />
-                            <p className="text-[10px] font-medium text-muted-foreground">Clique na imagem para alterar.</p>
+                            <p className="text-xs leading-5 text-zinc-500">
+                                Clique na imagem para trocar a capa e ajuste o nome antes de salvar.
+                            </p>
                         </div>
-                        <div className="flex items-center gap-2">
+
+                        <div className="flex flex-wrap items-center gap-2">
                             <Button
                                 size="sm"
                                 onClick={() => handleUpdate(cat.id)}
                                 disabled={isUpdating}
-                                className="h-10 rounded-xl px-4"
+                                className="h-10 rounded-full bg-zinc-950 px-5 text-white hover:bg-zinc-800"
                             >
                                 {isUpdating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
                                 Salvar
@@ -92,7 +98,7 @@ export function CategoryTableRow({
                                 variant="outline"
                                 size="sm"
                                 onClick={cancelEditing}
-                                className="h-10 rounded-xl px-4"
+                                className="h-10 rounded-full border-zinc-200 px-5"
                             >
                                 Cancelar
                             </Button>
@@ -105,37 +111,38 @@ export function CategoryTableRow({
 
     return (
         <>
-            <TableRow className="group transition-colors hover:bg-muted/30">
+            <TableRow className="group transition-colors hover:bg-zinc-50/70">
                 <TableCell className="py-4 pl-6">
                     <div className="flex items-center gap-4">
-                        <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl border border-border bg-muted transition-transform duration-300 group-hover:scale-105">
+                        <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-[1.1rem] border border-zinc-200 bg-zinc-50">
                             {cat.image_url ? (
                                 <Image src={cat.image_url} alt="" fill className="object-cover" />
                             ) : (
                                 <div className="flex h-full w-full items-center justify-center">
-                                    <LayoutGrid className="h-4 w-4 text-muted-foreground/50" />
+                                    <LayoutGrid className="h-4 w-4 text-zinc-400" />
                                 </div>
                             )}
                         </div>
-                        <div>
-                            <p className="font-bold uppercase tracking-tight text-foreground transition-colors group-hover:text-foreground/80">{cat.name}</p>
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{cat.slug}</p>
+                        <div className="min-w-0">
+                            <p className="truncate text-sm font-semibold text-zinc-950">{cat.name}</p>
+                            <p className="mt-1 text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                                /{cat.slug}
+                            </p>
                         </div>
                     </div>
                 </TableCell>
                 <TableCell className="py-4">
-                    <div className="flex items-center gap-1.5">
-                        <span className="text-sm font-bold text-foreground">{cat.productsCount}</span>
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">itens</span>
+                    <div className="inline-flex items-center rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-600">
+                        {cat.productsCount} item(ns)
                     </div>
                 </TableCell>
                 <TableCell className="py-4 pr-6 text-right">
-                    <div className="flex items-center justify-end gap-2 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100">
+                    <div className="flex items-center justify-end gap-2">
                         <Button
                             variant="ghost"
                             size="icon"
                             onClick={() => startEditing(cat)}
-                            className="h-9 w-9 rounded-xl border border-transparent text-muted-foreground transition-all hover:border-border hover:bg-background hover:text-primary"
+                            className="h-10 w-10 rounded-2xl border border-transparent text-zinc-500 hover:border-zinc-200 hover:bg-white hover:text-zinc-950"
                         >
                             <Pencil className="h-4 w-4" />
                         </Button>
@@ -143,14 +150,12 @@ export function CategoryTableRow({
                             variant="ghost"
                             size="icon"
                             onClick={() => setDeleteOpen(true)}
-                            className="h-9 w-9 rounded-xl border border-transparent text-muted-foreground transition-all hover:border-border hover:bg-background hover:text-red-600"
+                            className="h-10 w-10 rounded-2xl border border-transparent text-zinc-500 hover:border-red-100 hover:bg-red-50 hover:text-red-700"
                             disabled={isDeleting}
                         >
                             {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                         </Button>
-                    </div>
-                    <div className="hidden sm:block sm:group-hover:hidden">
-                        <ArrowRight className="ml-auto h-4 w-4 text-muted-foreground/25" />
+                        <ArrowRight className="hidden h-4 w-4 text-zinc-300 xl:block" />
                     </div>
                 </TableCell>
             </TableRow>

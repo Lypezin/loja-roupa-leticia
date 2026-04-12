@@ -30,13 +30,13 @@ export function ProductImageManager({
         : `${existingImages.length} imagem(ns) vinculada(s) a este produto.`
 
     return (
-        <section className="rounded-[1.6rem] border border-zinc-200 bg-white p-5 md:p-6">
+        <section className="rounded-[1.6rem] border border-zinc-200/80 bg-white/90 p-5 shadow-[0_18px_40px_rgba(79,55,39,0.05)] md:p-6">
             <div className="flex items-start gap-3">
-                <span className="mt-0.5 flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-700">
+                <span className="mt-0.5 flex h-11 w-11 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 text-zinc-700">
                     <ImageIcon className="h-5 w-5" />
                 </span>
                 <div className="min-w-0">
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">Imagens</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Imagens</p>
                     <h3 className="mt-2 text-lg font-semibold text-zinc-950">Galeria do produto</h3>
                     <p className="mt-2 text-sm leading-6 text-zinc-600">
                         Envie as fotos da vitrine e organize a ordem manualmente. A capa é a imagem principal do produto.

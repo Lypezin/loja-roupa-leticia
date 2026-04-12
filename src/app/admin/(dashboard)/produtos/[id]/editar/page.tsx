@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation"
+import { AdminPageHeader } from "@/components/admin/layout/AdminPageHeader"
 import { ProductForm } from "@/components/admin/ProductForm"
 import { createClient } from "@/lib/supabase/server"
 
@@ -58,12 +59,16 @@ export default async function EditarProdutoPage({ params }: { params: Promise<{ 
 
     return (
         <div className="flex flex-col gap-6">
-            <div>
-                <h1 className="text-2xl font-semibold tracking-tight text-foreground">Editar produto</h1>
-                <p className="mt-1 text-sm text-muted-foreground">
-                    Atualize informações, imagens, variações e dados de frete.
-                </p>
-            </div>
+            <AdminPageHeader
+                eyebrow="Catálogo"
+                title={`Editar ${product.name}.`}
+                description="Revise informações principais, galeria, variações, visibilidade e medidas de frete sem perder o contexto do item atual."
+                metrics={[
+                    { label: "Categoria", value: categories?.find((category) => category.id === product.category_id)?.name || "Sem categoria", description: "Coleção atual do produto." },
+                    { label: "Imagens", value: String(product.images?.length || 0), description: "Fotos já vinculadas ao item." },
+                    { label: "Variações", value: String(product.product_variations?.length || 0), description: "Linhas de venda cadastradas." },
+                ]}
+            />
 
             <ProductForm
                 categories={categories || []}

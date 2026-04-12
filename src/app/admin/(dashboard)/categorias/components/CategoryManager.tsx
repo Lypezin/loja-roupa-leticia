@@ -122,8 +122,8 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
     }
 
     return (
-        <div className="flex flex-col gap-8">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[22rem_minmax(0,1fr)]">
+            <div className="xl:sticky xl:top-8 xl:self-start">
                 <CategoryForm
                     name={name}
                     setName={setName}
@@ -131,25 +131,24 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
                     handleImageChange={(e) => handleImageChange(e)}
                     handleCreate={handleCreate}
                     isLoading={isLoading}
+                    categoriesCount={initialCategories.length}
                 />
-
-                <div className="lg:col-span-2">
-                    <CategoryTable
-                        categories={initialCategories}
-                        editingId={editingId}
-                        editName={editName}
-                        setEditName={setEditName}
-                        editImagePreview={editImagePreview}
-                        handleImageChange={handleImageChange}
-                        handleUpdate={handleUpdate}
-                        handleDelete={handleDelete}
-                        startEditing={startEditing}
-                        cancelEditing={cancelEditing}
-                        updatingId={updatingId}
-                        deletingId={deletingId}
-                    />
-                </div>
             </div>
+
+            <CategoryTable
+                categories={initialCategories}
+                editingId={editingId}
+                editName={editName}
+                setEditName={setEditName}
+                editImagePreview={editImagePreview}
+                handleImageChange={handleImageChange}
+                handleUpdate={handleUpdate}
+                handleDelete={handleDelete}
+                startEditing={startEditing}
+                cancelEditing={cancelEditing}
+                updatingId={updatingId}
+                deletingId={deletingId}
+            />
         </div>
     )
 }

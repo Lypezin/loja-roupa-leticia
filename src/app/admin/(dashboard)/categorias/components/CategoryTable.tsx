@@ -42,22 +42,44 @@ export function CategoryTable({
     deletingId,
 }: CategoryTableProps) {
     return (
-        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+        <section className="overflow-hidden rounded-[1.8rem] border border-zinc-200/80 bg-white/90 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
+            <div className="flex flex-col gap-2 border-b border-zinc-200/80 px-6 py-5 md:flex-row md:items-end md:justify-between">
+                <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                        Coleções cadastradas
+                    </p>
+                    <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-zinc-950">
+                        Lista de categorias
+                    </h2>
+                    <p className="mt-2 text-sm leading-6 text-zinc-600">
+                        Edite nome, imagem e organização do catálogo sem sair da tabela.
+                    </p>
+                </div>
+                <div className="rounded-full border border-zinc-200 bg-zinc-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+                    {categories.length} categoria(s)
+                </div>
+            </div>
+
             <Table>
-                <TableHeader className="bg-muted/30">
+                <TableHeader className="bg-zinc-50/80">
                     <TableRow className="hover:bg-transparent">
-                        <TableHead className="py-4 pl-6 text-[11px] font-bold uppercase tracking-widest text-foreground">Coleção</TableHead>
-                        <TableHead className="py-4 text-[11px] font-bold uppercase tracking-widest text-foreground">Produtos</TableHead>
-                        <TableHead className="py-4 pr-6 text-right text-[11px] font-bold uppercase tracking-widest text-foreground">Ações</TableHead>
+                        <TableHead className="py-4 pl-6 text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Categoria</TableHead>
+                        <TableHead className="py-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Produtos</TableHead>
+                        <TableHead className="py-4 pr-6 text-right text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Ações</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {categories.length === 0 ? (
                         <TableRow>
-                            <TableCell colSpan={3} className="h-40 text-center text-muted-foreground">
-                                <div className="flex flex-col items-center justify-center gap-2">
-                                    <LayoutGrid className="h-8 w-8 opacity-20" />
-                                    <p>Nenhuma categoria encontrada.</p>
+                            <TableCell colSpan={3} className="h-48 text-center text-zinc-500">
+                                <div className="flex flex-col items-center justify-center gap-3">
+                                    <span className="flex h-14 w-14 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-400">
+                                        <LayoutGrid className="h-6 w-6" />
+                                    </span>
+                                    <div className="space-y-1">
+                                        <p className="text-sm font-medium text-zinc-700">Nenhuma categoria criada ainda.</p>
+                                        <p className="text-sm text-zinc-500">Comece pela lateral e monte a estrutura do catálogo.</p>
+                                    </div>
                                 </div>
                             </TableCell>
                         </TableRow>
@@ -82,6 +104,6 @@ export function CategoryTable({
                     )}
                 </TableBody>
             </Table>
-        </div>
+        </section>
     )
 }

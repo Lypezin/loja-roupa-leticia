@@ -81,7 +81,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
     }
 
     return (
-        <form action={handleSubmit} className="space-y-8 rounded-2xl border border-zinc-100 bg-white p-6 shadow-sm md:p-8">
+        <form action={handleSubmit} className="space-y-8 rounded-[1.8rem] border border-zinc-200/80 bg-white/90 p-6 shadow-[0_18px_40px_rgba(79,55,39,0.05)] md:p-8">
             <input type="hidden" name="id" value={String(settings.id || "")} />
 
             <SectionHeader
@@ -108,9 +108,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                                 {melhorEnvio.connected ? "Conta conectada" : "Conecte sua conta"}
                             </h3>
                             <p className="max-w-2xl text-sm leading-6 text-zinc-600">
-                                O Melhor Envio fornece as transportadoras e a cotação. Já o CEP de origem e as medidas dos
-                                produtos continuam sendo responsabilidade da loja, porque a plataforma precisa saber de onde
-                                o pacote sai e qual volume está sendo enviado.
+                                O Melhor Envio fornece as transportadoras e a cotação. Já o CEP de origem e as medidas dos produtos continuam sendo responsabilidade da loja, porque a plataforma precisa saber de onde o pacote sai e qual volume está sendo enviado.
                             </p>
                             {melhorEnvio.connected ? (
                                 <div className="space-y-1 text-xs text-zinc-500">
@@ -210,8 +208,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                         />
                     </div>
                     <p className="text-[11px] leading-5 text-zinc-500">
-                        Use o CEP do local de onde os pacotes realmente saem. Mesmo com a conta conectada no Melhor Envio,
-                        a plataforma precisa dessa origem para cotar frete corretamente.
+                        Use o CEP do local de onde os pacotes realmente saem. Mesmo com a conta conectada no Melhor Envio, a plataforma precisa dessa origem para cotar frete corretamente.
                     </p>
                 </div>
 
@@ -242,8 +239,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                     <h3 className="text-sm font-semibold text-zinc-950">Frete grátis</h3>
                 </div>
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-600">
-                    Deixe em branco para desativar. Quando esse valor é atingido, a loja oferece a opção mais econômica
-                    como frete grátis.
+                    Deixe em branco para desativar. Quando esse valor é atingido, a loja oferece a opção mais econômica como frete grátis.
                 </p>
                 <div className="mt-4 max-w-sm space-y-2">
                     <Label htmlFor="free_shipping_threshold" className="text-xs font-bold uppercase tracking-wider text-zinc-400">

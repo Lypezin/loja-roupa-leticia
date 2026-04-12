@@ -26,7 +26,7 @@ export function DeleteProductButton({ productId, productName }: { productId: str
             setOpen(false)
             router.refresh()
         } catch {
-            toast.error('Erro ao excluir produto.')
+            toast.error("Erro ao excluir produto.")
         } finally {
             setIsDeleting(false)
         }
@@ -36,10 +36,10 @@ export function DeleteProductButton({ productId, productName }: { productId: str
         <>
             <Button
                 variant="ghost"
-                size="sm"
+                size="icon"
                 onClick={() => setOpen(true)}
                 disabled={isDeleting}
-                className="cursor-pointer text-red-500 hover:bg-red-50 hover:text-red-700"
+                className="h-10 w-10 rounded-2xl border border-transparent text-red-500 hover:border-red-100 hover:bg-red-50 hover:text-red-700"
             >
                 {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
             </Button>
