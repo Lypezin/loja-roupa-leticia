@@ -24,10 +24,10 @@ export function ContentSection({ settings }: ContentSectionProps) {
                 throw new Error(res.error)
             }
             showSuccess(setSuccess)
-            toast.success("Conteudo da vitrine atualizado!")
+            toast.success("Conteúdo da vitrine atualizado!")
         } catch (error: unknown) {
             const err = error as Error
-            toast.error(`Erro ao salvar conteudo: ${err.message}`)
+            toast.error(`Erro ao salvar conteúdo: ${err.message}`)
         } finally {
             setIsLoading(false)
         }
@@ -39,14 +39,14 @@ export function ContentSection({ settings }: ContentSectionProps) {
 
             <SectionHeader
                 icon={Type}
-                title="Pagina inicial"
-                description="Controle os textos e legendas das secoes principais da sua vitrine."
+                title="Página inicial"
+                description="Controle os textos e legendas das seções principais da sua vitrine."
             />
 
             <div className="space-y-6">
                 <div className="mb-4 flex items-center gap-2">
                     <Heading className="h-4 w-4 text-zinc-500" />
-                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-900">Titulos da home</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-900">Títulos da home</h3>
                 </div>
 
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
@@ -55,16 +55,16 @@ export function ContentSection({ settings }: ContentSectionProps) {
                         <Input id="categories_section_label" name="categories_section_label" defaultValue={String(settings.categories_section_label || 'Categorias')} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="categories_section_title" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Categorias: titulo</Label>
-                        <Input id="categories_section_title" name="categories_section_title" defaultValue={String(settings.categories_section_title || 'Escolha por tipo de peca')} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                        <Label htmlFor="categories_section_title" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Categorias: título</Label>
+                        <Input id="categories_section_title" name="categories_section_title" defaultValue={String(settings.categories_section_title || 'Escolha por tipo de peça')} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="products_section_label" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Produtos: legenda</Label>
                         <Input id="products_section_label" name="products_section_label" defaultValue={String(settings.products_section_label || 'Novidades')} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="products_section_title" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Produtos: titulo</Label>
-                        <Input id="products_section_title" name="products_section_title" defaultValue={String(settings.products_section_title || 'Pecas que acabaram de chegar')} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
+                        <Label htmlFor="products_section_title" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Produtos: título</Label>
+                        <Input id="products_section_title" name="products_section_title" defaultValue={String(settings.products_section_title || 'Peças que acabaram de chegar')} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@ export function ContentSection({ settings }: ContentSectionProps) {
             <div className="space-y-6 border-t border-zinc-50 pt-8">
                 <div className="mb-4 flex items-center gap-2">
                     <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-900">Blocos de confianca</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-900">Blocos de confiança</h3>
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -84,8 +84,8 @@ export function ContentSection({ settings }: ContentSectionProps) {
                             <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Bloco 1</span>
                         </div>
                         <div className="grid gap-3">
-                            <Input name="trust_banner_1_title" placeholder="Titulo" defaultValue={String(settings.trust_banner_1_title || 'Entrega com rastreio')} className="h-10 rounded-xl bg-white text-sm" />
-                            <Input name="trust_banner_1_desc" placeholder="Descricao" defaultValue={String(settings.trust_banner_1_desc || 'Consulte prazo e valor antes de pagar.')} className="h-10 rounded-xl bg-white text-sm" />
+                            <Input name="trust_banner_1_title" placeholder="Título" defaultValue={String(settings.trust_banner_1_title || 'Entrega com rastreio')} className="h-10 rounded-xl bg-white text-sm" />
+                            <Input name="trust_banner_1_desc" placeholder="Descrição" defaultValue={String(settings.trust_banner_1_desc || 'Consulte o prazo e valor antes de pagar.')} className="h-10 rounded-xl bg-white text-sm" />
                         </div>
                     </div>
 
@@ -97,8 +97,8 @@ export function ContentSection({ settings }: ContentSectionProps) {
                             <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Bloco 2</span>
                         </div>
                         <div className="grid gap-3">
-                            <Input name="trust_banner_2_title" placeholder="Titulo" defaultValue={String(settings.trust_banner_2_title || 'Pagamento protegido')} className="h-10 rounded-xl bg-white text-sm" />
-                            <Input name="trust_banner_2_desc" placeholder="Descricao" defaultValue={String(settings.trust_banner_2_desc || 'Checkout seguro para Pix e cartao.')} className="h-10 rounded-xl bg-white text-sm" />
+                            <Input name="trust_banner_2_title" placeholder="Título" defaultValue={String(settings.trust_banner_2_title || 'Pagamento protegido')} className="h-10 rounded-xl bg-white text-sm" />
+                            <Input name="trust_banner_2_desc" placeholder="Descrição" defaultValue={String(settings.trust_banner_2_desc || 'Checkout seguro para Pix e cartão.')} className="h-10 rounded-xl bg-white text-sm" />
                         </div>
                     </div>
 
@@ -110,8 +110,8 @@ export function ContentSection({ settings }: ContentSectionProps) {
                             <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Bloco 3</span>
                         </div>
                         <div className="grid gap-3">
-                            <Input name="trust_banner_3_title" placeholder="Titulo" defaultValue={String(settings.trust_banner_3_title || 'Troca em ate 7 dias')} className="h-10 rounded-xl bg-white text-sm" />
-                            <Input name="trust_banner_3_desc" placeholder="Descricao" defaultValue={String(settings.trust_banner_3_desc || 'Suporte direto por WhatsApp ou e-mail.')} className="h-10 rounded-xl bg-white text-sm" />
+                            <Input name="trust_banner_3_title" placeholder="Título" defaultValue={String(settings.trust_banner_3_title || 'Troca em até 7 dias')} className="h-10 rounded-xl bg-white text-sm" />
+                            <Input name="trust_banner_3_desc" placeholder="Descrição" defaultValue={String(settings.trust_banner_3_desc || 'Suporte direto por WhatsApp ou e-mail.')} className="h-10 rounded-xl bg-white text-sm" />
                         </div>
                     </div>
 
@@ -123,14 +123,14 @@ export function ContentSection({ settings }: ContentSectionProps) {
                             <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">Bloco 4</span>
                         </div>
                         <div className="grid gap-3">
-                            <Input name="trust_banner_4_title" placeholder="Titulo" defaultValue={String(settings.trust_banner_4_title || 'Atendimento direto')} className="h-10 rounded-xl bg-white text-sm" />
-                            <Input name="trust_banner_4_desc" placeholder="Descricao" defaultValue={String(settings.trust_banner_4_desc || 'Resposta em horario comercial.')} className="h-10 rounded-xl bg-white text-sm" />
+                            <Input name="trust_banner_4_title" placeholder="Título" defaultValue={String(settings.trust_banner_4_title || 'Atendimento direto')} className="h-10 rounded-xl bg-white text-sm" />
+                            <Input name="trust_banner_4_desc" placeholder="Descrição" defaultValue={String(settings.trust_banner_4_desc || 'Resposta em horário comercial.')} className="h-10 rounded-xl bg-white text-sm" />
                         </div>
                     </div>
                 </div>
             </div>
 
-            <SaveButton isLoading={isLoading} success={success} label="Salvar Conteudo" />
+            <SaveButton isLoading={isLoading} success={success} label="Salvar Conteúdo" />
         </form>
     )
 }

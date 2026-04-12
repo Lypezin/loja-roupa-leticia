@@ -39,7 +39,7 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
             toast.success('Status do pedido atualizado.')
         } catch (error) {
             console.error('Erro ao alterar status:', error)
-            toast.error('Nao foi possivel atualizar o status do pedido.')
+            toast.error('Não foi possível atualizar o status do pedido.')
         } finally {
             setUpdating(null)
         }
@@ -59,7 +59,7 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
             <TableBody>
                 {orders.map((order) => {
                     const clientName = order.customer_name || 'Cliente'
-                    const clientEmail = order.customer_email || 'E-mail nao informado'
+                    const clientEmail = order.customer_email || 'E-mail não informado'
                     const providerLabel = order.payment_provider || (order.payment_receipt_url ? 'abacatepay' : 'legado')
                     const shippingLabel = [order.shipping_company_name, order.shipping_service_name].filter(Boolean).join(' - ')
                     const isUpdating = updating === order.id

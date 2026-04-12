@@ -74,7 +74,7 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
                     size="lg"
                     className="h-12 w-full rounded-full text-sm font-semibold uppercase tracking-[0.16em]"
                 >
-                    {added ? "Na sacola" : !selectedVariation ? "Selecione as opcoes" : selectedVariation.stock_quantity <= 0 ? "Esgotado" : "Adicionar a sacola"}
+                    {added ? "Na sacola" : !selectedVariation ? "Selecione as opções" : selectedVariation.stock_quantity <= 0 ? "Esgotado" : "Adicionar à sacola"}
                 </Button>
 
                 <p className="text-center text-xs leading-6 text-muted-foreground">

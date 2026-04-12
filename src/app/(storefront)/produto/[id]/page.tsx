@@ -42,7 +42,7 @@ export async function generateMetadata({
     }
 
     const images = (product.product_images || []) as ProductImage[]
-    const description = product.description || "Veja fotos, variacoes disponiveis e informacoes desta peca."
+    const description = product.description || "Veja fotos, variações disponíveis e informações desta peça."
     const imageUrl = images.find((img) => img.is_primary)?.image_url || images[0]?.image_url
 
     return {
@@ -134,7 +134,7 @@ export default async function ProductPage({
                     </div>
 
                     <p className="mt-6 text-base leading-8 text-muted-foreground">
-                        {product.description || "Confira fotos, escolha a variacao ideal e adicione a peca na sacola com o frete calculado no carrinho."}
+                        {product.description || "Confira fotos, escolha a variação ideal e adicione a peça na sacola com o frete calculado no carrinho."}
                     </p>
 
                     <AddToCart

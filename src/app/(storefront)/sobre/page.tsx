@@ -11,10 +11,10 @@ export default async function SobrePage() {
         <div className="page-shell py-8 md:py-12">
             <section className="paper-panel animate-enter-soft rounded-[2.4rem] px-6 py-10 md:px-10 md:py-14">
                 <div className="mx-auto max-w-3xl text-center">
-                    <span className="eyebrow justify-center">sobre a marca</span>
-                    <h1 className="mt-5 font-display text-4xl text-foreground md:text-6xl">Uma loja feita para facilitar a escolha</h1>
+                    <span className="eyebrow justify-center">sobre a {storeName}</span>
+                    <h1 className="mt-5 font-display text-4xl text-foreground md:text-6xl">Estilo e conforto para todos os momentos</h1>
                     <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-muted-foreground">
-                        A {storeName} reune pecas femininas com leitura clara de foto, variacao e preco para a compra acontecer sem atrito.
+                        A {storeName} traz uma curadoria criteriosa de peças femininas, pensando sempre na qualidade, caimento impecável e na versatilidade que a mulher contemporânea busca. 
                     </p>
                 </div>
             </section>
@@ -22,9 +22,9 @@ export default async function SobrePage() {
             <section className="py-12 md:py-16">
                 <div className="grid gap-5 md:grid-cols-3">
                     {[
-                        { icon: Sparkles, title: "Escolha objetiva", desc: "Fotos diretas, informacoes visiveis e foco no que realmente ajuda a decidir." },
-                        { icon: Heart, title: "Curadoria pratica", desc: "Modelos pensados para uso real, com combinacoes faceis no dia a dia." },
-                        { icon: Users, title: "Contato proximo", desc: "Quando surge duvida, o atendimento responde sem linguagem enrolada." },
+                        { icon: Sparkles, title: "Qualidade Premium", desc: "Trabalhamos com tecidos selecionados para garantir durabilidade e conforto incomparáveis em cada peça." },
+                        { icon: Heart, title: "Curadoria Cuidadosa", desc: "Cada modelo é pensado e escolhido para realçar a beleza feminina e se encaixar perfeitamente no seu dia a dia." },
+                        { icon: Users, title: "Atendimento Diferenciado", desc: "Nosso foco é fazer você se sentir especial, com um atendimento acolhedor e ágil em todos os canais." },
                     ].map((item, index) => (
                         <div key={item.title} className={`surface-card hover-lift-soft animate-enter-soft rounded-[1.8rem] p-6 ${index === 0 ? "" : index === 1 ? "animate-enter-delay-1" : "animate-enter-delay-2"}`}>
                             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">

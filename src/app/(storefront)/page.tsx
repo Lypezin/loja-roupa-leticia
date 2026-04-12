@@ -33,17 +33,17 @@ export default async function StorefrontHome() {
             .limit(12),
     ])
 
-    const heroTitle = settings?.hero_title || "Pecas que entram bem no dia a dia"
-    const heroSubtitle = settings?.hero_subtitle || "Modelos femininos com fotos claras, leitura objetiva e compra simples do inicio ao fim."
+    const heroTitle = settings?.hero_title || "Peças que entram bem no dia a dia"
+    const heroSubtitle = settings?.hero_subtitle || "Descubra uma curadoria pensada para você, unindo design inteligente, conforto e beleza para tornar seus dias mais especiais."
     const heroButton = settings?.hero_button_text || "Ver novidades"
     const heroBg = settings?.hero_image_url || "/placeholder-image.jpg"
     const heroBadge = settings?.hero_badge_text || "novidades da semana"
     const heroSecondaryButton = settings?.hero_secondary_button_text || "Sobre a marca"
 
     const productsSectionLabel = settings?.products_section_label || "novidades"
-    const productsSectionTitle = settings?.products_section_title || "Pecas que acabaram de chegar"
+    const productsSectionTitle = settings?.products_section_title || "Peças que acabaram de chegar"
     const categoriesSectionLabel = settings?.categories_section_label || "categorias"
-    const categoriesSectionTitle = settings?.categories_section_title || "Escolha por tipo de peca"
+    const categoriesSectionTitle = settings?.categories_section_title || "Escolha por tipo de peça"
 
     return (
         <div className="flex flex-col">

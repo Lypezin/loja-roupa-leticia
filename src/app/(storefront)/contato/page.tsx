@@ -49,7 +49,7 @@ export default async function ContatoPage() {
                     <span className="eyebrow justify-center">fale com a gente</span>
                     <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">Contato</h1>
                     <p className="mx-auto mt-3 max-w-xl text-base leading-8 text-muted-foreground">
-                        Canais diretos para tirar duvida, acompanhar pedido ou falar sobre troca.
+                        Canais diretos para tirar dúvida, acompanhar pedido ou falar sobre troca.
                     </p>
                 </div>
 
@@ -80,15 +80,15 @@ export default async function ContatoPage() {
                     <div className="surface-card mt-8 rounded-[1.8rem] p-6 text-center">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">canais em atualizacao</p>
                         <p className="mt-3 text-sm leading-7 text-foreground">
-                            Estamos ajustando os contatos publicos da loja. Em breve todos os atalhos aparecem aqui.
+                            Estamos ajustando os contatos públicos da loja. Em breve todos os atalhos aparecem aqui.
                         </p>
                     </div>
                 )}
 
                 <div className="surface-card mt-8 rounded-[1.8rem] p-6 text-center">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Horario de atendimento</p>
-                    <p className="mt-3 text-sm leading-7 text-foreground">Segunda a sexta, das 9h as 18h.</p>
-                    <p className="text-sm leading-7 text-muted-foreground">Sabado, das 9h as 13h.</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">Horário de atendimento</p>
+                    <p className="mt-3 text-sm leading-7 text-foreground">Segunda a sexta, das 9h às 18h.</p>
+                    <p className="text-sm leading-7 text-muted-foreground">Sábado, das 9h às 13h.</p>
                 </div>
             </div>
         </div>

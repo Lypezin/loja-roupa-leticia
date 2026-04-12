@@ -12,7 +12,7 @@ export function Footer({
 }) {
     const currentYear = new Date().getFullYear()
     const storeName = settings?.store_name || "FASHION STORE"
-    const aboutText = settings?.footer_about_text || "Pecas com foto clara, descricao objetiva e compra simples do primeiro clique ao pos-venda."
+    const aboutText = settings?.footer_about_text || "Peças com foto clara, descrição objetiva e compra simples do primeiro clique ao pós-venda."
 
     const categoryLinks = categories.length > 0
         ? categories.slice(0, 4).map((cat) => ({

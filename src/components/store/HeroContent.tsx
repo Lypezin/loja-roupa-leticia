@@ -61,7 +61,7 @@ export function HeroContent({ title, subtitle, buttonText, badgeText, secondaryB
 
             {countdownEnd && (
                 <div className="animate-enter-soft animate-enter-delay-3 mt-8 max-w-sm rounded-[1.6rem] border border-border bg-card px-5 py-5 shadow-[0_14px_30px_rgba(68,48,31,0.05)]">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">janela de lancamento</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">janela de lançamento</p>
                     <div className="mt-4">
                         <CountdownTimer targetDate={countdownEnd} />
                     </div>

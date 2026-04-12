@@ -57,7 +57,7 @@ export function CartSummary({
                 return
             }
 
-            toast.error("Nao foi possivel iniciar o pagamento.")
+            toast.error("Não foi possível iniciar o pagamento.")
             setIsLoadingCheckout(false)
         } catch {
             toast.error("Falha interna ao redirecionar para o pagamento.")

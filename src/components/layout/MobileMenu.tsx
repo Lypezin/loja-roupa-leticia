@@ -84,9 +84,9 @@ export function MobileMenu({ isOpen, onClose, categories, storeName }: MobileMen
                     <MobileNav categories={categories} onClose={onClose} />
 
                     <div className="surface-card-soft mt-6 rounded-[1.4rem] p-4">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">atalho rapido</p>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">atalho rápido</p>
                         <p className="mt-2 text-sm leading-6 text-foreground/80">
-                            Use a busca ou escolha uma categoria para chegar mais rapido ao que voce quer.
+                            Use a busca ou escolha uma categoria para chegar mais rápido ao que você quer.
                         </p>
                     </div>
                 </div>

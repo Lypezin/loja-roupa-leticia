@@ -51,7 +51,7 @@ export default function CarrinhoPage() {
         const cleanPhone = settings?.whatsapp_number?.replace(/\D/g, "") || ""
 
         if (cleanPhone.length < 10) {
-            toast.error("O WhatsApp da loja ainda nao esta configurado.")
+            toast.error("O WhatsApp da loja ainda não está configurado.")
             return
         }
 
@@ -67,7 +67,7 @@ export default function CarrinhoPage() {
             if (item.size) {
                 message += `   Tam: ${item.size}\n`
             }
-            message += `   Preco: ${formatCurrency(item.price)}\n\n`
+            message += `   Preço: ${formatCurrency(item.price)}\n\n`
         })
 
         if (selectedShipping) {
@@ -76,7 +76,7 @@ export default function CarrinhoPage() {
             message += `   Prazo: ${selectedShipping.delivery_days} dia(s) uteis\n`
             message += `   Valor: ${selectedShipping.is_free_shipping ? "Gratis" : formatCurrency(selectedShipping.cost)}\n\n`
         } else {
-            message += "*Frete*: ainda nao calculado\n\n"
+            message += "*Frete*: ainda não calculado\n\n"
         }
 
         message += `*Total: ${formatCurrency(total)}*`

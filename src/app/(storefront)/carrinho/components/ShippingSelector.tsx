@@ -95,7 +95,7 @@ export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
             const options = result.options || []
 
             if (options.length === 0) {
-                const message = "Nenhuma opcao de frete foi encontrada para este CEP."
+                const message = "Nenhuma opção de frete foi encontrada para este CEP."
                 setInlineError(message)
                 toast.error(message)
                 clearShipping()
