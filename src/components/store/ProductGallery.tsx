@@ -33,7 +33,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
     const [selectedIndex, setSelectedIndex] = useState(0)
 
     return (
-        <div className="flex flex-col-reverse gap-4 md:flex-row">
+        <div className="flex self-start flex-col-reverse gap-4 md:flex-row md:items-start">
             {galleryImages.length > 1 && (
                 <div className="flex gap-3 overflow-x-auto pb-2 md:max-h-[620px] md:flex-col md:overflow-y-auto md:pb-0">
                     {galleryImages.map((image, index) => (
@@ -52,7 +52,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                                 src={image.image_url}
                                 alt={`${productName} - foto ${index + 1}`}
                                 fill
-                                className="object-cover"
+                                className="object-contain p-1"
                                 sizes="(max-width: 768px) 64px, 80px"
                             />
                         </button>
@@ -60,14 +60,14 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                 </div>
             )}
 
-            <div className="paper-panel relative flex-1 overflow-hidden rounded-[2rem] p-3">
+            <div className="paper-panel relative min-w-0 flex-1 self-start overflow-hidden rounded-[2rem] p-3">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem] bg-card">
                     <Image
                         src={galleryImages[selectedIndex]?.image_url || "/placeholder-image.jpg"}
                         alt={productName}
                         fill
                         priority
-                        className="object-cover"
+                        className="object-contain"
                         sizes="(max-width: 768px) 100vw, 52vw"
                         quality={88}
                     />
