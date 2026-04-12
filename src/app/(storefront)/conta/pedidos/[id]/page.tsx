@@ -1,182 +1,49 @@
 import Link from "next/link"
-import { ArrowLeft, CheckCircle, CreditCard, Package, Truck } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { formatCurrency } from "@/lib/utils"
 import { createClient } from "@/lib/supabase/server"
+import { OrderStatusHeader } from "@/components/views/pedidos/OrderStatusHeader"
+import { OrderProgressBar } from "@/components/views/pedidos/OrderProgressBar"
+import { OrderItemsList } from "@/components/views/pedidos/OrderItemsList"
+import { OrderSummaryCard } from "@/components/views/pedidos/OrderSummaryCard"
+import { OrderShippingCard } from "@/components/views/pedidos/OrderShippingCard"
 
-const statusSteps = ["paid", "processing", "shipped", "delivered"]
-
-const stepLabels: Record<string, string> = {
-    paid: "Pago",
-    processing: "Preparando",
-    shipped: "Enviado",
-    delivered: "Entregue",
-}
-
-const statusBadge: Record<string, string> = {
-    cancelled: "Cancelado",
-    refunded: "Reembolsado",
-    disputed: "Em disputa",
-}
-
-const statusBadgeColor: Record<string, string> = {
-    cancelled: "bg-red-100 text-red-700",
-    refunded: "bg-stone-200 text-stone-700",
-    disputed: "bg-amber-100 text-amber-700",
-}
-
-const stepIcons = [CreditCard, Package, Truck, CheckCircle]
-
-type OrderItem = {
-    id: string
-    quantity: number
-    price: number
-    products?: { id?: string | null; name?: string | null } | null
-}
-
+type OrderItem = { id: string; quantity: number; price: number; products?: { id?: string | null; name?: string | null } | null }
 type OrderAddress = Record<string, string | null | undefined>
 
 export default async function DetalhesPedidoPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return redirect("/conta/login")
 
-    if (!user) {
-        return redirect("/conta/login")
-    }
+    const { data: order } = await supabase.from("orders").select(`*, order_items ( id, quantity, price, products ( id, name ) )`).eq("id", id).eq("user_id", user.id).single()
+    if (!order) return <div className="page-shell py-20 text-center">Pedido não encontrado.</div>
 
-    const { data: order } = await supabase
-        .from("orders")
-        .select(`
-            *,
-            order_items (
-                id,
-                quantity,
-                price,
-                products ( id, name )
-            )
-        `)
-        .eq("id", id)
-        .eq("user_id", user.id)
-        .single()
-
-    if (!order) {
-        return <div className="page-shell py-20 text-center">Pedido não encontrado.</div>
-    }
-
-    const currentStepIndex = statusSteps.indexOf(order.status)
-    const terminalStatus = order.status === "cancelled" || order.status === "refunded" || order.status === "disputed" ? order.status : null
+    const terminalStatus = ["cancelled", "refunded", "disputed"].includes(order.status) ? order.status : null
     const orderItems = (order.order_items || []) as OrderItem[]
     const itemsSubtotal = orderItems.reduce((total, item) => total + (item.price * item.quantity), 0)
-    const shippingAmount = typeof order.shipping_cost === "number"
-        ? order.shipping_cost
-        : Math.max(Number((order.total_amount - itemsSubtotal).toFixed(2)), 0)
-
-    const address = order.shipping_address && typeof order.shipping_address === "object" && !Array.isArray(order.shipping_address)
-        ? order.shipping_address as OrderAddress
-        : null
-
-    const addressStr = address
-        ? [address.line1, address.line2, address.city, address.state, address.postal_code, address.country]
-            .filter(Boolean)
-            .join(", ")
-        : null
+    const shippingAmount = typeof order.shipping_cost === "number" ? order.shipping_cost : Math.max(Number((order.total_amount - itemsSubtotal).toFixed(2)), 0)
+    const addr = order.shipping_address as OrderAddress
+    const addressStr = addr ? [addr.line1, addr.line2, addr.city, addr.state, addr.postal_code, addr.country].filter(Boolean).join(", ") : ""
 
     return (
         <div className="page-shell py-10 md:py-14">
             <div className="mx-auto max-w-5xl space-y-8">
                 <Button variant="ghost" className="-ml-4 w-fit" asChild>
-                    <Link href="/conta/pedidos">
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Voltar aos pedidos
-                    </Link>
+                    <Link href="/conta/pedidos"><ArrowLeft className="mr-2 h-4 w-4" /> Voltar aos pedidos</Link>
                 </Button>
 
-                <div className="paper-panel rounded-[2rem] px-6 py-8 md:px-8">
-                    <div className="flex flex-wrap items-center justify-between gap-4">
-                        <div>
-                            <span className="eyebrow">pedido</span>
-                            <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">
-                                #{order.id.split("-")[0].toUpperCase()}
-                            </h1>
-                            <p className="mt-3 text-sm text-muted-foreground">
-                                Realizado em {new Date(order.created_at).toLocaleString("pt-BR")}
-                            </p>
-                        </div>
-                        {terminalStatus && (
-                            <span className={`rounded-full px-4 py-2 text-xs font-medium ${statusBadgeColor[terminalStatus] || "bg-muted text-foreground"}`}>
-                                {statusBadge[terminalStatus] || terminalStatus}
-                            </span>
-                        )}
-                    </div>
-                </div>
+                <OrderStatusHeader orderId={order.id} createdAt={order.created_at} terminalStatus={terminalStatus} />
 
-                {!terminalStatus && (
-                    <div className="surface-card rounded-[1.8rem] p-6">
-                        <div className="grid gap-4 md:grid-cols-4">
-                            {statusSteps.map((step, index) => {
-                                const Icon = stepIcons[index]
-                                const isCompleted = currentStepIndex >= index
-
-                                return (
-                                    <div key={step} className="surface-card-soft rounded-[1.4rem] p-4">
-                                        <div className={`flex h-11 w-11 items-center justify-center rounded-full ${isCompleted ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground"}`}>
-                                            <Icon className="h-4 w-4" />
-                                        </div>
-                                        <p className="mt-4 text-sm font-semibold text-foreground">{stepLabels[step]}</p>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div>
-                )}
+                {!terminalStatus && <OrderProgressBar status={order.status} />}
 
                 <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-                    <div className="surface-card rounded-[1.8rem] p-6">
-                        <h2 className="font-display text-3xl text-foreground">Itens do pedido</h2>
-                        <div className="mt-6 space-y-4">
-                            {orderItems.map((item) => (
-                                <div key={item.id} className="flex items-center justify-between rounded-[1.2rem] border border-border bg-card px-4 py-4">
-                                    <div>
-                                        <p className="font-medium text-foreground">{item.products?.name || "Produto removido"}</p>
-                                        <p className="mt-1 text-sm text-muted-foreground">Quantidade: {item.quantity}</p>
-                                    </div>
-                                    <p className="font-semibold text-foreground">{formatCurrency(item.price * item.quantity)}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
+                    <OrderItemsList items={orderItems} />
                     <div className="space-y-6">
-                        <div className="surface-card rounded-[1.8rem] p-6">
-                            <h2 className="font-display text-3xl text-foreground">Resumo</h2>
-                            <div className="mt-6 space-y-3 text-sm">
-                                <div className="flex justify-between text-muted-foreground">
-                                    <span>Subtotal</span>
-                                    <span>{formatCurrency(itemsSubtotal)}</span>
-                                </div>
-                                <div className="flex justify-between text-muted-foreground">
-                                    <span>Frete</span>
-                                    <span>{shippingAmount > 0 ? formatCurrency(shippingAmount) : "Grátis"}</span>
-                                </div>
-                                <div className="flex justify-between border-t border-border pt-4 text-lg font-semibold text-foreground">
-                                    <span>Total</span>
-                                    <span>{formatCurrency(order.total_amount)}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {addressStr && (
-                            <div className="surface-card rounded-[1.8rem] p-6">
-                                <h2 className="font-display text-3xl text-foreground">Entrega</h2>
-                                {(order.shipping_company_name || order.shipping_service_name) && (
-                                    <p className="mt-4 text-sm font-medium text-foreground">
-                                        {[order.shipping_company_name, order.shipping_service_name].filter(Boolean).join(" - ")}
-                                    </p>
-                                )}
-                                <p className="mt-4 text-sm leading-7 text-muted-foreground">{addressStr}</p>
-                            </div>
-                        )}
+                        <OrderSummaryCard itemsSubtotal={itemsSubtotal} shippingAmount={shippingAmount} totalAmount={order.total_amount} />
+                        {addressStr && <OrderShippingCard companyName={order.shipping_company_name} serviceName={order.shipping_service_name} addressStr={addressStr} />}
                     </div>
                 </div>
             </div>

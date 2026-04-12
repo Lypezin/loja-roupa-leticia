@@ -8,6 +8,7 @@ import { createCheckoutSession } from "@/app/(storefront)/actions"
 import { ShippingSelector } from "@/app/(storefront)/carrinho/components/ShippingSelector"
 import { Button } from "@/components/ui/button"
 import { useCartStore } from "@/store/useCartStore"
+import { CartTotals } from "./CartTotals"
 
 interface CartSummaryProps {
     formattedSubtotal: string
@@ -37,32 +38,20 @@ export function CartSummary({
         }
 
         setIsLoadingCheckout(true)
-
         try {
             const result = await createCheckoutSession(items, selectedShipping)
-
             if (result.error) {
                 toast.error(result.error)
-                setIsLoadingCheckout(false)
+            } else if (result.redirectTo || result.url) {
+                window.location.href = (result.redirectTo || result.url) as string
                 return
+            } else {
+                toast.error("Não foi possível iniciar o pagamento.")
             }
-
-            if (result.redirectTo) {
-                window.location.href = result.redirectTo
-                return
-            }
-
-            if (result.url) {
-                window.location.href = result.url
-                return
-            }
-
-            toast.error("Não foi possível iniciar o pagamento.")
-            setIsLoadingCheckout(false)
         } catch {
             toast.error("Falha interna ao redirecionar para o pagamento.")
-            setIsLoadingCheckout(false)
         }
+        setIsLoadingCheckout(false)
     }
 
     return (
@@ -70,63 +59,49 @@ export function CartSummary({
             <div className="surface-card sticky top-24 rounded-[1.9rem] p-6">
                 <h2 className="font-display text-3xl text-card-foreground">Resumo</h2>
 
-                <div className="mt-6 space-y-3 text-sm">
-                    <div className="flex justify-between text-muted-foreground">
-                        <span>Subtotal</span>
-                        <span>{formattedSubtotal}</span>
-                    </div>
-                    <div className="flex justify-between text-muted-foreground">
-                        <span>Frete</span>
-                        <span className={selectedShipping?.is_free_shipping ? "font-medium text-emerald-600" : ""}>
-                            {formattedShipping}
-                        </span>
-                    </div>
-                    <div className="flex justify-between border-t border-border pt-4 text-lg font-semibold text-card-foreground">
-                        <span>Total</span>
-                        <span>{formattedTotal}</span>
-                    </div>
-                    <p className="text-right text-xs text-muted-foreground">
-                        ou 3x de {installment} sem juros
-                    </p>
-                </div>
+                <CartTotals
+                    subtotal={formattedSubtotal}
+                    shipping={formattedShipping}
+                    total={formattedTotal}
+                    installment={installment}
+                    isFreeShipping={!!selectedShipping?.is_free_shipping}
+                />
 
                 <ShippingSelector defaultPostalCode={defaultPostalCode} />
 
-                <Button
-                    onClick={handleHostedCheckout}
-                    disabled={checkoutDisabled}
-                    className="mt-6 h-12 w-full rounded-full text-sm font-semibold uppercase tracking-[0.16em]"
-                >
-                    {isLoadingCheckout ? (
-                        <>
-                            Processando <Loader2 className="h-4 w-4 animate-spin" />
-                        </>
-                    ) : (
-                        <>
-                            Pagar com AbacatePay <ArrowRight className="h-4 w-4" />
-                        </>
+                <div className="mt-6 space-y-3">
+                    <Button
+                        onClick={handleHostedCheckout}
+                        disabled={checkoutDisabled}
+                        className="h-12 w-full rounded-full text-sm font-semibold uppercase tracking-[0.16em]"
+                    >
+                        {isLoadingCheckout ? (
+                            <span className="flex items-center gap-2">Processando <Loader2 className="h-4 w-4 animate-spin" /></span>
+                        ) : (
+                            <span className="flex items-center gap-2">Pagar com AbacatePay <ArrowRight className="h-4 w-4" /></span>
+                        )}
+                    </Button>
+
+                    {!selectedShipping && (
+                        <p className="text-center text-xs text-muted-foreground">
+                            Selecione o frete antes de seguir para o checkout.
+                        </p>
                     )}
-                </Button>
 
-                {!selectedShipping && (
-                    <p className="mt-3 text-center text-xs text-muted-foreground">
-                        Selecione o frete antes de seguir para o checkout.
-                    </p>
-                )}
+                    <Button
+                        onClick={handleWhatsAppCheckout}
+                        disabled={isLoadingCheckout}
+                        variant="outline"
+                        className="h-12 w-full rounded-full border-emerald-500/30 text-sm font-semibold uppercase tracking-[0.16em] text-emerald-700 hover:bg-emerald-50"
+                    >
+                        <MessageSquare className="h-4 w-4" />
+                        Finalizar via WhatsApp
+                    </Button>
+                </div>
 
-                <p className="mt-3 text-center text-xs text-muted-foreground">
+                <p className="mt-4 text-center text-xs text-muted-foreground">
                     Checkout hospedado pela AbacatePay.
                 </p>
-
-                <Button
-                    onClick={handleWhatsAppCheckout}
-                    disabled={isLoadingCheckout}
-                    variant="outline"
-                    className="mt-3 h-12 w-full rounded-full border-emerald-500/30 text-sm font-semibold uppercase tracking-[0.16em] text-emerald-700 hover:bg-emerald-50"
-                >
-                    <MessageSquare className="h-4 w-4" />
-                    Finalizar via WhatsApp
-                </Button>
 
                 <Link href="/" className="mt-5 block text-center text-sm text-muted-foreground transition-colors hover:text-foreground">
                     Continuar comprando

@@ -123,6 +123,6 @@ export function buildAbacatePayBillingProducts(
 
 export function calculateCheckoutTotal(validatedItems: ValidatedCheckoutItem[], shippingCost = 0) {
     return Number(
-        (validatedItems.reduce((total, item) => total + (item.unit_price * item.quantity), 0) + shippingCost).toFixed(2),
+        (validatedItems.reduce((total: number, item: ValidatedCheckoutItem) => total + (item.unit_price * item.quantity), 0) + shippingCost).toFixed(2),
     )
 }

@@ -1,9 +1,10 @@
 'use client'
 
-import { ArrowLeft, ArrowRight, Image as ImageIcon, Star, Upload, X } from "lucide-react"
+import { Image as ImageIcon, Upload } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ACCEPTED_IMAGE_INPUT } from "@/lib/uploads"
+import { ProductImageCard } from "./ProductImageCard"
 
 type ExistingImage = {
     id?: string
@@ -51,61 +52,15 @@ export function ProductImageManager({
                     <p className="mb-3 text-sm font-medium text-zinc-600">Ordem atual das imagens</p>
                     <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                         {existingImages.map((img, index) => (
-                            <div key={`${img.id ?? img.image_url}-${index}`} className="overflow-hidden rounded-[1.2rem] border border-zinc-200 bg-zinc-50/70">
-                                <div className="relative aspect-[4/5] overflow-hidden bg-zinc-100">
-                                    <div
-                                        className="absolute inset-0 bg-cover bg-center"
-                                        style={{ backgroundImage: `url(${img.image_url})` }}
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => onRemoveExisting(index)}
-                                        className="absolute right-2 top-2 rounded-full bg-red-500/95 p-1 text-white shadow-sm transition hover:bg-red-600"
-                                        aria-label="Remover imagem"
-                                    >
-                                        <X className="h-3.5 w-3.5" />
-                                    </button>
-                                    <span className="absolute left-2 top-2 rounded-full bg-white/95 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-700">
-                                        #{index + 1}
-                                    </span>
-                                </div>
-
-                                <div className="space-y-3 p-3">
-                                    <button
-                                        type="button"
-                                        onClick={() => onSetPrimary(index)}
-                                        className={`flex w-full items-center justify-center gap-2 rounded-full border px-3 py-2 text-xs font-semibold transition ${
-                                            img.is_primary
-                                                ? "border-amber-300 bg-amber-50 text-amber-800"
-                                                : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50"
-                                        }`}
-                                    >
-                                        <Star className={`h-3.5 w-3.5 ${img.is_primary ? "fill-current" : ""}`} />
-                                        {img.is_primary ? "Imagem de capa" : "Definir como capa"}
-                                    </button>
-
-                                    <div className="grid grid-cols-2 gap-2">
-                                        <button
-                                            type="button"
-                                            onClick={() => onMoveExisting(index, "left")}
-                                            disabled={index === 0}
-                                            className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-45"
-                                        >
-                                            <ArrowLeft className="h-3.5 w-3.5" />
-                                            Antes
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={() => onMoveExisting(index, "right")}
-                                            disabled={index === existingImages.length - 1}
-                                            className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-45"
-                                        >
-                                            Depois
-                                            <ArrowRight className="h-3.5 w-3.5" />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                            <ProductImageCard
+                                key={`${img.id ?? img.image_url}-${index}`}
+                                img={img}
+                                index={index}
+                                isLast={index === existingImages.length - 1}
+                                onRemove={onRemoveExisting}
+                                onMove={onMoveExisting}
+                                onSetPrimary={onSetPrimary}
+                            />
                         ))}
                     </div>
                 </div>

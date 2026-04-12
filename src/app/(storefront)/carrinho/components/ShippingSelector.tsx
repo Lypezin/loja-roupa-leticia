@@ -1,40 +1,15 @@
 'use client'
 
 import { Loader2, MapPin, Truck } from "lucide-react"
-import { useEffect, useMemo, useState, useTransition } from "react"
-import { toast } from "sonner"
-import { quoteShippingOptions } from "@/app/(storefront)/actions"
+import { useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
-import { formatCurrency } from "@/lib/utils"
 import { useCartStore } from "@/store/useCartStore"
-import type { ShippingQuoteOption } from "@/types/shipping"
+import { useShippingQuote } from "@/hooks/useShippingQuote"
+import { ShippingQuoteItem } from "@/components/views/cart/ShippingQuoteItem"
+import { formatPostalCodeInput } from "@/components/views/cart/CartUtils"
 
 type ShippingSelectorProps = {
     defaultPostalCode?: string | null
-}
-
-function formatPostalCodeInput(value: string) {
-    const digits = value.replace(/\D/g, "").slice(0, 8)
-
-    if (digits.length <= 5) {
-        return digits
-    }
-
-    return `${digits.slice(0, 5)}-${digits.slice(5)}`
-}
-
-function getDeliveryLabel(quote: ShippingQuoteOption) {
-    const totalDays = quote.delivery_days
-
-    if (totalDays <= 0) {
-        return "Prazo sob consulta"
-    }
-
-    if (totalDays === 1) {
-        return "1 dia útil"
-    }
-
-    return `${totalDays} dias úteis`
 }
 
 export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
@@ -44,19 +19,17 @@ export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
         shippingQuotes,
         selectedShipping,
         setShippingPostalCode,
-        setShippingQuotes,
         selectShipping,
         clearShipping,
     } = useCartStore()
-    const [isPending, startTransition] = useTransition()
-    const [inlineError, setInlineError] = useState<string | null>(null)
+
+    const { isPending, inlineError, setInlineError, handleQuote } = useShippingQuote()
+    
     const hasQuotes = shippingQuotes.length > 0
     const selectionId = selectedShipping?.service_id ?? ""
+    
     const quoteHint = useMemo(() => {
-        if (!selectedShipping) {
-            return null
-        }
-
+        if (!selectedShipping) return null
         return `${selectedShipping.company_name} - ${selectedShipping.service_name}`
     }, [selectedShipping])
 
@@ -68,48 +41,11 @@ export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
 
     const handlePostalCodeChange = (value: string) => {
         const formatted = formatPostalCodeInput(value)
-
         if (formatted !== shippingPostalCode && (selectedShipping || hasQuotes)) {
             clearShipping()
         }
-
         setShippingPostalCode(formatted)
         setInlineError(null)
-    }
-
-    const handleQuote = () => {
-        if (items.length === 0) {
-            return
-        }
-
-        startTransition(async () => {
-            const result = await quoteShippingOptions(items, shippingPostalCode)
-
-            if (result.error) {
-                setInlineError(result.error)
-                toast.error(result.error)
-                clearShipping()
-                return
-            }
-
-            const options = result.options || []
-
-            if (options.length === 0) {
-                const message = "Nenhuma opção de frete foi encontrada para este CEP."
-                setInlineError(message)
-                toast.error(message)
-                clearShipping()
-                return
-            }
-
-            setInlineError(null)
-            setShippingQuotes(options, shippingPostalCode)
-            const nextSelection = selectedShipping
-                ? options.find((quote) => quote.service_id === selectedShipping.service_id) ?? options[0] ?? null
-                : options[0] ?? null
-            selectShipping(nextSelection)
-            toast.success("Frete calculado com sucesso.")
-        })
     }
 
     return (
@@ -174,50 +110,14 @@ export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
 
             {hasQuotes && (
                 <div className="mt-4 space-y-2">
-                    {shippingQuotes.map((quote) => {
-                        const checked = selectionId === quote.service_id
-
-                        return (
-                            <label
-                                key={quote.service_id}
-                                className={`flex cursor-pointer items-center justify-between gap-3 rounded-[1.2rem] border px-4 py-3 transition-colors ${
-                                    checked
-                                        ? "border-primary bg-primary/5"
-                                        : "border-border bg-background hover:border-primary/40"
-                                }`}
-                            >
-                                <div className="flex min-w-0 items-start gap-3">
-                                    <input
-                                        type="radio"
-                                        name="shipping-option"
-                                        className="mt-1 h-4 w-4 accent-primary"
-                                        checked={checked}
-                                        onChange={() => selectShipping(quote)}
-                                    />
-                                    <div className="min-w-0">
-                                        <p className="text-sm font-semibold text-foreground">
-                                            {quote.company_name} - {quote.service_name}
-                                        </p>
-                                        <p className="text-xs text-muted-foreground">
-                                            {getDeliveryLabel(quote)}
-                                            {quote.processing_days > 0 ? ` já com ${quote.processing_days} dia(s) de preparo` : ""}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div className="text-right">
-                                    <p className={`text-sm font-semibold ${quote.is_free_shipping ? "text-emerald-600" : "text-foreground"}`}>
-                                        {quote.is_free_shipping ? "Grátis" : formatCurrency(quote.cost)}
-                                    </p>
-                                    {quote.is_free_shipping && quote.provider_cost > 0 && (
-                                        <p className="text-[11px] text-muted-foreground line-through">
-                                            {formatCurrency(quote.provider_cost)}
-                                        </p>
-                                    )}
-                                </div>
-                            </label>
-                        )
-                    })}
+                    {shippingQuotes.map((quote) => (
+                        <ShippingQuoteItem
+                            key={quote.service_id}
+                            quote={quote}
+                            checked={selectionId === quote.service_id}
+                            onSelect={selectShipping}
+                        />
+                    ))}
                 </div>
             )}
         </div>

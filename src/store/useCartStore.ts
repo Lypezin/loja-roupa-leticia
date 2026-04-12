@@ -49,12 +49,12 @@ interface CartState {
 
 export const useCartStore = create<CartState>()(
     persist(
-        (set, get) => ({
+        (set: (arg: any) => void, get: () => CartState) => ({
             items: [],
             shippingPostalCode: '',
             shippingQuotes: [],
             selectedShipping: null,
-            addItem: (item) => set((state) => {
+            addItem: (item: CartItem) => set((state: CartState) => {
                 const existingItem = state.items.find((candidate) => candidate.id === item.id)
 
                 if (existingItem) {
@@ -75,12 +75,12 @@ export const useCartStore = create<CartState>()(
                     selectedShipping: null,
                 }
             }),
-            removeItem: (id) => set((state) => ({
+            removeItem: (id: string) => set((state: CartState) => ({
                 items: state.items.filter((item) => item.id !== id),
                 shippingQuotes: [],
                 selectedShipping: null,
             })),
-            updateQuantity: (id, quantity) => set((state) => ({
+            updateQuantity: (id: string, quantity: number) => set((state: CartState) => ({
                 items: state.items.map((item) => (item.id === id ? { ...item, quantity } : item)),
                 shippingQuotes: [],
                 selectedShipping: null,
@@ -91,8 +91,8 @@ export const useCartStore = create<CartState>()(
                 shippingQuotes: [],
                 selectedShipping: null,
             }),
-            setShippingPostalCode: (shippingPostalCode) => set({ shippingPostalCode }),
-            setShippingQuotes: (shippingQuotes, shippingPostalCode) => set((state) => {
+            setShippingPostalCode: (shippingPostalCode: string) => set({ shippingPostalCode }),
+            setShippingQuotes: (shippingQuotes: ShippingQuoteOption[], shippingPostalCode: string) => set((state: CartState) => {
                 const selectedStillValid = state.selectedShipping
                     ? shippingQuotes.find((quote) => quote.service_id === state.selectedShipping?.service_id)
                     : null
@@ -103,15 +103,15 @@ export const useCartStore = create<CartState>()(
                     selectedShipping: selectedStillValid ? mapQuoteToSelection(selectedStillValid) : null,
                 }
             }),
-            selectShipping: (quote) => set({
+            selectShipping: (quote: ShippingQuoteOption | null) => set({
                 selectedShipping: quote ? mapQuoteToSelection(quote) : null,
             }),
             clearShipping: () => set({
                 shippingQuotes: [],
                 selectedShipping: null,
             }),
-            totalItems: () => get().items.reduce((total, item) => total + item.quantity, 0),
-            totalPrice: () => get().items.reduce((total, item) => total + (item.price * item.quantity), 0),
+            totalItems: () => get().items.reduce((total: number, item: CartItem) => total + item.quantity, 0),
+            totalPrice: () => get().items.reduce((total: number, item: CartItem) => total + (item.price * item.quantity), 0),
         }),
         {
             name: 'ecommerce-cart-storage',
