@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { AlertCircle, CheckCircle2, Image as ImageIcon, Loader2, Package2, Shapes, Truck } from "lucide-react"
+import { CheckCircle2, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { saveProduct } from "@/app/admin/(dashboard)/produtos/actions"
 import { Button } from "@/components/ui/button"
@@ -58,20 +58,10 @@ function normalizeExistingImages(images: ExistingImage[]) {
         return []
     }
 
-    const orderedImages = [...images].sort((a, b) => {
-        const displayOrderA = typeof a.display_order === "number" ? a.display_order : Number.MAX_SAFE_INTEGER
-        const displayOrderB = typeof b.display_order === "number" ? b.display_order : Number.MAX_SAFE_INTEGER
-        if (displayOrderA !== displayOrderB) {
-            return displayOrderA - displayOrderB
-        }
-
-        return Number(Boolean(b.is_primary)) - Number(Boolean(a.is_primary))
-    })
-
-    const primaryIndex = orderedImages.findIndex((image) => image.is_primary)
+    const primaryIndex = images.findIndex((image) => image.is_primary)
     const normalizedPrimaryIndex = primaryIndex >= 0 ? primaryIndex : 0
 
-    return orderedImages.map((image, index) => ({
+    return images.map((image, index) => ({
         ...image,
         is_primary: index === normalizedPrimaryIndex,
         display_order: index,
@@ -164,7 +154,7 @@ export function ProductForm({ categories, product, shippingDefaults }: ProductFo
     const effectiveVariationCount = variations.filter((variation) => variation.size.trim() || variation.color.trim()).length
 
     return (
-        <form action={handleSubmit} className="grid w-full gap-6 xl:grid-cols-[minmax(0,1fr)_21rem]">
+        <form action={handleSubmit} className="flex w-full flex-col gap-6">
             <div className="space-y-6">
                 <div className="rounded-[1.8rem] border border-zinc-200/80 bg-white/90 p-5 shadow-[0_18px_40px_rgba(79,55,39,0.05)] md:p-6">
                     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -259,43 +249,6 @@ export function ProductForm({ categories, product, shippingDefaults }: ProductFo
                 </fieldset>
             </div>
 
-            <aside className="space-y-4 xl:sticky xl:top-8 xl:self-start">
-                <div className="rounded-[1.6rem] border border-zinc-200/80 bg-white/90 p-5 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Checklist</p>
-                    <div className="mt-4 space-y-3 text-sm text-zinc-600">
-                        <div className="flex items-start gap-3">
-                            <Package2 className="mt-0.5 h-4 w-4 text-zinc-400" />
-                            <span>Categoria e preço base definidos.</span>
-                        </div>
-                        <div className="flex items-start gap-3">
-                            <Truck className="mt-0.5 h-4 w-4 text-zinc-400" />
-                            <span>Peso e dimensões do pacote preenchidos para o frete.</span>
-                        </div>
-                        <div className="flex items-start gap-3">
-                            <ImageIcon className="mt-0.5 h-4 w-4 text-zinc-400" />
-                            <span>
-                                {existingImages.length > 0
-                                    ? `${existingImages.length} imagem(ns) atual(is), com capa e ordem configuráveis.`
-                                    : "Envie pelo menos uma imagem para a vitrine."}
-                            </span>
-                        </div>
-                        <div className="flex items-start gap-3">
-                            <Shapes className="mt-0.5 h-4 w-4 text-zinc-400" />
-                            <span>{effectiveVariationCount} variação(ões) pronta(s) para venda.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="rounded-[1.6rem] border border-amber-200 bg-amber-50/85 p-5">
-                    <div className="flex items-center gap-2">
-                        <AlertCircle className="h-4 w-4 text-amber-700" />
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-800">Ponto de atenção</p>
-                    </div>
-                    <p className="mt-3 text-sm leading-6 text-amber-900">
-                        As medidas precisam representar o produto já embalado. Se o pacote mudar, a cotação do frete muda junto.
-                    </p>
-                </div>
-            </aside>
         </form>
     )
 }

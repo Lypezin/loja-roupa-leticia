@@ -110,17 +110,20 @@ export function ProductBasicInfo({ product, categories, shippingDefaults }: Prod
 
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div className="space-y-2">
-                            <Label htmlFor="base_price">Preço base (R$)</Label>
-                            <Input
-                                id="base_price"
-                                name="base_price"
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                defaultValue={product?.base_price}
-                                required
-                                className="h-11 rounded-2xl border-zinc-200 bg-zinc-50/60"
-                            />
+                            <Label htmlFor="base_price">Preço base</Label>
+                            <div className="relative">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-zinc-500">R$</span>
+                                <Input
+                                    id="base_price"
+                                    name="base_price"
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    defaultValue={product?.base_price}
+                                    required
+                                    className="h-11 rounded-2xl border-zinc-200 bg-zinc-50/60 pl-9"
+                                />
+                            </div>
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="category_id">Categoria</Label>
