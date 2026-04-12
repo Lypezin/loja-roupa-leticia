@@ -12,7 +12,7 @@ export default async function EditarProdutoPage({ params }: { params: Promise<{ 
             .select(`
                 *,
                 product_variations(*),
-                images:product_images(id, image_url, is_primary)
+                images:product_images(id, image_url, is_primary, display_order)
             `)
             .eq("id", id)
             .single(),
@@ -35,6 +35,16 @@ export default async function EditarProdutoPage({ params }: { params: Promise<{ 
     const formattedProduct = {
         ...product,
         variations: product.product_variations,
+        images: [...(product.images || [])].sort((a, b) => {
+            const displayOrderA = typeof a.display_order === "number" ? a.display_order : Number.MAX_SAFE_INTEGER
+            const displayOrderB = typeof b.display_order === "number" ? b.display_order : Number.MAX_SAFE_INTEGER
+
+            if (displayOrderA !== displayOrderB) {
+                return displayOrderA - displayOrderB
+            }
+
+            return Number(Boolean(b.is_primary)) - Number(Boolean(a.is_primary))
+        }),
     }
 
     const shippingDefaultsCandidate = (lastShippingReadyProduct || []).find((item) => item.id !== product.id) ?? null

@@ -2,7 +2,7 @@ import { SupabaseClient } from "@supabase/supabase-js"
 import type { Database } from "@/lib/supabase/database.types"
 
 type ProductImageRef = Pick<Database["public"]["Tables"]["product_images"]["Row"], "id" | "image_url">
-type ExistingImageInput = Pick<Database["public"]["Tables"]["product_images"]["Row"], "image_url">
+type ExistingImageInput = Pick<Database["public"]["Tables"]["product_images"]["Row"], "id" | "image_url" | "is_primary" | "display_order">
 
 function parseJson<T>(value: string | null, fallback: T): T {
     if (!value) {
@@ -23,6 +23,13 @@ export async function manageProductImages(
     uploadedUrlsJson: string | null,
 ) {
     const keptImages = parseJson<ExistingImageInput[]>(existingImagesJson, [])
+        .map((image, index) => ({
+            ...image,
+            is_primary: Boolean(image.is_primary),
+            display_order: typeof image.display_order === "number" ? image.display_order : index,
+        }))
+        .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
+
     const keptUrls = keptImages.map((image) => image.image_url)
 
     if (existingImagesJson) {
@@ -53,13 +60,44 @@ export async function manageProductImages(
         }
     }
 
+    for (const [index, image] of keptImages.entries()) {
+        const updatePayload = {
+            is_primary: Boolean(image.is_primary),
+            display_order: index,
+        }
+
+        if (image.id) {
+            const { error: updateImageError } = await supabase
+                .from("product_images")
+                .update(updatePayload)
+                .eq("id", image.id)
+
+            if (updateImageError) {
+                throw updateImageError
+            }
+            continue
+        }
+
+        const { error: updateByUrlError } = await supabase
+            .from("product_images")
+            .update(updatePayload)
+            .eq("product_id", productId)
+            .eq("image_url", image.image_url)
+
+        if (updateByUrlError) {
+            throw updateByUrlError
+        }
+    }
+
     const uploadedUrls = parseJson<string[]>(uploadedUrlsJson, [])
+    const hasPrimaryImage = keptImages.some((image) => image.is_primary)
+
     for (const [index, imageUrl] of uploadedUrls.entries()) {
         const { error: insertImageError } = await supabase.from("product_images").insert({
             product_id: productId,
             image_url: imageUrl,
-            is_primary: index === 0 && keptImages.length === 0,
-            display_order: index + 10,
+            is_primary: !hasPrimaryImage && index === 0,
+            display_order: keptImages.length + index,
         })
 
         if (insertImageError) {

@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Loader2, MoreVertical, Package, Pencil } from "lucide-react"
+import { Loader2, Package, Pencil } from "lucide-react"
 import { AdminRouteButton } from "@/components/admin/AdminRouteButton"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import type { Database } from "@/lib/supabase/database.types"
@@ -45,12 +45,12 @@ export function ProductTable({ products }: ProductTableProps) {
                             || product.images?.[0]?.image_url
 
                         return (
-                            <TableRow key={product.id} className="group transition-all duration-200 hover:bg-muted/30">
+                            <TableRow key={product.id} className="transition-all duration-200 hover:bg-muted/30">
                                 <TableCell className="py-4">
                                     <div className="flex items-center gap-4">
-                                        <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl border border-border/60 bg-muted transition-colors group-hover:border-border">
+                                        <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl border border-border/60 bg-muted">
                                             {primaryImage ? (
-                                                <Image src={primaryImage} alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                                                <Image src={primaryImage} alt="" fill className="object-cover" />
                                             ) : (
                                                 <div className="flex h-full w-full items-center justify-center">
                                                     <Package className="h-5 w-5 text-muted-foreground/50" />
@@ -58,7 +58,7 @@ export function ProductTable({ products }: ProductTableProps) {
                                             )}
                                         </div>
                                         <div>
-                                            <p className="mb-1 font-semibold leading-none text-foreground transition-colors group-hover:text-foreground/80">{product.name}</p>
+                                            <p className="mb-1 font-semibold leading-none text-foreground">{product.name}</p>
                                             <p className="text-xs font-medium text-muted-foreground">ID: {product.id.slice(0, 8)}</p>
                                         </div>
                                     </div>
@@ -80,7 +80,7 @@ export function ProductTable({ products }: ProductTableProps) {
                                     </span>
                                 </TableCell>
                                 <TableCell className="py-4 text-right">
-                                    <div className="flex items-center justify-end gap-2 pr-2 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100">
+                                    <div className="flex items-center justify-end gap-2 pr-2">
                                         <AdminRouteButton
                                             href={`/admin/produtos/${product.id}/editar`}
                                             variant="ghost"
@@ -92,9 +92,6 @@ export function ProductTable({ products }: ProductTableProps) {
                                             <Pencil className="h-3.5 w-3.5 text-muted-foreground" />
                                         </AdminRouteButton>
                                         <DeleteProductButton productId={product.id} productName={product.name} />
-                                    </div>
-                                    <div className="hidden pr-2 sm:block sm:group-hover:hidden">
-                                        <MoreVertical className="ml-auto h-4 w-4 text-muted-foreground/40" />
                                     </div>
                                 </TableCell>
                             </TableRow>

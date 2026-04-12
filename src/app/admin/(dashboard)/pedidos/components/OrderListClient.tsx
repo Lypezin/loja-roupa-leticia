@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { Loader2 } from 'lucide-react'
-import { toast } from 'sonner'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { useState } from "react"
+import { Loader2 } from "lucide-react"
+import { toast } from "sonner"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
     Table,
     TableBody,
@@ -11,9 +11,9 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/components/ui/table'
-import { formatCurrency } from '@/lib/utils'
-import { updateOrderStatus } from '../actions'
+} from "@/components/ui/table"
+import { formatCurrency } from "@/lib/utils"
+import { updateOrderStatus } from "../actions"
 
 type Order = {
     id: string
@@ -36,10 +36,10 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
         try {
             setUpdating(orderId)
             await updateOrderStatus(orderId, newStatus)
-            toast.success('Status do pedido atualizado.')
+            toast.success("Status do pedido atualizado.")
         } catch (error) {
-            console.error('Erro ao alterar status:', error)
-            toast.error('Não foi possível atualizar o status do pedido.')
+            console.error("Erro ao alterar status:", error)
+            toast.error("Não foi possível atualizar o status do pedido.")
         } finally {
             setUpdating(null)
         }
@@ -58,16 +58,16 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
             </TableHeader>
             <TableBody>
                 {orders.map((order) => {
-                    const clientName = order.customer_name || 'Cliente'
-                    const clientEmail = order.customer_email || 'E-mail não informado'
-                    const providerLabel = order.payment_provider || (order.payment_receipt_url ? 'abacatepay' : 'legado')
-                    const shippingLabel = [order.shipping_company_name, order.shipping_service_name].filter(Boolean).join(' - ')
+                    const clientName = order.customer_name || "Cliente"
+                    const clientEmail = order.customer_email || "E-mail não informado"
+                    const providerLabel = order.payment_provider || (order.payment_receipt_url ? "abacatepay" : "legado")
+                    const shippingLabel = [order.shipping_company_name, order.shipping_service_name].filter(Boolean).join(" - ")
                     const isUpdating = updating === order.id
 
                     return (
                         <TableRow key={order.id}>
                             <TableCell className="font-medium">
-                                {new Date(order.created_at).toLocaleDateString('pt-BR')}
+                                {new Date(order.created_at).toLocaleDateString("pt-BR")}
                             </TableCell>
                             <TableCell>
                                 <div className="font-medium">{clientName}</div>
@@ -76,7 +76,7 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                             <TableCell>
                                 <div className="max-w-[220px] space-y-1 text-sm">
                                     <div className="text-balance text-sm">
-                                        {order.order_items?.map((item) => `${item.quantity}x ${item.products?.name || 'Item'}`).join(', ') || 'Nenhum item'}
+                                        {order.order_items?.map((item) => `${item.quantity}x ${item.products?.name || "Item"}`).join(", ") || "Nenhum item"}
                                     </div>
                                     <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
                                         {providerLabel}
@@ -91,7 +91,7 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                                             href={order.payment_receipt_url}
                                             target="_blank"
                                             rel="noreferrer"
-                                            className="text-xs text-primary hover:underline"
+                                            className="cursor-pointer text-xs text-primary hover:underline"
                                         >
                                             Ver recibo
                                         </a>

@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image"
-import { ImageIcon, Loader2, Plus } from "lucide-react"
+import { ImageIcon, Loader2, Plus, Upload } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ACCEPTED_IMAGE_INPUT } from "@/lib/uploads"
@@ -39,7 +39,7 @@ export function CategoryForm({
                     </label>
                     <Input
                         id="name"
-                        placeholder="Ex: Tênis, camisetas..."
+                        placeholder="Ex.: tênis, camisetas..."
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         disabled={isLoading}
@@ -74,6 +74,14 @@ export function CategoryForm({
                             className="absolute inset-0 cursor-pointer opacity-0"
                         />
                     </div>
+
+                    <label
+                        htmlFor="image"
+                        className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-zinc-300 bg-zinc-50 px-4 py-3 text-sm font-medium text-zinc-700 transition hover:border-zinc-400 hover:bg-zinc-100"
+                    >
+                        <Upload className="h-4 w-4" />
+                        Escolher arquivo
+                    </label>
                 </div>
             </div>
 

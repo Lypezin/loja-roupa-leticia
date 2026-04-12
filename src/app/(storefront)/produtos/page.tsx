@@ -11,7 +11,7 @@ type CatalogProduct = {
     name: string
     base_price: number
     category?: { name?: string | null } | null
-    images?: { image_url: string; is_primary: boolean | null }[]
+    images?: { image_url: string; is_primary: boolean | null; display_order?: number | null }[]
 }
 
 export default async function ProdutosPage({
@@ -31,7 +31,7 @@ export default async function ProdutosPage({
         .select(`
             id, name, base_price,
             category:categories(name),
-            images:product_images(image_url, is_primary)
+            images:product_images(image_url, is_primary, display_order)
         `)
         .eq("is_active", true)
 

@@ -7,6 +7,7 @@ import { ProductCardImage } from "./ProductCardImage"
 type ProductImage = {
     image_url: string
     is_primary?: boolean | null
+    display_order?: number | null
 }
 
 export type Product = {
@@ -17,10 +18,23 @@ export type Product = {
     images?: ProductImage[]
 }
 
+function sortProductImages(images: ProductImage[]) {
+    return [...images].sort((a, b) => {
+        const primaryDelta = Number(Boolean(b.is_primary)) - Number(Boolean(a.is_primary))
+        if (primaryDelta !== 0) {
+            return primaryDelta
+        }
+
+        const orderA = typeof a.display_order === "number" ? a.display_order : Number.MAX_SAFE_INTEGER
+        const orderB = typeof b.display_order === "number" ? b.display_order : Number.MAX_SAFE_INTEGER
+        return orderA - orderB
+    })
+}
+
 export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
     const [showSecondaryImage, setShowSecondaryImage] = useState(false)
     const images = product.images && product.images.length > 0
-        ? [...product.images].sort((a, b) => Number(Boolean(b.is_primary)) - Number(Boolean(a.is_primary)))
+        ? sortProductImages(product.images)
         : [{ image_url: "/placeholder-image.jpg", is_primary: true }]
 
     const formattedPrice = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(product.base_price)

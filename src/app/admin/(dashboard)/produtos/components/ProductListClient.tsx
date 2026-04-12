@@ -1,36 +1,36 @@
 'use client'
 
-import { useState } from 'react'
-import { Loader2, Package, Plus, Search } from 'lucide-react'
-import { AdminRouteButton } from '@/components/admin/AdminRouteButton'
-import { Input } from '@/components/ui/input'
-import { ProductTable, type ProductTableProduct } from './ProductTable'
+import { useState } from "react"
+import { Loader2, Package, Plus, Search } from "lucide-react"
+import { AdminRouteButton } from "@/components/admin/AdminRouteButton"
+import { Input } from "@/components/ui/input"
+import { ProductTable, type ProductTableProduct } from "./ProductTable"
 
 interface ProductListClientProps {
     products: ProductTableProduct[]
 }
 
-type StatusFilter = 'all' | 'active' | 'hidden'
+type StatusFilter = "all" | "active" | "hidden"
 
 export function ProductListClient({ products }: ProductListClientProps) {
-    const [query, setQuery] = useState('')
-    const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
+    const [query, setQuery] = useState("")
+    const [statusFilter, setStatusFilter] = useState<StatusFilter>("all")
 
     const normalizedQuery = query.trim().toLowerCase()
 
     const filteredProducts = products.filter((product) => {
         const category = product.category
         const categoryName = Array.isArray(category)
-            ? (category[0]?.name ?? '')
-            : (category?.name ?? '')
+            ? (category[0]?.name ?? "")
+            : (category?.name ?? "")
 
         const matchesQuery = normalizedQuery.length === 0
             || product.name.toLowerCase().includes(normalizedQuery)
             || categoryName.toLowerCase().includes(normalizedQuery)
 
-        const matchesStatus = statusFilter === 'all'
-            || (statusFilter === 'active' && Boolean(product.is_active))
-            || (statusFilter === 'hidden' && !product.is_active)
+        const matchesStatus = statusFilter === "all"
+            || (statusFilter === "active" && Boolean(product.is_active))
+            || (statusFilter === "hidden" && !product.is_active)
 
         return matchesQuery && matchesStatus
     })
@@ -79,7 +79,7 @@ export function ProductListClient({ products }: ProductListClientProps) {
                         <select
                             value={statusFilter}
                             onChange={(event) => setStatusFilter(event.target.value as StatusFilter)}
-                            className="rounded-lg border border-input bg-background px-3 py-2 text-xs font-medium"
+                            className="cursor-pointer rounded-lg border border-input bg-background px-3 py-2 text-xs font-medium"
                         >
                             <option value="all">Todos</option>
                             <option value="active">Ativos</option>
@@ -96,12 +96,12 @@ export function ProductListClient({ products }: ProductListClientProps) {
                             <Package className="h-8 w-8 text-muted-foreground/50" />
                         </div>
                         <h3 className="mb-2 text-lg font-bold text-foreground">
-                            {products.length === 0 ? 'Sem produtos no momento' : 'Nenhum resultado encontrado'}
+                            {products.length === 0 ? "Sem produtos no momento" : "Nenhum resultado encontrado"}
                         </h3>
                         <p className="text-sm text-muted-foreground">
                             {products.length === 0
-                                ? 'Cadastre seu primeiro produto para começar a vender.'
-                                : 'Ajuste a busca ou o filtro para encontrar o produto que você quer editar.'}
+                                ? "Cadastre seu primeiro produto para começar a vender."
+                                : "Ajuste a busca ou o filtro para encontrar o produto que você quer editar."}
                         </p>
                         {products.length === 0 ? (
                             <AdminRouteButton

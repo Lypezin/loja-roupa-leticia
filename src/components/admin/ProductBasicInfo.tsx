@@ -39,9 +39,7 @@ function formatFieldValue(value?: number | null) {
     return typeof value === "number" && Number.isFinite(value) ? String(value) : ""
 }
 
-function buildDefaultShippingState(
-    product?: ProductBasicInfoProps["product"],
-) {
+function buildDefaultShippingState(product?: ProductBasicInfoProps["product"]) {
     return {
         weight_kg: formatFieldValue(product?.weight_kg),
         length_cm: formatFieldValue(product?.length_cm),
@@ -128,7 +126,7 @@ export function ProductBasicInfo({ product, categories, shippingDefaults }: Prod
                             <select
                                 id="category_id"
                                 name="category_id"
-                                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                                className="flex h-10 w-full cursor-pointer rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
                                 defaultValue={product?.category_id || ""}
                                 required
                             >
@@ -157,8 +155,7 @@ export function ProductBasicInfo({ product, categories, shippingDefaults }: Prod
                             </div>
                             <h3 className="mt-2 text-lg font-semibold text-zinc-950">Pacote usado na cotação</h3>
                             <p className="mt-2 text-sm leading-6 text-zinc-600">
-                                Preencha o peso e as dimensões do produto já embalado para envio. Essas informações são
-                                usadas pelo Melhor Envio no carrinho.
+                                Preencha o peso e as dimensões do produto já embalado para envio. Essas informações são usadas pelo Melhor Envio no carrinho.
                             </p>
                         </div>
                     </div>
@@ -244,8 +241,7 @@ export function ProductBasicInfo({ product, categories, shippingDefaults }: Prod
                 </div>
 
                 <p className="mt-4 text-xs leading-5 text-zinc-500">
-                    Dica: se você usa a mesma embalagem para peças parecidas, pode reaproveitar as últimas medidas salvas
-                    e ajustar só quando o volume mudar.
+                    Dica: se você usa a mesma embalagem para peças parecidas, pode reaproveitar as últimas medidas salvas e ajustar só quando o volume mudar.
                 </p>
             </section>
         </div>

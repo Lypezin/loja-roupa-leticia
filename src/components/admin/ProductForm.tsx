@@ -23,7 +23,7 @@ function getErrorMessage(error: unknown) {
 
 type Category = { id: string; name: string }
 type Variation = { size: string; color: string; stock_quantity: number }
-type ExistingImage = { id?: string; image_url: string; is_primary: boolean }
+type ExistingImage = { id?: string; image_url: string; is_primary: boolean; display_order?: number | null }
 type ProductData = {
     id: string
     name: string
@@ -53,17 +53,72 @@ function sanitizeVariation(variation: Variation) {
     }
 }
 
+function normalizeExistingImages(images: ExistingImage[]) {
+    if (images.length === 0) {
+        return []
+    }
+
+    const orderedImages = [...images].sort((a, b) => {
+        const displayOrderA = typeof a.display_order === "number" ? a.display_order : Number.MAX_SAFE_INTEGER
+        const displayOrderB = typeof b.display_order === "number" ? b.display_order : Number.MAX_SAFE_INTEGER
+        if (displayOrderA !== displayOrderB) {
+            return displayOrderA - displayOrderB
+        }
+
+        return Number(Boolean(b.is_primary)) - Number(Boolean(a.is_primary))
+    })
+
+    const primaryIndex = orderedImages.findIndex((image) => image.is_primary)
+    const normalizedPrimaryIndex = primaryIndex >= 0 ? primaryIndex : 0
+
+    return orderedImages.map((image, index) => ({
+        ...image,
+        is_primary: index === normalizedPrimaryIndex,
+        display_order: index,
+    }))
+}
+
 export function ProductForm({ categories, product, shippingDefaults }: ProductFormProps) {
     const router = useRouter()
     const isEditing = !!product
     const [isLoading, setIsLoading] = useState(false)
     const [variations, setVariations] = useState<Variation[]>(product?.variations || [{ size: "", color: "", stock_quantity: 0 }])
-    const [existingImages, setExistingImages] = useState<ExistingImage[]>(product?.images || [])
+    const [existingImages, setExistingImages] = useState<ExistingImage[]>(normalizeExistingImages(product?.images || []))
 
     const handleVariationChange = (index: number, field: keyof Variation, value: string | number) => {
         const newVariations = [...variations]
         newVariations[index] = { ...newVariations[index], [field]: value }
         setVariations(newVariations)
+    }
+
+    const updateExistingImages = (updater: (images: ExistingImage[]) => ExistingImage[]) => {
+        setExistingImages((currentImages) => normalizeExistingImages(updater(currentImages)))
+    }
+
+    const handleRemoveExistingImage = (index: number) => {
+        updateExistingImages((currentImages) => currentImages.filter((_, currentIndex) => currentIndex !== index))
+    }
+
+    const handleMoveExistingImage = (index: number, direction: "left" | "right") => {
+        updateExistingImages((currentImages) => {
+            const nextIndex = direction === "left" ? index - 1 : index + 1
+
+            if (nextIndex < 0 || nextIndex >= currentImages.length) {
+                return currentImages
+            }
+
+            const nextImages = [...currentImages]
+            const [movedImage] = nextImages.splice(index, 1)
+            nextImages.splice(nextIndex, 0, movedImage)
+            return nextImages
+        })
+    }
+
+    const handleSetPrimaryImage = (index: number) => {
+        updateExistingImages((currentImages) => currentImages.map((image, currentIndex) => ({
+            ...image,
+            is_primary: currentIndex === index,
+        })))
     }
 
     const handleSubmit = async (formData: FormData) => {
@@ -109,7 +164,7 @@ export function ProductForm({ categories, product, shippingDefaults }: ProductFo
     const effectiveVariationCount = variations.filter((variation) => variation.size.trim() || variation.color.trim()).length
 
     return (
-        <form action={handleSubmit} className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_18rem]">
+        <form action={handleSubmit} className="mx-auto grid w-full max-w-6xl gap-6 xl:grid-cols-[minmax(0,1fr)_20rem]">
             <div className="space-y-6">
                 <div className="rounded-[1.8rem] border border-zinc-200 bg-white p-5 shadow-sm md:p-6">
                     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -118,10 +173,10 @@ export function ProductForm({ categories, product, shippingDefaults }: ProductFo
                                 {isEditing ? "Edição" : "Cadastro"}
                             </p>
                             <h2 className="text-xl font-semibold text-zinc-950">
-                                {isEditing ? "Atualize o produto sem perder o ritmo" : "Monte o produto em etapas simples"}
+                                {isEditing ? "Atualize o produto com mais controle" : "Monte o produto em etapas simples"}
                             </h2>
                             <p className="max-w-2xl text-sm leading-6 text-zinc-600">
-                                Primeiro defina os dados principais e o pacote usado no frete. Depois finalize imagens, variações e visibilidade.
+                                Primeiro defina os dados principais e o pacote de frete. Depois organize imagens, variações e visibilidade.
                             </p>
                         </div>
                         <Button asChild variant="outline" className="rounded-full">
@@ -139,7 +194,9 @@ export function ProductForm({ categories, product, shippingDefaults }: ProductFo
 
                     <ProductImageManager
                         existingImages={existingImages}
-                        onRemoveExisting={(idx) => setExistingImages((prev) => prev.filter((_, i) => i !== idx))}
+                        onRemoveExisting={handleRemoveExistingImage}
+                        onMoveExisting={handleMoveExistingImage}
+                        onSetPrimary={handleSetPrimaryImage}
                     />
 
                     <VariationsEditor
@@ -176,14 +233,18 @@ export function ProductForm({ categories, product, shippingDefaults }: ProductFo
                     </section>
 
                     <div className="rounded-[1.8rem] border border-zinc-200 bg-zinc-950 p-5 text-white shadow-sm md:p-6">
-                        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                             <div>
                                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/60">Finalização</p>
                                 <p className="mt-2 text-sm leading-6 text-white/80">
-                                    O cadastro só é salvo quando imagens, variações e medidas já estiverem consistentes.
+                                    O cadastro só é salvo quando imagens, variações e medidas estiverem consistentes.
                                 </p>
                             </div>
-                            <Button disabled={isLoading} type="submit" className="h-12 rounded-full bg-white px-6 text-base text-zinc-950 hover:bg-white/90">
+                            <Button
+                                disabled={isLoading}
+                                type="submit"
+                                className="h-12 w-full rounded-full bg-white px-6 text-base text-zinc-950 hover:bg-white/90 lg:w-auto"
+                            >
                                 {isLoading ? (
                                     <>
                                         <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -212,7 +273,11 @@ export function ProductForm({ categories, product, shippingDefaults }: ProductFo
                         </div>
                         <div className="flex items-start gap-3">
                             <ImageIcon className="mt-0.5 h-4 w-4 text-zinc-400" />
-                            <span>{existingImages.length > 0 ? `${existingImages.length} imagem(ns) atual(is).` : "Envie pelo menos uma imagem para a vitrine."}</span>
+                            <span>
+                                {existingImages.length > 0
+                                    ? `${existingImages.length} imagem(ns) atual(is), com capa e ordem configuráveis.`
+                                    : "Envie pelo menos uma imagem para a vitrine."}
+                            </span>
                         </div>
                         <div className="flex items-start gap-3">
                             <Shapes className="mt-0.5 h-4 w-4 text-zinc-400" />

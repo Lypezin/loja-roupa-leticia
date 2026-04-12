@@ -9,6 +9,7 @@ import { createPublicClient } from "@/lib/supabase/public"
 type ProductImage = {
     image_url: string
     is_primary?: boolean | null
+    display_order?: number | null
 }
 
 type ProductCategory = {
@@ -33,7 +34,7 @@ export async function generateMetadata({
 
     const { data: product } = await supabase
         .from("products")
-        .select("name, description, product_images(image_url, is_primary)")
+        .select("name, description, product_images(image_url, is_primary, display_order)")
         .eq("id", id)
         .maybeSingle()
 
@@ -70,7 +71,7 @@ export default async function ProductPage({
             *,
             category:categories(name, slug),
             variations:product_variations(*),
-            images:product_images(image_url, is_primary)
+            images:product_images(image_url, is_primary, display_order)
         `)
         .eq("id", id)
         .maybeSingle()

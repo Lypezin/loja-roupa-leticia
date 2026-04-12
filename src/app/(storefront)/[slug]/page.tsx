@@ -59,7 +59,7 @@ export default async function CategoryPage(props: {
         .select(`
             id, name, base_price,
             category:categories(name),
-            images:product_images(image_url, is_primary)
+            images:product_images(image_url, is_primary, display_order)
         `)
         .eq("is_active", true)
         .eq("category_id", category.id)

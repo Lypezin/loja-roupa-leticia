@@ -7,13 +7,27 @@ interface ProductGalleryProps {
     images: {
         image_url: string
         is_primary?: boolean | null
+        display_order?: number | null
     }[]
     productName: string
 }
 
+function sortGalleryImages(images: ProductGalleryProps["images"]) {
+    return [...images].sort((a, b) => {
+        const primaryDelta = Number(Boolean(b.is_primary)) - Number(Boolean(a.is_primary))
+        if (primaryDelta !== 0) {
+            return primaryDelta
+        }
+
+        const orderA = typeof a.display_order === "number" ? a.display_order : Number.MAX_SAFE_INTEGER
+        const orderB = typeof b.display_order === "number" ? b.display_order : Number.MAX_SAFE_INTEGER
+        return orderA - orderB
+    })
+}
+
 export function ProductGallery({ images, productName }: ProductGalleryProps) {
     const galleryImages = images.length > 0
-        ? [...images].sort((a, b) => Number(Boolean(b.is_primary)) - Number(Boolean(a.is_primary)))
+        ? sortGalleryImages(images)
         : [{ image_url: "/placeholder-image.jpg", is_primary: true }]
 
     const [selectedIndex, setSelectedIndex] = useState(0)
