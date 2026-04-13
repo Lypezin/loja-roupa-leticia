@@ -54,7 +54,7 @@ export function DesktopNav({ displayCategories, extraCategories }: DesktopNavPro
                         </div>
                         <div className="border-t border-border pt-1 mt-1">
                             <Link
-                                href="/produtos"
+                                href="/categorias"
                                 role="menuitem"
                                 className="flex items-center justify-between gap-1 rounded-xl px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-accent"
                             >

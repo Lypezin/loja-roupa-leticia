@@ -78,7 +78,7 @@ export function CategoriesSection({ categories, sectionLabel = "Categorias", sec
                         </Link>
                     ))}
                     <Link
-                        href="/produtos"
+                        href="/categorias"
                         className="ml-auto flex items-center gap-1.5 text-sm font-medium text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
                     >
                         Ver todas <ArrowRight className="h-3.5 w-3.5" />
