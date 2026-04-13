@@ -1,0 +1,29 @@
+
+┌───────────────────────────────┐
+│ OpenNext — Cloudflare preview │
+└───────────────────────────────┘
+
+WARN OpenNext is not fully compatible with Windows.
+WARN For optimal performance, it is recommended to use Windows Subsystem for Linux (WSL).
+WARN While OpenNext may function on Windows, it could encounter unpredictable failures during runtime.
+Incremental cache does not need populating
+Tag cache does not need populating
+
+ ⛅️ wrangler 4.82.1
+───────────────────
+Your Worker has access to the following bindings:
+Binding                                                                             Resource                  Mode
+env.ASSETS                                                                          Assets                    local
+env.NEXT_PUBLIC_SITE_URL ("https://loja-roupa-leticia.foolype.wo...")               Environment Variable      local
+env.NEXT_PUBLIC_SUPABASE_URL ("https://nxatrcnymbeoptkmxsbe.supabase...")           Environment Variable      local
+env.NEXT_PUBLIC_SUPABASE_ANON_KEY ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....")      Environment Variable      local
+env.MELHOR_ENVIO_ENVIRONMENT ("production")                                         Environment Variable      local
+env.MELHOR_ENVIO_SCOPES ("shipping-calculate")                                      Environment Variable      local
+env.MELHOR_ENVIO_REDIRECT_URI ("https://loja-roupa-leticia.foolype.wo...")          Environment Variable      local
+
+⎔ Starting local server...
+[wrangler:info] Ready on http://127.0.0.1:8789
+⎔ Reloading local server...
+⎔ Local server updated and ready
+⎔ Reloading local server...
+⎔ Local server updated and ready

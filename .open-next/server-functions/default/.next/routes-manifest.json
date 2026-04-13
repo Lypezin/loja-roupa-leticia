@@ -1,0 +1,296 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.abacatepay.com https://*.abacatepay.com; frame-src 'self' https://*.abacatepay.com; form-action 'self' https://*.abacatepay.com; upgrade-insecure-requests"
+        },
+        {
+          "key": "X-DNS-Prefetch-Control",
+          "value": "on"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), browsing-topics=()"
+        }
+      ],
+      "regex": "^(?:/(.*))(?:/)?$"
+    }
+  ],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/admin/produtos/[id]/editar",
+      "regex": "^/admin/produtos/([^/]+?)/editar(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/produtos/(?<nxtPid>[^/]+?)/editar(?:/)?$"
+    },
+    {
+      "page": "/conta/pedidos/[id]",
+      "regex": "^/conta/pedidos/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/conta/pedidos/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/produto/[id]",
+      "regex": "^/produto/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/produto/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/[slug]",
+      "regex": "^/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/(?<nxtPslug>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/admin",
+      "regex": "^/admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin(?:/)?$"
+    },
+    {
+      "page": "/admin/categorias",
+      "regex": "^/admin/categorias(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/categorias(?:/)?$"
+    },
+    {
+      "page": "/admin/configuracoes",
+      "regex": "^/admin/configuracoes(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/configuracoes(?:/)?$"
+    },
+    {
+      "page": "/admin/login",
+      "regex": "^/admin/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/login(?:/)?$"
+    },
+    {
+      "page": "/admin/pedidos",
+      "regex": "^/admin/pedidos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/pedidos(?:/)?$"
+    },
+    {
+      "page": "/admin/produtos",
+      "regex": "^/admin/produtos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/produtos(?:/)?$"
+    },
+    {
+      "page": "/admin/produtos/novo",
+      "regex": "^/admin/produtos/novo(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/produtos/novo(?:/)?$"
+    },
+    {
+      "page": "/api/integrations/melhor-envio/callback",
+      "regex": "^/api/integrations/melhor\\-envio/callback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/integrations/melhor\\-envio/callback(?:/)?$"
+    },
+    {
+      "page": "/api/integrations/melhor-envio/connect",
+      "regex": "^/api/integrations/melhor\\-envio/connect(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/integrations/melhor\\-envio/connect(?:/)?$"
+    },
+    {
+      "page": "/api/webhooks/abacatepay",
+      "regex": "^/api/webhooks/abacatepay(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/webhooks/abacatepay(?:/)?$"
+    },
+    {
+      "page": "/apple-icon.jpg",
+      "regex": "^/apple\\-icon\\.jpg(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/apple\\-icon\\.jpg(?:/)?$"
+    },
+    {
+      "page": "/auth/confirm",
+      "regex": "^/auth/confirm(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/confirm(?:/)?$"
+    },
+    {
+      "page": "/carrinho",
+      "regex": "^/carrinho(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/carrinho(?:/)?$"
+    },
+    {
+      "page": "/categorias",
+      "regex": "^/categorias(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/categorias(?:/)?$"
+    },
+    {
+      "page": "/conta",
+      "regex": "^/conta(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/conta(?:/)?$"
+    },
+    {
+      "page": "/conta/cadastro",
+      "regex": "^/conta/cadastro(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/conta/cadastro(?:/)?$"
+    },
+    {
+      "page": "/conta/login",
+      "regex": "^/conta/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/conta/login(?:/)?$"
+    },
+    {
+      "page": "/conta/pedidos",
+      "regex": "^/conta/pedidos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/conta/pedidos(?:/)?$"
+    },
+    {
+      "page": "/conta/perfil",
+      "regex": "^/conta/perfil(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/conta/perfil(?:/)?$"
+    },
+    {
+      "page": "/contato",
+      "regex": "^/contato(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/contato(?:/)?$"
+    },
+    {
+      "page": "/icon.jpg",
+      "regex": "^/icon\\.jpg(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/icon\\.jpg(?:/)?$"
+    },
+    {
+      "page": "/produtos",
+      "regex": "^/produtos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/produtos(?:/)?$"
+    },
+    {
+      "page": "/search",
+      "regex": "^/search(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/search(?:/)?$"
+    },
+    {
+      "page": "/sitemap.xml",
+      "regex": "^/sitemap\\.xml(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/sitemap\\.xml(?:/)?$"
+    },
+    {
+      "page": "/sobre",
+      "regex": "^/sobre(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/sobre(?:/)?$"
+    },
+    {
+      "page": "/sucesso",
+      "regex": "^/sucesso(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/sucesso(?:/)?$"
+    },
+    {
+      "page": "/termos",
+      "regex": "^/termos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/termos(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

@@ -1,0 +1,130 @@
+
+> e-commerce@0.1.0 preview
+> opennextjs-cloudflare build && opennextjs-cloudflare preview
+
+
+┌─────────────────────────────┐
+│ OpenNext — Cloudflare build │
+└─────────────────────────────┘
+
+WARN OpenNext is not fully compatible with Windows.
+WARN For optimal performance, it is recommended to use Windows Subsystem for Linux (WSL).
+WARN While OpenNext may function on Windows, it could encounter unpredictable failures during runtime.
+App directory: C:\Users\luizf\OneDrive - MSFT\Desktop\loja-roupa-leticia
+Next.js version : 16.1.6
+@opennextjs/cloudflare version: 1.19.1
+@opennextjs/aws version: 3.10.1
+
+┌─────────────────────────────────┐
+│ OpenNext — Building Next.js app │
+└─────────────────────────────────┘
+
+
+> e-commerce@0.1.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+- Experiments (use with caution):
+  · serverActions
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 14.9s
+  Running TypeScript ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/29) ...
+Erro nas estatisticas do painel Admin: Dynamic server usage: Route /admin couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+Erros no painel Admin (Pedidos): Dynamic server usage: Route /admin/pedidos couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+  Generating static pages using 7 workers (7/29) 
+  Generating static pages using 7 workers (14/29) 
+  Generating static pages using 7 workers (21/29) 
+✓ Generating static pages using 7 workers (29/29) in 3.8s
+  Finalizing page optimization ...
+
+Route (app)                                  Revalidate  Expire
+┌ ○ /                                                1m      1y
+├ ○ /_not-found                                      1m      1y
+├ ƒ /[slug]
+├ ƒ /admin
+├ ƒ /admin/categorias
+├ ƒ /admin/configuracoes
+├ ƒ /admin/login
+├ ƒ /admin/pedidos
+├ ƒ /admin/produtos
+├ ƒ /admin/produtos/[id]/editar
+├ ƒ /admin/produtos/novo
+├ ƒ /api/integrations/melhor-envio/callback
+├ ƒ /api/integrations/melhor-envio/connect
+├ ƒ /api/webhooks/abacatepay
+├ ○ /apple-icon.jpg
+├ ƒ /auth/confirm
+├ ○ /carrinho                                        1m      1y
+├ ○ /categorias                                      1m      1y
+├ ƒ /conta
+├ ○ /conta/cadastro                                  1m      1y
+├ ○ /conta/login                                     1m      1y
+├ ƒ /conta/pedidos
+├ ƒ /conta/pedidos/[id]
+├ ƒ /conta/perfil
+├ ○ /contato                                         1m      1y
+├ ○ /icon.jpg
+├ ƒ /produto/[id]
+├ ƒ /produtos
+├ ƒ /search
+├ ƒ /sitemap.xml
+├ ○ /sobre                                           1m      1y
+├ ƒ /sucesso
+└ ○ /termos                                          1m      1y
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+┌──────────────────────────────┐
+│ OpenNext — Generating bundle │
+└──────────────────────────────┘
+
+Bundling middleware function...
+Bundling static assets...
+Bundling cache assets...
+Building server function: default...
+Applying code patches: 4.612s
+# copyPackageTemplateFiles
+[35m⚙️ Bundling the OpenNext server...
+[0m
+[35mWorker saved in `.open-next\worker.js` 🚀
+[0m
+OpenNext build complete.
+
+┌───────────────────────────────┐
+│ OpenNext — Cloudflare preview │
+└───────────────────────────────┘
+
+WARN OpenNext is not fully compatible with Windows.
+WARN For optimal performance, it is recommended to use Windows Subsystem for Linux (WSL).
+WARN While OpenNext may function on Windows, it could encounter unpredictable failures during runtime.
+Incremental cache does not need populating
+Tag cache does not need populating
+
+ ⛅️ wrangler 4.82.1
+───────────────────
+Your Worker has access to the following bindings:
+Binding                                                                             Resource                  Mode
+env.ASSETS                                                                          Assets                    local
+env.NEXT_PUBLIC_SITE_URL ("https://loja-roupa-leticia.foolype.wo...")               Environment Variable      local
+env.NEXT_PUBLIC_SUPABASE_URL ("https://nxatrcnymbeoptkmxsbe.supabase...")           Environment Variable      local
+env.NEXT_PUBLIC_SUPABASE_ANON_KEY ("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....")      Environment Variable      local
+env.MELHOR_ENVIO_ENVIRONMENT ("production")                                         Environment Variable      local
+env.MELHOR_ENVIO_SCOPES ("shipping-calculate")                                      Environment Variable      local
+env.MELHOR_ENVIO_REDIRECT_URI ("https://loja-roupa-leticia.foolype.wo...")          Environment Variable      local
+
+⎔ Starting local server...
+[wrangler:info] Ready on http://127.0.0.1:8787
+[wrangler:info] GET / 500 Internal Server Error (229ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready
+⎔ Reloading local server...
+⎔ Local server updated and ready
