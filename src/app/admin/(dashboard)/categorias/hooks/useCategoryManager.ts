@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { createCategory, deleteCategory, updateCategory } from "../actions"
+import { validateImageFile } from "@/lib/uploads"
 
 export type Category = {
     id: string
@@ -11,6 +12,16 @@ export type Category = {
     slug: string
     productsCount: number
     image_url?: string
+}
+
+function getUploadErrorMessage(error: unknown) {
+    const message = error instanceof Error ? error.message : ''
+
+    if (message.toLowerCase().includes("unexpected response")) {
+        return "A imagem ficou grande demais para o envio. Tente uma versão menor, com até 5 MB."
+    }
+
+    return message || "Não foi possível enviar a imagem. Tente novamente."
 }
 
 export function useCategoryManager() {
@@ -29,6 +40,15 @@ export function useCategoryManager() {
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, isEdit: boolean = false) => {
         const file = e.target.files?.[0] || null
+
+        try {
+            validateImageFile(file)
+        } catch (error) {
+            toast.error(getUploadErrorMessage(error))
+            e.target.value = ''
+            return
+        }
+
         if (isEdit) {
             setEditImage(file)
             setEditImagePreview(file ? URL.createObjectURL(file) : null)
@@ -48,20 +68,26 @@ export function useCategoryManager() {
         if (!name.trim()) return
 
         setIsLoading(true)
-        const formData = new FormData()
-        formData.append('name', name.trim())
-        if (image) formData.append('image', image)
 
-        const res = await createCategory(formData)
-        if (res?.error) {
-            toast.error(res.error)
-        } else {
-            toast.success("Categoria criada com sucesso.")
-            setName('')
-            setImage(null)
-            setImagePreview(null)
-            refreshPage()
+        try {
+            const formData = new FormData()
+            formData.append('name', name.trim())
+            if (image) formData.append('image', image)
+
+            const res = await createCategory(formData)
+            if (res?.error) {
+                toast.error(res.error)
+            } else {
+                toast.success("Categoria criada com sucesso.")
+                setName('')
+                setImage(null)
+                setImagePreview(null)
+                refreshPage()
+            }
+        } catch (error) {
+            toast.error(getUploadErrorMessage(error))
         }
+
         setIsLoading(false)
     }
 
@@ -69,18 +95,24 @@ export function useCategoryManager() {
         if (!editName.trim()) return
 
         setUpdatingId(id)
-        const formData = new FormData()
-        formData.append('name', editName.trim())
-        if (editImage) formData.append('image', editImage)
 
-        const res = await updateCategory(id, formData)
-        if (res?.error) {
-            toast.error(res.error)
-        } else {
-            toast.success("Categoria atualizada com sucesso.")
-            cancelEditing()
-            refreshPage()
+        try {
+            const formData = new FormData()
+            formData.append('name', editName.trim())
+            if (editImage) formData.append('image', editImage)
+
+            const res = await updateCategory(id, formData)
+            if (res?.error) {
+                toast.error(res.error)
+            } else {
+                toast.success("Categoria atualizada com sucesso.")
+                cancelEditing()
+                refreshPage()
+            }
+        } catch (error) {
+            toast.error(getUploadErrorMessage(error))
         }
+
         setUpdatingId(null)
     }
 

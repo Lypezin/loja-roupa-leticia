@@ -3,6 +3,10 @@
 import { revalidatePath } from "next/cache"
 import { requireAdmin } from "@/lib/supabase/server"
 
+function getErrorMessage(error: unknown) {
+    return error instanceof Error ? error.message : 'Erro ao excluir categoria.'
+}
+
 export async function deleteCategory(id: string) {
     try {
         const supabase = await requireAdmin()
@@ -22,6 +26,7 @@ export async function deleteCategory(id: string) {
             if (error.code === '23503') {
                 return { error: 'Não é possível excluir esta categoria, pois há produtos usando ela.' }
             }
+
             return { error: error.message }
         }
 
@@ -35,14 +40,14 @@ export async function deleteCategory(id: string) {
                         .from('product-images')
                         .remove([filePath])
                 }
-            } catch (storageErr) {
-                console.error('Falha ao deletar imagem do storage:', storageErr)
+            } catch (storageError) {
+                console.error('Falha ao deletar imagem do storage:', storageError)
             }
         }
 
         revalidatePath('/admin/categorias')
         return { success: true }
-    } catch (error: any) {
-        return { error: error.message || 'Erro ao excluir categoria.' }
+    } catch (error: unknown) {
+        return { error: getErrorMessage(error) }
     }
 }

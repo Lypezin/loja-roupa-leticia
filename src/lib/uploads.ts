@@ -23,6 +23,6 @@ export function validateImageFile(file: UploadFile | null | undefined) {
     }
 
     if (!ACCEPTED_IMAGE_MIME_TYPES.includes(file.type as (typeof ACCEPTED_IMAGE_MIME_TYPES)[number])) {
-        throw new Error('Formato de imagem invalido. Use JPG, PNG, WEBP, AVIF ou GIF.')
+        throw new Error('Formato de imagem inválido. Use JPG, PNG, WEBP, AVIF ou GIF.')
     }
 }

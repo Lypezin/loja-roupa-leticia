@@ -69,7 +69,7 @@ export function CategoryForm({
                         ) : (
                             <div className="flex flex-col items-center gap-2 text-center">
                                 <ImageIcon className="h-6 w-6 text-zinc-400" />
-                                <span className="text-sm text-zinc-600">Suba uma imagem (PNG ou JPG)</span>
+                                <span className="text-sm text-zinc-600">Suba uma imagem (PNG, JPG, WEBP ou AVIF)</span>
                             </div>
                         )}
                         <input
@@ -81,6 +81,9 @@ export function CategoryForm({
                             className="absolute inset-0 cursor-pointer opacity-0"
                         />
                     </div>
+                    <p className="text-xs leading-5 text-zinc-500">
+                        Limite de 5 MB por imagem. Se o arquivo vier direto do celular, vale reduzir antes de enviar.
+                    </p>
                 </div>
             </div>
 

@@ -4,13 +4,22 @@ import { revalidatePath } from "next/cache"
 import { requireAdmin } from "@/lib/supabase/server"
 import { validateImageFile } from "@/lib/uploads"
 
+function getErrorMessage(error: unknown) {
+    return error instanceof Error ? error.message : 'Erro ao atualizar categoria.'
+}
+
 export async function updateCategory(id: string, formData: FormData) {
     try {
         const supabase = await requireAdmin()
         const name = (formData.get('name') as string) || ''
         const image = formData.get('image') as File | null
 
-        const slug = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-')
+        const slug = name
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/\s+/g, '-')
+
         const updateData: Record<string, string> = { name, slug }
 
         if (image && image.size > 0) {
@@ -31,7 +40,7 @@ export async function updateCategory(id: string, formData: FormData) {
                 .upload(filePath, image)
 
             if (uploadError) {
-                return { error: 'Falha ao subir a nova imagem: ' + uploadError.message }
+                return { error: `Falha ao subir a nova imagem: ${uploadError.message}` }
             }
 
             const { data: { publicUrl } } = supabase.storage
@@ -50,8 +59,8 @@ export async function updateCategory(id: string, formData: FormData) {
                             .from('product-images')
                             .remove([oldFilePath])
                     }
-                } catch (storageErr) {
-                    console.error('Falha ao deletar imagem antiga do storage:', storageErr)
+                } catch (storageError) {
+                    console.error('Falha ao deletar imagem antiga do storage:', storageError)
                 }
             }
         }
@@ -62,7 +71,10 @@ export async function updateCategory(id: string, formData: FormData) {
             .eq('id', id)
 
         if (error) {
-            if (error.code === '23505') return { error: 'Uma categoria com este nome já existe.' }
+            if (error.code === '23505') {
+                return { error: 'Uma categoria com este nome já existe.' }
+            }
+
             return { error: error.message }
         }
 
@@ -70,7 +82,7 @@ export async function updateCategory(id: string, formData: FormData) {
         revalidatePath('/admin/produtos/novo')
         revalidatePath('/')
         return { success: true }
-    } catch (error: any) {
-        return { error: error.message || 'Erro ao atualizar categoria.' }
+    } catch (error: unknown) {
+        return { error: getErrorMessage(error) }
     }
 }
