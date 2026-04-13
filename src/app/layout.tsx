@@ -51,12 +51,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body className="antialiased">
-        <ThemeProvider
-          attribute="class"
-          forcedTheme="light"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
+        <ThemeProvider>
           <NextTopLoader color="var(--primary)" showSpinner={false} />
           <Toaster position="top-right" richColors />
           {children}
