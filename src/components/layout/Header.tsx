@@ -32,8 +32,8 @@ export function Header({
         }
     }, [mobileMenu])
 
-    const displayCategories = categories.slice(0, 4)
-    const extraCategories = categories.slice(4)
+    const displayCategories = categories.slice(0, 3)
+    const extraCategories = categories.slice(3)
 
     return (
         <>

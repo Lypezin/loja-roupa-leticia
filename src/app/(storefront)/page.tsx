@@ -58,7 +58,7 @@ export default async function StorefrontHome() {
             />
 
             <CategoriesSection
-                categories={categories.slice(0, 3)}
+                categories={categories}
                 sectionLabel={categoriesSectionLabel}
                 sectionTitle={categoriesSectionTitle}
             />
