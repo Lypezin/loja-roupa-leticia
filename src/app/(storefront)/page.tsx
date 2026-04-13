@@ -54,7 +54,6 @@ export default async function StorefrontHome() {
                 backgroundUrl={heroBg}
                 badgeText={heroBadge}
                 secondaryButtonText={heroSecondaryButton}
-                countdownEnd={settings?.countdown_end || undefined}
             />
 
             <CategoriesSection

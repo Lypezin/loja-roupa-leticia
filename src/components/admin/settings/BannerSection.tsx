@@ -36,7 +36,7 @@ export function BannerSection({ settings }: BannerSectionProps) {
                 throw new Error(res.error)
             }
             showSuccess(setSuccess)
-            toast.success("Banner hero atualizado!")
+            toast.success("Banner hero atualizado.")
         } catch (error: unknown) {
             const err = error as Error
             toast.error(`Erro ao salvar banner: ${err.message}`)
@@ -81,18 +81,6 @@ export function BannerSection({ settings }: BannerSectionProps) {
                         <Label htmlFor="hero_secondary_button_text" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Botão secundário</Label>
                         <Input id="hero_secondary_button_text" name="hero_secondary_button_text" defaultValue={String(settings.hero_secondary_button_text || "Sobre a marca")} className="h-11 rounded-xl border-zinc-200 focus-visible:ring-zinc-200" />
                     </div>
-
-                    <div className="space-y-2 border-t border-zinc-50 pt-4 md:col-span-2">
-                        <Label htmlFor="countdown_end" className="text-xs font-bold uppercase tracking-wider text-zinc-400">Término da oferta (cronômetro)</Label>
-                        <Input
-                            id="countdown_end"
-                            name="countdown_end"
-                            type="datetime-local"
-                            defaultValue={typeof settings.countdown_end === "string" ? new Date(settings.countdown_end).toISOString().slice(0, 16) : ""}
-                            className="h-11 w-full rounded-xl border-zinc-200 focus-visible:ring-zinc-200 md:w-1/2"
-                        />
-                        <p className="text-[10px] text-zinc-400">Deixe vazio para desativar o cronômetro da página inicial.</p>
-                    </div>
                 </div>
 
                 <div className="space-y-3 pt-4">
@@ -114,7 +102,7 @@ export function BannerSection({ settings }: BannerSectionProps) {
                                     <ImageIcon className="h-6 w-6 text-zinc-400" />
                                 </div>
                                 <p className="text-sm font-semibold text-zinc-600">Upload de imagem de fundo</p>
-                                <p className="text-xs text-zinc-400">Recomendado: 1920x1080 px</p>
+                                <p className="text-xs text-zinc-400">Recomendado: 1500 x 1800 px</p>
                             </div>
                         )}
                         <input

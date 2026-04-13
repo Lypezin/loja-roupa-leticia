@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { ShieldCheck, Sparkles, Scissors } from "lucide-react"
-import { CountdownTimer } from "./CountdownTimer"
 
 interface HeroContentProps {
     title: string
@@ -8,7 +7,6 @@ interface HeroContentProps {
     buttonText: string
     badgeText?: string
     secondaryButtonText?: string
-    countdownEnd?: string
 }
 
 const heroFacts = [
@@ -17,7 +15,7 @@ const heroFacts = [
     { label: "Compra Segura", value: "Primeira troca grátis", icon: ShieldCheck },
 ]
 
-export function HeroContent({ title, subtitle, buttonText, badgeText, secondaryButtonText, countdownEnd }: HeroContentProps) {
+export function HeroContent({ title, subtitle, buttonText, badgeText, secondaryButtonText }: HeroContentProps) {
     return (
         <div className="flex flex-col justify-center py-2 md:py-4">
             <span className="eyebrow animate-enter-soft">{badgeText || "novidades da semana"}</span>
@@ -64,15 +62,6 @@ export function HeroContent({ title, subtitle, buttonText, badgeText, secondaryB
                     </div>
                 ))}
             </div>
-
-            {countdownEnd && (
-                <div className="animate-enter-soft animate-enter-delay-3 mt-8 max-w-sm rounded-[1.6rem] border border-border bg-card px-5 py-5 shadow-[0_14px_30px_rgba(68,48,31,0.05)]">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">janela de lançamento</p>
-                    <div className="mt-4">
-                        <CountdownTimer targetDate={countdownEnd} />
-                    </div>
-                </div>
-            )}
         </div>
     )
 }
