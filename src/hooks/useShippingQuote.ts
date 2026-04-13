@@ -1,6 +1,6 @@
 import { useState, useTransition } from "react"
 import { toast } from "sonner"
-import { quoteShippingOptions } from "@/app/(storefront)/actions"
+import { quoteShippingOptions } from "@/app/(storefront)/_actions/shipping-actions"
 import { useCartStore } from "@/store/useCartStore"
 
 export function useShippingQuote() {
