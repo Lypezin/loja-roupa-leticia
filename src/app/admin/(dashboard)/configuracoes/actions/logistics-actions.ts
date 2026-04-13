@@ -1,7 +1,8 @@
 'use server'
 
 import { normalizePostalCode } from "@/lib/customer-profile"
-import { disconnectMelhorEnvioIntegration } from "@/lib/melhor-envio"
+import { disconnectMelhorEnvioIntegration } from "@/lib/melhor-envio/storage"
+import { getMelhorEnvioEnvironment } from "@/lib/melhor-envio/config"
 import { requireAdmin } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 
@@ -53,7 +54,8 @@ export async function saveLogistics(formData: FormData) {
 export async function disconnectMelhorEnvioAccount() {
     try {
         await requireAdmin()
-        await disconnectMelhorEnvioIntegration()
+        const environment = getMelhorEnvioEnvironment()
+        await disconnectMelhorEnvioIntegration(environment)
         revalidatePath('/admin/configuracoes')
         return { success: true }
     } catch (error: unknown) {
