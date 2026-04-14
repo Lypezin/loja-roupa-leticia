@@ -1,7 +1,7 @@
 'use client'
 
 import { Loader2, MapPin, Truck } from "lucide-react"
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { useShippingQuote } from "@/hooks/useShippingQuote"
 import { useCartStore } from "@/store/useCartStore"
@@ -13,6 +13,7 @@ type ShippingSelectorProps = {
 }
 
 export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
+    const hasAppliedDefaultPostalCode = useRef(false)
     const {
         items,
         shippingPostalCode,
@@ -38,16 +39,11 @@ export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
             return
         }
 
-        if (!shippingPostalCode) {
+        if (!shippingPostalCode && !hasAppliedDefaultPostalCode.current) {
             setShippingPostalCode(defaultPostalCode)
-            return
+            hasAppliedDefaultPostalCode.current = true
         }
-
-        // Keep the cart aligned with the saved profile when there isn't an active quote yet.
-        if (shippingPostalCode !== defaultPostalCode && !selectedShipping && !hasQuotes) {
-            setShippingPostalCode(defaultPostalCode)
-        }
-    }, [defaultPostalCode, hasQuotes, selectedShipping, setShippingPostalCode, shippingPostalCode])
+    }, [defaultPostalCode, setShippingPostalCode, shippingPostalCode])
 
     const handlePostalCodeChange = (value: string) => {
         const formatted = formatPostalCodeInput(value)
