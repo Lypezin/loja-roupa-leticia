@@ -3,7 +3,7 @@
 import { useEffect, useState, useSyncExternalStore } from "react"
 import { toast } from "sonner"
 import { createClient } from "@/lib/supabase/client"
-import { normalizePostalCode } from "@/lib/customer-profile"
+import { readCustomerProfile } from "@/lib/customer-profile"
 import { formatCurrency } from "@/lib/utils"
 import { useCartStore } from "@/store/useCartStore"
 
@@ -20,12 +20,7 @@ export function useCartLogic() {
     useEffect(() => {
         const supabase = createClient()
         void supabase.auth.getUser().then(({ data }) => {
-            const metadata = data.user?.user_metadata
-            if (!metadata || typeof metadata !== "object") return
-
-            const postalCode = typeof metadata.postal_code === "string"
-                ? normalizePostalCode(metadata.postal_code)
-                : null
+            const postalCode = readCustomerProfile(data.user)?.shippingAddress?.postal_code ?? null
 
             if (postalCode) setDefaultPostalCode(postalCode)
         })

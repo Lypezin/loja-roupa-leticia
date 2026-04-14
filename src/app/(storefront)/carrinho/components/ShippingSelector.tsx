@@ -3,8 +3,8 @@
 import { Loader2, MapPin, Truck } from "lucide-react"
 import { useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
-import { useCartStore } from "@/store/useCartStore"
 import { useShippingQuote } from "@/hooks/useShippingQuote"
+import { useCartStore } from "@/store/useCartStore"
 import { ShippingQuoteItem } from "@/components/views/cart/ShippingQuoteItem"
 import { formatPostalCodeInput } from "@/components/views/cart/CartUtils"
 
@@ -24,20 +24,30 @@ export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
     } = useCartStore()
 
     const { isPending, inlineError, setInlineError, handleQuote } = useShippingQuote()
-    
+
     const hasQuotes = shippingQuotes.length > 0
     const selectionId = selectedShipping?.service_id ?? ""
-    
+
     const quoteHint = useMemo(() => {
         if (!selectedShipping) return null
         return `${selectedShipping.company_name} - ${selectedShipping.service_name}`
     }, [selectedShipping])
 
     useEffect(() => {
-        if (defaultPostalCode && !shippingPostalCode) {
+        if (!defaultPostalCode) {
+            return
+        }
+
+        if (!shippingPostalCode) {
+            setShippingPostalCode(defaultPostalCode)
+            return
+        }
+
+        // Keep the cart aligned with the saved profile when there isn't an active quote yet.
+        if (shippingPostalCode !== defaultPostalCode && !selectedShipping && !hasQuotes) {
             setShippingPostalCode(defaultPostalCode)
         }
-    }, [defaultPostalCode, setShippingPostalCode, shippingPostalCode])
+    }, [defaultPostalCode, hasQuotes, selectedShipping, setShippingPostalCode, shippingPostalCode])
 
     const handlePostalCodeChange = (value: string) => {
         const formatted = formatPostalCodeInput(value)
@@ -64,7 +74,7 @@ export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
                         )}
                     </div>
                     <p className="mt-1 text-xs leading-6 text-muted-foreground">
-                        Calcule o frete com o mesmo CEP salvo no seu cadastro para evitar divergência no checkout.
+                        O checkout usa o CEP salvo no seu cadastro. Se ele mudar, recalcule o frete antes de pagar.
                     </p>
                 </div>
             </div>
