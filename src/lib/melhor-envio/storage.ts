@@ -1,5 +1,6 @@
 import { createServiceRoleClient } from "@/lib/supabase/service-role"
-import type { MelhorEnvioIntegrationRow, MelhorEnvioEnvironment } from "./types"
+import { decryptMelhorEnvioToken, encryptMelhorEnvioToken } from "./token-crypto"
+import type { MelhorEnvioEnvironment, MelhorEnvioIntegrationRow } from "./types"
 
 export async function getStoredIntegration(environment: MelhorEnvioEnvironment) {
     const supabase = createServiceRoleClient("melhor-envio.get-integration")
@@ -15,7 +16,15 @@ export async function getStoredIntegration(environment: MelhorEnvioEnvironment) 
         throw new Error(`Falha ao carregar integração do Melhor Envio: ${error.message}`)
     }
 
-    return data
+    if (!data) {
+        return data
+    }
+
+    return {
+        ...data,
+        access_token: decryptMelhorEnvioToken(data.access_token),
+        refresh_token: decryptMelhorEnvioToken(data.refresh_token),
+    }
 }
 
 export async function persistIntegration(
@@ -40,6 +49,8 @@ export async function persistIntegration(
             provider: "melhor_envio",
             updated_at: new Date().toISOString(),
             ...integration,
+            access_token: encryptMelhorEnvioToken(integration.access_token),
+            refresh_token: encryptMelhorEnvioToken(integration.refresh_token),
         }, {
             onConflict: "provider,environment",
         })

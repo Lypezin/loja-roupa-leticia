@@ -6,6 +6,7 @@ export type PaymentEventDetails = {
     event: string
     checkoutId: string | null
     externalId: string | null
+    transactionId: string | null
     status: string | null
     receiptUrl: string | null
     customerEmail: string | null
@@ -64,6 +65,13 @@ export function extractPaymentEventDetails(payload: unknown): PaymentEventDetail
         event,
         checkoutId: readString(paymentNode, 'id'),
         externalId: readString(paymentNode, 'externalId'),
+        transactionId:
+            readString(paymentInfoNode, 'id')
+            || readString(paymentInfoNode, 'transactionId')
+            || readString(data, 'transactionId')
+            || readString(payload, 'transactionId')
+            || readString(paymentNode, 'transactionId')
+            || readString(billingNode, 'id'),
         status: readString(paymentNode, 'status'),
         receiptUrl: readString(paymentInfoNode, 'receiptUrl') || readString(paymentNode, 'receiptUrl'),
         customerEmail: readString(customerNode, 'email') || readString(billingCustomerMetadataNode, 'email'),

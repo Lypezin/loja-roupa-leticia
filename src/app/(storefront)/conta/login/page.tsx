@@ -120,11 +120,13 @@ function LoginForm() {
 
 export default function LoginPage() {
     return (
-        <Suspense fallback={
-            <div className="page-shell flex min-h-[80vh] items-center justify-center">
-                <div className="h-8 w-8 animate-spin rounded-full border-2 border-muted border-t-foreground" />
-            </div>
-        }>
+        <Suspense
+            fallback={
+                <div className="page-shell flex min-h-[80vh] items-center justify-center">
+                    <div className="h-8 w-8 animate-spin rounded-full border-2 border-muted border-t-foreground" />
+                </div>
+            }
+        >
             <LoginForm />
         </Suspense>
     )

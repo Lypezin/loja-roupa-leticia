@@ -1,4 +1,4 @@
-import { Loader2, Link2, ShieldCheck, ShieldAlert } from "lucide-react"
+import { Loader2, Link2, ShieldAlert, ShieldCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { MelhorEnvioIntegrationStatus } from "@/types/shipping"
 

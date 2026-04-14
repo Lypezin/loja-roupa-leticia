@@ -22,15 +22,16 @@ export async function handleCompletedEvent(details: PaymentEventDetails) {
         (attempt.shipping_address ?? null) as Json,
         attempt.trusted_items,
         details.paymentMethod || '',
-        details.receiptUrl || '',
-        details.status || ''
+        details.receiptUrl || attempt.receipt_url || '',
+        details.status || attempt.status || '',
+        details.transactionId || details.checkoutId || attempt.checkout_id || '',
     )
 
     await markAttemptStatus(attempt.id, {
         status: 'completed',
         checkout_id: details.checkoutId,
-        receipt_url: details.receiptUrl,
-        payment_method: details.paymentMethod,
+        receipt_url: details.receiptUrl || attempt.receipt_url,
+        payment_method: details.paymentMethod || attempt.payment_method,
         raw_response: details.payload,
     })
 
@@ -44,12 +45,12 @@ export async function handleRefundedEvent(details: PaymentEventDetails) {
         await markAttemptStatus(attempt.id, {
             status: 'refunded',
             checkout_id: details.checkoutId,
-            receipt_url: details.receiptUrl,
-            payment_method: details.paymentMethod,
+            receipt_url: details.receiptUrl || attempt.receipt_url,
+            payment_method: details.paymentMethod || attempt.payment_method,
             raw_response: details.payload,
         })
     }
-    await markOrderStatus(details.externalId, details.checkoutId, 'refunded', details.status, details.receiptUrl)
+    await markOrderStatus(details.externalId, details.checkoutId, 'refunded', details.status, details.receiptUrl, details.transactionId || details.checkoutId)
     return NextResponse.json({ received: true, action: 'refunded' }, { status: 200 })
 }
 
@@ -59,12 +60,12 @@ export async function handleDisputedEvent(details: PaymentEventDetails) {
         await markAttemptStatus(attempt.id, {
             status: 'disputed',
             checkout_id: details.checkoutId,
-            receipt_url: details.receiptUrl,
-            payment_method: details.paymentMethod,
+            receipt_url: details.receiptUrl || attempt.receipt_url,
+            payment_method: details.paymentMethod || attempt.payment_method,
             raw_response: details.payload,
         })
     }
-    await markOrderStatus(details.externalId, details.checkoutId, 'disputed', details.status, details.receiptUrl)
+    await markOrderStatus(details.externalId, details.checkoutId, 'disputed', details.status, details.receiptUrl, details.transactionId || details.checkoutId)
     return NextResponse.json({ received: true, action: 'disputed' }, { status: 200 })
 }
 
@@ -76,11 +77,11 @@ export async function handleFailedEvent(details: PaymentEventDetails) {
         await markAttemptStatus(attempt.id, {
             status: normalizedStatus === 'pending' ? 'failed' : normalizedStatus,
             checkout_id: details.checkoutId,
-            receipt_url: details.receiptUrl,
-            payment_method: details.paymentMethod,
+            receipt_url: details.receiptUrl || attempt.receipt_url,
+            payment_method: details.paymentMethod || attempt.payment_method,
             raw_response: details.payload,
         })
     }
-    await markOrderStatus(details.externalId, details.checkoutId, 'cancelled', details.status, details.receiptUrl)
+    await markOrderStatus(details.externalId, details.checkoutId, 'cancelled', details.status, details.receiptUrl, details.transactionId || details.checkoutId)
     return NextResponse.json({ received: true, action: 'failed' }, { status: 200 })
 }

@@ -47,7 +47,7 @@ export default async function SucessoPage({
     if (!typedAttempt && !typedOrder) {
         return (
             <div className="container mx-auto flex min-h-[70vh] items-center justify-center px-4 py-20">
-                <div className="max-w-md w-full rounded-3xl border border-border bg-card p-8 text-center shadow-sm">
+                <div className="w-full max-w-md rounded-3xl border border-border bg-card p-8 text-center shadow-sm">
                     <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-100">
                         <AlertTriangle className="h-10 w-10 text-red-600" />
                     </div>
@@ -75,7 +75,7 @@ export default async function SucessoPage({
 
     return (
         <div className="container mx-auto flex min-h-[70vh] items-center justify-center px-4 py-20">
-            <div className="max-w-lg w-full rounded-3xl border border-border bg-card p-8 text-center shadow-sm">
+            <div className="w-full max-w-lg rounded-3xl border border-border bg-card p-8 text-center shadow-sm">
                 <StatusSummary
                     order={typedOrder}
                     attempt={typedAttempt}

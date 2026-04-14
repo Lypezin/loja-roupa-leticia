@@ -1,8 +1,8 @@
 'use server'
 
 import { normalizePostalCode } from "@/lib/customer-profile"
-import { disconnectMelhorEnvioIntegration } from "@/lib/melhor-envio/storage"
 import { getMelhorEnvioEnvironment } from "@/lib/melhor-envio/config"
+import { disconnectMelhorEnvioIntegration } from "@/lib/melhor-envio/storage"
 import { requireAdmin } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 
@@ -36,18 +36,20 @@ export async function saveLogistics(formData: FormData) {
                 free_shipping_threshold: thresholdValue && thresholdValue > 0 ? thresholdValue : null,
                 shipping_origin_zip: originPostalCode,
                 processing_days: processingDays,
-                updated_at: new Date().toISOString()
+                updated_at: new Date().toISOString(),
             })
             .eq('id', id)
 
-        if (error) return { error: error.message }
+        if (error) {
+            return { error: error.message }
+        }
 
         revalidatePath('/admin/configuracoes')
         revalidatePath('/')
         return { success: true }
     } catch (error: unknown) {
         const err = error as Error
-        return { error: err.message || 'Erro Interno no Servidor.' }
+        return { error: err.message || 'Erro interno no servidor.' }
     }
 }
 
@@ -60,6 +62,6 @@ export async function disconnectMelhorEnvioAccount() {
         return { success: true }
     } catch (error: unknown) {
         const err = error as Error
-        return { error: err.message || 'Erro Interno no Servidor.' }
+        return { error: err.message || 'Erro interno no servidor.' }
     }
 }

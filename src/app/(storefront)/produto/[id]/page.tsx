@@ -25,7 +25,7 @@ type ProductVariation = {
 }
 
 export async function generateMetadata({
-    params
+    params,
 }: {
     params: Promise<{ id: string }>
 }): Promise<Metadata> {
@@ -58,7 +58,7 @@ export async function generateMetadata({
 }
 
 export default async function ProductPage({
-    params
+    params,
 }: {
     params: Promise<{ id: string }>
 }) {
@@ -100,17 +100,17 @@ export default async function ProductPage({
 
     const highlights = [
         { icon: Truck, title: "Envio com rastreio", desc: "Prazo e valor aparecem antes do pagamento." },
-        { icon: RefreshCcw, title: "Troca em ate 7 dias", desc: "Suporte direto para orientar o pos-compra." },
+        { icon: RefreshCcw, title: "Troca em até 7 dias", desc: "Suporte direto para orientar o pós-compra." },
         { icon: ShieldCheck, title: "Pagamento protegido", desc: "Checkout seguro do pedido ao recibo." },
     ]
 
     return (
         <div className="page-shell py-8 md:py-12">
             <nav className="mb-8 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
-                <Link href="/" className="transition-colors hover:text-foreground">Inicio</Link>
+                <Link href="/" className="transition-colors hover:text-foreground">Início</Link>
                 <ChevronRight className="h-3.5 w-3.5" />
                 <Link href={categoryHref} className="transition-colors hover:text-foreground">
-                    {category.name || "Catalogo"}
+                    {category.name || "Catálogo"}
                 </Link>
                 <ChevronRight className="h-3.5 w-3.5" />
                 <span className="min-w-0 max-w-full break-words text-foreground">{product.name}</span>
@@ -126,12 +126,8 @@ export default async function ProductPage({
                     </h1>
 
                     <div className="mt-5 flex flex-wrap items-end gap-x-4 gap-y-2">
-                        <p className="text-3xl font-semibold text-foreground">
-                            {formattedPrice}
-                        </p>
-                        <p className="pb-1 text-sm text-muted-foreground">
-                            ou 3x de {installmentPrice}
-                        </p>
+                        <p className="text-3xl font-semibold text-foreground">{formattedPrice}</p>
+                        <p className="pb-1 text-sm text-muted-foreground">ou 3x de {installmentPrice}</p>
                     </div>
 
                     <p className="mt-6 text-base leading-8 text-muted-foreground">

@@ -89,7 +89,9 @@ export async function createCheckoutSession(cartItems: unknown, shippingSelectio
                 status: "creating",
             })
 
-        if (insertAttemptError) throw new Error(`Falha ao registrar tentativa de pagamento: ${insertAttemptError.message}`)
+        if (insertAttemptError) {
+            throw new Error(`Falha ao registrar tentativa de pagamento: ${insertAttemptError.message}`)
+        }
 
         try {
             const billing = await createAbacatePayBilling({
@@ -122,24 +124,33 @@ export async function createCheckoutSession(cartItems: unknown, shippingSelectio
                 })
                 .eq("external_id", externalId)
 
-            if (updateAttemptError) throw new Error(`Falha ao atualizar tentativa de pagamento: ${updateAttemptError.message}`)
-            if (!billing.url) throw new Error("A AbacatePay não retornou a URL de pagamento.")
+            if (updateAttemptError) {
+                throw new Error(`Falha ao atualizar tentativa de pagamento: ${updateAttemptError.message}`)
+            }
+
+            if (!billing.url) {
+                throw new Error("A AbacatePay não retornou a URL de pagamento.")
+            }
 
             return { url: billing.url }
-        } catch (error: any) {
+        } catch (error: unknown) {
             const message = error instanceof Error ? error.message : "Falha ao iniciar pagamento."
-            await serviceRole.from("payment_attempts").update({
-                status: "failed",
-                raw_response: { error: message } as Json,
-                updated_at: new Date().toISOString(),
-            }).eq("external_id", externalId)
+            await serviceRole
+                .from("payment_attempts")
+                .update({
+                    status: "failed",
+                    raw_response: { error: message } as Json,
+                    updated_at: new Date().toISOString(),
+                })
+                .eq("external_id", externalId)
 
             if (paymentMethods.includes("CARD")) {
                 throw new Error(`${message} Se o cartão ainda não estiver liberado na sua conta, configure ABACATEPAY_PAYMENT_METHODS=PIX.`)
             }
+
             throw new Error(message)
         }
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Erro ao gerar checkout da AbacatePay:", error)
         return { error: error instanceof Error ? error.message : "Falha ao processar pagamento." }
     }

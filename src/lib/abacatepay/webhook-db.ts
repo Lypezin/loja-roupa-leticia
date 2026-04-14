@@ -37,7 +37,8 @@ export async function markOrderStatus(
     checkoutId: string | null,
     status: 'refunded' | 'cancelled' | 'disputed',
     paymentRawStatus: string | null,
-    receiptUrl: string | null
+    receiptUrl: string | null,
+    transactionId?: string | null,
 ) {
     const supabase = createServiceRoleClient('abacatepay-webhook.mark-order')
     let orderId: string | null = null
@@ -60,6 +61,7 @@ export async function markOrderStatus(
             status,
             payment_raw_status: paymentRawStatus,
             payment_receipt_url: receiptUrl,
+            payment_transaction_id: transactionId,
             updated_at: new Date().toISOString(),
         })
         .eq('id', orderId)
@@ -73,14 +75,15 @@ export async function finalizePaymentOrder(
     customerEmail: string, customerName: string, 
     shippingAddress: Json, items: Json, 
     paymentMethod: string, receiptUrl: string, 
-    rawStatus: string
+    rawStatus: string,
+    transactionId: string,
 ) {
     const supabase = createServiceRoleClient('abacatepay-webhook.complete')
     const { data, error } = await supabase.rpc('finalize_payment_order', {
         p_provider: 'abacatepay',
         p_checkout_id: checkoutId,
         p_external_id: externalId,
-        p_transaction_id: '',
+        p_transaction_id: transactionId,
         p_user_id: userId,
         p_total_amount: totalAmount,
         p_customer_email: customerEmail,

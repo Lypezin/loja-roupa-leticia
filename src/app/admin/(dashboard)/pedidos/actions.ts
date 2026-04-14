@@ -13,12 +13,10 @@ function getErrorMessage(error: unknown, fallback: string) {
     return fallback
 }
 
-// Cliente com service_role para bypassar RLS nas operacoes do Admin.
 function getAdminSupabase(context: string) {
     return createServiceRoleClient(context)
 }
 
-// Buscar todos os pedidos.
 export async function getAdminOrders() {
     try {
         await requireAdmin()
@@ -49,7 +47,6 @@ export async function getAdminOrders() {
     }
 }
 
-// Atualizar status do pedido.
 export async function updateOrderStatus(orderId: string, status: string) {
     try {
         await requireAdmin()
@@ -72,12 +69,11 @@ export async function updateOrderStatus(orderId: string, status: string) {
         revalidatePath('/admin/pedidos')
     } catch (error: unknown) {
         const message = getErrorMessage(error, 'Erro desconhecido ao atualizar pedido.')
-        console.error('Erro Fatal no Update Status:', message)
+        console.error('Erro fatal no update status:', message)
         throw new Error(message)
     }
 }
 
-// Stats para o dashboard.
 export async function getAdminStats() {
     try {
         await requireAdmin()
@@ -99,7 +95,7 @@ export async function getAdminStats() {
 
         return { totalSales, totalOrders }
     } catch (error: unknown) {
-        console.error('Erro nas estatisticas do painel Admin:', getErrorMessage(error, 'Falha ao carregar estatísticas.'))
+        console.error('Erro nas estatísticas do painel Admin:', getErrorMessage(error, 'Falha ao carregar estatísticas.'))
         return { totalSales: 0, totalOrders: 0 }
     }
 }

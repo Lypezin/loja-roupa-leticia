@@ -42,9 +42,7 @@ export default async function TermosPage() {
                         Legal
                     </span>
                     <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">Termos de uso</h1>
-                    <p className="text-zinc-500">
-                        Última atualização: 12 de abril de 2026
-                    </p>
+                    <p className="text-zinc-500">Última atualização: 12 de abril de 2026</p>
                 </div>
 
                 <div className="space-y-8">

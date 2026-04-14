@@ -34,7 +34,10 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
         setIsLoading(true)
         try {
             const res = await saveLogistics(formData)
-            if (res?.error) throw new Error(res.error)
+            if (res?.error) {
+                throw new Error(res.error)
+            }
+
             showSuccess(setSuccess)
             toast.success("Configurações de frete atualizadas.")
         } catch (error: unknown) {
@@ -49,7 +52,10 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
         setIsDisconnecting(true)
         try {
             const res = await disconnectMelhorEnvioAccount()
-            if (res?.error) throw new Error(res.error)
+            if (res?.error) {
+                throw new Error(res.error)
+            }
+
             toast.success("Conta do Melhor Envio desconectada.")
             window.location.reload()
         } catch (error: unknown) {
@@ -71,13 +77,13 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
             />
 
             <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_19rem]">
-                <MelhorEnvioConnection 
-                    melhorEnvio={melhorEnvio} 
-                    isDisconnecting={isDisconnecting} 
-                    onDisconnect={handleDisconnect} 
+                <MelhorEnvioConnection
+                    melhorEnvio={melhorEnvio}
+                    isDisconnecting={isDisconnecting}
+                    onDisconnect={handleDisconnect}
                 />
 
-                <ShippingOperationalStatus 
+                <ShippingOperationalStatus
                     shippingReady={shippingReady}
                     hasOriginZip={hasOriginZip}
                     originZip={originZip}
@@ -85,9 +91,9 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                 />
             </div>
 
-            <OriginAndProcessingFields 
-                originZip={originZip} 
-                processingDays={Number(settings.processing_days || 2)} 
+            <OriginAndProcessingFields
+                originZip={originZip}
+                processingDays={Number(settings.processing_days || 2)}
             />
 
             <FreeShippingSection threshold={readThresholdValue(settings.free_shipping_threshold)} />
