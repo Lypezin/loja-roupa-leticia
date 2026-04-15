@@ -1,5 +1,4 @@
 import { buildMelhorEnvioAuthorizeUrl, getMelhorEnvioEnvironment } from "@/lib/melhor-envio"
-import { getSiteUrl } from "@/lib/site-url"
 import { isAdminUser } from "@/lib/supabase/auth"
 import { createClient } from "@/lib/supabase/server"
 import { cookies } from "next/headers"
@@ -7,12 +6,12 @@ import { NextResponse } from "next/server"
 
 const OAUTH_STATE_COOKIE_PREFIX = "me_oauth_state"
 
-export async function GET() {
+export async function GET(request: Request) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!isAdminUser(user)) {
-        return NextResponse.redirect(new URL("/admin/login", getSiteUrl()))
+        return NextResponse.redirect(new URL("/admin/login", request.url))
     }
 
     const environment = getMelhorEnvioEnvironment()

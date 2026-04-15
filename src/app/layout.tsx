@@ -2,13 +2,13 @@ import type { Metadata, Viewport } from "next"
 import NextTopLoader from "nextjs-toploader"
 import { ThemeProvider } from "@/components/providers/ThemeProvider"
 import { Toaster } from "@/components/ui/sonner"
-import { getSiteUrl } from "@/lib/site-url"
+import { getRequestSiteUrl } from "@/lib/site-url"
 import { getStoreSettings } from "@/lib/storefront"
 import "./globals.css"
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getStoreSettings()
-  const siteUrl = getSiteUrl()
+  const siteUrl = await getRequestSiteUrl()
 
   const title = settings?.store_name || "Loja"
   const description = settings?.store_description || "Loja online de roupas com novidades, reposições e atendimento direto."

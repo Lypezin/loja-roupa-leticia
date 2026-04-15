@@ -1,5 +1,4 @@
 import { getMelhorEnvioEnvironment, saveMelhorEnvioTokensFromCode } from "@/lib/melhor-envio"
-import { getSiteUrl } from "@/lib/site-url"
 import { isAdminUser } from "@/lib/supabase/auth"
 import { createClient } from "@/lib/supabase/server"
 import { cookies } from "next/headers"
@@ -7,8 +6,8 @@ import { NextResponse } from "next/server"
 
 const OAUTH_STATE_COOKIE_PREFIX = "me_oauth_state"
 
-function redirectWithStatus(status: "connected" | "error", message?: string) {
-    const redirectUrl = new URL("/admin/configuracoes", getSiteUrl())
+function redirectWithStatus(request: Request, status: "connected" | "error", message?: string) {
+    const redirectUrl = new URL("/admin/configuracoes", request.url)
     redirectUrl.searchParams.set("melhor_envio", status)
 
     if (message) {
@@ -23,7 +22,7 @@ export async function GET(request: Request) {
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!isAdminUser(user)) {
-        return NextResponse.redirect(new URL("/admin/login", getSiteUrl()))
+        return NextResponse.redirect(new URL("/admin/login", request.url))
     }
 
     const requestUrl = new URL(request.url)
@@ -37,14 +36,14 @@ export async function GET(request: Request) {
     cookieStore.delete(cookieName)
 
     if (!code || !state || !savedState || state !== savedState) {
-        return redirectWithStatus("error", "Falha ao validar o retorno do Melhor Envio.")
+        return redirectWithStatus(request, "error", "Falha ao validar o retorno do Melhor Envio.")
     }
 
     try {
         await saveMelhorEnvioTokensFromCode(code, environment)
-        return redirectWithStatus("connected")
+        return redirectWithStatus(request, "connected")
     } catch (error) {
         const message = error instanceof Error ? error.message : "Falha ao conectar o Melhor Envio."
-        return redirectWithStatus("error", message)
+        return redirectWithStatus(request, "error", message)
     }
 }
