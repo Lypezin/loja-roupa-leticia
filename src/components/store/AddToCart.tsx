@@ -51,7 +51,7 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
     }
 
     return (
-        <div className="mt-8 rounded-[1.8rem] border border-border bg-card p-5 shadow-[0_14px_30px_rgba(68,48,31,0.05)]">
+        <div className="mt-6 rounded-[1.5rem] border border-border bg-card p-4 shadow-[0_14px_30px_rgba(68,48,31,0.05)] md:mt-8 md:rounded-[1.8rem] md:p-5">
             <div className="space-y-6">
                 <ColorSelector
                     availableColors={availableColors}
@@ -72,7 +72,7 @@ export function AddToCart({ productId, productName, price, imageUrl, variations 
                     onClick={handleAddToCart}
                     disabled={!selectedVariation || selectedVariation.stock_quantity <= 0}
                     size="lg"
-                    className="h-12 w-full rounded-full text-sm font-semibold uppercase tracking-[0.16em]"
+                    className="h-12 w-full rounded-full text-[0.82rem] font-semibold uppercase tracking-[0.14em] sm:text-sm sm:tracking-[0.16em]"
                 >
                     {added ? "Na sacola" : !selectedVariation ? "Selecione as opções" : selectedVariation.stock_quantity <= 0 ? "Esgotado" : "Adicionar à sacola"}
                 </Button>

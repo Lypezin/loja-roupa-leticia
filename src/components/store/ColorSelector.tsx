@@ -18,7 +18,7 @@ export function ColorSelector({ availableColors, selectedColor, onSelect, variat
     return (
         <div className="space-y-3">
             <h3 className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">Cor / tipo</h3>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2.5 md:gap-3">
                 {availableColors.map((color) => {
                     const matchingVariation = variations.find((variation) => variation.color === color)
                     const isOutOfStock = matchingVariation ? matchingVariation.stock_quantity <= 0 : true
@@ -28,7 +28,7 @@ export function ColorSelector({ availableColors, selectedColor, onSelect, variat
                             key={color}
                             disabled={isOutOfStock}
                             onClick={() => onSelect(color)}
-                            className={`rounded-full border px-5 py-2.5 text-sm font-medium transition-all ${
+                            className={`interactive-press min-h-11 rounded-full border px-4 py-2.5 text-sm font-medium transition-all md:px-5 ${
                                 isOutOfStock
                                     ? "cursor-not-allowed border-border opacity-35 line-through"
                                     : selectedColor === color

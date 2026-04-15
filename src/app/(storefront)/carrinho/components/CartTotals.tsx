@@ -16,7 +16,7 @@ export function CartTotals({
     isFreeShipping
 }: CartTotalsProps) {
     return (
-        <div className="mt-6 space-y-3 text-sm">
+        <div className="mt-5 space-y-3 text-sm md:mt-6">
             <div className="flex justify-between text-muted-foreground">
                 <span>Subtotal</span>
                 <span>{subtotal}</span>
@@ -27,7 +27,7 @@ export function CartTotals({
                     {shipping}
                 </span>
             </div>
-            <div className="flex justify-between border-t border-border pt-4 text-lg font-semibold text-card-foreground">
+            <div className="flex justify-between border-t border-border pt-4 text-[1.05rem] font-semibold text-card-foreground md:text-lg">
                 <span>Total</span>
                 <span>{total}</span>
             </div>

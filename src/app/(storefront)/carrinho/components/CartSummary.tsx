@@ -56,8 +56,8 @@ export function CartSummary({
 
     return (
         <div className="lg:col-span-1">
-            <div className="surface-card sticky top-24 rounded-[1.9rem] p-6">
-                <h2 className="font-display text-3xl text-card-foreground">Resumo</h2>
+            <div className="surface-card rounded-[1.7rem] p-4 sm:p-5 lg:sticky lg:top-24 lg:rounded-[1.9rem] lg:p-6">
+                <h2 className="font-display text-[2rem] leading-none text-card-foreground md:text-3xl">Resumo</h2>
 
                 <CartTotals
                     subtotal={formattedSubtotal}
@@ -73,7 +73,7 @@ export function CartSummary({
                     <Button
                         onClick={handleHostedCheckout}
                         disabled={checkoutDisabled}
-                        className="h-12 w-full rounded-full text-sm font-semibold uppercase tracking-[0.16em]"
+                        className="h-12 w-full rounded-full text-[0.82rem] font-semibold uppercase tracking-[0.14em] sm:text-sm sm:tracking-[0.16em]"
                     >
                         {isLoadingCheckout ? (
                             <span className="flex items-center gap-2">Processando <Loader2 className="h-4 w-4 animate-spin" /></span>
@@ -92,7 +92,7 @@ export function CartSummary({
                         onClick={handleWhatsAppCheckout}
                         disabled={isLoadingCheckout}
                         variant="outline"
-                        className="h-12 w-full rounded-full border-emerald-500/30 text-sm font-semibold uppercase tracking-[0.16em] text-emerald-700 hover:bg-emerald-50"
+                        className="h-12 w-full rounded-full border-emerald-500/30 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-emerald-700 hover:bg-emerald-50 sm:text-sm sm:tracking-[0.16em]"
                     >
                         <MessageSquare className="h-4 w-4" />
                         Finalizar via WhatsApp

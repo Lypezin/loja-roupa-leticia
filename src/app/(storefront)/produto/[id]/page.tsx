@@ -43,7 +43,7 @@ export async function generateMetadata({
     }
 
     const images = (product.product_images || []) as ProductImage[]
-    const description = product.description || "Veja fotos, variações disponíveis e informações desta peça."
+    const description = product.description || "Veja fotos, variacoes disponiveis e informacoes desta peca."
     const imageUrl = images.find((img) => img.is_primary)?.image_url || images[0]?.image_url
 
     return {
@@ -100,38 +100,38 @@ export default async function ProductPage({
 
     const highlights = [
         { icon: Truck, title: "Envio com rastreio", desc: "Prazo e valor aparecem antes do pagamento." },
-        { icon: RefreshCcw, title: "Troca em até 7 dias", desc: "Suporte direto para orientar o pós-compra." },
+        { icon: RefreshCcw, title: "Troca em ate 7 dias", desc: "Suporte direto para orientar o pos-compra." },
         { icon: ShieldCheck, title: "Pagamento protegido", desc: "Checkout seguro do pedido ao recibo." },
     ]
 
     return (
-        <div className="page-shell py-8 md:py-12">
-            <nav className="mb-8 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
-                <Link href="/" className="transition-colors hover:text-foreground">Início</Link>
+        <div className="page-shell py-6 md:py-12">
+            <nav className="mb-6 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground md:mb-8 md:text-sm">
+                <Link href="/" className="transition-colors hover:text-foreground">Inicio</Link>
                 <ChevronRight className="h-3.5 w-3.5" />
                 <Link href={categoryHref} className="transition-colors hover:text-foreground">
-                    {category.name || "Catálogo"}
+                    {category.name || "Catalogo"}
                 </Link>
                 <ChevronRight className="h-3.5 w-3.5" />
                 <span className="min-w-0 max-w-full break-words text-foreground">{product.name}</span>
             </nav>
 
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
                 <ProductGallery images={images} productName={product.name} />
 
-                <div className="flex flex-col py-2">
+                <div className="flex flex-col py-1 md:py-2">
                     <span className="eyebrow">{category.name || "produto"}</span>
-                    <h1 className="mt-4 font-display text-4xl leading-tight text-foreground md:text-5xl">
+                    <h1 className="mt-3 font-display text-[2.35rem] leading-tight text-foreground md:mt-4 md:text-5xl">
                         {product.name}
                     </h1>
 
-                    <div className="mt-5 flex flex-wrap items-end gap-x-4 gap-y-2">
-                        <p className="text-3xl font-semibold text-foreground">{formattedPrice}</p>
-                        <p className="pb-1 text-sm text-muted-foreground">ou 3x de {installmentPrice}</p>
+                    <div className="mt-4 flex flex-wrap items-end gap-x-3 gap-y-1.5 md:mt-5 md:gap-x-4 md:gap-y-2">
+                        <p className="text-[1.9rem] font-semibold text-foreground md:text-3xl">{formattedPrice}</p>
+                        <p className="pb-0.5 text-sm text-muted-foreground md:pb-1">ou 3x de {installmentPrice}</p>
                     </div>
 
-                    <p className="mt-6 text-base leading-8 text-muted-foreground">
-                        {product.description || "Confira fotos, escolha a variação ideal e adicione a peça na sacola com o frete calculado no carrinho."}
+                    <p className="mt-5 text-[0.98rem] leading-7 text-muted-foreground md:mt-6 md:text-base md:leading-8">
+                        {product.description || "Confira fotos, escolha a variacao ideal e adicione a peca na sacola com o frete calculado no carrinho."}
                     </p>
 
                     <AddToCart
@@ -142,14 +142,19 @@ export default async function ProductPage({
                         variations={variations}
                     />
 
-                    <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                    <div className="mt-6 grid gap-3 sm:grid-cols-3 md:mt-8">
                         {highlights.map((item, index) => (
-                            <div key={item.title} className={`surface-card-soft hover-lift-soft animate-enter-soft rounded-[1.4rem] p-4 ${index === 0 ? "" : index === 1 ? "animate-enter-delay-1" : "animate-enter-delay-2"}`}>
-                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <div
+                                key={item.title}
+                                className={`surface-card-soft hover-lift-soft animate-enter-soft rounded-[1.25rem] p-3.5 md:rounded-[1.4rem] md:p-4 ${
+                                    index === 0 ? "" : index === 1 ? "animate-enter-delay-1" : "animate-enter-delay-2"
+                                }`}
+                            >
+                                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary md:h-10 md:w-10">
                                     <item.icon className="h-4 w-4" />
                                 </div>
-                                <h3 className="mt-4 text-sm font-semibold text-foreground">{item.title}</h3>
-                                <p className="mt-1 text-sm leading-6 text-muted-foreground">{item.desc}</p>
+                                <h3 className="mt-3 text-sm font-semibold text-foreground md:mt-4">{item.title}</h3>
+                                <p className="mt-1 text-sm leading-5.5 text-muted-foreground md:leading-6">{item.desc}</p>
                             </div>
                         ))}
                     </div>

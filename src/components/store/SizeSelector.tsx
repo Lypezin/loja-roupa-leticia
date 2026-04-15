@@ -22,7 +22,7 @@ export function SizeSelector({ sizesForColor, selectedSize, onSelect, variations
             <h3 className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">
                 Tamanho
             </h3>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2.5 md:gap-3">
                 {sizesForColor.map((size) => {
                     const matchingVariation = variations.find((variation) =>
                         (!selectedColor || variation.color === selectedColor) && variation.size === size
@@ -34,7 +34,7 @@ export function SizeSelector({ sizesForColor, selectedSize, onSelect, variations
                             key={size}
                             disabled={isOutOfStock}
                             onClick={() => onSelect(size)}
-                            className={`flex h-12 min-w-12 items-center justify-center rounded-[1rem] border px-4 text-sm font-medium transition-all ${
+                            className={`interactive-press flex h-11 min-w-11 items-center justify-center rounded-[0.95rem] border px-3.5 text-sm font-medium transition-all md:h-12 md:min-w-12 md:rounded-[1rem] md:px-4 ${
                                 isOutOfStock
                                     ? "cursor-not-allowed border-border bg-muted opacity-40"
                                     : selectedSize === size

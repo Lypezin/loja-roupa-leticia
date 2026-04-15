@@ -33,16 +33,16 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
     const [selectedIndex, setSelectedIndex] = useState(0)
 
     return (
-        <div className="flex self-start flex-col-reverse gap-4 md:flex-row md:items-start">
+        <div className="flex self-start flex-col-reverse gap-3 md:flex-row md:items-start md:gap-4">
             {galleryImages.length > 1 && (
-                <div className="flex gap-3 overflow-x-auto pb-2 md:max-h-[620px] md:flex-col md:overflow-y-auto md:pb-0">
+                <div className="flex gap-2 overflow-x-auto pb-2 md:max-h-[620px] md:flex-col md:gap-3 md:overflow-y-auto md:pb-0">
                     {galleryImages.map((image, index) => (
                         <button
                             key={`${image.image_url}-${index}`}
                             type="button"
                             onClick={() => setSelectedIndex(index)}
                             aria-label={`Ver foto ${index + 1} de ${productName}`}
-                            className={`relative h-20 w-16 shrink-0 overflow-hidden rounded-[1rem] border transition-all md:h-24 md:w-20 ${
+                            className={`interactive-press relative h-[4.5rem] w-[3.75rem] shrink-0 overflow-hidden rounded-[0.95rem] border transition-all md:h-24 md:w-20 md:rounded-[1rem] ${
                                 selectedIndex === index
                                     ? "border-primary shadow-[0_12px_28px_rgba(70,52,35,0.12)]"
                                     : "border-border opacity-70 hover:opacity-100"
@@ -60,8 +60,8 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                 </div>
             )}
 
-            <div className="paper-panel relative min-w-0 flex-1 self-start overflow-hidden rounded-[2rem] p-3">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem] bg-card">
+            <div className="paper-panel relative min-w-0 flex-1 self-start overflow-hidden rounded-[1.6rem] p-2.5 md:rounded-[2rem] md:p-3">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem] bg-card md:rounded-[1.6rem]">
                     <Image
                         src={galleryImages[selectedIndex]?.image_url || "/placeholder-image.jpg"}
                         alt={productName}
@@ -72,7 +72,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                         quality={88}
                     />
                 </div>
-                <div className="absolute left-8 top-8 rounded-full border border-white/60 bg-white/84 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-foreground/76">
+                <div className="absolute left-5 top-5 rounded-full border border-white/60 bg-white/84 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.22em] text-foreground/76 md:left-8 md:top-8 md:px-4 md:py-2 md:text-[10px] md:tracking-[0.24em]">
                     detalhe
                 </div>
             </div>
