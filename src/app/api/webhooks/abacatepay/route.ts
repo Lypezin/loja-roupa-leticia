@@ -21,10 +21,24 @@ function matchesConfiguredSecret(requestSecret: string | null, configuredSecret:
         && timingSafeEqual(expectedBuffer, receivedBuffer)
 }
 
+function readRequestSecret(req: Request, requestUrl: URL) {
+    const querySecret = requestUrl.searchParams.get("webhookSecret")
+    if (querySecret) {
+        return querySecret
+    }
+
+    const headerSecret = req.headers.get("x-webhook-secret")
+    if (headerSecret) {
+        return headerSecret
+    }
+
+    return null
+}
+
 export async function POST(req: Request) {
     const configuredSecret = process.env.ABACATEPAY_WEBHOOK_SECRET?.trim()
     const requestUrl = new URL(req.url)
-    const requestSecret = requestUrl.searchParams.get('webhookSecret')
+    const requestSecret = readRequestSecret(req, requestUrl)
     const signature = req.headers.get('X-Webhook-Signature')
     const rawBody = await req.text()
 
@@ -32,8 +46,14 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
     }
 
-    if (configuredSecret && requestSecret && !matchesConfiguredSecret(requestSecret, configuredSecret)) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (configuredSecret) {
+        if (!requestSecret) {
+            return NextResponse.json({ error: "Missing webhook secret" }, { status: 401 })
+        }
+
+        if (!matchesConfiguredSecret(requestSecret, configuredSecret)) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+        }
     }
 
     let payload: unknown

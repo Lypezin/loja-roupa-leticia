@@ -46,7 +46,11 @@ export default async function SucessoPage({
     let typedOrder = await fetchOrderDetails(supabase, checkoutRef, user.id)
 
     if (typedAttempt && !typedOrder && (typedAttempt.status === "pending" || typedAttempt.status === "creating")) {
-        await reconcileAbacatePayAttempt(checkoutRef, user.id)
+        try {
+            await reconcileAbacatePayAttempt(checkoutRef, user.id)
+        } catch (error) {
+            console.error("Falha ao reconciliar checkout pendente na pagina de sucesso:", error)
+        }
         typedAttempt = await fetchPaymentAttempt(supabase, checkoutRef, user.id)
         typedOrder = await fetchOrderDetails(supabase, checkoutRef, user.id)
     }

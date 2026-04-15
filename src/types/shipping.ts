@@ -37,6 +37,8 @@ export type MelhorEnvioIntegrationStatus = {
     connected_at: string | null
     account_email: string | null
     account_name: string | null
+    scope: string | null
+    missing_scopes: string[]
 }
 
 export type ShippingCoverageSummary = {

@@ -7,7 +7,11 @@ export const dynamic = "force-dynamic"
 export const revalidate = 0
 
 export default async function AdminPedidos() {
-    await reconcilePendingAbacatePayAttempts({ limit: 20 })
+    try {
+        await reconcilePendingAbacatePayAttempts({ limit: 20 })
+    } catch (error) {
+        console.error("Falha ao reconciliar pagamentos pendentes no admin:", error)
+    }
     const orders = await getAdminOrders()
     const activeOrders = orders.filter((order) => ["paid", "processing", "shipped"].includes(order.status)).length
     const automaticFlowOrders = orders.filter((order) => !["disputed", "cancelled", "refunded"].includes(order.status)).length

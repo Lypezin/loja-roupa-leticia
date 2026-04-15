@@ -4,6 +4,22 @@ import { getStoredIntegration, persistIntegration } from "../storage"
 import { fetchMelhorEnvioAccountProfile } from "./client"
 import type { MelhorEnvioIntegrationStatus } from "../types"
 
+const REQUIRED_SHIPMENT_SCOPES = [
+    "shipping-checkout",
+    "shipping-generate",
+    "shipping-print",
+    "shipping-tracking",
+] as const
+
+function readScopeSet(scope: string | null | undefined) {
+    return new Set(
+        (scope || "")
+            .split(/\s+/)
+            .map((value) => value.trim())
+            .filter(Boolean),
+    )
+}
+
 export async function getMelhorEnvioIntegrationStatus(
     environment = getMelhorEnvioEnvironment(),
 ): Promise<MelhorEnvioIntegrationStatus> {
@@ -31,6 +47,10 @@ export async function getMelhorEnvioIntegrationStatus(
         }
     }
 
+    const scope = integration?.scope || null
+    const grantedScopes = readScopeSet(scope)
+    const missingScopes = REQUIRED_SHIPMENT_SCOPES.filter((requiredScope) => !grantedScopes.has(requiredScope))
+
     return {
         connected: Boolean(integration?.refresh_token),
         environment,
@@ -38,5 +58,7 @@ export async function getMelhorEnvioIntegrationStatus(
         connected_at: integration?.created_at || null,
         account_email: integration?.account_email || null,
         account_name: integration?.account_name || null,
+        scope,
+        missing_scopes: missingScopes,
     }
 }

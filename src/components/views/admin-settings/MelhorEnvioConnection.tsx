@@ -9,7 +9,7 @@ interface MelhorEnvioConnectionProps {
 }
 
 export function MelhorEnvioConnection({ melhorEnvio, isDisconnecting, onDisconnect }: MelhorEnvioConnectionProps) {
-    const environmentLabel = melhorEnvio.environment === "production" ? "produção" : "sandbox"
+    const environmentLabel = melhorEnvio.environment === "production" ? "producao" : "sandbox"
 
     return (
         <div className="rounded-2xl border border-zinc-200 bg-zinc-50/70 p-5">
@@ -29,18 +29,25 @@ export function MelhorEnvioConnection({ melhorEnvio, isDisconnecting, onDisconne
                         {melhorEnvio.connected ? "Conta conectada" : "Conecte sua conta"}
                     </h3>
                     <p className="max-w-2xl text-sm leading-6 text-zinc-600">
-                        O Melhor Envio fornece as transportadoras e a cotação. Já o CEP de origem e as medidas dos produtos continuam sendo responsabilidade da loja.
+                        O Melhor Envio fornece transportadoras e cotacao. O CEP de origem e as medidas dos produtos continuam sob responsabilidade da loja.
                     </p>
                     {melhorEnvio.connected && (
                         <div className="space-y-1 text-xs text-zinc-500">
                             {melhorEnvio.account_name && <p>Conta: {melhorEnvio.account_name}</p>}
                             {melhorEnvio.account_email && <p>E-mail conectado: {melhorEnvio.account_email}</p>}
+                            {melhorEnvio.scope && <p>Escopos: {melhorEnvio.scope}</p>}
                             {melhorEnvio.connected_at && (
                                 <p>
                                     Conectado em {new Date(melhorEnvio.connected_at).toLocaleString("pt-BR")}
-                                    {melhorEnvio.expires_at ? ` | token válido até ${new Date(melhorEnvio.expires_at).toLocaleString("pt-BR")}` : ""}
+                                    {melhorEnvio.expires_at ? ` | token valido ate ${new Date(melhorEnvio.expires_at).toLocaleString("pt-BR")}` : ""}
                                 </p>
                             )}
+                        </div>
+                    )}
+                    {melhorEnvio.connected && melhorEnvio.missing_scopes.length > 0 && (
+                        <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+                            Faltam escopos para emissao automatica de etiqueta: {melhorEnvio.missing_scopes.join(", ")}.
+                            Reconecte a conta para liberar esses escopos.
                         </div>
                     )}
                 </div>

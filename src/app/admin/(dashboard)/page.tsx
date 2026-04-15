@@ -24,7 +24,11 @@ function getOrderStatusLabel(status: string) {
 
 export default async function AdminDashboard() {
     const supabase = createServiceRoleClient("admin-dashboard.page")
-    await reconcilePendingAbacatePayAttempts({ limit: 20 })
+    try {
+        await reconcilePendingAbacatePayAttempts({ limit: 20 })
+    } catch (error) {
+        console.error("Falha ao reconciliar pagamentos pendentes no dashboard:", error)
+    }
 
     const [
         { count: activeProducts },

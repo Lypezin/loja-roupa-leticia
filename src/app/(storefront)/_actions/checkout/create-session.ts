@@ -48,6 +48,7 @@ export async function createCheckoutSession(cartItems: unknown, shippingSelectio
         }
 
         const shippingAddress = profile.shippingAddress
+        const destinationPostalCode = shippingSelection?.postal_code || shippingAddress.postal_code
         const origin = await getRequestSiteUrl()
         const normalizedCartItems = parseCheckoutCartItems(cartItems)
         const productIds = [...new Set(normalizedCartItems.map((item) => item.product_id))]
@@ -57,9 +58,13 @@ export async function createCheckoutSession(cartItems: unknown, shippingSelectio
         const validatedItems = getValidatedItems(normalizedCartItems, productsById, variationsById)
         const selectedShipping = await resolveCheckoutShippingSelection(
             normalizedCartItems,
-            shippingAddress.postal_code,
+            destinationPostalCode,
             shippingSelection,
         )
+        const effectiveShippingAddress = {
+            ...shippingAddress,
+            postal_code: selectedShipping.postal_code || shippingAddress.postal_code,
+        }
         const shippingCost = getShippingChargedAmount(selectedShipping)
         const totalAmount = calculateCheckoutTotal(validatedItems, shippingCost)
         const paymentMethods = getAbacatePayMethods()
@@ -79,7 +84,7 @@ export async function createCheckoutSession(cartItems: unknown, shippingSelectio
                 customer_name: profile.fullName,
                 customer_phone: normalizedPhone,
                 customer_tax_id: normalizedCpf,
-                shipping_address: (shippingAddress as Json | null) ?? null,
+                shipping_address: (effectiveShippingAddress as Json | null) ?? null,
                 shipping_provider: selectedShipping.provider,
                 shipping_service_id: selectedShipping.service_id,
                 shipping_service_name: selectedShipping.service_name,

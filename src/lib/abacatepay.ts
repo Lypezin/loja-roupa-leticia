@@ -90,6 +90,10 @@ export function getAbacatePayMethods() {
 }
 
 async function abacatePayRequest<T>(path: string, init: RequestInit) {
+    const timeoutSignal = typeof AbortSignal !== "undefined" && typeof AbortSignal.timeout === "function"
+        ? AbortSignal.timeout(10_000)
+        : undefined
+
     const response = await fetch(`${ABACATEPAY_API_BASE_URL}${path}`, {
         ...init,
         headers: {
@@ -98,12 +102,13 @@ async function abacatePayRequest<T>(path: string, init: RequestInit) {
             ...(init.headers || {}),
         },
         cache: "no-store",
+        signal: timeoutSignal,
     })
 
-    const payload = await response.json() as AbacatePayApiResponse<T>
+    const payload = await response.json().catch(() => null) as AbacatePayApiResponse<T> | null
 
-    if (!response.ok || !payload.success || !payload.data) {
-        const errorMessage = payload.error || `Falha ao chamar a AbacatePay (${response.status}).`
+    if (!response.ok || !payload?.success || !payload?.data) {
+        const errorMessage = payload?.error || `Falha ao chamar a AbacatePay (${response.status}).`
         throw new Error(errorMessage)
     }
 

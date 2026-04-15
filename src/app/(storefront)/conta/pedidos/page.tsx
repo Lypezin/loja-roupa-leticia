@@ -48,7 +48,11 @@ export default async function MeusPedidosPage() {
         redirect("/conta/login")
     }
 
-    await reconcilePendingAbacatePayAttempts({ userId: user.id, limit: 12 })
+    try {
+        await reconcilePendingAbacatePayAttempts({ userId: user.id, limit: 12 })
+    } catch (error) {
+        console.error("Falha ao reconciliar pagamentos pendentes da conta:", error)
+    }
 
     const { data: orders } = await supabase
         .from("orders")

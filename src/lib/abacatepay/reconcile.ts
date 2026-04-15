@@ -177,7 +177,14 @@ export async function reconcilePendingAbacatePayAttempts({
         return summary
     }
 
-    const billings = await listAbacatePayBillings()
+    let billings: AbacatePayBillingRecord[]
+    try {
+        billings = await listAbacatePayBillings()
+    } catch (error) {
+        const message = error instanceof Error ? error.message : "Falha ao consultar cobrancas na AbacatePay."
+        summary.errors.push(message)
+        return summary
+    }
     const billingByExternalId = new Map<string, AbacatePayBillingRecord>()
     const billingByCheckoutId = new Map<string, AbacatePayBillingRecord>()
 

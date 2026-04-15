@@ -70,7 +70,7 @@ export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
                         )}
                     </div>
                     <p className="mt-1 text-xs leading-6 text-muted-foreground">
-                        O checkout usa o CEP salvo no seu cadastro. Se ele mudar, recalcule o frete antes de pagar.
+                        Se o CEP mudar, recalcule o frete antes de pagar.
                     </p>
                 </div>
             </div>
