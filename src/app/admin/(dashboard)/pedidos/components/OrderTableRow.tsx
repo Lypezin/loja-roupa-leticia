@@ -54,11 +54,11 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
         try {
             setShippingBusy(true)
             const shipment = await createShipmentDraft(order.id)
-            toast.success(`Etiqueta criada no Melhor Envio${shipment?.protocol ? ` (${shipment.protocol})` : ""}.`)
+            toast.success(`Etiqueta emitida no Melhor Envio${shipment?.protocol ? ` (${shipment.protocol})` : ""}.`)
             router.refresh()
         } catch (error) {
-            console.error("Erro ao criar etiqueta:", error)
-            toast.error(error instanceof Error ? error.message : "Não foi possível criar a etiqueta.")
+            console.error("Erro ao emitir etiqueta:", error)
+            toast.error(error instanceof Error ? error.message : "Não foi possível emitir a etiqueta.")
         } finally {
             setShippingBusy(false)
         }
@@ -142,7 +142,7 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
                                     onClick={handleCreateShipment}
                                 >
                                     {shippingBusy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
-                                    Criar etiqueta
+                                    Emitir etiqueta
                                 </Button>
                             ) : (
                                 <Button

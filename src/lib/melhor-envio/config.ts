@@ -50,3 +50,16 @@ export function getMelhorEnvioWebhookSecret() {
 
     return webhookSecret
 }
+
+export function getMelhorEnvioWebhookSigningSecrets() {
+    const secrets = [
+        process.env.MELHOR_ENVIO_WEBHOOK_SECRET?.trim(),
+        process.env.MELHOR_ENVIO_CLIENT_SECRET?.trim(),
+    ].filter((value): value is string => Boolean(value))
+
+    if (secrets.length === 0) {
+        throw new Error("Configure MELHOR_ENVIO_WEBHOOK_SECRET ou MELHOR_ENVIO_CLIENT_SECRET para validar o webhook.")
+    }
+
+    return [...new Set(secrets)]
+}

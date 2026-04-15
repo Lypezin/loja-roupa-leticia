@@ -83,8 +83,8 @@ export async function createShipmentDraft(orderId: string) {
         revalidatePath(`/conta/pedidos/${orderId}`)
         return shipment
     } catch (error: unknown) {
-        const message = getErrorMessage(error, 'Falha ao criar etiqueta no Melhor Envio.')
-        console.error('Erro ao criar etiqueta do Melhor Envio:', message)
+        const message = getErrorMessage(error, 'Falha ao emitir a etiqueta no Melhor Envio.')
+        console.error('Erro ao emitir etiqueta do Melhor Envio:', message)
         throw new Error(message)
     }
 }

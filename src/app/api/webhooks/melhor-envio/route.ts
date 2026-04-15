@@ -1,23 +1,26 @@
 import { createHmac, timingSafeEqual } from "node:crypto"
 import { NextResponse } from "next/server"
 import { applyMelhorEnvioWebhook } from "@/lib/melhor-envio"
-import { getMelhorEnvioWebhookSecret } from "@/lib/melhor-envio/config"
+import { getMelhorEnvioWebhookSigningSecrets } from "@/lib/melhor-envio/config"
 
 export const runtime = "nodejs"
 
 function verifySignature(rawBody: string, signature: string) {
-    const expected = createHmac("sha256", getMelhorEnvioWebhookSecret())
-        .update(rawBody)
-        .digest("base64")
-
-    const expectedBuffer = Buffer.from(expected)
     const receivedBuffer = Buffer.from(signature.trim())
 
-    if (expectedBuffer.length !== receivedBuffer.length) {
-        return false
-    }
+    return getMelhorEnvioWebhookSigningSecrets().some((secret) => {
+        const expected = createHmac("sha256", secret)
+            .update(rawBody)
+            .digest("base64")
 
-    return timingSafeEqual(expectedBuffer, receivedBuffer)
+        const expectedBuffer = Buffer.from(expected)
+
+        if (expectedBuffer.length !== receivedBuffer.length) {
+            return false
+        }
+
+        return timingSafeEqual(expectedBuffer, receivedBuffer)
+    })
 }
 
 export async function POST(request: Request) {

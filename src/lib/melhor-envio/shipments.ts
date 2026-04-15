@@ -2,6 +2,8 @@ import { normalizeBrazilPhone, normalizeCpf, readCustomerProfile } from "@/lib/c
 import type { Json } from "@/lib/supabase/database.types"
 import { createServiceRoleClient } from "@/lib/supabase/service-role"
 import { melhorEnvioRequest } from "./client"
+import { getMelhorEnvioEnvironment } from "./config"
+import { getStoredIntegration } from "./storage"
 
 type UnknownRecord = Record<string, unknown>
 
@@ -69,6 +71,13 @@ export type MelhorEnvioShipmentSnapshot = {
     payload: Json | null
 }
 
+const REQUIRED_PHASE2_SCOPES = [
+    "shipping-checkout",
+    "shipping-generate",
+    "shipping-print",
+    "shipping-tracking",
+] as const
+
 function isRecord(value: unknown): value is UnknownRecord {
     return typeof value === "object" && value !== null
 }
@@ -134,6 +143,10 @@ function resolveShipmentRecord(payload: unknown): UnknownRecord | null {
         return null
     }
 
+    if (Array.isArray(payload.orders)) {
+        return payload.orders.find((item): item is UnknownRecord => isRecord(item)) || null
+    }
+
     if (isRecord(payload.data)) {
         return payload.data
     }
@@ -144,16 +157,21 @@ function resolveShipmentRecord(payload: unknown): UnknownRecord | null {
 function buildShipmentSnapshot(payload: unknown): MelhorEnvioShipmentSnapshot {
     const record = resolveShipmentRecord(payload)
     const labels = record && Array.isArray(record.labels) ? record.labels.filter((item) => isRecord(item)) : []
+    const tags = record && Array.isArray(record.tags) ? record.tags.filter((item) => isRecord(item)) : []
+    const eventStatus = isRecord(payload)
+        ? readOptionalString(payload.event)?.replace(/^order\./, "") || null
+        : null
 
     return {
         externalId: record ? readOptionalString(record.id) : null,
         protocol: record ? readOptionalString(record.protocol) : null,
-        statusDetail: record ? readOptionalString(record.status) : null,
+        statusDetail: record ? readOptionalString(record.status) || eventStatus : eventStatus,
         trackingCode: record ? readOptionalString(record.tracking) || readOptionalString(record.self_tracking) : null,
         trackingUrl: record ? readOptionalString(record.tracking_url) : null,
         labelUrl: record
             ? readOptionalString(record.label_url)
                 || (labels.length > 0 ? readOptionalString(labels[0].url) : null)
+                || (tags.length > 0 ? readOptionalString(tags[0].url) : null)
             : null,
         createdAt: record ? readOptionalString(record.created_at) : null,
         paidAt: record ? readOptionalString(record.paid_at) : null,
@@ -162,6 +180,26 @@ function buildShipmentSnapshot(payload: unknown): MelhorEnvioShipmentSnapshot {
         deliveredAt: record ? readOptionalString(record.delivered_at) : null,
         canceledAt: record ? readOptionalString(record.canceled_at) : null,
         payload: asJson(payload),
+    }
+}
+
+function mergeShipmentSnapshots(...snapshots: Array<MelhorEnvioShipmentSnapshot | null | undefined>): MelhorEnvioShipmentSnapshot {
+    const validSnapshots = snapshots.filter((snapshot): snapshot is MelhorEnvioShipmentSnapshot => Boolean(snapshot))
+
+    return {
+        externalId: validSnapshots.map((snapshot) => snapshot.externalId).find(Boolean) || null,
+        protocol: validSnapshots.map((snapshot) => snapshot.protocol).find(Boolean) || null,
+        statusDetail: validSnapshots.map((snapshot) => snapshot.statusDetail).find(Boolean) || null,
+        trackingCode: validSnapshots.map((snapshot) => snapshot.trackingCode).find(Boolean) || null,
+        trackingUrl: validSnapshots.map((snapshot) => snapshot.trackingUrl).find(Boolean) || null,
+        labelUrl: validSnapshots.map((snapshot) => snapshot.labelUrl).find(Boolean) || null,
+        createdAt: validSnapshots.map((snapshot) => snapshot.createdAt).find(Boolean) || null,
+        paidAt: validSnapshots.map((snapshot) => snapshot.paidAt).find(Boolean) || null,
+        generatedAt: validSnapshots.map((snapshot) => snapshot.generatedAt).find(Boolean) || null,
+        postedAt: validSnapshots.map((snapshot) => snapshot.postedAt).find(Boolean) || null,
+        deliveredAt: validSnapshots.map((snapshot) => snapshot.deliveredAt).find(Boolean) || null,
+        canceledAt: validSnapshots.map((snapshot) => snapshot.canceledAt).find(Boolean) || null,
+        payload: validSnapshots.at(-1)?.payload || validSnapshots[0]?.payload || null,
     }
 }
 
@@ -177,6 +215,12 @@ function mapShipmentStatusToOrderStatus(detail: string | null, currentStatus: st
             return "shipped"
         case "delivered":
             return "delivered"
+        case "cancelled":
+            return "cancelled"
+        case "undelivered":
+        case "paused":
+        case "suspended":
+            return currentStatus === "shipped" ? "shipped" : "processing"
         default:
             return currentStatus
     }
@@ -210,6 +254,65 @@ function readShippingAddress(value: Json | null) {
         postalCode,
         country,
     }
+}
+
+function readScopeList(scope: string | null | undefined) {
+    return new Set(
+        (scope || "")
+            .split(/\s+/)
+            .map((item) => item.trim())
+            .filter(Boolean),
+    )
+}
+
+async function ensureShipmentScopes() {
+    const environment = getMelhorEnvioEnvironment()
+    const integration = await getStoredIntegration(environment)
+
+    if (!integration) {
+        throw new Error(`Conecte o Melhor Envio em ${environment === "production" ? "produção" : "sandbox"} antes de emitir etiquetas.`)
+    }
+
+    const grantedScopes = readScopeList(integration.scope)
+    const missingScopes = REQUIRED_PHASE2_SCOPES.filter((scope) => !grantedScopes.has(scope))
+
+    if (missingScopes.length > 0) {
+        throw new Error(`Reconecte o Melhor Envio no admin para liberar os escopos de etiqueta: ${missingScopes.join(", ")}.`)
+    }
+}
+
+function resolveBatchOrderIds(payload: unknown) {
+    if (!isRecord(payload)) {
+        return []
+    }
+
+    const possibleCollections = [payload.orders, payload.data]
+
+    for (const collection of possibleCollections) {
+        if (!Array.isArray(collection)) {
+            continue
+        }
+
+        const ids = collection
+            .map((item) => {
+                if (typeof item === "string") {
+                    return readOptionalString(item)
+                }
+
+                if (isRecord(item)) {
+                    return readOptionalString(item.id)
+                }
+
+                return null
+            })
+            .filter((item): item is string => Boolean(item))
+
+        if (ids.length > 0) {
+            return ids
+        }
+    }
+
+    return []
 }
 
 async function getShipmentOrder(orderId: string) {
@@ -378,7 +481,7 @@ function buildSender(settings: MelhorEnvioStoreSettings | null) {
     const postalCode = settings.shipping_origin_zip ? digitsOnly(settings.shipping_origin_zip) : null
 
     if (!settings.shipping_sender_name || !settings.shipping_sender_email || !phone || !document || !settings.shipping_sender_address || !settings.shipping_sender_number || !settings.shipping_sender_district || !settings.shipping_sender_city || !state || !postalCode) {
-        throw new Error("Complete os dados do remetente e o CEP de origem em Configurações > Logística antes de criar a etiqueta.")
+        throw new Error("Complete os dados do remetente e o CEP de origem em Configurações > Logística antes de emitir a etiqueta.")
     }
 
     return {
@@ -494,7 +597,83 @@ async function applyShipmentSnapshot(orderId: string, currentStatus: string, sna
     }
 }
 
+async function checkoutShipment(orderId: string, settings: MelhorEnvioStoreSettings | null) {
+    const response = await melhorEnvioRequest<unknown>(
+        "/api/v2/me/shipment/checkout",
+        {
+            method: "POST",
+            body: JSON.stringify({ orders: [orderId] }),
+        },
+        {
+            storeName: settings?.store_name,
+            supportEmail: settings?.support_email,
+        },
+    )
+
+    const checkedOutIds = resolveBatchOrderIds(response)
+
+    if (checkedOutIds.length > 0 && !checkedOutIds.includes(orderId)) {
+        throw new Error("O Melhor Envio retornou um pedido diferente do solicitado durante o checkout da etiqueta.")
+    }
+
+    return response
+}
+
+async function generateShipmentLabel(orderId: string, settings: MelhorEnvioStoreSettings | null) {
+    const response = await melhorEnvioRequest<unknown>(
+        "/api/v2/me/shipment/generate",
+        {
+            method: "POST",
+            body: JSON.stringify({ orders: [orderId] }),
+        },
+        {
+            storeName: settings?.store_name,
+            supportEmail: settings?.support_email,
+        },
+    )
+
+    const generatedIds = resolveBatchOrderIds(response)
+
+    if (generatedIds.length > 0 && !generatedIds.includes(orderId)) {
+        throw new Error("O Melhor Envio retornou uma etiqueta diferente da solicitada durante a geração.")
+    }
+
+    return response
+}
+
+async function printShipmentLabel(orderId: string, settings: MelhorEnvioStoreSettings | null) {
+    return melhorEnvioRequest<unknown>(
+        "/api/v2/me/shipment/print",
+        {
+            method: "POST",
+            body: JSON.stringify({
+                mode: "private",
+                orders: [orderId],
+            }),
+        },
+        {
+            storeName: settings?.store_name,
+            supportEmail: settings?.support_email,
+        },
+    )
+}
+
+async function fetchShipmentSnapshot(orderId: string, settings: MelhorEnvioStoreSettings | null) {
+    const response = await melhorEnvioRequest<unknown>(
+        `/api/v2/me/orders/${orderId}`,
+        { method: "GET" },
+        {
+            storeName: settings?.store_name,
+            supportEmail: settings?.support_email,
+        },
+    )
+
+    return buildShipmentSnapshot(response)
+}
+
 export async function createMelhorEnvioShipmentDraft(orderId: string) {
+    await ensureShipmentScopes()
+
     const [order, settings] = await Promise.all([
         getShipmentOrder(orderId),
         getStoreSettings(),
@@ -510,7 +689,7 @@ export async function createMelhorEnvioShipmentDraft(orderId: string) {
 
     const profile = await getRecipientProfile(order.user_id)
     const payload = buildCartPayload(order, settings, profile)
-    const response = await melhorEnvioRequest<unknown>(
+    const cartResponse = await melhorEnvioRequest<unknown>(
         "/api/v2/me/cart",
         {
             method: "POST",
@@ -522,17 +701,33 @@ export async function createMelhorEnvioShipmentDraft(orderId: string) {
         },
     )
 
-    const snapshot = buildShipmentSnapshot(response)
+    const cartSnapshot = buildShipmentSnapshot(cartResponse)
 
-    if (!snapshot.externalId) {
+    if (!cartSnapshot.externalId) {
         throw new Error("O Melhor Envio não retornou o identificador da etiqueta.")
     }
 
-    await applyShipmentSnapshot(order.id, order.status, snapshot)
-    return snapshot
+    const shippingId = cartSnapshot.externalId
+    const checkoutResponse = await checkoutShipment(shippingId, settings)
+    const generateResponse = await generateShipmentLabel(shippingId, settings)
+    const printResponse = await printShipmentLabel(shippingId, settings)
+    const syncedSnapshot = await fetchShipmentSnapshot(shippingId, settings)
+
+    const finalSnapshot = mergeShipmentSnapshots(
+        cartSnapshot,
+        buildShipmentSnapshot(checkoutResponse),
+        buildShipmentSnapshot(generateResponse),
+        buildShipmentSnapshot(printResponse),
+        syncedSnapshot,
+    )
+
+    await applyShipmentSnapshot(order.id, order.status, finalSnapshot)
+    return finalSnapshot
 }
 
 export async function syncMelhorEnvioShipment(orderId: string) {
+    await ensureShipmentScopes()
+
     const [order, settings] = await Promise.all([
         getShipmentOrder(orderId),
         getStoreSettings(),
@@ -546,16 +741,7 @@ export async function syncMelhorEnvioShipment(orderId: string) {
         throw new Error("Este pedido ainda não possui uma etiqueta criada no Melhor Envio.")
     }
 
-    const response = await melhorEnvioRequest<unknown>(
-        `/api/v2/me/orders/${order.shipping_external_id}`,
-        { method: "GET" },
-        {
-            storeName: settings?.store_name,
-            supportEmail: settings?.support_email,
-        },
-    )
-
-    const snapshot = buildShipmentSnapshot(response)
+    const snapshot = await fetchShipmentSnapshot(order.shipping_external_id, settings)
     await applyShipmentSnapshot(order.id, order.status, snapshot)
     return snapshot
 }
