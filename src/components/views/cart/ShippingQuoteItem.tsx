@@ -11,10 +11,10 @@ interface ShippingQuoteItemProps {
 export function ShippingQuoteItem({ quote, checked, onSelect }: ShippingQuoteItemProps) {
     return (
         <label
-            className={`flex cursor-pointer items-center justify-between gap-3 rounded-[1.2rem] border px-4 py-3 transition-colors ${
+            className={`interactive-panel flex cursor-pointer items-center justify-between gap-3 rounded-[1.2rem] border px-4 py-3 ${
                 checked
-                    ? "border-primary bg-primary/5"
-                    : "border-border bg-background hover:border-primary/40"
+                    ? "border-primary bg-primary/5 shadow-[0_12px_30px_rgba(90,63,43,0.08)]"
+                    : "border-border bg-background hover:border-primary/40 hover:bg-accent/30"
             }`}
         >
             <div className="flex min-w-0 items-start gap-3">

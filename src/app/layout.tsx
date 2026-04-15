@@ -52,7 +52,14 @@ export default function RootLayout({
         <html lang="pt-BR" suppressHydrationWarning>
             <body className="antialiased">
                 <ThemeProvider>
-                    <NextTopLoader color="var(--primary)" showSpinner={false} />
+                    <NextTopLoader
+                        color="var(--primary)"
+                        showSpinner={false}
+                        height={2}
+                        crawlSpeed={160}
+                        easing="ease"
+                        shadow="0 0 12px rgba(90, 63, 43, 0.18)"
+                    />
                     <Toaster position="top-right" richColors />
                     {children}
                 </ThemeProvider>

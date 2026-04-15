@@ -17,7 +17,7 @@ export default async function StorefrontLayout({
     return (
         <div className="flex min-h-screen flex-col bg-background text-foreground font-sans">
             <Header categories={categories} storeName={settings?.store_name} />
-            <main className="flex-1">
+            <main className="animate-page-enter flex-1">
                 {children}
             </main>
             <Footer categories={categories} settings={settings} />

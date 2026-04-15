@@ -16,12 +16,14 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scrollbar-gutter: stable;
   }
 
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
     min-height: 100vh;
+    overflow-x: hidden;
     background-image:
       radial-gradient(circle at top left, rgba(132, 95, 67, 0.07), transparent 26%),
       linear-gradient(180deg, rgba(250, 247, 241, 0.96), rgba(244, 239, 232, 0.98));
@@ -50,10 +52,24 @@
     color: #2b2018;
   }
 
+  a,
+  button,
+  input,
+  select,
+  textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
     background: color-mix(in oklab, var(--primary) 42%, white);
     border-radius: 999px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }

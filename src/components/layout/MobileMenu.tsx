@@ -51,7 +51,7 @@ export function MobileMenu({ isOpen, onClose, categories, storeName }: MobileMen
                 type="button"
                 aria-label="Fechar menu"
                 onClick={onClose}
-                className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm"
+                className="animate-fade-in-soft fixed inset-0 z-50 bg-black/20 backdrop-blur-sm"
             />
 
             <aside
@@ -59,7 +59,7 @@ export function MobileMenu({ isOpen, onClose, categories, storeName }: MobileMen
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="store-mobile-menu-title"
-                className="animate-slide-in-soft fixed inset-y-0 left-0 z-[60] w-[21rem] max-w-[88vw] overflow-y-auto border-r border-border bg-background px-5 py-5 shadow-[0_24px_60px_rgba(43,32,24,0.18)]"
+                className="animate-slide-in-soft fixed inset-y-0 left-0 z-[60] w-[21rem] max-w-[88vw] overflow-y-auto border-r border-border bg-background px-5 py-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-[0_24px_60px_rgba(43,32,24,0.18)]"
             >
                 <div className="flex min-h-full flex-col">
                     <div className="mb-8 flex items-center justify-between">
@@ -74,7 +74,7 @@ export function MobileMenu({ isOpen, onClose, categories, storeName }: MobileMen
                             type="button"
                             onClick={onClose}
                             aria-label="Fechar menu"
-                            className="rounded-full border border-border bg-card p-2.5 transition-colors hover:bg-accent"
+                            className="interactive-icon interactive-press rounded-full border border-border bg-card p-2.5 hover:bg-accent"
                         >
                             <X className="h-5 w-5" />
                         </button>

@@ -41,10 +41,10 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
     const delayClass = index === 0 ? "" : index === 1 ? "animate-enter-delay-1" : index === 2 ? "animate-enter-delay-2" : "animate-enter-delay-3"
 
     return (
-        <article className={`group surface-card hover-lift-soft animate-enter-soft flex h-full flex-col rounded-[1.85rem] p-3 ${delayClass}`}>
+        <article className={`group surface-card hover-lift-soft interactive-panel animate-enter-soft flex h-full flex-col rounded-[1.85rem] p-3 ${delayClass}`}>
             <Link
                 href={`/produto/${product.id}`}
-                className="flex h-full flex-col"
+                className="flex h-full flex-col rounded-[1.45rem] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
                 onMouseEnter={() => setShowSecondaryImage(true)}
                 onFocus={() => setShowSecondaryImage(true)}
                 onMouseLeave={() => setShowSecondaryImage(false)}

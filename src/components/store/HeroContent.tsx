@@ -31,7 +31,7 @@ export function HeroContent({ title, subtitle, buttonText, badgeText, secondaryB
             <div className="animate-enter-soft animate-enter-delay-2 mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
                     href="/produtos"
-                    className="inline-flex h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-semibold uppercase tracking-[0.16em] text-primary-foreground transition-all hover:scale-[1.02] hover:opacity-90 active:scale-[0.98]"
+                    className="interactive-press inline-flex h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-semibold uppercase tracking-[0.16em] text-primary-foreground transition-all hover:scale-[1.02] hover:opacity-90 active:scale-[0.98]"
                 >
                     {buttonText}
                 </Link>
@@ -39,7 +39,7 @@ export function HeroContent({ title, subtitle, buttonText, badgeText, secondaryB
                 {secondaryButtonText && (
                     <Link
                         href="/sobre"
-                        className="inline-flex h-12 items-center justify-center rounded-full border border-border bg-card px-7 text-sm font-semibold uppercase tracking-[0.16em] text-foreground transition-all hover:bg-accent hover:scale-[1.02] active:scale-[0.98]"
+                        className="interactive-press inline-flex h-12 items-center justify-center rounded-full border border-border bg-card px-7 text-sm font-semibold uppercase tracking-[0.16em] text-foreground transition-all hover:bg-accent hover:scale-[1.02] active:scale-[0.98]"
                     >
                         {secondaryButtonText}
                     </Link>
@@ -50,7 +50,7 @@ export function HeroContent({ title, subtitle, buttonText, badgeText, secondaryB
                 {heroFacts.map((item, index) => (
                     <div
                         key={item.label}
-                        className={`group animate-enter-soft flex items-center gap-4 rounded-[1.4rem] border border-zinc-200/60 bg-white/60 px-4 py-4 shadow-sm backdrop-blur-md transition-all hover:-translate-y-1 hover:border-zinc-300 hover:bg-white hover:shadow-md ${index === 0 ? "animate-enter-delay-1" : index === 1 ? "animate-enter-delay-2" : "animate-enter-delay-3"}`}
+                        className={`group interactive-panel animate-enter-soft flex items-center gap-4 rounded-[1.4rem] border border-zinc-200/60 bg-white/60 px-4 py-4 shadow-sm backdrop-blur-md hover:-translate-y-1 hover:border-zinc-300 hover:bg-white hover:shadow-md ${index === 0 ? "animate-enter-delay-1" : index === 1 ? "animate-enter-delay-2" : "animate-enter-delay-3"}`}
                     >
                         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-zinc-700 transition-colors group-hover:bg-zinc-900 group-hover:text-white">
                             <item.icon className="h-5 w-5" />

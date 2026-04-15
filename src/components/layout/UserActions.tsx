@@ -40,19 +40,19 @@ export function UserActions({ isLoggedIn }: UserActionsProps) {
     return (
         <div className="flex items-center gap-2">
             <Link href={hasSession ? "/conta" : "/conta/login"} aria-label={hasSession ? "Abrir minha conta" : "Entrar na conta"}>
-                <span className="relative flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
+                <span className="interactive-icon interactive-press relative flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:bg-accent hover:text-foreground">
                     <User className="h-4.5 w-4.5" />
                     {hasSession && (
-                        <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-background" />
+                        <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-background transition-transform duration-300" />
                     )}
                 </span>
             </Link>
 
             <Link href="/carrinho" aria-label="Abrir carrinho">
-                <span className="relative flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
+                <span className="interactive-icon interactive-press relative flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:bg-accent hover:text-foreground">
                     <ShoppingBag className="h-4.5 w-4.5" />
                     {mounted && totalItems > 0 && (
-                        <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground shadow-sm">
+                        <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground shadow-sm transition-transform duration-300">
                             {totalItems}
                         </span>
                     )}

@@ -15,11 +15,11 @@ export function SearchBar() {
                 name="q"
                 aria-label="Buscar produtos"
                 placeholder="Buscar por nome, cor ou categoria"
-                className="h-11 w-full rounded-full border border-border bg-card pl-11 pr-20 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
+                className="interactive-field h-11 w-full rounded-full border border-border bg-card pl-11 pr-20 text-sm text-foreground placeholder:text-muted-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/15"
             />
             <button
                 type="submit"
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full bg-primary px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-opacity hover:opacity-90"
+                className="interactive-press absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full bg-primary px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-foreground transition-opacity hover:opacity-90"
             >
                 Buscar
             </button>

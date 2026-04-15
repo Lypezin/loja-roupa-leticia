@@ -26,9 +26,23 @@ export function Header({
     const [mobileMenu, setMobileMenu] = useState(false)
 
     useEffect(() => {
-        document.body.style.overflow = mobileMenu ? 'hidden' : ''
+        const originalOverflow = document.body.style.overflow
+        const originalPaddingRight = document.body.style.paddingRight
+
+        if (mobileMenu) {
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+            document.body.style.overflow = "hidden"
+            if (scrollbarWidth > 0) {
+                document.body.style.paddingRight = `${scrollbarWidth}px`
+            }
+        } else {
+            document.body.style.overflow = ""
+            document.body.style.paddingRight = ""
+        }
+
         return () => {
-            document.body.style.overflow = ''
+            document.body.style.overflow = originalOverflow
+            document.body.style.paddingRight = originalPaddingRight
         }
     }, [mobileMenu])
 
@@ -37,8 +51,8 @@ export function Header({
 
     return (
         <>
-            <header className="sticky top-0 z-50 border-b border-border/70 bg-background/88 backdrop-blur-xl">
-                <div className="container mx-auto flex h-[4.5rem] items-center justify-between gap-3 px-4 md:h-20">
+            <header className="sticky top-0 z-50 border-b border-border/70 bg-background/88 shadow-[0_10px_30px_rgba(61,44,32,0.04)] backdrop-blur-xl">
+                <div className="container mx-auto flex h-[4.5rem] items-center justify-between gap-3 px-4 transition-[height,padding] duration-300 md:h-20">
                     <div className="flex items-center gap-3 md:gap-4">
                         <button
                             onClick={() => setMobileMenu(true)}
@@ -46,7 +60,7 @@ export function Header({
                             aria-controls="store-mobile-menu"
                             aria-expanded={mobileMenu}
                             aria-haspopup="dialog"
-                            className="rounded-full border border-border bg-card p-2.5 text-foreground transition-colors hover:bg-accent lg:hidden"
+                            className="interactive-icon interactive-press rounded-full border border-border bg-card p-2.5 text-foreground hover:bg-accent lg:hidden"
                         >
                             <Menu className="h-5 w-5" />
                         </button>

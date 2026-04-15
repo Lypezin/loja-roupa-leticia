@@ -23,13 +23,13 @@ export function CartItem({ item, removeItem, updateQuantity }: CartItemProps) {
     const itemPrice = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(item.price * item.quantity)
 
     return (
-        <div className="surface-card flex flex-col gap-5 rounded-[1.8rem] p-4 sm:flex-row sm:items-center">
+        <div className="surface-card interactive-panel flex flex-col gap-5 rounded-[1.8rem] p-4 sm:flex-row sm:items-center">
             <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded-[1.2rem] bg-muted sm:h-32 sm:w-28">
                 <Image
                     src={item.image_url || "/placeholder-image.jpg"}
                     alt={item.product_name}
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-500"
                     sizes="112px"
                 />
             </div>
@@ -54,14 +54,14 @@ export function CartItem({ item, removeItem, updateQuantity }: CartItemProps) {
                                     updateQuantity(item.id, item.quantity - 1)
                                 }
                             }}
-                            className="px-3 py-2 text-foreground transition-colors hover:bg-accent"
+                            className="interactive-press px-3 py-2 text-foreground transition-colors hover:bg-accent"
                         >
                             <Minus className="h-3.5 w-3.5" />
                         </button>
                         <span className="w-10 text-center text-sm font-medium text-foreground">{item.quantity}</span>
                         <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="px-3 py-2 text-foreground transition-colors hover:bg-accent"
+                            className="interactive-press px-3 py-2 text-foreground transition-colors hover:bg-accent"
                         >
                             <Plus className="h-3.5 w-3.5" />
                         </button>
@@ -69,7 +69,7 @@ export function CartItem({ item, removeItem, updateQuantity }: CartItemProps) {
 
                     <button
                         onClick={() => removeItem(item.id)}
-                        className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-red-50 hover:text-red-600"
+                        className="interactive-icon interactive-press flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-red-50 hover:text-red-600"
                     >
                         <Trash2 className="h-4 w-4" />
                     </button>
