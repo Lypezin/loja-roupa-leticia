@@ -104,12 +104,26 @@ export type Database = {
           shipping_company_name: string | null
           shipping_address: Json | null
           shipping_cost: number | null
+          shipping_created_at: string | null
           shipping_delivery_days: number | null
+          shipping_delivered_at: string | null
+          shipping_external_id: string | null
+          shipping_external_protocol: string | null
+          shipping_generated_at: string | null
+          shipping_label_url: string | null
+          shipping_last_synced_at: string | null
+          shipping_paid_at: string | null
+          shipping_payload: Json | null
+          shipping_posted_at: string | null
           shipping_provider: string | null
           shipping_provider_cost: number | null
           shipping_quote_payload: Json | null
+          shipping_status_detail: string | null
           shipping_service_id: string | null
           shipping_service_name: string | null
+          shipping_tracking_code: string | null
+          shipping_tracking_url: string | null
+          shipping_canceled_at: string | null
           status: string
           stripe_payment_intent_id: string | null
           stripe_session_id: string | null
@@ -132,12 +146,26 @@ export type Database = {
           shipping_company_name?: string | null
           shipping_address?: Json | null
           shipping_cost?: number | null
+          shipping_created_at?: string | null
           shipping_delivery_days?: number | null
+          shipping_delivered_at?: string | null
+          shipping_external_id?: string | null
+          shipping_external_protocol?: string | null
+          shipping_generated_at?: string | null
+          shipping_label_url?: string | null
+          shipping_last_synced_at?: string | null
+          shipping_paid_at?: string | null
+          shipping_payload?: Json | null
+          shipping_posted_at?: string | null
           shipping_provider?: string | null
           shipping_provider_cost?: number | null
           shipping_quote_payload?: Json | null
+          shipping_status_detail?: string | null
           shipping_service_id?: string | null
           shipping_service_name?: string | null
+          shipping_tracking_code?: string | null
+          shipping_tracking_url?: string | null
+          shipping_canceled_at?: string | null
           status?: string
           stripe_payment_intent_id?: string | null
           stripe_session_id?: string | null
@@ -160,12 +188,26 @@ export type Database = {
           shipping_company_name?: string | null
           shipping_address?: Json | null
           shipping_cost?: number | null
+          shipping_created_at?: string | null
           shipping_delivery_days?: number | null
+          shipping_delivered_at?: string | null
+          shipping_external_id?: string | null
+          shipping_external_protocol?: string | null
+          shipping_generated_at?: string | null
+          shipping_label_url?: string | null
+          shipping_last_synced_at?: string | null
+          shipping_paid_at?: string | null
+          shipping_payload?: Json | null
+          shipping_posted_at?: string | null
           shipping_provider?: string | null
           shipping_provider_cost?: number | null
           shipping_quote_payload?: Json | null
+          shipping_status_detail?: string | null
           shipping_service_id?: string | null
           shipping_service_name?: string | null
+          shipping_tracking_code?: string | null
+          shipping_tracking_url?: string | null
+          shipping_canceled_at?: string | null
           status?: string
           stripe_payment_intent_id?: string | null
           stripe_session_id?: string | null
@@ -463,6 +505,18 @@ export type Database = {
           products_section_label: string | null
           products_section_title: string | null
           shipping_origin_zip: string | null
+          shipping_sender_address: string | null
+          shipping_sender_city: string | null
+          shipping_sender_complement: string | null
+          shipping_sender_district: string | null
+          shipping_sender_document: string | null
+          shipping_sender_email: string | null
+          shipping_sender_name: string | null
+          shipping_sender_non_commercial: boolean | null
+          shipping_sender_number: string | null
+          shipping_sender_phone: string | null
+          shipping_sender_state: string | null
+          shipping_sender_state_register: string | null
             store_description: string | null
             store_name: string
             support_email: string | null
@@ -497,6 +551,18 @@ export type Database = {
           products_section_label?: string | null
           products_section_title?: string | null
           shipping_origin_zip?: string | null
+          shipping_sender_address?: string | null
+          shipping_sender_city?: string | null
+          shipping_sender_complement?: string | null
+          shipping_sender_district?: string | null
+          shipping_sender_document?: string | null
+          shipping_sender_email?: string | null
+          shipping_sender_name?: string | null
+          shipping_sender_non_commercial?: boolean | null
+          shipping_sender_number?: string | null
+          shipping_sender_phone?: string | null
+          shipping_sender_state?: string | null
+          shipping_sender_state_register?: string | null
             store_description?: string | null
             store_name?: string
             support_email?: string | null
@@ -531,6 +597,18 @@ export type Database = {
           products_section_label?: string | null
           products_section_title?: string | null
           shipping_origin_zip?: string | null
+          shipping_sender_address?: string | null
+          shipping_sender_city?: string | null
+          shipping_sender_complement?: string | null
+          shipping_sender_district?: string | null
+          shipping_sender_document?: string | null
+          shipping_sender_email?: string | null
+          shipping_sender_name?: string | null
+          shipping_sender_non_commercial?: boolean | null
+          shipping_sender_number?: string | null
+          shipping_sender_phone?: string | null
+          shipping_sender_state?: string | null
+          shipping_sender_state_register?: string | null
             store_description?: string | null
             store_name?: string
             support_email?: string | null

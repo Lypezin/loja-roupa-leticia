@@ -1,12 +1,14 @@
 'use client'
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
 import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { TableCell, TableRow } from "@/components/ui/table"
 import { formatCurrency } from "@/lib/utils"
-import { updateOrderStatus } from "../actions"
+import { createShipmentDraft, syncShipment, updateOrderStatus } from "../actions"
 
 export type Order = {
     id: string
@@ -18,7 +20,11 @@ export type Order = {
     payment_provider?: string | null
     payment_receipt_url?: string | null
     shipping_company_name?: string | null
+    shipping_external_id?: string | null
+    shipping_provider?: string | null
+    shipping_status_detail?: string | null
     shipping_service_name?: string | null
+    shipping_tracking_url?: string | null
     order_items: { id: string; quantity: number; price: number; products: { name: string } | null }[]
 }
 
@@ -28,6 +34,8 @@ interface OrderTableRowProps {
 
 export function OrderTableRow({ order }: OrderTableRowProps) {
     const [updating, setUpdating] = useState(false)
+    const [shippingBusy, setShippingBusy] = useState(false)
+    const router = useRouter()
 
     const handleStatusChange = async (newStatus: string) => {
         try {
@@ -42,10 +50,39 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
         }
     }
 
+    const handleCreateShipment = async () => {
+        try {
+            setShippingBusy(true)
+            const shipment = await createShipmentDraft(order.id)
+            toast.success(`Etiqueta criada no Melhor Envio${shipment?.protocol ? ` (${shipment.protocol})` : ""}.`)
+            router.refresh()
+        } catch (error) {
+            console.error("Erro ao criar etiqueta:", error)
+            toast.error(error instanceof Error ? error.message : "Não foi possível criar a etiqueta.")
+        } finally {
+            setShippingBusy(false)
+        }
+    }
+
+    const handleSyncShipment = async () => {
+        try {
+            setShippingBusy(true)
+            const shipment = await syncShipment(order.id)
+            toast.success(`Envio sincronizado${shipment?.statusDetail ? `: ${shipment.statusDetail}` : "."}`)
+            router.refresh()
+        } catch (error) {
+            console.error("Erro ao sincronizar envio:", error)
+            toast.error(error instanceof Error ? error.message : "Não foi possível sincronizar o envio.")
+        } finally {
+            setShippingBusy(false)
+        }
+    }
+
     const clientName = order.customer_name || "Cliente"
     const clientEmail = order.customer_email || "E-mail não informado"
     const providerLabel = order.payment_provider || (order.payment_receipt_url ? "abacatepay" : "legado")
     const shippingLabel = [order.shipping_company_name, order.shipping_service_name].filter(Boolean).join(" • ")
+    const canManageMelhorEnvio = order.shipping_provider === "melhor_envio" && (order.status === "paid" || order.status === "processing" || order.status === "shipped")
 
     return (
         <TableRow className="transition-colors hover:bg-zinc-50/70">
@@ -78,6 +115,11 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
                             Frete: {shippingLabel}
                         </div>
                     )}
+                    {order.shipping_status_detail && (
+                        <div className="text-xs leading-5 text-zinc-500">
+                            Envio: {order.shipping_status_detail}
+                        </div>
+                    )}
                     {order.payment_receipt_url && (
                         <a
                             href={order.payment_receipt_url}
@@ -87,6 +129,45 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
                         >
                             Ver recibo
                         </a>
+                    )}
+                    {canManageMelhorEnvio && (
+                        <div className="flex flex-wrap gap-2 pt-1">
+                            {!order.shipping_external_id ? (
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-8 rounded-full px-3 text-xs"
+                                    disabled={shippingBusy}
+                                    onClick={handleCreateShipment}
+                                >
+                                    {shippingBusy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
+                                    Criar etiqueta
+                                </Button>
+                            ) : (
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-8 rounded-full px-3 text-xs"
+                                    disabled={shippingBusy}
+                                    onClick={handleSyncShipment}
+                                >
+                                    {shippingBusy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
+                                    Sincronizar envio
+                                </Button>
+                            )}
+                            {order.shipping_tracking_url && (
+                                <a
+                                    href={order.shipping_tracking_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex h-8 items-center rounded-full border border-zinc-200 px-3 text-xs font-medium text-zinc-600 transition hover:bg-zinc-50"
+                                >
+                                    Rastreio
+                                </a>
+                            )}
+                        </div>
                     )}
                 </div>
             </TableCell>

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { normalizeBrazilPhone, normalizeCpf, normalizePostalCode } from "@/lib/customer-profile"
+import { normalizeBrazilPhone, normalizeBrazilState, normalizeCpf, normalizePostalCode } from "@/lib/customer-profile"
 import { createClient } from "@/lib/supabase/server"
 import { getSafeRelativePath } from "@/lib/url-safety"
 
@@ -17,8 +17,10 @@ export async function atualizarPerfil(formData: FormData) {
     const fullName = (formData.get("fullName") as string)?.trim()
     const phone = (formData.get("phone") as string)?.trim()
     const cpf = (formData.get("cpf") as string)?.trim()
-    const addressLine1 = (formData.get("addressLine1") as string)?.trim()
-    const addressLine2 = (formData.get("addressLine2") as string)?.trim()
+    const addressStreet = (formData.get("addressStreet") as string)?.trim()
+    const addressNumber = (formData.get("addressNumber") as string)?.trim()
+    const addressNeighborhood = (formData.get("addressNeighborhood") as string)?.trim()
+    const addressComplement = (formData.get("addressComplement") as string)?.trim()
     const city = (formData.get("city") as string)?.trim()
     const state = (formData.get("state") as string)?.trim()
     const postalCode = (formData.get("postalCode") as string)?.trim()
@@ -27,6 +29,7 @@ export async function atualizarPerfil(formData: FormData) {
     const normalizedPhone = normalizeBrazilPhone(phone)
     const normalizedCpf = normalizeCpf(cpf)
     const normalizedPostalCode = normalizePostalCode(postalCode)
+    const normalizedState = normalizeBrazilState(state)
     const nextQuery = nextPath ? `&next=${encodeURIComponent(nextPath)}` : ""
 
     if (!fullName) {
@@ -41,7 +44,7 @@ export async function atualizarPerfil(formData: FormData) {
         redirect(`/conta/perfil?error=${encodeURIComponent("CPF inválido. Confira os dígitos informados.")}${nextQuery}`)
     }
 
-    if (!addressLine1 || !city || !state || !normalizedPostalCode) {
+    if (!addressStreet || !addressNumber || !addressNeighborhood || !city || !normalizedState || !normalizedPostalCode) {
         redirect(`/conta/perfil?error=${encodeURIComponent("Preencha o endereço de entrega completo para continuar.")}${nextQuery}`)
     }
 
@@ -50,10 +53,14 @@ export async function atualizarPerfil(formData: FormData) {
             full_name: fullName,
             phone: normalizedPhone,
             cpf: normalizedCpf,
-            address_line1: addressLine1,
-            address_line2: addressLine2 || "",
+            address_street: addressStreet,
+            address_number: addressNumber,
+            address_neighborhood: addressNeighborhood,
+            address_complement: addressComplement || "",
+            address_line1: addressStreet,
+            address_line2: addressComplement || "",
             city,
-            state,
+            state: normalizedState,
             postal_code: normalizedPostalCode,
             country: "BR",
         },

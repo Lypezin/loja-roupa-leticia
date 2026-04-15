@@ -33,9 +33,20 @@ export function getMelhorEnvioRedirectUri() {
 }
 
 export function getMelhorEnvioScopes() {
-    return process.env.MELHOR_ENVIO_SCOPES?.trim() || "shipping-calculate"
+    return process.env.MELHOR_ENVIO_SCOPES?.trim()
+        || "shipping-calculate shipping-preview shipping-checkout shipping-generate shipping-print shipping-tracking shipping-companies"
 }
 
 export function getServiceFilter() {
     return process.env.MELHOR_ENVIO_SERVICE_CODES?.trim() || undefined
+}
+
+export function getMelhorEnvioWebhookSecret() {
+    const webhookSecret = process.env.MELHOR_ENVIO_WEBHOOK_SECRET?.trim()
+
+    if (!webhookSecret) {
+        throw new Error("MELHOR_ENVIO_WEBHOOK_SECRET ausente.")
+    }
+
+    return webhookSecret
 }

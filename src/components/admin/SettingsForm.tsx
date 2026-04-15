@@ -10,13 +10,14 @@ import { ProfileSection } from "./settings/ProfileSection"
 import type { MelhorEnvioIntegrationStatus, ShippingCoverageSummary } from "@/types/shipping"
 
 interface SettingsFormProps {
-    settings: Record<string, string | number | null>
+    settings: Record<string, string | number | boolean | null>
     melhorEnvio: MelhorEnvioIntegrationStatus
     shippingCoverage: ShippingCoverageSummary
 }
 
 export function SettingsForm({ settings, melhorEnvio, shippingCoverage }: SettingsFormProps) {
     const [activeTab, setActiveTab] = useState("perfil")
+    const baseSettings = settings as Record<string, string | number | null>
 
     if (!settings) {
         return <p className="text-sm text-muted-foreground">Nenhuma configuração encontrada.</p>
@@ -33,17 +34,17 @@ export function SettingsForm({ settings, melhorEnvio, shippingCoverage }: Settin
     const renderContent = () => {
         switch (activeTab) {
             case "perfil":
-                return <ProfileSection settings={settings} />
+                return <ProfileSection settings={baseSettings} />
             case "banner":
-                return <BannerSection settings={settings} />
+                return <BannerSection settings={baseSettings} />
             case "conteudo":
-                return <ContentSection settings={settings} />
+                return <ContentSection settings={baseSettings} />
             case "rodape":
-                return <FooterSection settings={settings} />
+                return <FooterSection settings={baseSettings} />
             case "logistica":
                 return <LogisticsSection settings={settings} melhorEnvio={melhorEnvio} shippingCoverage={shippingCoverage} />
             default:
-                return <ProfileSection settings={settings} />
+                return <ProfileSection settings={baseSettings} />
         }
     }
 

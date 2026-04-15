@@ -26,7 +26,13 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
     const itemsSubtotal = orderItems.reduce((total, item) => total + (item.price * item.quantity), 0)
     const shippingAmount = typeof order.shipping_cost === "number" ? order.shipping_cost : Math.max(Number((order.total_amount - itemsSubtotal).toFixed(2)), 0)
     const addr = order.shipping_address as OrderAddress
-    const addressStr = addr ? [addr.line1, addr.line2, addr.city, addr.state, addr.postal_code, addr.country].filter(Boolean).join(", ") : ""
+    const street = typeof addr?.street === "string" && addr.street ? addr.street : addr?.line1
+    const number = typeof addr?.number === "string" ? addr.number : ""
+    const neighborhood = typeof addr?.neighborhood === "string" ? addr.neighborhood : ""
+    const complement = typeof addr?.complement === "string" ? addr.complement : addr?.line2
+    const firstLine = street && number ? `${street}, ${number}` : street
+    const secondLine = [neighborhood, complement].filter(Boolean).join(" - ")
+    const addressStr = addr ? [firstLine, secondLine, addr.city, addr.state, addr.postal_code, addr.country].filter(Boolean).join(", ") : ""
 
     return (
         <div className="page-shell py-10 md:py-14">
@@ -43,7 +49,17 @@ export default async function DetalhesPedidoPage({ params }: { params: Promise<{
                     <OrderItemsList items={orderItems} />
                     <div className="space-y-6">
                         <OrderSummaryCard itemsSubtotal={itemsSubtotal} shippingAmount={shippingAmount} totalAmount={order.total_amount} />
-                        {addressStr && <OrderShippingCard companyName={order.shipping_company_name} serviceName={order.shipping_service_name} addressStr={addressStr} />}
+                        {addressStr && (
+                            <OrderShippingCard
+                                companyName={order.shipping_company_name}
+                                serviceName={order.shipping_service_name}
+                                addressStr={addressStr}
+                                trackingCode={order.shipping_tracking_code}
+                                trackingUrl={order.shipping_tracking_url}
+                                labelUrl={order.shipping_label_url}
+                                statusDetail={order.shipping_status_detail}
+                            />
+                        )}
                     </div>
                 </div>
             </div>

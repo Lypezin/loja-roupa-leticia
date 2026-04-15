@@ -12,31 +12,63 @@ export function ProfileAddressSection({ profile, metadata }: ProfileAddressSecti
     return (
         <div className="grid gap-6 sm:grid-cols-2">
             <div className="space-y-2 sm:col-span-2">
-                <label htmlFor="addressLine1" className="flex items-center gap-2 text-sm font-medium text-foreground">
+                <label htmlFor="addressStreet" className="flex items-center gap-2 text-sm font-medium text-foreground">
                     <FileText className="h-4 w-4 text-muted-foreground" />
-                    Endereço
+                    Rua
                 </label>
                 <input
                     type="text"
-                    id="addressLine1"
-                    name="addressLine1"
-                    defaultValue={profile?.shippingAddress?.line1 || metadata.address_line1 || ""}
-                    placeholder="Rua, número e complemento principal"
+                    id="addressStreet"
+                    name="addressStreet"
+                    defaultValue={profile?.shippingAddress?.street || metadata.address_street || metadata.address_line1 || ""}
+                    placeholder="Rua ou avenida"
+                    required
+                    className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
+                />
+            </div>
+
+            <div className="space-y-2">
+                <label htmlFor="addressNumber" className="flex items-center gap-2 text-sm font-medium text-foreground">
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                    Número
+                </label>
+                <input
+                    type="text"
+                    id="addressNumber"
+                    name="addressNumber"
+                    defaultValue={profile?.shippingAddress?.number || metadata.address_number || ""}
+                    placeholder="Ex.: 123"
+                    required
+                    className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
+                />
+            </div>
+
+            <div className="space-y-2">
+                <label htmlFor="addressNeighborhood" className="flex items-center gap-2 text-sm font-medium text-foreground">
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                    Bairro
+                </label>
+                <input
+                    type="text"
+                    id="addressNeighborhood"
+                    name="addressNeighborhood"
+                    defaultValue={profile?.shippingAddress?.neighborhood || metadata.address_neighborhood || ""}
+                    placeholder="Seu bairro"
                     required
                     className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
                 />
             </div>
 
             <div className="space-y-2 sm:col-span-2">
-                <label htmlFor="addressLine2" className="flex items-center gap-2 text-sm font-medium text-foreground">
+                <label htmlFor="addressComplement" className="flex items-center gap-2 text-sm font-medium text-foreground">
                     <FileText className="h-4 w-4 text-muted-foreground" />
                     Complemento
                 </label>
                 <input
                     type="text"
-                    id="addressLine2"
-                    name="addressLine2"
-                    defaultValue={profile?.shippingAddress?.line2 || metadata.address_line2 || ""}
+                    id="addressComplement"
+                    name="addressComplement"
+                    defaultValue={metadata.address_complement || metadata.address_line2 || ""}
                     placeholder="Apartamento, bloco, referência"
                     className="h-12 w-full rounded-[1rem] border border-border bg-background px-4 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
                 />

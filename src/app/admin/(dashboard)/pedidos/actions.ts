@@ -1,5 +1,6 @@
 'use server'
 
+import { createMelhorEnvioShipmentDraft, syncMelhorEnvioShipment } from "@/lib/melhor-envio"
 import { revalidatePath } from "next/cache"
 import { isOrderStatus } from "@/lib/orders"
 import { createServiceRoleClient } from "@/lib/supabase/service-role"
@@ -70,6 +71,34 @@ export async function updateOrderStatus(orderId: string, status: string) {
     } catch (error: unknown) {
         const message = getErrorMessage(error, "Erro desconhecido ao atualizar pedido.")
         console.error("Erro fatal no update status:", message)
+        throw new Error(message)
+    }
+}
+
+export async function createShipmentDraft(orderId: string) {
+    try {
+        await requireAdmin()
+        const shipment = await createMelhorEnvioShipmentDraft(orderId)
+        revalidatePath('/admin/pedidos')
+        revalidatePath(`/conta/pedidos/${orderId}`)
+        return shipment
+    } catch (error: unknown) {
+        const message = getErrorMessage(error, 'Falha ao criar etiqueta no Melhor Envio.')
+        console.error('Erro ao criar etiqueta do Melhor Envio:', message)
+        throw new Error(message)
+    }
+}
+
+export async function syncShipment(orderId: string) {
+    try {
+        await requireAdmin()
+        const shipment = await syncMelhorEnvioShipment(orderId)
+        revalidatePath('/admin/pedidos')
+        revalidatePath(`/conta/pedidos/${orderId}`)
+        return shipment
+    } catch (error: unknown) {
+        const message = getErrorMessage(error, 'Falha ao sincronizar o envio no Melhor Envio.')
+        console.error('Erro ao sincronizar envio do Melhor Envio:', message)
         throw new Error(message)
     }
 }

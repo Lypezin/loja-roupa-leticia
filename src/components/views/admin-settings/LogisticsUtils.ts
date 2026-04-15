@@ -1,8 +1,8 @@
-export function readStringValue(value: string | number | null | undefined) {
+export function readStringValue(value: string | number | boolean | null | undefined) {
     return typeof value === "string" ? value : ""
 }
 
-export function readThresholdValue(value: string | number | null | undefined) {
+export function readThresholdValue(value: string | number | boolean | null | undefined) {
     if (typeof value === "number") {
         return value > 0 ? String(value) : ""
     }

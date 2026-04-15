@@ -3,6 +3,9 @@ import type { User } from '@supabase/supabase-js'
 type UnknownRecord = Record<string, unknown>
 
 export type ShippingAddress = {
+    street: string
+    number: string
+    neighborhood: string
     line1: string
     line2: string | null
     city: string
@@ -30,6 +33,16 @@ function readString(metadata: UnknownRecord, key: string) {
 
 function digitsOnly(value: string) {
     return value.replace(/\D/g, '')
+}
+
+export function normalizeBrazilState(value: string) {
+    const normalized = value.trim().toUpperCase()
+
+    if (!/^[A-Z]{2}$/.test(normalized)) {
+        return null
+    }
+
+    return normalized
 }
 
 export function normalizeCpf(value: string) {
@@ -100,21 +113,31 @@ export function readCustomerProfile(user: User | null): CustomerProfile | null {
     }
 
     const metadata = isRecord(user.user_metadata) ? user.user_metadata : {}
-    const line1 = readString(metadata, 'address_line1')
-    const line2 = readString(metadata, 'address_line2')
+    const legacyLine1 = readString(metadata, 'address_line1')
+    const legacyLine2 = readString(metadata, 'address_line2')
+    const street = readString(metadata, 'address_street') || legacyLine1
+    const number = readString(metadata, 'address_number')
+    const neighborhood = readString(metadata, 'address_neighborhood')
+    const complement = readString(metadata, 'address_complement') || legacyLine2
     const city = readString(metadata, 'city')
     const state = readString(metadata, 'state')
     const postalCode = readString(metadata, 'postal_code')
     const country = readString(metadata, 'country') || 'BR'
 
     const normalizedPostalCode = postalCode ? normalizePostalCode(postalCode) : null
+    const normalizedState = state ? normalizeBrazilState(state) : null
+    const line1 = street && number ? `${street}, ${number}` : street || legacyLine1
+    const line2 = [neighborhood, complement].filter(Boolean).join(' - ') || legacyLine2 || null
 
-    const shippingAddress = line1 && city && state && normalizedPostalCode
+    const shippingAddress = street && number && neighborhood && city && normalizedState && normalizedPostalCode
         ? {
+            street,
+            number,
+            neighborhood,
             line1,
-            line2: line2 || null,
+            line2,
             city,
-            state,
+            state: normalizedState,
             postal_code: normalizedPostalCode,
             country,
         }

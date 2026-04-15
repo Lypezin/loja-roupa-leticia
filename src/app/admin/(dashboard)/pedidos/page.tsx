@@ -3,6 +3,9 @@ import { reconcilePendingAbacatePayAttempts } from "@/lib/abacatepay/reconcile"
 import { getAdminOrders } from "./actions"
 import OrderListClient from "./components/OrderListClient"
 
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
 export default async function AdminPedidos() {
     await reconcilePendingAbacatePayAttempts({ limit: 20 })
     const orders = await getAdminOrders()
