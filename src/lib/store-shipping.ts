@@ -85,16 +85,16 @@ export async function resolveCheckoutShippingSelection(
         throw new Error("O CEP de entrega do perfil é inválido. Atualize seus dados para continuar.")
     }
 
-    const quotedPostalCode = normalizePostalCode(selection.postal_code)
-
-    if (!quotedPostalCode || quotedPostalCode !== normalizedPostalCode) {
-        throw new Error("O CEP informado para o frete mudou. Recalcule o frete para continuar.")
-    }
-
     const quotes = await quoteShippingOptionsForCart(cartItems, normalizedPostalCode)
     const selectedQuote = quotes.find((quote) => quote.service_id === selection.service_id)
 
     if (!selectedQuote) {
+        const quotedPostalCode = normalizePostalCode(selection.postal_code)
+
+        if (quotedPostalCode && quotedPostalCode !== normalizedPostalCode) {
+            throw new Error("A opção de frete escolhida não está disponível para o CEP salvo no seu cadastro. Recalcule o frete com esse CEP para continuar.")
+        }
+
         throw new Error("A opção de frete selecionada não está mais disponível. Recalcule o frete.")
     }
 

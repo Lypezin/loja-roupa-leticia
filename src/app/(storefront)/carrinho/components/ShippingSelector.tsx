@@ -1,10 +1,10 @@
 'use client'
 
 import { Loader2, MapPin, Truck } from "lucide-react"
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import { useCartStore } from "@/store/useCartStore"
 import { useShippingQuote } from "@/hooks/useShippingQuote"
+import { useCartStore } from "@/store/useCartStore"
 import { ShippingQuoteItem } from "@/components/views/cart/ShippingQuoteItem"
 import { formatPostalCodeInput } from "@/components/views/cart/CartUtils"
 
@@ -13,6 +13,7 @@ type ShippingSelectorProps = {
 }
 
 export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
+    const hasAppliedDefaultPostalCode = useRef(false)
     const {
         items,
         shippingPostalCode,
@@ -24,18 +25,23 @@ export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
     } = useCartStore()
 
     const { isPending, inlineError, setInlineError, handleQuote } = useShippingQuote()
-    
+
     const hasQuotes = shippingQuotes.length > 0
     const selectionId = selectedShipping?.service_id ?? ""
-    
+
     const quoteHint = useMemo(() => {
         if (!selectedShipping) return null
         return `${selectedShipping.company_name} - ${selectedShipping.service_name}`
     }, [selectedShipping])
 
     useEffect(() => {
-        if (defaultPostalCode && !shippingPostalCode) {
+        if (!defaultPostalCode) {
+            return
+        }
+
+        if (!shippingPostalCode && !hasAppliedDefaultPostalCode.current) {
             setShippingPostalCode(defaultPostalCode)
+            hasAppliedDefaultPostalCode.current = true
         }
     }, [defaultPostalCode, setShippingPostalCode, shippingPostalCode])
 
@@ -64,7 +70,7 @@ export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
                         )}
                     </div>
                     <p className="mt-1 text-xs leading-6 text-muted-foreground">
-                        Calcule o frete com o mesmo CEP salvo no seu cadastro para evitar divergência no checkout.
+                        O checkout usa o CEP salvo no seu cadastro. Se ele mudar, recalcule o frete antes de pagar.
                     </p>
                 </div>
             </div>
