@@ -12,9 +12,9 @@ export function MelhorEnvioConnection({ melhorEnvio, isDisconnecting, onDisconne
     const environmentLabel = melhorEnvio.environment === "production" ? "producao" : "sandbox"
 
     return (
-        <div className="rounded-2xl border border-zinc-200 bg-zinc-50/70 p-5">
+        <div className="min-w-0 rounded-2xl border border-zinc-200 bg-zinc-50/70 p-4 md:p-5">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <div className="space-y-2">
+                <div className="min-w-0 space-y-2">
                     <div className="flex items-center gap-2">
                         {melhorEnvio.connected ? (
                             <ShieldCheck className="h-4 w-4 text-emerald-600" />
@@ -32,10 +32,10 @@ export function MelhorEnvioConnection({ melhorEnvio, isDisconnecting, onDisconne
                         O Melhor Envio fornece transportadoras e cotacao. O CEP de origem e as medidas dos produtos continuam sob responsabilidade da loja.
                     </p>
                     {melhorEnvio.connected && (
-                        <div className="space-y-1 text-xs text-zinc-500">
+                        <div className="min-w-0 space-y-1 break-words text-xs text-zinc-500">
                             {melhorEnvio.account_name && <p>Conta: {melhorEnvio.account_name}</p>}
                             {melhorEnvio.account_email && <p>E-mail conectado: {melhorEnvio.account_email}</p>}
-                            {melhorEnvio.scope && <p>Escopos: {melhorEnvio.scope}</p>}
+                            {melhorEnvio.scope && <p className="break-all">Escopos: {melhorEnvio.scope}</p>}
                             {melhorEnvio.connected_at && (
                                 <p>
                                     Conectado em {new Date(melhorEnvio.connected_at).toLocaleString("pt-BR")}
@@ -45,18 +45,18 @@ export function MelhorEnvioConnection({ melhorEnvio, isDisconnecting, onDisconne
                         </div>
                     )}
                     {melhorEnvio.connected && melhorEnvio.missing_scopes.length > 0 && (
-                        <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+                        <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 break-words">
                             Faltam escopos para emissao automatica de etiqueta: {melhorEnvio.missing_scopes.join(", ")}.
                             Reconecte a conta para liberar esses escopos.
                         </div>
                     )}
                 </div>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row md:flex-wrap">
                     <Button
                         type="button"
                         variant={melhorEnvio.connected ? "outline" : "default"}
-                        className="rounded-full"
+                        className="w-full rounded-full md:w-auto"
                         onClick={() => {
                             window.location.href = "/api/integrations/melhor-envio/connect"
                         }}
@@ -69,7 +69,7 @@ export function MelhorEnvioConnection({ melhorEnvio, isDisconnecting, onDisconne
                         <Button
                             type="button"
                             variant="outline"
-                            className="rounded-full"
+                            className="w-full rounded-full md:w-auto"
                             disabled={isDisconnecting}
                             onClick={onDisconnect}
                         >

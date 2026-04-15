@@ -39,10 +39,10 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
             }
 
             showSuccess(setSuccess)
-            toast.success("Configurações de frete atualizadas.")
+            toast.success("Configuracoes de frete atualizadas.")
         } catch (error: unknown) {
             const err = error as Error
-            toast.error(`Erro ao salvar logística: ${err.message}`)
+            toast.error(`Erro ao salvar logistica: ${err.message}`)
         } finally {
             setIsLoading(false)
         }
@@ -67,13 +67,13 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
     }
 
     return (
-        <form action={handleSubmit} className="space-y-8 rounded-[1.8rem] border border-zinc-200/80 bg-white/90 p-6 shadow-[0_18px_40px_rgba(79,55,39,0.05)] md:p-8">
+        <form action={handleSubmit} className="min-w-0 space-y-8 rounded-[1.45rem] border border-zinc-200/80 bg-white/90 p-4 shadow-[0_18px_40px_rgba(79,55,39,0.05)] md:rounded-[1.8rem] md:p-8">
             <input type="hidden" name="id" value={String(settings.id || "")} />
 
             <SectionHeader
                 icon={Truck}
                 title="Frete e despacho"
-                description="Conecte o Melhor Envio, defina a origem dos envios da loja e acompanhe quais produtos já estão prontos para cotação."
+                description="Conecte o Melhor Envio, defina a origem dos envios da loja e acompanhe quais produtos ja estao prontos para cotacao."
             />
 
             <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_19rem]">
@@ -96,7 +96,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                 processingDays={Number(settings.processing_days || 2)}
             />
 
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-5 md:grid-cols-2 md:gap-6">
                 <div className="space-y-2">
                     <label htmlFor="shipping_sender_name" className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                         Nome do remetente
@@ -141,7 +141,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                         id="shipping_sender_document"
                         name="shipping_sender_document"
                         defaultValue={typeof settings.shipping_sender_document === "string" ? settings.shipping_sender_document : ""}
-                        placeholder="Somente números ou formatado"
+                        placeholder="Somente numeros ou formatado"
                         className="h-11 w-full rounded-xl border border-zinc-200 px-4 text-sm text-zinc-950 focus:outline-none focus:ring-2 focus:ring-zinc-200"
                     />
                 </div>
@@ -159,7 +159,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                 </div>
                 <div className="space-y-2">
                     <label htmlFor="shipping_sender_number" className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-                        Número do remetente
+                        Numero do remetente
                     </label>
                     <input
                         id="shipping_sender_number"
@@ -189,7 +189,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                         id="shipping_sender_complement"
                         name="shipping_sender_complement"
                         defaultValue={typeof settings.shipping_sender_complement === "string" ? settings.shipping_sender_complement : ""}
-                        placeholder="Sala, loja, referência"
+                        placeholder="Sala, loja, referencia"
                         className="h-11 w-full rounded-xl border border-zinc-200 px-4 text-sm text-zinc-950 focus:outline-none focus:ring-2 focus:ring-zinc-200"
                     />
                 </div>
@@ -220,7 +220,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                 </div>
                 <div className="space-y-2">
                     <label htmlFor="shipping_sender_state_register" className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-                        Inscrição estadual
+                        Inscricao estadual
                     </label>
                     <input
                         id="shipping_sender_state_register"
@@ -232,32 +232,32 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                 </div>
             </div>
 
-            <label className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-zinc-50/50 px-4 py-4 text-sm text-zinc-700">
+            <label className="flex items-start gap-3 rounded-2xl border border-zinc-200 bg-zinc-50/50 px-4 py-4 text-sm leading-6 text-zinc-700">
                 <input
                     type="checkbox"
                     name="shipping_sender_non_commercial"
                     defaultChecked={settings.shipping_sender_non_commercial !== false}
-                    className="h-4 w-4 rounded border-zinc-300 text-zinc-950 focus:ring-zinc-300"
+                    className="mt-1 h-4 w-4 shrink-0 rounded border-zinc-300 text-zinc-950 focus:ring-zinc-300"
                 />
-                Tratar os envios como não comerciais por padrão ao criar etiquetas via API.
+                <span>Tratar os envios como nao comerciais por padrao ao criar etiquetas via API.</span>
             </label>
 
             <FreeShippingSection threshold={readThresholdValue(settings.free_shipping_threshold)} />
 
-            <div className="rounded-2xl border border-zinc-200 bg-zinc-50/50 p-5">
+            <div className="rounded-2xl border border-zinc-200 bg-zinc-50/50 p-4 md:p-5">
                 <div className="flex items-center gap-2">
                     <PackageSearch className="h-4 w-4 text-zinc-500" />
-                    <h3 className="text-sm font-semibold text-zinc-950">Revisão rápida da operação</h3>
+                    <h3 className="text-sm font-semibold text-zinc-950">Revisao rapida da operacao</h3>
                 </div>
                 <ul className="mt-4 space-y-3 text-sm leading-6 text-zinc-600">
-                    <li>1. A conta sandbox do Melhor Envio já está conectada e a cotação respondeu em teste.</li>
+                    <li>1. A conta sandbox do Melhor Envio ja esta conectada e a cotacao respondeu em teste.</li>
                     <li>2. O CEP de origem precisa continuar no admin porque ele define o ponto de despacho da sua loja.</li>
-                    <li>3. O cálculo de frete depende de peso e dimensões do pacote em cada produto.</li>
-                    <li>4. Se algum produto ficar sem essas medidas, o carrinho bloqueia a cotação para esse item.</li>
+                    <li>3. O calculo de frete depende de peso e dimensoes do pacote em cada produto.</li>
+                    <li>4. Se algum produto ficar sem essas medidas, o carrinho bloqueia a cotacao para esse item.</li>
                 </ul>
             </div>
 
-            <SaveButton isLoading={isLoading} success={success} label="Salvar logística" />
+            <SaveButton isLoading={isLoading} success={success} label="Salvar logistica" />
         </form>
     )
 }
