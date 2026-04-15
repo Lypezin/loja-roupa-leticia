@@ -55,7 +55,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                                     src={image.image_url}
                                     alt={`${productName} - foto ${index + 1}`}
                                     fill
-                                    className="object-contain object-center"
+                                    className="object-cover object-center"
                                     sizes="(max-width: 768px) 64px, 80px"
                                 />
                             </button>
@@ -80,7 +80,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                             alt={productName}
                             fill
                             priority
-                            className="object-contain object-center p-3 md:p-4"
+                            className="object-cover object-center"
                             sizes="(max-width: 768px) 100vw, 52vw"
                             quality={88}
                         />
