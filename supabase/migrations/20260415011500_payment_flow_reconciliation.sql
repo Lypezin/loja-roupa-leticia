@@ -115,6 +115,12 @@ attempt_items AS (
     FROM matched_attempts AS m
     CROSS JOIN LATERAL jsonb_array_elements(m.trusted_items) WITH ORDINALITY AS item(value, ordinality)
 ),
+existing_products AS (
+    SELECT id FROM public.products
+),
+existing_variations AS (
+    SELECT id FROM public.product_variations
+),
 ordered_items AS (
     SELECT
         oi.id,
@@ -126,14 +132,18 @@ ordered_items AS (
     WHERE o.payment_provider = 'abacatepay'
 )
 UPDATE public.order_items AS oi
-SET product_id = COALESCE(oi.product_id, ai.product_id),
-    variation_id = COALESCE(oi.variation_id, ai.variation_id)
+SET product_id = COALESCE(oi.product_id, ep.id),
+    variation_id = COALESCE(oi.variation_id, ev.id)
 FROM ordered_items AS ordered
 JOIN attempt_items AS ai
   ON ai.order_id = ordered.order_id
  AND ai.item_index = ordered.item_index
+LEFT JOIN existing_products AS ep
+  ON ep.id = ai.product_id
+LEFT JOIN existing_variations AS ev
+  ON ev.id = ai.variation_id
 WHERE oi.id = ordered.id
   AND (
-        (oi.product_id IS NULL AND ai.product_id IS NOT NULL)
-        OR (oi.variation_id IS NULL AND ai.variation_id IS NOT NULL)
+        (oi.product_id IS NULL AND ep.id IS NOT NULL)
+        OR (oi.variation_id IS NULL AND ev.id IS NOT NULL)
   );
