@@ -17,7 +17,7 @@ export async function login(formData: FormData) {
 
     if (error) {
         // Redireciona com erro via querystring para ser lido no cliente
-        redirect('/admin/login?error=Credenciais invalidas')
+        redirect('/admin/login?error=Credenciais inválidas')
     }
 
     if (!isAdminUser(authData.user)) {

@@ -1,8 +1,10 @@
 import { AdminPageHeader } from "@/components/admin/layout/AdminPageHeader"
+import { reconcilePendingAbacatePayAttempts } from "@/lib/abacatepay/reconcile"
 import { getAdminOrders } from "./actions"
 import OrderListClient from "./components/OrderListClient"
 
 export default async function AdminPedidos() {
+    await reconcilePendingAbacatePayAttempts({ limit: 20 })
     const orders = await getAdminOrders()
 
     return (

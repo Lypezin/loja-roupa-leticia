@@ -21,9 +21,9 @@ jobs:
       MELHOR_ENVIO_CLIENT_ID: ${{ secrets.MELHOR_ENVIO_CLIENT_ID }}
       MELHOR_ENVIO_CLIENT_SECRET: ${{ secrets.MELHOR_ENVIO_CLIENT_SECRET }}
       MELHOR_ENVIO_ENVIRONMENT: ${{ secrets.MELHOR_ENVIO_ENVIRONMENT }}
-      MELHOR_ENVIO_REDIRECT_URI: ${{ secrets.MELHOR_ENVIO_REDIRECT_URI }}
+      MELHOR_ENVIO_REDIRECT_URI: https://lsstorevendasoline.com.br/api/integrations/melhor-envio/callback
       MELHOR_ENVIO_SCOPES: ${{ secrets.MELHOR_ENVIO_SCOPES }}
-      NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+      NEXT_PUBLIC_SITE_URL: https://lsstorevendasoline.com.br
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

@@ -25,11 +25,11 @@
     "enabled": true
   },
   "vars": {
-    "NEXT_PUBLIC_SITE_URL": "https://loja-roupa-leticia.foolype.workers.dev",
+    "NEXT_PUBLIC_SITE_URL": "https://lsstorevendasoline.com.br",
     "NEXT_PUBLIC_SUPABASE_URL": "https://nxatrcnymbeoptkmxsbe.supabase.co",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54YXRyY255bWJlb3B0a214c2JlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2Njk3NTIsImV4cCI6MjA4ODI0NTc1Mn0.rFFRNvZS5jO9NDn8jy95HHn4SQUKVrfLSMNX7GW36lE",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_89DssAsRkEQYJTo4i1Xp0Q_DBnP0iOq",
     "MELHOR_ENVIO_ENVIRONMENT": "production",
     "MELHOR_ENVIO_SCOPES": "shipping-calculate",
-    "MELHOR_ENVIO_REDIRECT_URI": "https://loja-roupa-leticia.foolype.workers.dev/api/integrations/melhor-envio/callback"
+    "MELHOR_ENVIO_REDIRECT_URI": "https://lsstorevendasoline.com.br/api/integrations/melhor-envio/callback"
   }
 }

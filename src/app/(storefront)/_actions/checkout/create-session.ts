@@ -20,7 +20,9 @@ export async function createCheckoutSession(cartItems: unknown, shippingSelectio
 
     try {
         const supabase = await createClient()
-        const { data: { user } } = await supabase.auth.getUser()
+        const {
+            data: { user },
+        } = await supabase.auth.getUser()
 
         if (!user) {
             return {
@@ -135,6 +137,7 @@ export async function createCheckoutSession(cartItems: unknown, shippingSelectio
             return { url: billing.url }
         } catch (error: unknown) {
             const message = error instanceof Error ? error.message : "Falha ao iniciar pagamento."
+
             await serviceRole
                 .from("payment_attempts")
                 .update({

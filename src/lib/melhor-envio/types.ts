@@ -1,4 +1,3 @@
-import type { Json } from "@/lib/supabase/database.types"
 import type { Database } from "@/lib/supabase/database.types"
 import type { ValidatedCheckoutItem } from "@/types/checkout"
 import type {

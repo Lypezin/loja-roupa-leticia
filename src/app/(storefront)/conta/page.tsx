@@ -2,6 +2,7 @@ import Link from "next/link"
 import { LogOut, Package, User } from "lucide-react"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { reconcilePendingAbacatePayAttempts } from "@/lib/abacatepay/reconcile"
 import { createClient } from "@/lib/supabase/server"
 import { logoutCliente } from "./actions"
 
@@ -16,6 +17,8 @@ export default async function MinhaContaPage({
     if (!user) {
         redirect("/conta/login")
     }
+
+    await reconcilePendingAbacatePayAttempts({ userId: user.id, limit: 8 })
 
     const params = await searchParams
     const successMessage = params?.success

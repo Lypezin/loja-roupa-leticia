@@ -49,7 +49,7 @@ interface CartState {
 
 export const useCartStore = create<CartState>()(
     persist(
-        (set: (arg: any) => void, get: () => CartState) => ({
+        (set, get) => ({
             items: [],
             shippingPostalCode: '',
             shippingQuotes: [],

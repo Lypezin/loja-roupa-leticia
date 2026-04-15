@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { reconcilePendingAbacatePayAttempts } from "@/lib/abacatepay/reconcile"
 import { AdminActivitySection, type AdminActivityItem } from "@/components/admin/dashboard/AdminActivitySection"
 import { AdminPageHeader } from "@/components/admin/layout/AdminPageHeader"
 import { formatCurrency } from "@/lib/utils"
@@ -9,19 +10,30 @@ import { QuickActions } from "@/components/admin/dashboard/QuickActions"
 
 function getOrderStatusLabel(status: string) {
     const labels: Record<string, string> = {
-        paid: "Pago", processing: "Processando", shipped: "Enviado",
-        delivered: "Entregue", refunded: "Reembolsado", cancelled: "Cancelado",
-        disputed: "Em disputa"
+        paid: "Pago",
+        processing: "Processando",
+        shipped: "Enviado",
+        delivered: "Entregue",
+        refunded: "Reembolsado",
+        cancelled: "Cancelado",
+        disputed: "Em disputa",
     }
+
     return labels[status] || "Pedido"
 }
 
 export default async function AdminDashboard() {
     const supabase = createServiceRoleClient("admin-dashboard.page")
+    await reconcilePendingAbacatePayAttempts({ limit: 20 })
 
     const [
-        { count: activeProducts }, { count: categoriesCount }, { count: totalProducts },
-        salesData, { data: recentOrders }, { data: recentProducts }, { data: recentCategories },
+        { count: activeProducts },
+        { count: categoriesCount },
+        { count: totalProducts },
+        salesData,
+        { data: recentOrders },
+        { data: recentProducts },
+        { data: recentCategories },
     ] = await Promise.all([
         supabase.from("products").select("id", { count: "exact", head: true }).eq("is_active", true),
         supabase.from("categories").select("id", { count: "exact", head: true }),
@@ -47,25 +59,39 @@ export default async function AdminDashboard() {
 
     const activities: AdminActivityItem[] = [
         ...(recentOrders ?? []).map((order) => ({
-            id: `order-${order.id}`, kind: "order" as const, title: `Pedido #${order.id.slice(0, 8)}`,
+            id: `order-${order.id}`,
+            kind: "order" as const,
+            title: `Pedido #${order.id.slice(0, 8)}`,
             description: `${order.customer_name || "Cliente"} • ${formatCurrency(order.total_amount)}${order.payment_method ? ` via ${order.payment_method}` : ""}`,
-            timestamp: order.created_at, href: "/admin/pedidos", badge: getOrderStatusLabel(order.status),
+            timestamp: order.created_at,
+            href: "/admin/pedidos",
+            badge: getOrderStatusLabel(order.status),
         })),
-        ...(recentProducts ?? []).filter((p) => Boolean(p.created_at)).map((p) => ({
-            id: `product-${p.id}`, kind: "product" as const, title: p.name,
-            description: `${formatCurrency(p.base_price)} • ${p.is_active ? "Ativo" : "Oculto"}`,
-            timestamp: p.created_at!, href: `/admin/produtos/${p.id}/editar`, badge: "Produto",
+        ...(recentProducts ?? []).filter((product) => Boolean(product.created_at)).map((product) => ({
+            id: `product-${product.id}`,
+            kind: "product" as const,
+            title: product.name,
+            description: `${formatCurrency(product.base_price)} • ${product.is_active ? "Ativo" : "Oculto"}`,
+            timestamp: product.created_at!,
+            href: `/admin/produtos/${product.id}/editar`,
+            badge: "Produto",
         })),
-        ...(recentCategories ?? []).filter((c) => Boolean(c.created_at)).map((c) => ({
-            id: `category-${c.id}`, kind: "category" as const, title: c.name, description: `/${c.slug}`,
-            timestamp: c.created_at!, href: "/admin/categorias", badge: "Categoria",
+        ...(recentCategories ?? []).filter((category) => Boolean(category.created_at)).map((category) => ({
+            id: `category-${category.id}`,
+            kind: "category" as const,
+            title: category.name,
+            description: `/${category.slug}`,
+            timestamp: category.created_at!,
+            href: "/admin/categorias",
+            badge: "Categoria",
         })),
     ].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).slice(0, 6)
 
     return (
         <div className="flex flex-col gap-6">
             <AdminPageHeader
-                eyebrow="Visão Geral" title="Dashboard da loja"
+                eyebrow="Visão Geral"
+                title="Dashboard da loja"
                 description="Acompanhe o desempenho da loja, gerencie pedidos e produtos de forma rápida."
                 actions={<Link href="/admin/produtos/novo" className="inline-flex items-center justify-center rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800">Novo Produto</Link>}
             />

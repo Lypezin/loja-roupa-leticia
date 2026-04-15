@@ -13,17 +13,17 @@ export function TrustSection({ settings }: { settings?: StoreSettings | null }) 
         {
             icon: trustIcons[1],
             title: settings?.trust_banner_2_title || "Pagamento protegido",
-            desc: settings?.trust_banner_2_desc || "Checkout seguro para Pix e cartao.",
+            desc: settings?.trust_banner_2_desc || "Checkout seguro para Pix e cartão.",
         },
         {
             icon: trustIcons[2],
-            title: settings?.trust_banner_3_title || "Troca em ate 7 dias",
+            title: settings?.trust_banner_3_title || "Troca em até 7 dias",
             desc: settings?.trust_banner_3_desc || "Suporte pelo WhatsApp ou e-mail.",
         },
         {
             icon: trustIcons[3],
             title: settings?.trust_banner_4_title || "Atendimento direto",
-            desc: settings?.trust_banner_4_desc || "Resposta em horario comercial.",
+            desc: settings?.trust_banner_4_desc || "Resposta em horário comercial.",
         },
     ]
 

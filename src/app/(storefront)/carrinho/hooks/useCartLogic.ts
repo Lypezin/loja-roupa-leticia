@@ -10,7 +10,7 @@ import { useCartStore } from "@/store/useCartStore"
 export function useCartLogic() {
     const { items, selectedShipping, totalPrice } = useCartStore()
     const [defaultPostalCode, setDefaultPostalCode] = useState<string | null>(null)
-    
+
     const mounted = useSyncExternalStore(
         () => () => undefined,
         () => true,
@@ -75,6 +75,6 @@ export function useCartLogic() {
         total,
         selectedShipping,
         defaultPostalCode,
-        handleWhatsAppCheckout
+        handleWhatsAppCheckout,
     }
 }

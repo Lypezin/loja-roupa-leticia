@@ -2,6 +2,7 @@ import Link from "next/link"
 import { ArrowLeft, Eye, Package } from "lucide-react"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { reconcilePendingAbacatePayAttempts } from "@/lib/abacatepay/reconcile"
 import { formatCurrency } from "@/lib/utils"
 import { createClient } from "@/lib/supabase/server"
 
@@ -46,6 +47,8 @@ export default async function MeusPedidosPage() {
     if (!user) {
         redirect("/conta/login")
     }
+
+    await reconcilePendingAbacatePayAttempts({ userId: user.id, limit: 12 })
 
     const { data: orders } = await supabase
         .from("orders")

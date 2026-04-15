@@ -1,8 +1,8 @@
 // src/lib/supabase/server.ts
-import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { isAdminUser } from './auth'
+import { createServerClient, type CookieOptions } from "@supabase/ssr"
+import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
+import { isAdminUser } from "./auth"
 
 export async function createClient() {
     const cookieStore = await cookies()
@@ -15,27 +15,28 @@ export async function createClient() {
                 getAll() {
                     return cookieStore.getAll()
                 },
-                setAll(cookiesToSet: { name: string; value: string; options: any }[]) {
+                setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
                     try {
                         cookiesToSet.forEach(({ name, value, options }) =>
-                            cookieStore.set(name, value, options)
+                            cookieStore.set(name, value, options),
                         )
                     } catch {
-                        // Se tentar setar os cookies num Server Component,
-                        // ignoramos o erro.
+                        // Se tentar setar os cookies num Server Component, ignoramos o erro.
                     }
                 },
             },
-        }
+        },
     )
 }
 
 export async function requireAdmin() {
     const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+        data: { user },
+    } = await supabase.auth.getUser()
 
     if (!isAdminUser(user)) {
-        throw new Error('Acesso negado: permissao de administrador e necessaria.')
+        throw new Error("Acesso negado: permissão de administrador é necessária.")
     }
 
     return supabase
@@ -43,14 +44,16 @@ export async function requireAdmin() {
 
 export async function requireAdminPage() {
     const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+        data: { user },
+    } = await supabase.auth.getUser()
 
     if (!user) {
-        redirect('/admin/login')
+        redirect("/admin/login")
     }
 
     if (!isAdminUser(user)) {
-        redirect('/')
+        redirect("/")
     }
 
     return supabase

@@ -19,8 +19,7 @@ export default async function CategoriasPage() {
 
     return (
         <div className="page-shell py-10 md:py-16">
-            {/* Header */}
-            <div className="paper-panel animate-enter-soft rounded-[2rem] px-6 py-8 md:px-10 md:py-10 mb-10">
+            <div className="mb-10 rounded-[2rem] paper-panel animate-enter-soft px-6 py-8 md:px-10 md:py-10">
                 <span className="eyebrow">categorias</span>
                 <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">
                     {settings?.categories_section_title || "Escolha por tipo de peça"}
@@ -30,7 +29,6 @@ export default async function CategoriasPage() {
                 </p>
             </div>
 
-            {/* Grid */}
             {categories.length === 0 ? (
                 <div className="py-20 text-center text-muted-foreground">
                     Nenhuma categoria cadastrada ainda.
