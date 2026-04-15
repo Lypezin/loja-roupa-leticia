@@ -48,6 +48,18 @@ export type AbacatePayBilling = {
     devMode?: boolean
 }
 
+export type AbacatePayBillingRecord = AbacatePayBilling & {
+    customer?: {
+        id?: string | null
+        metadata?: {
+            name?: string | null
+            cellphone?: string | null
+            email?: string | null
+            taxId?: string | null
+        } | null
+    } | null
+}
+
 function getAbacatePayApiKey() {
     const apiKey = process.env.ABACATEPAY_API_KEY?.trim()
 
@@ -103,6 +115,32 @@ export async function createAbacatePayBilling(payload: CreateBillingPayload) {
         method: "POST",
         body: JSON.stringify(payload),
     })
+}
+
+export async function listAbacatePayBillings() {
+    return abacatePayRequest<AbacatePayBillingRecord[]>("/billing/list", {
+        method: "GET",
+    })
+}
+
+export async function findAbacatePayBilling(checkoutId: string | null | undefined, externalId?: string | null) {
+    if (!checkoutId && !externalId) {
+        return null
+    }
+
+    const billings = await listAbacatePayBillings()
+
+    return billings.find((billing) => {
+        if (checkoutId && billing.id === checkoutId) {
+            return true
+        }
+
+        if (externalId && billing.externalId === externalId) {
+            return true
+        }
+
+        return false
+    }) || null
 }
 
 export function normalizeAbacatePayStatus(status: string | null | undefined) {

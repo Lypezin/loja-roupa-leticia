@@ -4,12 +4,21 @@ import type { PaymentEventDetails } from './webhook-utils'
 import { findPaymentAttempt, markAttemptStatus, markOrderStatus, finalizePaymentOrder } from './webhook-db'
 import type { Json } from '@/lib/supabase/database.types'
 
-export async function handleCompletedEvent(details: PaymentEventDetails) {
+export type PaymentEventProcessingResult = {
+    action: string
+    ignored?: string
+}
+
+function toWebhookResponse(result: PaymentEventProcessingResult) {
+    return NextResponse.json({ received: true, ...result }, { status: 200 })
+}
+
+export async function processCompletedEvent(details: PaymentEventDetails): Promise<PaymentEventProcessingResult> {
     const attempt = await findPaymentAttempt(details.externalId, details.checkoutId)
 
     if (!attempt) {
-        console.error('Tentativa de pagamento nao encontrada para webhook da AbacatePay.', details)
-        return NextResponse.json({ received: true, ignored: 'missing_attempt' }, { status: 200 })
+        console.error('Tentativa de pagamento não encontrada para evento da AbacatePay.', details)
+        return { action: 'ignored', ignored: 'missing_attempt' }
     }
 
     const data = await finalizePaymentOrder(
@@ -36,10 +45,10 @@ export async function handleCompletedEvent(details: PaymentEventDetails) {
     })
 
     const [result] = (data ?? []) as { action: string; order_id: string }[]
-    return NextResponse.json({ received: true, action: result?.action || 'created' }, { status: 200 })
+    return { action: result?.action || 'created' }
 }
 
-export async function handleRefundedEvent(details: PaymentEventDetails) {
+export async function processRefundedEvent(details: PaymentEventDetails): Promise<PaymentEventProcessingResult> {
     const attempt = await findPaymentAttempt(details.externalId, details.checkoutId)
     if (attempt) {
         await markAttemptStatus(attempt.id, {
@@ -51,10 +60,10 @@ export async function handleRefundedEvent(details: PaymentEventDetails) {
         })
     }
     await markOrderStatus(details.externalId, details.checkoutId, 'refunded', details.status, details.receiptUrl, details.transactionId || details.checkoutId)
-    return NextResponse.json({ received: true, action: 'refunded' }, { status: 200 })
+    return { action: 'refunded' }
 }
 
-export async function handleDisputedEvent(details: PaymentEventDetails) {
+export async function processDisputedEvent(details: PaymentEventDetails): Promise<PaymentEventProcessingResult> {
     const attempt = await findPaymentAttempt(details.externalId, details.checkoutId)
     if (attempt) {
         await markAttemptStatus(attempt.id, {
@@ -66,10 +75,10 @@ export async function handleDisputedEvent(details: PaymentEventDetails) {
         })
     }
     await markOrderStatus(details.externalId, details.checkoutId, 'disputed', details.status, details.receiptUrl, details.transactionId || details.checkoutId)
-    return NextResponse.json({ received: true, action: 'disputed' }, { status: 200 })
+    return { action: 'disputed' }
 }
 
-export async function handleFailedEvent(details: PaymentEventDetails) {
+export async function processFailedEvent(details: PaymentEventDetails): Promise<PaymentEventProcessingResult> {
     const attempt = await findPaymentAttempt(details.externalId, details.checkoutId)
     const normalizedStatus = normalizeAbacatePayStatus(details.status)
 
@@ -83,5 +92,21 @@ export async function handleFailedEvent(details: PaymentEventDetails) {
         })
     }
     await markOrderStatus(details.externalId, details.checkoutId, 'cancelled', details.status, details.receiptUrl, details.transactionId || details.checkoutId)
-    return NextResponse.json({ received: true, action: 'failed' }, { status: 200 })
+    return { action: 'failed' }
+}
+
+export async function handleCompletedEvent(details: PaymentEventDetails) {
+    return toWebhookResponse(await processCompletedEvent(details))
+}
+
+export async function handleRefundedEvent(details: PaymentEventDetails) {
+    return toWebhookResponse(await processRefundedEvent(details))
+}
+
+export async function handleDisputedEvent(details: PaymentEventDetails) {
+    return toWebhookResponse(await processDisputedEvent(details))
+}
+
+export async function handleFailedEvent(details: PaymentEventDetails) {
+    return toWebhookResponse(await processFailedEvent(details))
 }

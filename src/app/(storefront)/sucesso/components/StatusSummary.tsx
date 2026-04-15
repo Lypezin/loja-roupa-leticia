@@ -44,7 +44,7 @@ export function StatusSummary({
                     ? "Recebemos uma sinalização sobre este pagamento e o pedido foi pausado para análise."
                     : isExpiredPending
                         ? "O pagamento foi recebido, mas a confirmação automática demorou mais do que o esperado. Se o valor já saiu da sua conta, fale com a loja e informe o código do checkout."
-                        : "Aguardando a confirmação final do webhook da AbacatePay. Esta página atualiza sozinha em alguns segundos."
+                        : "Aguardando a confirmação final da AbacatePay. Esta página atualiza sozinha em alguns segundos."
 
     const paymentMethod = order?.payment_method || attempt?.payment_method
     const methodLabel = paymentMethod?.includes(",") ? "Métodos aceitos" : "Método"

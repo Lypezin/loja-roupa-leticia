@@ -28,12 +28,12 @@ export async function POST(req: Request) {
     const signature = req.headers.get('X-Webhook-Signature')
     const rawBody = await req.text()
 
-    if (!configuredSecret || !matchesConfiguredSecret(requestSecret, configuredSecret)) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
     if (!signature || !verifyAbacatePaySignature(rawBody, signature)) {
         return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
+    }
+
+    if (configuredSecret && requestSecret && !matchesConfiguredSecret(requestSecret, configuredSecret)) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     let payload: unknown

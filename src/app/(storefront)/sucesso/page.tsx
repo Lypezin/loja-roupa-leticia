@@ -2,6 +2,7 @@ import Link from "next/link"
 import { AlertTriangle, Package, ShoppingBag } from "lucide-react"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { reconcileAbacatePayAttempt } from "@/lib/abacatepay/reconcile"
 import { createClient } from "@/lib/supabase/server"
 import { getSafeAbsoluteUrl } from "@/lib/url-safety"
 import { ClearCartOnSuccess } from "./ClearCart"
@@ -12,7 +13,7 @@ import { fetchPaymentAttempt, fetchOrderDetails, type PaymentAttemptRecord } fro
 const PENDING_TIMEOUT_MINUTES = 10
 
 function isExpiredPendingAttempt(attempt: PaymentAttemptRecord | null) {
-    if (!attempt || attempt.status !== "pending") {
+    if (!attempt || (attempt.status !== "pending" && attempt.status !== "creating")) {
         return false
     }
 
@@ -41,8 +42,14 @@ export default async function SucessoPage({
         redirect(`/conta/login?reason=checkout_login_required&next=${encodeURIComponent(`/sucesso?checkout_ref=${checkoutRef}`)}`)
     }
 
-    const typedAttempt = await fetchPaymentAttempt(supabase, checkoutRef, user.id)
-    const typedOrder = await fetchOrderDetails(supabase, checkoutRef, user.id)
+    let typedAttempt = await fetchPaymentAttempt(supabase, checkoutRef, user.id)
+    let typedOrder = await fetchOrderDetails(supabase, checkoutRef, user.id)
+
+    if (typedAttempt && !typedOrder && (typedAttempt.status === "pending" || typedAttempt.status === "creating")) {
+        await reconcileAbacatePayAttempt(checkoutRef, user.id)
+        typedAttempt = await fetchPaymentAttempt(supabase, checkoutRef, user.id)
+        typedOrder = await fetchOrderDetails(supabase, checkoutRef, user.id)
+    }
 
     if (!typedAttempt && !typedOrder) {
         return (

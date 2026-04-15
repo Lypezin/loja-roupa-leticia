@@ -13,6 +13,14 @@ function getEncryptionKey() {
     return createHash("sha256").update(secret, "utf8").digest()
 }
 
+export function hasMelhorEnvioTokenEncryptionKey() {
+    return Boolean(getEncryptionKey())
+}
+
+export function isEncryptedMelhorEnvioToken(token: string) {
+    return token.trim().startsWith(ENCRYPTED_PREFIX)
+}
+
 export function encryptMelhorEnvioToken(token: string) {
     const cleanToken = token.trim()
     const key = getEncryptionKey()

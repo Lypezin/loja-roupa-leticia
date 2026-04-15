@@ -1,5 +1,10 @@
 import { createServiceRoleClient } from "@/lib/supabase/service-role"
-import { decryptMelhorEnvioToken, encryptMelhorEnvioToken } from "./token-crypto"
+import {
+    decryptMelhorEnvioToken,
+    encryptMelhorEnvioToken,
+    hasMelhorEnvioTokenEncryptionKey,
+    isEncryptedMelhorEnvioToken,
+} from "./token-crypto"
 import type { MelhorEnvioEnvironment, MelhorEnvioIntegrationRow } from "./types"
 
 export async function getStoredIntegration(environment: MelhorEnvioEnvironment) {
@@ -20,11 +25,32 @@ export async function getStoredIntegration(environment: MelhorEnvioEnvironment) 
         return data
     }
 
-    return {
+    const decryptedIntegration = {
         ...data,
         access_token: decryptMelhorEnvioToken(data.access_token),
         refresh_token: decryptMelhorEnvioToken(data.refresh_token),
     }
+
+    const shouldReencrypt =
+        hasMelhorEnvioTokenEncryptionKey()
+        && (!isEncryptedMelhorEnvioToken(data.access_token) || !isEncryptedMelhorEnvioToken(data.refresh_token))
+
+    if (shouldReencrypt) {
+        const { error: reencryptError } = await supabase
+            .from("shipping_integrations")
+            .update({
+                access_token: encryptMelhorEnvioToken(decryptedIntegration.access_token),
+                refresh_token: encryptMelhorEnvioToken(decryptedIntegration.refresh_token),
+                updated_at: new Date().toISOString(),
+            })
+            .eq("id", data.id)
+
+        if (reencryptError) {
+            throw new Error(`Falha ao recriptografar tokens do Melhor Envio: ${reencryptError.message}`)
+        }
+    }
+
+    return decryptedIntegration
 }
 
 export async function persistIntegration(
