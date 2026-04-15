@@ -17,9 +17,9 @@ export default function OrderListClient({ orders }: { orders: Order[] }) {
                     <TableRow className="hover:bg-transparent">
                         <TableHead className="py-4 pl-6 text-xs font-semibold text-zinc-500">Data</TableHead>
                         <TableHead className="py-4 text-xs font-semibold text-zinc-500">Cliente</TableHead>
-                        <TableHead className="py-4 text-xs font-semibold text-zinc-500">Itens e pagamento</TableHead>
-                        <TableHead className="py-4 text-xs font-semibold text-zinc-500">Total</TableHead>
-                        <TableHead className="py-4 pr-6 text-xs font-semibold text-zinc-500">Status</TableHead>
+                        <TableHead className="py-4 text-xs font-semibold text-zinc-500">Pedido</TableHead>
+                        <TableHead className="py-4 text-xs font-semibold text-zinc-500">Expedição</TableHead>
+                        <TableHead className="py-4 pr-6 text-xs font-semibold text-zinc-500">Valor e exceções</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
