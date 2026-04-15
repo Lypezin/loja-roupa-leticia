@@ -14,13 +14,14 @@ export function ProductCardImage({ images, productName, isPriority, showSecondar
     const secondaryImage = images[1]?.image_url
 
     return (
-        <div className="relative z-10 aspect-[4/5] overflow-hidden rounded-[1.45rem] bg-muted">
+        <div className="relative z-10 aspect-[4/5] overflow-hidden rounded-[1.45rem] bg-[linear-gradient(180deg,rgba(245,240,232,0.92),rgba(237,229,219,0.96))] p-2.5">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.75),transparent_55%)]" />
             <Image
                 src={primaryImage}
                 alt={productName}
                 fill
                 sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                className="object-contain object-center transition-transform duration-700 group-hover:scale-[1.02]"
                 priority={isPriority}
                 quality={82}
             />
@@ -31,7 +32,7 @@ export function ProductCardImage({ images, productName, isPriority, showSecondar
                     alt={`${productName} detalhe`}
                     fill
                     sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                    className="object-cover opacity-100 transition-opacity duration-500"
+                    className="object-contain object-center opacity-100 transition-opacity duration-500"
                     quality={82}
                 />
             )}
