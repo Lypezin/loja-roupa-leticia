@@ -44,7 +44,7 @@
       ],
       "path": "/_next/image/",
       "loader": "custom",
-      "loaderFile": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\src\\lib\\supabase-image-loader.ts",
+      "loaderFile": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\src\\lib\\supabase-image-loader.ts",
       "domains": [],
       "disableStaticImages": false,
       "minimumCacheTTL": 604800,
@@ -101,7 +101,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia",
+    "outputFileTracingRoot": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia",
     "cacheComponents": false,
     "cacheLife": {
       "default": {
@@ -158,7 +158,7 @@
       "proxyPrefetch": "flexible",
       "optimisticClientCache": true,
       "manualClientBasePath": false,
-      "cpus": 31,
+      "cpus": 7,
       "memoryBasedWorkersCount": false,
       "imgOptConcurrency": null,
       "imgOptTimeoutInSeconds": 7,
@@ -298,11 +298,11 @@
     "configFileName": "next.config.ts",
     "reactCompiler": true,
     "turbopack": {
-      "root": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia"
+      "root": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia"
     },
     "distDirRoot": ".next"
   },
-  "appDir": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia",
+  "appDir": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia",
   "relativeAppDir": "",
   "files": [
     ".next\\routes-manifest.json",

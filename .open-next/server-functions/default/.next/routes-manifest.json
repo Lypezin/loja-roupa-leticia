@@ -173,6 +173,12 @@
       "namedRegex": "^/api/webhooks/abacatepay(?:/)?$"
     },
     {
+      "page": "/api/webhooks/melhor-envio",
+      "regex": "^/api/webhooks/melhor\\-envio(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/webhooks/melhor\\-envio(?:/)?$"
+    },
+    {
       "page": "/apple-icon.jpg",
       "regex": "^/apple\\-icon\\.jpg(?:/)?$",
       "routeKeys": {},
