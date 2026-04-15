@@ -1,75 +1,23 @@
-import { normalizeBrazilPhone, normalizeCpf, readCustomerProfile } from "@/lib/customer-profile"
-import type { Json } from "@/lib/supabase/database.types"
+import { readCustomerProfile } from "@/lib/customer-profile"
 import { createServiceRoleClient } from "@/lib/supabase/service-role"
 import { melhorEnvioRequest } from "./client"
 import { getMelhorEnvioEnvironment } from "./config"
 import { getStoredIntegration } from "./storage"
-
-type UnknownRecord = Record<string, unknown>
-
-type MelhorEnvioOrderRecord = {
-    id: string
-    user_id: string | null
-    status: string
-    customer_email: string | null
-    customer_name: string | null
-    shipping_provider: string | null
-    shipping_service_id: string | null
-    shipping_quote_payload: Json | null
-    shipping_address: Json | null
-    shipping_external_id: string | null
-    total_amount: number
-    order_items: Array<{
-        id: string
-        quantity: number
-        price: number
-        products: {
-            name: string
-            weight_kg: number | null
-            height_cm: number | null
-            width_cm: number | null
-            length_cm: number | null
-        } | null
-        product_variations: {
-            size: string | null
-            color: string | null
-        } | null
-    }>
-}
-
-type MelhorEnvioStoreSettings = {
-    store_name: string
-    support_email: string | null
-    shipping_origin_zip: string | null
-    shipping_sender_name: string | null
-    shipping_sender_email: string | null
-    shipping_sender_phone: string | null
-    shipping_sender_document: string | null
-    shipping_sender_state_register: string | null
-    shipping_sender_address: string | null
-    shipping_sender_number: string | null
-    shipping_sender_district: string | null
-    shipping_sender_city: string | null
-    shipping_sender_state: string | null
-    shipping_sender_complement: string | null
-    shipping_sender_non_commercial: boolean | null
-}
-
-export type MelhorEnvioShipmentSnapshot = {
-    externalId: string | null
-    protocol: string | null
-    statusDetail: string | null
-    trackingCode: string | null
-    trackingUrl: string | null
-    labelUrl: string | null
-    createdAt: string | null
-    paidAt: string | null
-    generatedAt: string | null
-    postedAt: string | null
-    deliveredAt: string | null
-    canceledAt: string | null
-    payload: Json | null
-}
+import {
+    MelhorEnvioOrderRecord,
+    MelhorEnvioShipmentSnapshot,
+    MelhorEnvioStoreSettings,
+} from "./shipment-types"
+import {
+    mapShipmentStatusToOrderStatus,
+    readScopeList,
+    resolveBatchOrderIds,
+} from "./shipment-utils"
+import {
+    buildCartPayload,
+    buildShipmentSnapshot,
+    mergeShipmentSnapshots,
+} from "./shipment-builders"
 
 const REQUIRED_PHASE2_SCOPES = [
     "shipping-checkout",
@@ -77,193 +25,6 @@ const REQUIRED_PHASE2_SCOPES = [
     "shipping-print",
     "shipping-tracking",
 ] as const
-
-function isRecord(value: unknown): value is UnknownRecord {
-    return typeof value === "object" && value !== null
-}
-
-function digitsOnly(value: string) {
-    return value.replace(/\D/g, "")
-}
-
-function readString(value: unknown) {
-    return typeof value === "string" ? value.trim() : ""
-}
-
-function readOptionalString(value: unknown) {
-    const normalized = readString(value)
-    return normalized || null
-}
-
-function asJson(value: unknown): Json | null {
-    if (value === null) {
-        return null
-    }
-
-    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
-        return value
-    }
-
-    if (Array.isArray(value)) {
-        return value
-            .map((item) => asJson(item))
-            .filter((item): item is Json => item !== null)
-    }
-
-    if (isRecord(value)) {
-        return Object.fromEntries(
-            Object.entries(value).map(([key, item]) => [key, asJson(item)]),
-        ) as Json
-    }
-
-    return null
-}
-
-function normalizeDocument(value: string) {
-    const digits = digitsOnly(value)
-    return digits.length === 11 || digits.length === 14 ? digits : null
-}
-
-function normalizeState(value: string) {
-    const normalized = value.trim().toUpperCase()
-    return /^[A-Z]{2}$/.test(normalized) ? normalized : null
-}
-
-function normalizePhone(value: string) {
-    const digits = digitsOnly(value)
-    return digits.length >= 10 ? digits : null
-}
-
-function resolveShipmentRecord(payload: unknown): UnknownRecord | null {
-    if (Array.isArray(payload)) {
-        return payload.find((item): item is UnknownRecord => isRecord(item)) || null
-    }
-
-    if (!isRecord(payload)) {
-        return null
-    }
-
-    if (Array.isArray(payload.orders)) {
-        return payload.orders.find((item): item is UnknownRecord => isRecord(item)) || null
-    }
-
-    if (isRecord(payload.data)) {
-        return payload.data
-    }
-
-    return payload
-}
-
-function buildShipmentSnapshot(payload: unknown): MelhorEnvioShipmentSnapshot {
-    const record = resolveShipmentRecord(payload)
-    const labels = record && Array.isArray(record.labels) ? record.labels.filter((item) => isRecord(item)) : []
-    const tags = record && Array.isArray(record.tags) ? record.tags.filter((item) => isRecord(item)) : []
-    const eventStatus = isRecord(payload)
-        ? readOptionalString(payload.event)?.replace(/^order\./, "") || null
-        : null
-
-    return {
-        externalId: record ? readOptionalString(record.id) : null,
-        protocol: record ? readOptionalString(record.protocol) : null,
-        statusDetail: record ? readOptionalString(record.status) || eventStatus : eventStatus,
-        trackingCode: record ? readOptionalString(record.tracking) || readOptionalString(record.self_tracking) : null,
-        trackingUrl: record ? readOptionalString(record.tracking_url) : null,
-        labelUrl: record
-            ? readOptionalString(record.label_url)
-                || (labels.length > 0 ? readOptionalString(labels[0].url) : null)
-                || (tags.length > 0 ? readOptionalString(tags[0].url) : null)
-            : null,
-        createdAt: record ? readOptionalString(record.created_at) : null,
-        paidAt: record ? readOptionalString(record.paid_at) : null,
-        generatedAt: record ? readOptionalString(record.generated_at) : null,
-        postedAt: record ? readOptionalString(record.posted_at) : null,
-        deliveredAt: record ? readOptionalString(record.delivered_at) : null,
-        canceledAt: record ? readOptionalString(record.canceled_at) : null,
-        payload: asJson(payload),
-    }
-}
-
-function mergeShipmentSnapshots(...snapshots: Array<MelhorEnvioShipmentSnapshot | null | undefined>): MelhorEnvioShipmentSnapshot {
-    const validSnapshots = snapshots.filter((snapshot): snapshot is MelhorEnvioShipmentSnapshot => Boolean(snapshot))
-
-    return {
-        externalId: validSnapshots.map((snapshot) => snapshot.externalId).find(Boolean) || null,
-        protocol: validSnapshots.map((snapshot) => snapshot.protocol).find(Boolean) || null,
-        statusDetail: validSnapshots.map((snapshot) => snapshot.statusDetail).find(Boolean) || null,
-        trackingCode: validSnapshots.map((snapshot) => snapshot.trackingCode).find(Boolean) || null,
-        trackingUrl: validSnapshots.map((snapshot) => snapshot.trackingUrl).find(Boolean) || null,
-        labelUrl: validSnapshots.map((snapshot) => snapshot.labelUrl).find(Boolean) || null,
-        createdAt: validSnapshots.map((snapshot) => snapshot.createdAt).find(Boolean) || null,
-        paidAt: validSnapshots.map((snapshot) => snapshot.paidAt).find(Boolean) || null,
-        generatedAt: validSnapshots.map((snapshot) => snapshot.generatedAt).find(Boolean) || null,
-        postedAt: validSnapshots.map((snapshot) => snapshot.postedAt).find(Boolean) || null,
-        deliveredAt: validSnapshots.map((snapshot) => snapshot.deliveredAt).find(Boolean) || null,
-        canceledAt: validSnapshots.map((snapshot) => snapshot.canceledAt).find(Boolean) || null,
-        payload: validSnapshots.at(-1)?.payload || validSnapshots[0]?.payload || null,
-    }
-}
-
-function mapShipmentStatusToOrderStatus(detail: string | null, currentStatus: string) {
-    switch (detail) {
-        case "created":
-        case "pending":
-        case "released":
-        case "generated":
-        case "received":
-            return currentStatus === "paid" ? "processing" : currentStatus
-        case "posted":
-            return "shipped"
-        case "delivered":
-            return "delivered"
-        case "cancelled":
-            return "cancelled"
-        case "undelivered":
-        case "paused":
-        case "suspended":
-            return currentStatus === "shipped" ? "shipped" : "processing"
-        default:
-            return currentStatus
-    }
-}
-
-function readShippingAddress(value: Json | null) {
-    if (!isRecord(value)) {
-        return null
-    }
-
-    const street = readOptionalString(value.street) || readOptionalString(value.address_street) || readOptionalString(value.line1)
-    const number = readOptionalString(value.number) || readOptionalString(value.address_number)
-    const neighborhood = readOptionalString(value.neighborhood) || readOptionalString(value.address_neighborhood)
-    const complement = readOptionalString(value.complement) || readOptionalString(value.address_complement) || readOptionalString(value.line2)
-    const city = readOptionalString(value.city)
-    const state = readOptionalString(value.state)
-    const postalCode = readOptionalString(value.postal_code)
-    const country = readOptionalString(value.country) || "BR"
-
-    if (!street || !number || !neighborhood || !city || !state || !postalCode) {
-        return null
-    }
-
-    return {
-        street,
-        number,
-        neighborhood,
-        complement,
-        city,
-        state,
-        postalCode,
-        country,
-    }
-}
-
-function readScopeList(scope: string | null | undefined) {
-    return new Set(
-        (scope || "")
-            .split(/\s+/)
-            .map((item) => item.trim())
-            .filter(Boolean),
-    )
-}
 
 async function ensureShipmentScopes() {
     const environment = getMelhorEnvioEnvironment()
@@ -279,40 +40,6 @@ async function ensureShipmentScopes() {
     if (missingScopes.length > 0) {
         throw new Error(`Reconecte o Melhor Envio no admin para liberar os escopos de etiqueta: ${missingScopes.join(", ")}.`)
     }
-}
-
-function resolveBatchOrderIds(payload: unknown) {
-    if (!isRecord(payload)) {
-        return []
-    }
-
-    const possibleCollections = [payload.orders, payload.data]
-
-    for (const collection of possibleCollections) {
-        if (!Array.isArray(collection)) {
-            continue
-        }
-
-        const ids = collection
-            .map((item) => {
-                if (typeof item === "string") {
-                    return readOptionalString(item)
-                }
-
-                if (isRecord(item)) {
-                    return readOptionalString(item.id)
-                }
-
-                return null
-            })
-            .filter((item): item is string => Boolean(item))
-
-        if (ids.length > 0) {
-            return ids
-        }
-    }
-
-    return []
 }
 
 async function getShipmentOrder(orderId: string) {
@@ -389,7 +116,7 @@ async function getStoreSettings() {
     return data as MelhorEnvioStoreSettings | null
 }
 
-async function getRecipientProfile(userId: string | null) {
+export async function getRecipientProfile(userId: string | null) {
     if (!userId) {
         return null
     }
@@ -402,168 +129,6 @@ async function getRecipientProfile(userId: string | null) {
     }
 
     return readCustomerProfile(data.user)
-}
-
-function buildProducts(order: MelhorEnvioOrderRecord) {
-    return order.order_items.map((item) => {
-        if (!item.products?.name || !item.products.weight_kg || !item.products.height_cm || !item.products.width_cm || !item.products.length_cm) {
-            throw new Error("Há itens sem peso e dimensões completos neste pedido.")
-        }
-
-        const variationLabel = [item.product_variations?.color, item.product_variations?.size]
-            .filter(Boolean)
-            .join(" / ")
-
-        return {
-            id: item.id,
-            name: variationLabel ? `${item.products.name} (${variationLabel})` : item.products.name,
-            quantity: item.quantity,
-            unitary_value: Number(item.price.toFixed(2)),
-            insurance_value: Number((item.price * item.quantity).toFixed(2)),
-            weight: item.products.weight_kg,
-            width: item.products.width_cm,
-            height: item.products.height_cm,
-            length: item.products.length_cm,
-        }
-    })
-}
-
-function buildVolumes(order: MelhorEnvioOrderRecord) {
-    const quotePayload = isRecord(order.shipping_quote_payload) ? order.shipping_quote_payload : null
-    const packages = quotePayload && Array.isArray(quotePayload.packages)
-        ? quotePayload.packages.filter((item) => isRecord(item))
-        : []
-
-    if (packages.length > 1) {
-        throw new Error("Este pedido retornou múltiplos volumes na cotação. Faça a emissão manual desse envio no Melhor Envio.")
-    }
-
-    if (packages.length === 1) {
-        const currentPackage = packages[0]
-        const dimensions = isRecord(currentPackage.dimensions) ? currentPackage.dimensions : null
-
-        return [{
-            height: Number(currentPackage.height ?? dimensions?.height ?? 0),
-            width: Number(currentPackage.width ?? dimensions?.width ?? 0),
-            length: Number(currentPackage.length ?? dimensions?.length ?? 0),
-            weight: Number(currentPackage.weight ?? 0),
-            insurance_value: Number(currentPackage.insurance_value ?? order.total_amount),
-            products: Array.isArray(currentPackage.products) ? currentPackage.products : undefined,
-        }]
-    }
-
-    const totalWeight = order.order_items.reduce((sum, item) => sum + (Number(item.products?.weight_kg || 0) * item.quantity), 0)
-    const maxHeight = Math.max(...order.order_items.map((item) => Number(item.products?.height_cm || 0)))
-    const maxWidth = Math.max(...order.order_items.map((item) => Number(item.products?.width_cm || 0)))
-    const totalLength = order.order_items.reduce((sum, item) => sum + Number(item.products?.length_cm || 0), 0)
-
-    return [{
-        height: Number(maxHeight.toFixed(2)),
-        width: Number(maxWidth.toFixed(2)),
-        length: Number(totalLength.toFixed(2)),
-        weight: Number(totalWeight.toFixed(3)),
-        insurance_value: Number(order.total_amount.toFixed(2)),
-        products: order.order_items.map((item) => ({
-            id: item.id,
-            quantity: item.quantity,
-        })),
-    }]
-}
-
-function buildSender(settings: MelhorEnvioStoreSettings | null) {
-    if (!settings) {
-        throw new Error("As configurações da loja não foram encontradas.")
-    }
-
-    const document = normalizeDocument(settings.shipping_sender_document || "")
-    const phone = normalizePhone(settings.shipping_sender_phone || "")
-    const state = normalizeState(settings.shipping_sender_state || "")
-    const postalCode = settings.shipping_origin_zip ? digitsOnly(settings.shipping_origin_zip) : null
-
-    if (!settings.shipping_sender_name || !settings.shipping_sender_email || !phone || !document || !settings.shipping_sender_address || !settings.shipping_sender_number || !settings.shipping_sender_district || !settings.shipping_sender_city || !state || !postalCode) {
-        throw new Error("Complete os dados do remetente e o CEP de origem em Configurações > Logística antes de emitir a etiqueta.")
-    }
-
-    return {
-        name: settings.shipping_sender_name,
-        email: settings.shipping_sender_email,
-        phone,
-        postal_code: postalCode,
-        address: settings.shipping_sender_address,
-        number: settings.shipping_sender_number,
-        district: settings.shipping_sender_district,
-        city: settings.shipping_sender_city,
-        state_abbr: state,
-        country_id: "BR",
-        complement: settings.shipping_sender_complement || undefined,
-        state_register: settings.shipping_sender_state_register || undefined,
-        non_commercial: settings.shipping_sender_non_commercial !== false,
-        ...(document.length === 11
-            ? { document }
-            : { company_document: document }),
-    }
-}
-
-function buildRecipient(order: MelhorEnvioOrderRecord, profile: Awaited<ReturnType<typeof getRecipientProfile>>) {
-    const address = readShippingAddress(order.shipping_address)
-
-    if (!address) {
-        throw new Error("O pedido não possui um endereço completo suficiente para emitir a etiqueta.")
-    }
-
-    const recipientPhone = normalizeBrazilPhone(profile?.phone || "")
-    const recipientDocument = normalizeCpf(profile?.cpf || "")
-    const state = normalizeState(address.state)
-
-    if (!state) {
-        throw new Error("O estado do destinatário está inválido no pedido.")
-    }
-
-    if (!recipientPhone || !recipientDocument) {
-        throw new Error("O cliente precisa ter telefone e CPF válidos no perfil para emitir a etiqueta.")
-    }
-
-    return {
-        name: order.customer_name || profile?.fullName || "Cliente",
-        email: order.customer_email || profile?.email || undefined,
-        phone: digitsOnly(recipientPhone),
-        postal_code: digitsOnly(address.postalCode),
-        address: address.street,
-        number: address.number,
-        district: address.neighborhood,
-        city: address.city,
-        state_abbr: state,
-        country_id: address.country,
-        complement: address.complement || undefined,
-        document: recipientDocument,
-    }
-}
-
-function buildCartPayload(order: MelhorEnvioOrderRecord, settings: MelhorEnvioStoreSettings | null, profile: Awaited<ReturnType<typeof getRecipientProfile>>) {
-    if (order.shipping_provider !== "melhor_envio") {
-        throw new Error("Este pedido não usa o Melhor Envio como provedor de frete.")
-    }
-
-    if (!order.shipping_service_id) {
-        throw new Error("O pedido não possui um serviço de frete selecionado.")
-    }
-
-    const service = /^\d+$/.test(order.shipping_service_id)
-        ? Number(order.shipping_service_id)
-        : order.shipping_service_id
-
-    return {
-        service,
-        from: buildSender(settings),
-        to: buildRecipient(order, profile),
-        products: buildProducts(order),
-        volumes: buildVolumes(order),
-        options: {
-            receipt: false,
-            own_hand: false,
-            non_commercial: settings?.shipping_sender_non_commercial !== false,
-        },
-    }
 }
 
 async function applyShipmentSnapshot(orderId: string, currentStatus: string, snapshot: MelhorEnvioShipmentSnapshot) {

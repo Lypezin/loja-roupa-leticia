@@ -23,7 +23,7 @@ export function ProductCardImage({ images, productName, isPriority, showSecondar
                     alt={productName}
                     fill
                     sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                    className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.05]"
+                    className="object-cover object-center transition-all duration-700 group-hover:scale-[1.05] group-hover:opacity-0"
                     priority={isPriority}
                     quality={82}
                 />
@@ -34,7 +34,7 @@ export function ProductCardImage({ images, productName, isPriority, showSecondar
                         alt={`${productName} detalhe`}
                         fill
                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                        className="object-cover object-center opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                        className="absolute inset-0 object-cover object-center opacity-0 transition-all duration-500 group-hover:scale-[1.05] group-hover:opacity-100"
                         quality={82}
                     />
                 )}

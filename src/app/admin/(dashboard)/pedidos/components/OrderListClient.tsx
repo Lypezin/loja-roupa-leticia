@@ -7,7 +7,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { OrderTableRow, type Order } from "./OrderTableRow"
+import { OrderTableRow } from "./OrderTableRow"
+import type { Order } from "./types"
 
 export default function OrderListClient({ orders }: { orders: Order[] }) {
     return (

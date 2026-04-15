@@ -31,7 +31,7 @@ export function ProductImageCard({
             <div className="relative aspect-[4/5] overflow-hidden bg-zinc-100">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${img.image_url})` }}
+                    style={{ backgroundImage: `url('${img.image_url}')` }}
                 />
                 <button
                     type="button"

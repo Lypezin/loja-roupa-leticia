@@ -5,7 +5,6 @@ import {
     normalizeAbacatePayStatus,
     type AbacatePayBillingRecord,
 } from "@/lib/abacatepay"
-import type { Database, Json } from "@/lib/supabase/database.types"
 import { createServiceRoleClient } from "@/lib/supabase/service-role"
 import { findPaymentAttempt, markAttemptStatus } from "./webhook-db"
 import {
@@ -13,68 +12,19 @@ import {
     processDisputedEvent,
     processFailedEvent,
     processRefundedEvent,
-    type PaymentEventProcessingResult,
 } from "./webhook-handlers"
-import type { PaymentEventDetails } from "./webhook-utils"
-
-type PaymentAttemptRow = Database["public"]["Tables"]["payment_attempts"]["Row"]
-
-type NormalizedAttemptStatus = "completed" | "refunded" | "disputed" | "failed" | "pending"
-
-type ReconcileAttemptResult = PaymentEventProcessingResult & {
-    status: "matched" | "missing_attempt" | "billing_not_found"
-    providerStatus?: string | null
-    normalizedStatus?: NormalizedAttemptStatus
-}
-
-type ReconcilePendingOptions = {
-    limit?: number
-    minAgeMs?: number
-    userId?: string
-}
-
-export type ReconcilePendingSummary = {
-    checked: number
-    matched: number
-    completed: number
-    refunded: number
-    disputed: number
-    failed: number
-    pending: number
-    billingNotFound: number
-    ignored: number
-    errors: string[]
-}
-
-function toJson(value: unknown) {
-    return JSON.parse(JSON.stringify(value)) as Json
-}
-
-function buildDetailsFromBilling(billing: AbacatePayBillingRecord): PaymentEventDetails {
-    const normalizedStatus = normalizeAbacatePayStatus(billing.status)
-    const event = normalizedStatus === "completed"
-        ? "billing.paid"
-        : normalizedStatus === "refunded"
-            ? "billing.refunded"
-            : normalizedStatus === "disputed"
-                ? "billing.disputed"
-                : normalizedStatus === "failed"
-                    ? "billing.failed"
-                    : "billing.pending"
-
-    return {
-        event,
-        checkoutId: billing.id || null,
-        externalId: billing.externalId || null,
-        transactionId: billing.id || null,
-        status: billing.status || null,
-        receiptUrl: billing.receiptUrl || null,
-        customerEmail: billing.customer?.metadata?.email || null,
-        customerName: billing.customer?.metadata?.name || null,
-        paymentMethod: billing.methods?.length === 1 ? billing.methods[0] || null : null,
-        payload: toJson(billing),
-    }
-}
+import {
+    type PaymentAttemptRow,
+    type NormalizedAttemptStatus,
+    type ReconcileAttemptResult,
+    type ReconcilePendingOptions,
+    type ReconcilePendingSummary,
+} from "./reconcile-types"
+import {
+    toJson,
+    buildDetailsFromBilling,
+    createPendingSummary,
+} from "./reconcile-utils"
 
 async function reconcileAttemptWithBilling(
     attempt: PaymentAttemptRow,
@@ -130,20 +80,6 @@ export async function reconcileAbacatePayAttempt(externalId: string, userId: str
     return reconcileAttemptWithBilling(attempt, billing)
 }
 
-function createPendingSummary(): ReconcilePendingSummary {
-    return {
-        checked: 0,
-        matched: 0,
-        completed: 0,
-        refunded: 0,
-        disputed: 0,
-        failed: 0,
-        pending: 0,
-        billingNotFound: 0,
-        ignored: 0,
-        errors: [],
-    }
-}
 
 export async function reconcilePendingAbacatePayAttempts({
     limit = 20,
