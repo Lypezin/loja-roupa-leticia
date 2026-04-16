@@ -5,6 +5,8 @@ import { createAbacatePayBilling, getAbacatePayMethods, normalizeAbacatePayStatu
 import { parseCheckoutCartItems } from "@/lib/checkout"
 import { getCheckoutProfile, normalizeBrazilPhone, normalizeCpf } from "@/lib/customer-profile"
 import { buildAbacatePayBillingProducts, calculateCheckoutTotal, getValidatedItems, validateCheckoutItems } from "@/lib/payment-checkout"
+import { buildIpAndUserIdentifiers, enforceRateLimit, RateLimitError } from "@/lib/security/rate-limit"
+import { getServerActionSecurityContext } from "@/lib/security/request-context"
 import { getSiteUrl } from "@/lib/site-url"
 import { getShippingChargedAmount, resolveCheckoutShippingSelection } from "@/lib/store-shipping"
 import { createServiceRoleClient } from "@/lib/supabase/service-role"
@@ -20,6 +22,7 @@ export async function createCheckoutSession(cartItems: unknown, shippingSelectio
 
     try {
         const supabase = await createClient()
+        const securityContext = await getServerActionSecurityContext()
         const {
             data: { user },
         } = await supabase.auth.getUser()
@@ -46,6 +49,14 @@ export async function createCheckoutSession(cartItems: unknown, shippingSelectio
                 redirectTo: `/conta/perfil?reason=checkout_profile_required&next=${getCheckoutRedirectPath("/carrinho")}`,
             }
         }
+
+        await enforceRateLimit({
+            scope: "checkout:create-session",
+            maxAttempts: 6,
+            windowSeconds: 60 * 5,
+            blockSeconds: 60 * 10,
+            identifiers: buildIpAndUserIdentifiers(securityContext, user.id, profile.email),
+        })
 
         const shippingAddress = profile.shippingAddress
         const destinationPostalCode = shippingSelection?.postal_code || shippingAddress.postal_code
@@ -136,7 +147,7 @@ export async function createCheckoutSession(cartItems: unknown, shippingSelectio
             }
 
             if (!billing.url) {
-                throw new Error("A AbacatePay não retornou a URL de pagamento.")
+                throw new Error("A AbacatePay nao retornou a URL de pagamento.")
             }
 
             return { url: billing.url }
@@ -152,13 +163,13 @@ export async function createCheckoutSession(cartItems: unknown, shippingSelectio
                 })
                 .eq("external_id", externalId)
 
-            if (paymentMethods.includes("CARD")) {
-                throw new Error(`${message} Se o cartão ainda não estiver liberado na sua conta, configure ABACATEPAY_PAYMENT_METHODS=PIX.`)
-            }
-
-            throw new Error(message)
+            throw new Error("Nao foi possivel iniciar o pagamento. Tente novamente.")
         }
     } catch (error: unknown) {
+        if (error instanceof RateLimitError) {
+            return { error: error.message }
+        }
+
         console.error("Erro ao gerar checkout da AbacatePay:", error)
         return { error: error instanceof Error ? error.message : "Falha ao processar pagamento." }
     }

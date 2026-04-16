@@ -33,19 +33,33 @@ export async function atualizarPerfil(formData: FormData) {
     const nextQuery = nextPath ? `&next=${encodeURIComponent(nextPath)}` : ""
 
     if (!fullName) {
-        redirect(`/conta/perfil?error=${encodeURIComponent("Nome completo é obrigatório.")}${nextQuery}`)
+        redirect(`/conta/perfil?error=${encodeURIComponent("Nome completo e obrigatorio.")}${nextQuery}`)
+    }
+
+    if (fullName.length > 120) {
+        redirect(`/conta/perfil?error=${encodeURIComponent("O nome completo deve ter no maximo 120 caracteres.")}${nextQuery}`)
     }
 
     if (!normalizedPhone) {
-        redirect(`/conta/perfil?error=${encodeURIComponent("Telefone inválido. Informe um número brasileiro válido.")}${nextQuery}`)
+        redirect(`/conta/perfil?error=${encodeURIComponent("Telefone invalido. Informe um numero brasileiro valido.")}${nextQuery}`)
     }
 
     if (!normalizedCpf) {
-        redirect(`/conta/perfil?error=${encodeURIComponent("CPF inválido. Confira os dígitos informados.")}${nextQuery}`)
+        redirect(`/conta/perfil?error=${encodeURIComponent("CPF invalido. Confira os digitos informados.")}${nextQuery}`)
     }
 
     if (!addressStreet || !addressNumber || !addressNeighborhood || !city || !normalizedState || !normalizedPostalCode) {
-        redirect(`/conta/perfil?error=${encodeURIComponent("Preencha o endereço de entrega completo para continuar.")}${nextQuery}`)
+        redirect(`/conta/perfil?error=${encodeURIComponent("Preencha o endereco de entrega completo para continuar.")}${nextQuery}`)
+    }
+
+    if (
+        addressStreet.length > 120
+        || addressNumber.length > 20
+        || addressNeighborhood.length > 80
+        || (addressComplement?.length ?? 0) > 120
+        || city.length > 80
+    ) {
+        redirect(`/conta/perfil?error=${encodeURIComponent("Revise os dados do endereco e tente novamente.")}${nextQuery}`)
     }
 
     const { error: updateError } = await supabase.auth.updateUser({
@@ -67,7 +81,7 @@ export async function atualizarPerfil(formData: FormData) {
     })
 
     if (updateError) {
-        redirect(`/conta/perfil?error=${encodeURIComponent(`Erro ao atualizar dados: ${updateError.message}`)}${nextQuery}`)
+        redirect(`/conta/perfil?error=${encodeURIComponent("Nao foi possivel atualizar seus dados agora. Tente novamente.")}${nextQuery}`)
     }
 
     revalidatePath("/", "layout")

@@ -11,13 +11,17 @@ export async function uploadProductImages(files: FileList | null, productId: str
 
     for (let i = 0; i < files.length; i++) {
         const file = files[i]
-        validateImageFile(file)
-        const fileExt = file.name.split('.').pop()
-        const fileName = `${productId || 'new'}-${Date.now()}-${i}.${fileExt}`
+        const validatedImage = await validateImageFile(file)
+        const fileExt = validatedImage?.extension || "jpg"
+        const fileName = `products/${productId || "new"}/${crypto.randomUUID()}-${i}.${fileExt}`
 
         const { error: uploadError } = await supabase.storage
             .from('product-images')
-            .upload(fileName, file)
+            .upload(fileName, file, {
+                cacheControl: "31536000",
+                contentType: file.type,
+                upsert: false,
+            })
 
         if (uploadError) {
             throw new Error(`Falha ao enviar "${file.name}": ${uploadError.message}`)

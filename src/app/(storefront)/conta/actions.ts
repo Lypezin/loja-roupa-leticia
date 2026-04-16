@@ -2,16 +2,39 @@
 
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { buildIpAndUserIdentifiers, enforceRateLimit, RateLimitError } from "@/lib/security/rate-limit"
+import { getServerActionSecurityContext } from "@/lib/security/request-context"
 import { getSafeRelativePath } from "@/lib/url-safety"
 import { getSiteUrl } from "@/lib/site-url"
 import { createClient } from "@/lib/supabase/server"
 
 export async function loginCliente(formData: FormData) {
     const supabase = await createClient()
+    const securityContext = await getServerActionSecurityContext()
 
     const email = (formData.get("email") as string)?.trim()
     const password = formData.get("password") as string
     const nextPath = getSafeRelativePath(formData.get("next"), "/conta") || "/conta"
+
+    if (!email || !password) {
+        redirect(`/conta/login?error=${encodeURIComponent("Informe e-mail e senha.")}&next=${encodeURIComponent(nextPath)}`)
+    }
+
+    try {
+        await enforceRateLimit({
+            scope: "auth:customer-login",
+            maxAttempts: 8,
+            windowSeconds: 60 * 10,
+            blockSeconds: 60 * 15,
+            identifiers: buildIpAndUserIdentifiers(securityContext, null, email),
+        })
+    } catch (error) {
+        if (error instanceof RateLimitError) {
+            redirect(`/conta/login?error=${encodeURIComponent(error.message)}&next=${encodeURIComponent(nextPath)}`)
+        }
+
+        throw error
+    }
 
     const { error } = await supabase.auth.signInWithPassword({ email, password })
 
@@ -19,9 +42,7 @@ export async function loginCliente(formData: FormData) {
         let mensagem = "E-mail ou senha incorretos."
 
         if (error.message.toLowerCase().includes("email not confirmed")) {
-            mensagem = "Você precisa confirmar seu e-mail antes de fazer login. Verifique sua caixa de entrada."
-        } else if (error.message.toLowerCase().includes("invalid login credentials")) {
-            mensagem = "E-mail ou senha incorretos."
+            mensagem = "Voce precisa confirmar seu e-mail antes de fazer login. Verifique sua caixa de entrada."
         }
 
         redirect(`/conta/login?error=${encodeURIComponent(mensagem)}&next=${encodeURIComponent(nextPath)}`)
@@ -34,10 +55,39 @@ export async function loginCliente(formData: FormData) {
 export async function cadastrarCliente(formData: FormData) {
     const supabase = await createClient()
     const siteUrl = getSiteUrl()
+    const securityContext = await getServerActionSecurityContext()
 
     const name = (formData.get("name") as string)?.trim()
     const email = (formData.get("email") as string)?.trim()
     const password = formData.get("password") as string
+
+    if (!name || !email || !password) {
+        redirect("/conta/cadastro?error=Preencha nome, e-mail e senha.")
+    }
+
+    if (name.length > 120) {
+        redirect("/conta/cadastro?error=O nome deve ter no maximo 120 caracteres.")
+    }
+
+    if (password.length < 8) {
+        redirect("/conta/cadastro?error=A senha deve ter no minimo 8 caracteres.")
+    }
+
+    try {
+        await enforceRateLimit({
+            scope: "auth:customer-signup",
+            maxAttempts: 5,
+            windowSeconds: 60 * 30,
+            blockSeconds: 60 * 30,
+            identifiers: buildIpAndUserIdentifiers(securityContext, null, email),
+        })
+    } catch (error) {
+        if (error instanceof RateLimitError) {
+            redirect(`/conta/cadastro?error=${encodeURIComponent(error.message)}`)
+        }
+
+        throw error
+    }
 
     const { data, error } = await supabase.auth.signUp({
         email,
@@ -51,11 +101,11 @@ export async function cadastrarCliente(formData: FormData) {
     })
 
     if (error) {
-        if (error.message.includes("already registered")) {
-            redirect("/conta/cadastro?error=Este e-mail já possui uma conta.")
+        if (error.message.toLowerCase().includes("already registered")) {
+            redirect("/conta/login?success=Se o e-mail for valido, voce recebera as instrucoes para continuar.")
         }
 
-        redirect(`/conta/cadastro?error=${encodeURIComponent(error.message)}`)
+        redirect("/conta/cadastro?error=Nao foi possivel iniciar o cadastro. Revise os dados e tente novamente.")
     }
 
     if (data?.user && !data?.session) {

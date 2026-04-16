@@ -11,8 +11,16 @@ function getErrorMessage(error: unknown) {
 export async function createCategory(formData: FormData) {
     try {
         const supabase = await requireAdmin()
-        const name = (formData.get('name') as string) || ''
+        const name = ((formData.get("name") as string) || "").trim()
         const image = formData.get('image') as File | null
+
+        if (!name) {
+            return { error: "Informe um nome para a categoria." }
+        }
+
+        if (name.length > 80) {
+            return { error: "O nome da categoria deve ter no maximo 80 caracteres." }
+        }
 
         const slug = name
             .toLowerCase()
@@ -22,15 +30,18 @@ export async function createCategory(formData: FormData) {
 
         let image_url = null
         if (image && image.size > 0) {
-            validateImageFile(image)
-
-            const fileExt = image.name.split('.').pop()
-            const fileName = `category-${Date.now()}.${fileExt}`
+            const validatedImage = await validateImageFile(image)
+            const fileExt = validatedImage?.extension || "jpg"
+            const fileName = `${crypto.randomUUID()}.${fileExt}`
             const filePath = `categories/${slug}/${fileName}`
 
             const { error: uploadError } = await supabase.storage
                 .from('product-images')
-                .upload(filePath, image)
+                .upload(filePath, image, {
+                    cacheControl: "31536000",
+                    contentType: image.type,
+                    upsert: false,
+                })
 
             if (uploadError) {
                 return { error: `Falha ao fazer upload da imagem: ${uploadError.message}` }

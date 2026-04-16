@@ -2,6 +2,8 @@ import { timingSafeEqual } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { verifyAbacatePaySignature } from '@/lib/abacatepay'
 import { extractPaymentEventDetails } from '@/lib/abacatepay/webhook-utils'
+import { buildIpAndUserIdentifiers, enforceRateLimit, RateLimitError } from "@/lib/security/rate-limit"
+import { getRequestSecurityContextFromHeaders } from "@/lib/security/request-context"
 import {
     handleCompletedEvent,
     handleRefundedEvent,
@@ -41,6 +43,23 @@ export async function POST(req: Request) {
     const requestSecret = readRequestSecret(req, requestUrl)
     const signature = req.headers.get('X-Webhook-Signature')
     const rawBody = await req.text()
+    const securityContext = getRequestSecurityContextFromHeaders(req.headers)
+
+    try {
+        await enforceRateLimit({
+            scope: "webhook:abacatepay",
+            maxAttempts: 120,
+            windowSeconds: 60,
+            blockSeconds: 60 * 2,
+            identifiers: buildIpAndUserIdentifiers(securityContext),
+        })
+    } catch (error) {
+        if (error instanceof RateLimitError) {
+            return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+        }
+
+        throw error
+    }
 
     if (!signature || !verifyAbacatePaySignature(rawBody, signature)) {
         return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })

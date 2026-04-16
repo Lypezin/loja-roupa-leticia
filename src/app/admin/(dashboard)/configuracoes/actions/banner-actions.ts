@@ -20,7 +20,7 @@ export async function saveBanner(formData: FormData) {
 
         const heroImage = formData.get('hero_image') as File | null
         if (heroImage && heroImage.size > 0) {
-            validateImageFile(heroImage)
+            const validatedImage = await validateImageFile(heroImage)
             
             const { data: currentSettings } = await supabase
                 .from('store_settings')
@@ -28,13 +28,17 @@ export async function saveBanner(formData: FormData) {
                 .eq('id', id)
                 .single()
 
-            const fileExt = heroImage.name.split('.').pop()
-            const fileName = `hero-banner-${Date.now()}.${fileExt}`
+            const fileExt = validatedImage?.extension || "jpg"
+            const fileName = `${crypto.randomUUID()}.${fileExt}`
             const filePath = `settings/banner/${fileName}`
 
             const { error: uploadError } = await supabase.storage
                 .from('product-images')
-                .upload(filePath, heroImage)
+                .upload(filePath, heroImage, {
+                    cacheControl: "31536000",
+                    contentType: heroImage.type,
+                    upsert: false,
+                })
 
             if (uploadError) {
                 return { error: 'Falha ao subir a nova imagem do banner: ' + uploadError.message }

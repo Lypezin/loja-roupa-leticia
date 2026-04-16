@@ -54,6 +54,7 @@
       "regex": "^(?:/(.*))(?:/)?$"
     }
   ],
+  "onMatchHeaders": [],
   "rewrites": {
     "beforeFiles": [],
     "afterFiles": [],

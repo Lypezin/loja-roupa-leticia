@@ -38,11 +38,11 @@ export function useCategoryManager() {
     const [editImage, setEditImage] = useState<File | null>(null)
     const [editImagePreview, setEditImagePreview] = useState<string | null>(null)
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, isEdit: boolean = false) => {
+    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>, isEdit: boolean = false) => {
         const file = e.target.files?.[0] || null
 
         try {
-            validateImageFile(file)
+            await validateImageFile(file)
         } catch (error) {
             toast.error(getUploadErrorMessage(error))
             e.target.value = ''

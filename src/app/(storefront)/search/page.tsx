@@ -15,7 +15,11 @@ type SearchProduct = {
 }
 
 function buildSearchFilter(term: string, categoryIds: string[], productIds: string[]) {
-    const safeTerm = term.replace(/[(),]/g, " ").trim()
+    const safeTerm = term
+        .normalize("NFKC")
+        .replace(/[^\p{L}\p{N}\s-]/gu, " ")
+        .replace(/\s+/g, " ")
+        .trim()
     const filters = [`name.ilike.%${safeTerm}%`]
 
     if (categoryIds.length > 0) {

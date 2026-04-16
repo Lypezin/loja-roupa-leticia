@@ -43,7 +43,7 @@ export async function GET(request: Request) {
         await saveMelhorEnvioTokensFromCode(code, environment)
         return redirectWithStatus(request, "connected")
     } catch (error) {
-        const message = error instanceof Error ? error.message : "Falha ao conectar o Melhor Envio."
-        return redirectWithStatus(request, "error", message)
+        console.error("Falha ao conectar o Melhor Envio:", error)
+        return redirectWithStatus(request, "error", "Falha ao conectar o Melhor Envio.")
     }
 }
