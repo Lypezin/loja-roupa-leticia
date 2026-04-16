@@ -4,6 +4,8 @@ import { requireAdminPage } from "@/lib/supabase/server"
 import { AdminMobileHeader } from "./components/AdminMobileHeader"
 import { AdminSidebar } from "./components/AdminSidebar"
 
+export const dynamic = "force-dynamic"
+
 export default async function AdminLayout({
     children,
 }: {

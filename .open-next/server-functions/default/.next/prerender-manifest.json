@@ -308,13 +308,42 @@
         "x-next-revalidated-tags",
         "x-next-revalidate-tag-token"
       ]
+    },
+    "/sitemap.xml": {
+      "initialHeaders": {
+        "cache-control": "public, max-age=0, must-revalidate",
+        "content-type": "application/xml",
+        "x-next-cache-tags": "_N_T_/layout,_N_T_/sitemap.xml/layout,_N_T_/sitemap.xml/route,_N_T_/sitemap.xml"
+      },
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/sitemap.xml",
+      "dataRoute": null,
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
     }
   },
   "dynamicRoutes": {},
   "notFoundRoutes": [],
   "preview": {
-    "previewModeId": "07ad1d34b710b60c2087751ed6bcc7be",
-    "previewModeSigningKey": "33d20994c8aa65435b9818301fe682d5fff1c5b5f86e6c438f6c223d8afe34f3",
-    "previewModeEncryptionKey": "6d80e1c53f79fc6943bd74575540e9b77a815ccf34b83b4acfe3243129a8373e"
+    "previewModeId": "7c4ae419bd18de15e02aa107ea67f60b",
+    "previewModeSigningKey": "1dadb61e449048b69c81aa2c8c83843e896f88f80c2bacc82263a73d15a8d65f",
+    "previewModeEncryptionKey": "02b60a26dc39529ce80c49b679be34f615b2e9793cd040c0211eed6a0f0a5970"
   }
 }

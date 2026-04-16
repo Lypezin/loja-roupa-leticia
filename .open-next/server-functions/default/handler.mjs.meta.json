@@ -3587,172 +3587,172 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/api/integrations/melhor-envio/callback/route_client-reference-manifest.js": {
-      "bytes": 30600,
+      "bytes": 29134,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/api/integrations/melhor-envio/connect/route_client-reference-manifest.js": {
-      "bytes": 30598,
+      "bytes": 29132,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/[id]/editar/page_client-reference-manifest.js": {
-      "bytes": 32649,
+      "bytes": 31093,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/configuracoes/page_client-reference-manifest.js": {
-      "bytes": 32061,
+      "bytes": 30541,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/novo/page_client-reference-manifest.js": {
-      "bytes": 32615,
+      "bytes": 31059,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/[id]/page_client-reference-manifest.js": {
-      "bytes": 31942,
+      "bytes": 30440,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/categorias/page_client-reference-manifest.js": {
-      "bytes": 32052,
+      "bytes": 30532,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/cadastro/page_client-reference-manifest.js": {
-      "bytes": 31419,
+      "bytes": 29935,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/api/webhooks/melhor-envio/route_client-reference-manifest.js": {
-      "bytes": 30573,
+      "bytes": 29107,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/page_client-reference-manifest.js": {
-      "bytes": 32046,
+      "bytes": 30526,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/page_client-reference-manifest.js": {
-      "bytes": 31538,
+      "bytes": 30054,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/pedidos/page_client-reference-manifest.js": {
-      "bytes": 32043,
-      "imports": [],
-      "format": "cjs"
-    },
-    ".open-next/server-functions/default/.next/server/app/(storefront)/conta/perfil/page_client-reference-manifest.js": {
-      "bytes": 31283,
+      "bytes": 30523,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page_client-reference-manifest.js": {
-      "bytes": 31345,
+      "bytes": 29879,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/app/(storefront)/conta/perfil/page_client-reference-manifest.js": {
+      "bytes": 29799,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/api/webhooks/abacatepay/route_client-reference-manifest.js": {
-      "bytes": 30569,
+      "bytes": 29103,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/login/page_client-reference-manifest.js": {
-      "bytes": 31410,
+      "bytes": 29926,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/categorias/page_client-reference-manifest.js": {
-      "bytes": 30614,
+      "bytes": 29148,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/produtos/page_client-reference-manifest.js": {
-      "bytes": 30953,
+      "bytes": 29487,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/carrinho/page_client-reference-manifest.js": {
-      "bytes": 30921,
+      "bytes": 29455,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/sucesso/page_client-reference-manifest.js": {
-      "bytes": 31729,
+      "bytes": 30263,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/contato/page_client-reference-manifest.js": {
-      "bytes": 30482,
+      "bytes": 29016,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/[slug]/page_client-reference-manifest.js": {
-      "bytes": 31066,
+      "bytes": 29582,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/termos/page_client-reference-manifest.js": {
-      "bytes": 30478,
+      "bytes": 29012,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/search/page_client-reference-manifest.js": {
-      "bytes": 30582,
+      "bytes": 29116,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/sobre/page_client-reference-manifest.js": {
-      "bytes": 30556,
+      "bytes": 29090,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/page_client-reference-manifest.js": {
-      "bytes": 31168,
+      "bytes": 29702,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/page_client-reference-manifest.js": {
-      "bytes": 31605,
+      "bytes": 30103,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/_global-error/page_client-reference-manifest.js": {
-      "bytes": 30545,
+      "bytes": 29079,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/auth/confirm/route_client-reference-manifest.js": {
-      "bytes": 30546,
+      "bytes": 29080,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/sitemap.xml/route_client-reference-manifest.js": {
-      "bytes": 30543,
+      "bytes": 29077,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/page_client-reference-manifest.js": {
-      "bytes": 30445,
+      "bytes": 28997,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/login/page_client-reference-manifest.js": {
-      "bytes": 32155,
+      "bytes": 30635,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/_not-found/page_client-reference-manifest.js": {
-      "bytes": 30539,
+      "bytes": 29073,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/node_modules/next/dist/server/load-manifest.external.js": {
-      "bytes": 63459,
+      "bytes": 63217,
       "imports": [
         {
           "path": "path",
@@ -3777,167 +3777,167 @@
         {
           "path": ".open-next/server-functions/default/.next/server/app/api/integrations/melhor-envio/callback/route_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\integrations\\melhor-envio\\callback\\route_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\integrations\\melhor-envio\\callback\\route_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/api/integrations/melhor-envio/connect/route_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\integrations\\melhor-envio\\connect\\route_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\integrations\\melhor-envio\\connect\\route_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/[id]/editar/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\produtos\\[id]\\editar\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\produtos\\[id]\\editar\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/configuracoes/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\configuracoes\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\configuracoes\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/novo/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\produtos\\novo\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\produtos\\novo\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/[id]/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\pedidos\\[id]\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\pedidos\\[id]\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/categorias/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\categorias\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\categorias\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/conta/cadastro/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\cadastro\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\cadastro\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/api/webhooks/melhor-envio/route_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\webhooks\\melhor-envio\\route_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\webhooks\\melhor-envio\\route_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\produtos\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\produtos\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\pedidos\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\pedidos\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/pedidos/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\pedidos\\page_client-reference-manifest.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/.next/server/app/(storefront)/conta/perfil/page_client-reference-manifest.js",
-          "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\perfil\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\pedidos\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\produto\\[id]\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\produto\\[id]\\page_client-reference-manifest.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/app/(storefront)/conta/perfil/page_client-reference-manifest.js",
+          "kind": "require-call",
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\perfil\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/api/webhooks/abacatepay/route_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\webhooks\\abacatepay\\route_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\webhooks\\abacatepay\\route_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/conta/login/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\login\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\login\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/categorias/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\categorias\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\categorias\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/produtos/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\produtos\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\produtos\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/carrinho/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\carrinho\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\carrinho\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/sucesso/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\sucesso\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\sucesso\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/contato/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\contato\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\contato\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/[slug]/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\[slug]\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\[slug]\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/termos/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\termos\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\termos\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/search/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\search\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\search\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/sobre/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\sobre\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\sobre\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/conta/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/_global-error/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\_global-error\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\_global-error\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/auth/confirm/route_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\auth\\confirm\\route_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\auth\\confirm\\route_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/sitemap.xml/route_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\sitemap.xml\\route_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\sitemap.xml\\route_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/login/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\login\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\login\\page_client-reference-manifest.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/_not-found/page_client-reference-manifest.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\_not-found\\page_client-reference-manifest.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\_not-found\\page_client-reference-manifest.js"
         }
       ],
       "format": "cjs"
@@ -4164,7 +4164,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js": {
-      "bytes": 519557,
+      "bytes": 519506,
       "imports": [
         {
           "path": "url",
@@ -4299,17 +4299,17 @@
         {
           "path": ".open-next/server-functions/default/composable-cache.cjs",
           "kind": "require-call",
-          "original": "C:/Users/luizf/OneDrive - MSFT/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
+          "original": "C:/Users/Luiz/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
         },
         {
           "path": ".open-next/server-functions/default/composable-cache.cjs",
           "kind": "require-call",
-          "original": "C:/Users/luizf/OneDrive - MSFT/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
+          "original": "C:/Users/Luiz/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
         },
         {
           "path": ".open-next/server-functions/default/cache.cjs",
           "kind": "require-call",
-          "original": "C:/Users/luizf/OneDrive - MSFT/Desktop/loja-roupa-leticia/.open-next/server-functions/default/cache.cjs"
+          "original": "C:/Users/Luiz/Desktop/loja-roupa-leticia/.open-next/server-functions/default/cache.cjs"
         }
       ],
       "format": "cjs"
@@ -4337,7 +4337,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js": {
-      "bytes": 154478,
+      "bytes": 154427,
       "imports": [
         {
           "path": "url",
@@ -4422,17 +4422,17 @@
         {
           "path": ".open-next/server-functions/default/composable-cache.cjs",
           "kind": "require-call",
-          "original": "C:/Users/luizf/OneDrive - MSFT/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
+          "original": "C:/Users/Luiz/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
         },
         {
           "path": ".open-next/server-functions/default/composable-cache.cjs",
           "kind": "require-call",
-          "original": "C:/Users/luizf/OneDrive - MSFT/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
+          "original": "C:/Users/Luiz/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
         },
         {
           "path": ".open-next/server-functions/default/cache.cjs",
           "kind": "require-call",
-          "original": "C:/Users/luizf/OneDrive - MSFT/Desktop/loja-roupa-leticia/.open-next/server-functions/default/cache.cjs"
+          "original": "C:/Users/Luiz/Desktop/loja-roupa-leticia/.open-next/server-functions/default/cache.cjs"
         },
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/after-task-async-storage.external.js",
@@ -4452,13 +4452,13 @@
       ],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/1455.js": {
-      "bytes": 12255,
+    ".open-next/server-functions/default/.next/server/chunks/1453.js": {
+      "bytes": 22076,
       "imports": [],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/1621.js": {
-      "bytes": 11526,
+    ".open-next/server-functions/default/.next/server/chunks/1455.js": {
+      "bytes": 12255,
       "imports": [],
       "format": "cjs"
     },
@@ -4467,18 +4467,18 @@
       "imports": [],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/2433.js": {
-      "bytes": 32482,
+    ".open-next/server-functions/default/.next/server/chunks/3225.js": {
+      "bytes": 93189,
       "imports": [],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/3225.js": {
-      "bytes": 93207,
+    ".open-next/server-functions/default/.next/server/chunks/333.js": {
+      "bytes": 19597,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/chunks/3410.js": {
-      "bytes": 709789,
+      "bytes": 702769,
       "imports": [],
       "format": "cjs"
     },
@@ -4497,18 +4497,18 @@
       "imports": [],
       "format": "cjs"
     },
+    ".open-next/server-functions/default/.next/server/chunks/4111.js": {
+      "bytes": 13131,
+      "imports": [],
+      "format": "cjs"
+    },
     ".open-next/server-functions/default/.next/server/chunks/4218.js": {
       "bytes": 169017,
       "imports": [],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/4589.js": {
-      "bytes": 19266,
-      "imports": [],
-      "format": "cjs"
-    },
     ".open-next/server-functions/default/.next/server/chunks/5573.js": {
-      "bytes": 11707,
+      "bytes": 8605,
       "imports": [],
       "format": "cjs"
     },
@@ -4518,27 +4518,22 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/chunks/6029.js": {
-      "bytes": 19661,
+      "bytes": 19755,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/chunks/7097.js": {
-      "bytes": 236575,
+      "bytes": 20343,
       "imports": [],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/7459.js": {
-      "bytes": 20325,
+    ".open-next/server-functions/default/.next/server/chunks/7747.js": {
+      "bytes": 11306,
       "imports": [],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/8042.js": {
-      "bytes": 22075,
-      "imports": [],
-      "format": "cjs"
-    },
-    ".open-next/server-functions/default/.next/server/chunks/8120.js": {
-      "bytes": 13130,
+    ".open-next/server-functions/default/.next/server/chunks/7920.js": {
+      "bytes": 33000,
       "imports": [],
       "format": "cjs"
     },
@@ -4548,22 +4543,27 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/chunks/9363.js": {
-      "bytes": 8024,
+      "bytes": 8006,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/chunks/9478.js": {
+      "bytes": 233473,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/webpack-runtime.js": {
-      "bytes": 2689,
+      "bytes": 2687,
       "imports": [
+        {
+          "path": ".open-next/server-functions/default/.next/server/chunks/1453.js",
+          "kind": "require-call",
+          "original": "./chunks/1453.js"
+        },
         {
           "path": ".open-next/server-functions/default/.next/server/chunks/1455.js",
           "kind": "require-call",
           "original": "./chunks/1455.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/.next/server/chunks/1621.js",
-          "kind": "require-call",
-          "original": "./chunks/1621.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/chunks/2404.js",
@@ -4571,14 +4571,14 @@
           "original": "./chunks/2404.js"
         },
         {
-          "path": ".open-next/server-functions/default/.next/server/chunks/2433.js",
-          "kind": "require-call",
-          "original": "./chunks/2433.js"
-        },
-        {
           "path": ".open-next/server-functions/default/.next/server/chunks/3225.js",
           "kind": "require-call",
           "original": "./chunks/3225.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/chunks/333.js",
+          "kind": "require-call",
+          "original": "./chunks/333.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/chunks/3410.js",
@@ -4601,14 +4601,14 @@
           "original": "./chunks/3679.js"
         },
         {
+          "path": ".open-next/server-functions/default/.next/server/chunks/4111.js",
+          "kind": "require-call",
+          "original": "./chunks/4111.js"
+        },
+        {
           "path": ".open-next/server-functions/default/.next/server/chunks/4218.js",
           "kind": "require-call",
           "original": "./chunks/4218.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/.next/server/chunks/4589.js",
-          "kind": "require-call",
-          "original": "./chunks/4589.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/chunks/5573.js",
@@ -4631,19 +4631,14 @@
           "original": "./chunks/7097.js"
         },
         {
-          "path": ".open-next/server-functions/default/.next/server/chunks/7459.js",
+          "path": ".open-next/server-functions/default/.next/server/chunks/7747.js",
           "kind": "require-call",
-          "original": "./chunks/7459.js"
+          "original": "./chunks/7747.js"
         },
         {
-          "path": ".open-next/server-functions/default/.next/server/chunks/8042.js",
+          "path": ".open-next/server-functions/default/.next/server/chunks/7920.js",
           "kind": "require-call",
-          "original": "./chunks/8042.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/.next/server/chunks/8120.js",
-          "kind": "require-call",
-          "original": "./chunks/8120.js"
+          "original": "./chunks/7920.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/chunks/861.js",
@@ -4654,12 +4649,17 @@
           "path": ".open-next/server-functions/default/.next/server/chunks/9363.js",
           "kind": "require-call",
           "original": "./chunks/9363.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/chunks/9478.js",
+          "kind": "require-call",
+          "original": "./chunks/9478.js"
         }
       ],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/api/integrations/melhor-envio/callback/route.js": {
-      "bytes": 12990,
+      "bytes": 12710,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -4715,7 +4715,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/api/integrations/melhor-envio/connect/route.js": {
-      "bytes": 12612,
+      "bytes": 12332,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -4771,7 +4771,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/[id]/editar/page.js": {
-      "bytes": 20263,
+      "bytes": 20155,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -4851,8 +4851,8 @@
       ],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/novo/page.js": {
-      "bytes": 19570,
+    ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/[id]/page.js": {
+      "bytes": 26813,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -4932,8 +4932,8 @@
       ],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/[id]/page.js": {
-      "bytes": 26904,
+    ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/novo/page.js": {
+      "bytes": 19462,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5014,7 +5014,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/configuracoes/page.js": {
-      "bytes": 79249,
+      "bytes": 79230,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5100,7 +5100,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/categorias/page.js": {
-      "bytes": 44672,
+      "bytes": 44563,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5181,7 +5181,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/cadastro/page.js": {
-      "bytes": 26932,
+      "bytes": 26541,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5262,7 +5262,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/api/webhooks/melhor-envio/route.js": {
-      "bytes": 9147,
+      "bytes": 8865,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5312,89 +5312,8 @@
       ],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/page.js": {
-      "bytes": 40566,
-      "imports": [
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/router/utils/app-paths"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/after-task-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/after-task-async-storage.external.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js",
-          "kind": "require-call",
-          "original": "next/dist/compiled/next-server/app-page.runtime.prod.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/action-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/action-async-storage.external.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/is-bot.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/router/utils/is-bot"
-        },
-        {
-          "path": "util",
-          "kind": "require-call",
-          "external": true
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/work-async-storage.external.js"
-        },
-        {
-          "path": "path",
-          "kind": "require-call",
-          "external": true
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/dynamic-access-async-storage.external.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/interception-routes.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/router/utils/interception-routes"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/work-unit-async-storage.external.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/invariant-error.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/invariant-error"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/size-limit.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/size-limit"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/no-fallback-error.external.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/no-fallback-error.external"
-        },
-        {
-          "path": ".open-next/server-functions/default/.next/server/webpack-runtime.js",
-          "kind": "require-call",
-          "original": "../../../../webpack-runtime.js"
-        }
-      ],
-      "format": "cjs"
-    },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/page.js": {
-      "bytes": 32172,
+      "bytes": 32081,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5479,8 +5398,8 @@
       ],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page.js": {
-      "bytes": 40359,
+    ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/page.js": {
+      "bytes": 40990,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5561,7 +5480,88 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/perfil/page.js": {
-      "bytes": 36635,
+      "bytes": 36522,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/app-paths"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/after-task-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/after-task-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js",
+          "kind": "require-call",
+          "original": "next/dist/compiled/next-server/app-page.runtime.prod.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/action-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/action-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/is-bot.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/is-bot"
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/work-async-storage.external.js"
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/dynamic-access-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/interception-routes.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/interception-routes"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/work-unit-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/invariant-error.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/invariant-error"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/size-limit.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/size-limit"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/no-fallback-error.external.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/no-fallback-error.external"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/webpack-runtime.js",
+          "kind": "require-call",
+          "original": "../../../../webpack-runtime.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page.js": {
+      "bytes": 44032,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5642,7 +5642,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/pedidos/page.js": {
-      "bytes": 39874,
+      "bytes": 39963,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5728,7 +5728,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/api/webhooks/abacatepay/route.js": {
-      "bytes": 16225,
+      "bytes": 16207,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5779,7 +5779,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/login/page.js": {
-      "bytes": 28101,
+      "bytes": 27716,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5860,7 +5860,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/categorias/page.js": {
-      "bytes": 21946,
+      "bytes": 21855,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5941,7 +5941,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/carrinho/page.js": {
-      "bytes": 57301,
+      "bytes": 58038,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6027,7 +6027,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/produtos/page.js": {
-      "bytes": 28712,
+      "bytes": 29141,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6108,7 +6108,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/sucesso/page.js": {
-      "bytes": 40899,
+      "bytes": 41662,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6194,7 +6194,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/contato/page.js": {
-      "bytes": 22077,
+      "bytes": 21987,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6275,88 +6275,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/[slug]/page.js": {
-      "bytes": 36968,
-      "imports": [
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/router/utils/app-paths"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/after-task-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/after-task-async-storage.external.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js",
-          "kind": "require-call",
-          "original": "next/dist/compiled/next-server/app-page.runtime.prod.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/action-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/action-async-storage.external.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/is-bot.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/router/utils/is-bot"
-        },
-        {
-          "path": "util",
-          "kind": "require-call",
-          "external": true
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/work-async-storage.external.js"
-        },
-        {
-          "path": "path",
-          "kind": "require-call",
-          "external": true
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/dynamic-access-async-storage.external.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/interception-routes.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/router/utils/interception-routes"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/work-unit-async-storage.external.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/invariant-error.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/invariant-error"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/size-limit.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/size-limit"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/no-fallback-error.external.js",
-          "kind": "require-call",
-          "original": "next/dist/shared/lib/no-fallback-error.external"
-        },
-        {
-          "path": ".open-next/server-functions/default/.next/server/webpack-runtime.js",
-          "kind": "require-call",
-          "original": "../../../webpack-runtime.js"
-        }
-      ],
-      "format": "cjs"
-    },
-    ".open-next/server-functions/default/.next/server/app/(storefront)/termos/page.js": {
-      "bytes": 21571,
+      "bytes": 37475,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6437,7 +6356,88 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/search/page.js": {
-      "bytes": 27352,
+      "bytes": 27801,
+      "imports": [
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/app-paths"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/after-task-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/after-task-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js",
+          "kind": "require-call",
+          "original": "next/dist/compiled/next-server/app-page.runtime.prod.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/action-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/action-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/is-bot.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/is-bot"
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/work-async-storage.external.js"
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/dynamic-access-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/dynamic-access-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/interception-routes.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/router/utils/interception-routes"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-unit-async-storage.external.js",
+          "kind": "require-call",
+          "original": "next/dist/server/app-render/work-unit-async-storage.external.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/invariant-error.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/invariant-error"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/size-limit.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/size-limit"
+        },
+        {
+          "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/no-fallback-error.external.js",
+          "kind": "require-call",
+          "original": "next/dist/shared/lib/no-fallback-error.external"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/webpack-runtime.js",
+          "kind": "require-call",
+          "original": "../../../webpack-runtime.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/app/(storefront)/termos/page.js": {
+      "bytes": 21481,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6518,7 +6518,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/page.js": {
-      "bytes": 33606,
+      "bytes": 33509,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6604,7 +6604,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/sobre/page.js": {
-      "bytes": 21176,
+      "bytes": 21085,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6685,7 +6685,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/page.js": {
-      "bytes": 28599,
+      "bytes": 28474,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6771,7 +6771,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/apple-icon.jpg/route.js": {
-      "bytes": 294859,
+      "bytes": 294836,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6817,7 +6817,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/_global-error/page.js": {
-      "bytes": 26160,
+      "bytes": 26141,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6898,7 +6898,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/auth/confirm/route.js": {
-      "bytes": 11900,
+      "bytes": 11880,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6949,7 +6949,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/sitemap.xml/route.js": {
-      "bytes": 16171,
+      "bytes": 13563,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6965,11 +6965,6 @@
           "path": ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js",
           "kind": "require-call",
           "original": "next/dist/compiled/next-server/app-page.runtime.prod.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/action-async-storage.external.js",
-          "kind": "require-call",
-          "original": "next/dist/server/app-render/action-async-storage.external.js"
         },
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/server/app-render/work-async-storage.external.js",
@@ -7000,7 +6995,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/page.js": {
-      "bytes": 37163,
+      "bytes": 38173,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -7081,7 +7076,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/login/page.js": {
-      "bytes": 27991,
+      "bytes": 27919,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -7162,7 +7157,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/_not-found/page.js": {
-      "bytes": 17384,
+      "bytes": 17330,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -7243,7 +7238,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/icon.jpg/route.js": {
-      "bytes": 294825,
+      "bytes": 294802,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -7289,7 +7284,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/node_modules/next/dist/server/require.js": {
-      "bytes": 13891,
+      "bytes": 13261,
       "imports": [
         {
           "path": "path",
@@ -7339,177 +7334,177 @@
         {
           "path": ".open-next/server-functions/default/.next/server/app/api/integrations/melhor-envio/callback/route.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\integrations\\melhor-envio\\callback\\route.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\integrations\\melhor-envio\\callback\\route.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/api/integrations/melhor-envio/connect/route.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\integrations\\melhor-envio\\connect\\route.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\integrations\\melhor-envio\\connect\\route.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/[id]/editar/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\produtos\\[id]\\editar\\page.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/novo/page.js",
-          "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\produtos\\novo\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\produtos\\[id]\\editar\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/[id]/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\pedidos\\[id]\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\pedidos\\[id]\\page.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/novo/page.js",
+          "kind": "require-call",
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\produtos\\novo\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/configuracoes/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\configuracoes\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\configuracoes\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/categorias/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\categorias\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\categorias\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/conta/cadastro/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\cadastro\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\cadastro\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/api/webhooks/melhor-envio/route.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\webhooks\\melhor-envio\\route.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/page.js",
-          "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\produtos\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\webhooks\\melhor-envio\\route.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\pedidos\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\pedidos\\page.js"
         },
         {
-          "path": ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page.js",
+          "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\produto\\[id]\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\produtos\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/conta/perfil/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\perfil\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\perfil\\page.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page.js",
+          "kind": "require-call",
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\produto\\[id]\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/pedidos/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\pedidos\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\pedidos\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/api/webhooks/abacatepay/route.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\webhooks\\abacatepay\\route.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\api\\webhooks\\abacatepay\\route.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/conta/login/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\login\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\login\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/categorias/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\categorias\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\categorias\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/carrinho/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\carrinho\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\carrinho\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/produtos/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\produtos\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\produtos\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/sucesso/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\sucesso\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\sucesso\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/contato/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\contato\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\contato\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/[slug]/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\[slug]\\page.js"
-        },
-        {
-          "path": ".open-next/server-functions/default/.next/server/app/(storefront)/termos/page.js",
-          "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\termos\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\[slug]\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/search/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\search\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\search\\page.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/app/(storefront)/termos/page.js",
+          "kind": "require-call",
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\termos\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/conta/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\conta\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/sobre/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\sobre\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\sobre\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\(dashboard)\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/apple-icon.jpg/route.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\apple-icon.jpg\\route.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\apple-icon.jpg\\route.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/_global-error/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\_global-error\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\_global-error\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/auth/confirm/route.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\auth\\confirm\\route.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\auth\\confirm\\route.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/sitemap.xml/route.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\sitemap.xml\\route.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\sitemap.xml\\route.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/(storefront)/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\(storefront)\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/admin/login/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\login\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\admin\\login\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/_not-found/page.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\_not-found\\page.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\_not-found\\page.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/app/icon.jpg/route.js",
           "kind": "require-call",
-          "original": "C:\\Users\\luizf\\OneDrive - MSFT\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\icon.jpg\\route.js"
+          "original": "C:\\Users\\Luiz\\Desktop\\loja-roupa-leticia\\.open-next\\server-functions\\default\\.next\\server\\app\\icon.jpg\\route.js"
         }
       ],
       "format": "cjs"
@@ -8032,7 +8027,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/pages.runtime.prod.js": {
-      "bytes": 121838,
+      "bytes": 121787,
       "imports": [
         {
           "path": "url",
@@ -8122,17 +8117,17 @@
         {
           "path": ".open-next/server-functions/default/composable-cache.cjs",
           "kind": "require-call",
-          "original": "C:/Users/luizf/OneDrive - MSFT/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
+          "original": "C:/Users/Luiz/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
         },
         {
           "path": ".open-next/server-functions/default/composable-cache.cjs",
           "kind": "require-call",
-          "original": "C:/Users/luizf/OneDrive - MSFT/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
+          "original": "C:/Users/Luiz/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
         },
         {
           "path": ".open-next/server-functions/default/cache.cjs",
           "kind": "require-call",
-          "original": "C:/Users/luizf/OneDrive - MSFT/Desktop/loja-roupa-leticia/.open-next/server-functions/default/cache.cjs"
+          "original": "C:/Users/Luiz/Desktop/loja-roupa-leticia/.open-next/server-functions/default/cache.cjs"
         },
         {
           "path": ".open-next/server-functions/default/node_modules/react/jsx-runtime.js",
@@ -8332,7 +8327,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/node_modules/next/dist/server/next-server.js": {
-      "bytes": 52825,
+      "bytes": 52774,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/server/node-environment.js",
@@ -8642,17 +8637,17 @@
         {
           "path": ".open-next/server-functions/default/composable-cache.cjs",
           "kind": "require-call",
-          "original": "C:/Users/luizf/OneDrive - MSFT/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
+          "original": "C:/Users/Luiz/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
         },
         {
           "path": ".open-next/server-functions/default/composable-cache.cjs",
           "kind": "require-call",
-          "original": "C:/Users/luizf/OneDrive - MSFT/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
+          "original": "C:/Users/Luiz/Desktop/loja-roupa-leticia/.open-next/server-functions/default/composable-cache.cjs"
         },
         {
           "path": ".open-next/server-functions/default/cache.cjs",
           "kind": "require-call",
-          "original": "C:/Users/luizf/OneDrive - MSFT/Desktop/loja-roupa-leticia/.open-next/server-functions/default/cache.cjs"
+          "original": "C:/Users/Luiz/Desktop/loja-roupa-leticia/.open-next/server-functions/default/cache.cjs"
         },
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/experimental/testmode/server.js",
@@ -8668,7 +8663,7 @@
       "format": "esm"
     },
     ".open-next/server-functions/default/index.mjs": {
-      "bytes": 94541,
+      "bytes": 95123,
       "imports": [
         {
           "path": "node:module",
@@ -9058,17 +9053,17 @@
           "external": true
         },
         {
+          "path": "node:crypto",
+          "kind": "require-call",
+          "external": true
+        },
+        {
           "path": "util",
           "kind": "require-call",
           "external": true
         },
         {
           "path": "path",
-          "kind": "require-call",
-          "external": true
-        },
-        {
-          "path": "node:crypto",
           "kind": "require-call",
           "external": true
         },
@@ -10150,106 +10145,106 @@
           "bytesInOutput": 586
         },
         ".open-next/server-functions/default/.next/server/app/api/integrations/melhor-envio/callback/route_client-reference-manifest.js": {
-          "bytesInOutput": 28314
+          "bytesInOutput": 26848
         },
         ".open-next/server-functions/default/.next/server/app/api/integrations/melhor-envio/connect/route_client-reference-manifest.js": {
-          "bytesInOutput": 28312
+          "bytesInOutput": 26846
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/[id]/editar/page_client-reference-manifest.js": {
-          "bytesInOutput": 30361
+          "bytesInOutput": 28805
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/configuracoes/page_client-reference-manifest.js": {
-          "bytesInOutput": 29767
+          "bytesInOutput": 28247
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/novo/page_client-reference-manifest.js": {
-          "bytesInOutput": 30321
+          "bytesInOutput": 28765
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/[id]/page_client-reference-manifest.js": {
-          "bytesInOutput": 29648
+          "bytesInOutput": 28146
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/categorias/page_client-reference-manifest.js": {
-          "bytesInOutput": 29755
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/conta/cadastro/page_client-reference-manifest.js": {
-          "bytesInOutput": 29121
-        },
-        ".open-next/server-functions/default/.next/server/app/api/webhooks/melhor-envio/route_client-reference-manifest.js": {
-          "bytesInOutput": 28275
-        },
-        ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/page_client-reference-manifest.js": {
-          "bytesInOutput": 29747
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/page_client-reference-manifest.js": {
-          "bytesInOutput": 29239
-        },
-        ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/pedidos/page_client-reference-manifest.js": {
-          "bytesInOutput": 29743
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/conta/perfil/page_client-reference-manifest.js": {
-          "bytesInOutput": 28984
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page_client-reference-manifest.js": {
-          "bytesInOutput": 29046
-        },
-        ".open-next/server-functions/default/.next/server/app/api/webhooks/abacatepay/route_client-reference-manifest.js": {
-          "bytesInOutput": 28269
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/conta/login/page_client-reference-manifest.js": {
-          "bytesInOutput": 29110
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/categorias/page_client-reference-manifest.js": {
-          "bytesInOutput": 28313
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/produtos/page_client-reference-manifest.js": {
-          "bytesInOutput": 28650
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/carrinho/page_client-reference-manifest.js": {
-          "bytesInOutput": 28618
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/sucesso/page_client-reference-manifest.js": {
-          "bytesInOutput": 29425
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/contato/page_client-reference-manifest.js": {
-          "bytesInOutput": 28178
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/[slug]/page_client-reference-manifest.js": {
-          "bytesInOutput": 28761
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/termos/page_client-reference-manifest.js": {
-          "bytesInOutput": 28173
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/search/page_client-reference-manifest.js": {
-          "bytesInOutput": 28277
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/sobre/page_client-reference-manifest.js": {
-          "bytesInOutput": 28250
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/conta/page_client-reference-manifest.js": {
-          "bytesInOutput": 28862
-        },
-        ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/page_client-reference-manifest.js": {
-          "bytesInOutput": 29298
-        },
-        ".open-next/server-functions/default/.next/server/app/_global-error/page_client-reference-manifest.js": {
-          "bytesInOutput": 28234
-        },
-        ".open-next/server-functions/default/.next/server/app/auth/confirm/route_client-reference-manifest.js": {
           "bytesInOutput": 28235
         },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/conta/cadastro/page_client-reference-manifest.js": {
+          "bytesInOutput": 27637
+        },
+        ".open-next/server-functions/default/.next/server/app/api/webhooks/melhor-envio/route_client-reference-manifest.js": {
+          "bytesInOutput": 26809
+        },
+        ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/page_client-reference-manifest.js": {
+          "bytesInOutput": 28227
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/page_client-reference-manifest.js": {
+          "bytesInOutput": 27755
+        },
+        ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/pedidos/page_client-reference-manifest.js": {
+          "bytesInOutput": 28223
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page_client-reference-manifest.js": {
+          "bytesInOutput": 27580
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/conta/perfil/page_client-reference-manifest.js": {
+          "bytesInOutput": 27500
+        },
+        ".open-next/server-functions/default/.next/server/app/api/webhooks/abacatepay/route_client-reference-manifest.js": {
+          "bytesInOutput": 26803
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/conta/login/page_client-reference-manifest.js": {
+          "bytesInOutput": 27626
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/categorias/page_client-reference-manifest.js": {
+          "bytesInOutput": 26847
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/produtos/page_client-reference-manifest.js": {
+          "bytesInOutput": 27184
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/carrinho/page_client-reference-manifest.js": {
+          "bytesInOutput": 27152
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/sucesso/page_client-reference-manifest.js": {
+          "bytesInOutput": 27959
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/contato/page_client-reference-manifest.js": {
+          "bytesInOutput": 26712
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/[slug]/page_client-reference-manifest.js": {
+          "bytesInOutput": 27277
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/termos/page_client-reference-manifest.js": {
+          "bytesInOutput": 26707
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/search/page_client-reference-manifest.js": {
+          "bytesInOutput": 26811
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/sobre/page_client-reference-manifest.js": {
+          "bytesInOutput": 26784
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/conta/page_client-reference-manifest.js": {
+          "bytesInOutput": 27396
+        },
+        ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/page_client-reference-manifest.js": {
+          "bytesInOutput": 27796
+        },
+        ".open-next/server-functions/default/.next/server/app/_global-error/page_client-reference-manifest.js": {
+          "bytesInOutput": 26768
+        },
+        ".open-next/server-functions/default/.next/server/app/auth/confirm/route_client-reference-manifest.js": {
+          "bytesInOutput": 26769
+        },
         ".open-next/server-functions/default/.next/server/app/sitemap.xml/route_client-reference-manifest.js": {
-          "bytesInOutput": 28231
+          "bytesInOutput": 26765
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/page_client-reference-manifest.js": {
-          "bytesInOutput": 28133
+          "bytesInOutput": 26685
         },
         ".open-next/server-functions/default/.next/server/app/admin/login/page_client-reference-manifest.js": {
-          "bytesInOutput": 29842
+          "bytesInOutput": 28322
         },
         ".open-next/server-functions/default/.next/server/app/_not-found/page_client-reference-manifest.js": {
-          "bytesInOutput": 28225
+          "bytesInOutput": 26759
         },
         ".open-next/server-functions/default/node_modules/next/dist/server/load-manifest.external.js": {
-          "bytesInOutput": 45804
+          "bytesInOutput": 45871
         },
         ".open-next/server-functions/default/node_modules/next/dist/server/app-render/action-async-storage-instance.js": {
           "bytesInOutput": 501
@@ -10314,23 +10309,23 @@
         ".open-next/server-functions/default/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js": {
           "bytesInOutput": 164273
         },
-        ".open-next/server-functions/default/.next/server/chunks/1455.js": {
-          "bytesInOutput": 12818
+        ".open-next/server-functions/default/.next/server/chunks/1453.js": {
+          "bytesInOutput": 23148
         },
-        ".open-next/server-functions/default/.next/server/chunks/1621.js": {
-          "bytesInOutput": 11725
+        ".open-next/server-functions/default/.next/server/chunks/1455.js": {
+          "bytesInOutput": 12819
         },
         ".open-next/server-functions/default/.next/server/chunks/2404.js": {
           "bytesInOutput": 4541
         },
-        ".open-next/server-functions/default/.next/server/chunks/2433.js": {
-          "bytesInOutput": 33221
-        },
         ".open-next/server-functions/default/.next/server/chunks/3225.js": {
-          "bytesInOutput": 96220
+          "bytesInOutput": 96202
+        },
+        ".open-next/server-functions/default/.next/server/chunks/333.js": {
+          "bytesInOutput": 19931
         },
         ".open-next/server-functions/default/.next/server/chunks/3410.js": {
-          "bytesInOutput": 737812
+          "bytesInOutput": 730792
         },
         ".open-next/server-functions/default/.next/server/chunks/3442.js": {
           "bytesInOutput": 191150
@@ -10341,146 +10336,146 @@
         ".open-next/server-functions/default/.next/server/chunks/3679.js": {
           "bytesInOutput": 121281
         },
+        ".open-next/server-functions/default/.next/server/chunks/4111.js": {
+          "bytesInOutput": 13641
+        },
         ".open-next/server-functions/default/.next/server/chunks/4218.js": {
           "bytesInOutput": 177141
         },
-        ".open-next/server-functions/default/.next/server/chunks/4589.js": {
-          "bytesInOutput": 19602
-        },
         ".open-next/server-functions/default/.next/server/chunks/5573.js": {
-          "bytesInOutput": 12108
+          "bytesInOutput": 8941
         },
         ".open-next/server-functions/default/.next/server/chunks/5592.js": {
           "bytesInOutput": 25995
         },
         ".open-next/server-functions/default/.next/server/chunks/6029.js": {
-          "bytesInOutput": 21113
+          "bytesInOutput": 21207
         },
         ".open-next/server-functions/default/.next/server/chunks/7097.js": {
-          "bytesInOutput": 247403
+          "bytesInOutput": 20582
         },
-        ".open-next/server-functions/default/.next/server/chunks/7459.js": {
-          "bytesInOutput": 20564
+        ".open-next/server-functions/default/.next/server/chunks/7747.js": {
+          "bytesInOutput": 11495
         },
-        ".open-next/server-functions/default/.next/server/chunks/8042.js": {
-          "bytesInOutput": 23149
-        },
-        ".open-next/server-functions/default/.next/server/chunks/8120.js": {
-          "bytesInOutput": 13640
+        ".open-next/server-functions/default/.next/server/chunks/7920.js": {
+          "bytesInOutput": 33749
         },
         ".open-next/server-functions/default/.next/server/chunks/861.js": {
           "bytesInOutput": 27555
         },
         ".open-next/server-functions/default/.next/server/chunks/9363.js": {
-          "bytesInOutput": 8330
+          "bytesInOutput": 8312
+        },
+        ".open-next/server-functions/default/.next/server/chunks/9478.js": {
+          "bytesInOutput": 244236
         },
         ".open-next/server-functions/default/.next/server/webpack-runtime.js": {
-          "bytesInOutput": 2417
+          "bytesInOutput": 2416
         },
         ".open-next/server-functions/default/.next/server/app/api/integrations/melhor-envio/callback/route.js": {
-          "bytesInOutput": 13365
+          "bytesInOutput": 13074
         },
         ".open-next/server-functions/default/.next/server/app/api/integrations/melhor-envio/connect/route.js": {
-          "bytesInOutput": 12951
+          "bytesInOutput": 12660
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/[id]/editar/page.js": {
-          "bytesInOutput": 20345
-        },
-        ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/novo/page.js": {
-          "bytesInOutput": 19645
+          "bytesInOutput": 20237
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/[id]/page.js": {
-          "bytesInOutput": 27172
+          "bytesInOutput": 27081
+        },
+        ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/novo/page.js": {
+          "bytesInOutput": 19537
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/configuracoes/page.js": {
-          "bytesInOutput": 80303
+          "bytesInOutput": 80275
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/categorias/page.js": {
-          "bytesInOutput": 45410
+          "bytesInOutput": 45301
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/cadastro/page.js": {
-          "bytesInOutput": 27169
+          "bytesInOutput": 26768
         },
         ".open-next/server-functions/default/.next/server/app/api/webhooks/melhor-envio/route.js": {
-          "bytesInOutput": 9377
-        },
-        ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/page.js": {
-          "bytesInOutput": 41259
+          "bytesInOutput": 9084
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/page.js": {
-          "bytesInOutput": 32694
+          "bytesInOutput": 32603
         },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page.js": {
-          "bytesInOutput": 40935
+        ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/page.js": {
+          "bytesInOutput": 41692
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/perfil/page.js": {
-          "bytesInOutput": 37032
+          "bytesInOutput": 36918
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page.js": {
+          "bytesInOutput": 44674
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/pedidos/page.js": {
-          "bytesInOutput": 40229
+          "bytesInOutput": 40340
         },
         ".open-next/server-functions/default/.next/server/app/api/webhooks/abacatepay/route.js": {
-          "bytesInOutput": 16787
+          "bytesInOutput": 16769
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/login/page.js": {
-          "bytesInOutput": 28363
+          "bytesInOutput": 27968
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/categorias/page.js": {
-          "bytesInOutput": 22094
+          "bytesInOutput": 22003
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/carrinho/page.js": {
-          "bytesInOutput": 58629
+          "bytesInOutput": 59381
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/produtos/page.js": {
-          "bytesInOutput": 29011
+          "bytesInOutput": 29441
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/sucesso/page.js": {
-          "bytesInOutput": 41744
+          "bytesInOutput": 42517
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/contato/page.js": {
-          "bytesInOutput": 22196
+          "bytesInOutput": 22106
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/[slug]/page.js": {
-          "bytesInOutput": 37482
-        },
-        ".open-next/server-functions/default/.next/server/app/(storefront)/termos/page.js": {
-          "bytesInOutput": 21656
+          "bytesInOutput": 37993
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/search/page.js": {
-          "bytesInOutput": 27602
+          "bytesInOutput": 28052
+        },
+        ".open-next/server-functions/default/.next/server/app/(storefront)/termos/page.js": {
+          "bytesInOutput": 21566
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/page.js": {
-          "bytesInOutput": 34179
+          "bytesInOutput": 34083
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/sobre/page.js": {
-          "bytesInOutput": 21242
+          "bytesInOutput": 21151
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/page.js": {
-          "bytesInOutput": 28846
+          "bytesInOutput": 28721
         },
         ".open-next/server-functions/default/.next/server/app/apple-icon.jpg/route.js": {
-          "bytesInOutput": 295005
+          "bytesInOutput": 294982
         },
         ".open-next/server-functions/default/.next/server/app/_global-error/page.js": {
-          "bytesInOutput": 26499
+          "bytesInOutput": 26480
         },
         ".open-next/server-functions/default/.next/server/app/auth/confirm/route.js": {
-          "bytesInOutput": 12189
+          "bytesInOutput": 12169
         },
         ".open-next/server-functions/default/.next/server/app/sitemap.xml/route.js": {
-          "bytesInOutput": 16623
+          "bytesInOutput": 13953
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/page.js": {
-          "bytesInOutput": 37550
+          "bytesInOutput": 38561
         },
         ".open-next/server-functions/default/.next/server/app/admin/login/page.js": {
-          "bytesInOutput": 28313
+          "bytesInOutput": 28241
         },
         ".open-next/server-functions/default/.next/server/app/_not-found/page.js": {
-          "bytesInOutput": 17400
+          "bytesInOutput": 17346
         },
         ".open-next/server-functions/default/.next/server/app/icon.jpg/route.js": {
-          "bytesInOutput": 294965
+          "bytesInOutput": 294942
         },
         ".open-next/server-functions/default/node_modules/next/dist/server/require.js": {
           "bytesInOutput": 6419
@@ -10627,10 +10622,10 @@
           "bytesInOutput": 5072
         },
         ".open-next/server-functions/default/index.mjs": {
-          "bytesInOutput": 67189
+          "bytesInOutput": 67706
         }
       },
-      "bytes": 6515995
+      "bytes": 6457364
     }
   }
 }
