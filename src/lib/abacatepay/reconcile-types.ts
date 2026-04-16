@@ -1,4 +1,4 @@
-import type { Database, Json } from "@/lib/supabase/database.types"
+import type { Database } from "@/lib/supabase/database.types"
 import type { PaymentEventProcessingResult } from "./webhook-handlers"
 
 export type PaymentAttemptRow = Database["public"]["Tables"]["payment_attempts"]["Row"]

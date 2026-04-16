@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useState } from "react"
+import { getProductPath } from "@/lib/products"
 import { ProductCardImage } from "./ProductCardImage"
 
 type ProductImage = {
@@ -12,6 +13,7 @@ type ProductImage = {
 
 export type Product = {
     id: string
+    slug: string
     name: string
     base_price: number
     category?: { name?: string | null } | null
@@ -43,7 +45,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
     return (
         <article className={`group surface-card hover-lift-soft interactive-panel animate-enter-soft flex h-full flex-col rounded-[1.85rem] p-3 ${delayClass}`}>
             <Link
-                href={`/produto/${product.id}`}
+                href={getProductPath(product.slug)}
                 className="flex h-full flex-col rounded-[1.45rem] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
                 onMouseEnter={() => setShowSecondaryImage(true)}
                 onFocus={() => setShowSecondaryImage(true)}
@@ -67,7 +69,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
                     <div className="mt-auto flex items-end justify-between gap-3 pt-5">
                         <p className="text-lg font-semibold text-foreground">{formattedPrice}</p>
                         <span className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-                            ver peça
+                            ver peca
                         </span>
                     </div>
                 </div>

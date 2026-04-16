@@ -7,6 +7,7 @@ const SEARCH_RESULTS_PER_PAGE = 12
 
 type SearchProduct = {
     id: string
+    slug: string
     name: string
     base_price: number
     category?: { name?: string | null } | null
@@ -80,7 +81,7 @@ export default async function SearchPage({
     const productQuery = supabase
         .from("products")
         .select(`
-            id, name, base_price,
+            id, slug, name, base_price,
             category:categories(name),
             images:product_images(image_url, is_primary, display_order)
         `)

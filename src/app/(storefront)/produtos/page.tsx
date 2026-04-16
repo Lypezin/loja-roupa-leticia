@@ -8,6 +8,7 @@ const PRODUCTS_PER_PAGE = 12
 
 type CatalogProduct = {
     id: string
+    slug: string
     name: string
     base_price: number
     category?: { name?: string | null } | null
@@ -29,7 +30,7 @@ export default async function ProdutosPage({
     let query = supabase
         .from("products")
         .select(`
-            id, name, base_price,
+            id, slug, name, base_price,
             category:categories(name),
             images:product_images(image_url, is_primary, display_order)
         `)

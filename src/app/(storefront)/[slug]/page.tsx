@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
-import { createPublicClient } from "@/lib/supabase/public"
-import { FilterSort } from "@/components/store/FilterSort"
-import { ProductCard, type Product } from "@/components/store/ProductCard"
-import { PaginationControls } from "@/components/store/PaginationControls"
 import { notFound } from "next/navigation"
+import { FilterSort } from "@/components/store/FilterSort"
+import { PaginationControls } from "@/components/store/PaginationControls"
+import { ProductCard, type Product } from "@/components/store/ProductCard"
+import { createPublicClient } from "@/lib/supabase/public"
 
 export const revalidate = 60
 const PRODUCTS_PER_PAGE = 12
@@ -29,9 +29,11 @@ export async function generateMetadata(props: {
         notFound()
     }
 
+    const resolvedCategory = category as NonNullable<typeof category>
+
     return {
-        title: category.name,
-        description: `Peças organizadas em ${category.name} para comparar foto, preço e disponibilidade com mais rapidez.`,
+        title: resolvedCategory.name,
+        description: `Pecas organizadas em ${resolvedCategory.name} para comparar foto, preco e disponibilidade com mais rapidez.`,
     }
 }
 
@@ -52,23 +54,24 @@ export default async function CategoryPage(props: {
         notFound()
     }
 
+    const resolvedCategory = category as NonNullable<typeof category>
     const supabase = createPublicClient()
 
     let query = supabase
         .from("products")
         .select(`
-            id, name, base_price,
+            id, slug, name, base_price,
             category:categories(name),
             images:product_images(image_url, is_primary, display_order)
         `)
         .eq("is_active", true)
-        .eq("category_id", category.id)
+        .eq("category_id", resolvedCategory.id)
 
     let countQuery = supabase
         .from("products")
         .select("id", { count: "exact", head: true })
         .eq("is_active", true)
-        .eq("category_id", category.id)
+        .eq("category_id", resolvedCategory.id)
 
     if (minPrice) {
         query = query.gte("base_price", parseFloat(minPrice))
@@ -103,9 +106,9 @@ export default async function CategoryPage(props: {
                 <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                     <div>
                         <span className="eyebrow">categoria</span>
-                        <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">{category.name}</h1>
+                        <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">{resolvedCategory.name}</h1>
                         <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">
-                            Veja somente as peças desta categoria, com preço, foto e disponibilidade em leitura direta.
+                            Veja somente as pecas desta categoria, com preco, foto e disponibilidade em leitura direta.
                         </p>
                     </div>
                     <div className="w-full md:w-auto">
@@ -131,7 +134,7 @@ export default async function CategoryPage(props: {
                 </>
             ) : (
                 <div className="py-20 text-center text-muted-foreground">
-                    Nenhum produto disponível nesta categoria no momento.
+                    Nenhum produto disponivel nesta categoria no momento.
                 </div>
             )}
         </div>

@@ -3,6 +3,7 @@ import { ProductCard } from "@/components/store/ProductCard"
 
 type HomeProduct = {
   id: string
+  slug: string
   name: string
   base_price: number
   category?: { name?: string | null } | null

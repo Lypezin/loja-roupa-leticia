@@ -1,30 +1,31 @@
-import { MetadataRoute } from 'next'
-import { createClient } from '@/lib/supabase/server'
+import { MetadataRoute } from "next"
+import { getProductPath } from "@/lib/products"
+import { getSiteUrl } from "@/lib/site-url"
+import { createPublicClient } from "@/lib/supabase/public"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const supabase = await createClient()
-    const baseUrl = 'https://loja-roupa.vercel.app'
+    const supabase = createPublicClient()
+    const baseUrl = getSiteUrl()
 
-    // 1. Buscar Categorias
-    const { data: categories } = await supabase.from('categories').select('slug, updated_at')
+    const [{ data: categories }, { data: products }] = await Promise.all([
+        supabase.from("categories").select("slug, created_at"),
+        supabase
+            .from("products")
+            .select("slug, created_at")
+            .eq("is_active", true),
+    ])
 
-    // 2. Buscar Produtos
-    const { data: products } = await supabase
-        .from('products')
-        .select('id, updated_at')
-        .eq('is_active', true)
-
-    const categoryEntries = (categories || []).map((cat) => ({
-        url: `${baseUrl}/${cat.slug}`,
-        lastModified: cat.updated_at ? new Date(cat.updated_at) : new Date(),
-        changeFrequency: 'weekly' as const,
+    const categoryEntries = (categories || []).map((category) => ({
+        url: `${baseUrl}/${category.slug}`,
+        lastModified: category.created_at ? new Date(category.created_at) : new Date(),
+        changeFrequency: "weekly" as const,
         priority: 0.8,
     }))
 
-    const productEntries = (products || []).map((prod) => ({
-        url: `${baseUrl}/produto/${prod.id}`,
-        lastModified: prod.updated_at ? new Date(prod.updated_at) : new Date(),
-        changeFrequency: 'daily' as const,
+    const productEntries = (products || []).map((product) => ({
+        url: `${baseUrl}${getProductPath(product.slug)}`,
+        lastModified: product.created_at ? new Date(product.created_at) : new Date(),
+        changeFrequency: "daily" as const,
         priority: 1,
     }))
 
@@ -32,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         {
             url: baseUrl,
             lastModified: new Date(),
-            changeFrequency: 'daily' as const,
+            changeFrequency: "daily" as const,
             priority: 1,
         },
         ...categoryEntries,

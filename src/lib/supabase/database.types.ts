@@ -391,6 +391,7 @@ export type Database = {
           is_active: boolean | null
           length_cm: number | null
           name: string
+          slug: string
           stripe_price_id: string | null
           stripe_product_id: string | null
           weight_kg: number | null
@@ -406,6 +407,7 @@ export type Database = {
           is_active?: boolean | null
           length_cm?: number | null
           name: string
+          slug?: string
           stripe_price_id?: string | null
           stripe_product_id?: string | null
           weight_kg?: number | null
@@ -421,6 +423,7 @@ export type Database = {
           is_active?: boolean | null
           length_cm?: number | null
           name?: string
+          slug?: string
           stripe_price_id?: string | null
           stripe_product_id?: string | null
           weight_kg?: number | null

@@ -1,4 +1,5 @@
 import { normalizeBrazilPhone, normalizeCpf } from "@/lib/customer-profile"
+import type { CustomerProfile } from "@/lib/customer-profile"
 import {
     MelhorEnvioOrderRecord,
     MelhorEnvioShipmentSnapshot,
@@ -165,7 +166,7 @@ export function buildSender(settings: MelhorEnvioStoreSettings | null) {
     }
 }
 
-export function buildRecipient(order: MelhorEnvioOrderRecord, profile: any) {
+export function buildRecipient(order: MelhorEnvioOrderRecord, profile: CustomerProfile | null) {
     const address = readShippingAddress(order.shipping_address)
 
     if (!address) {
@@ -200,7 +201,7 @@ export function buildRecipient(order: MelhorEnvioOrderRecord, profile: any) {
     }
 }
 
-export function buildCartPayload(order: MelhorEnvioOrderRecord, settings: MelhorEnvioStoreSettings | null, profile: any) {
+export function buildCartPayload(order: MelhorEnvioOrderRecord, settings: MelhorEnvioStoreSettings | null, profile: CustomerProfile | null) {
     if (order.shipping_provider !== "melhor_envio") {
         throw new Error("Este pedido não usa o Melhor Envio como provedor de frete.")
     }

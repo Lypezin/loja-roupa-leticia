@@ -1,9 +1,11 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight, RefreshCcw, ShieldCheck, Truck } from "lucide-react"
-import { notFound } from "next/navigation"
+import { notFound, permanentRedirect } from "next/navigation"
 import { AddToCart } from "@/components/store/AddToCart"
 import { ProductGallery } from "@/components/store/ProductGallery"
+import { getProductPath, isUuidLike } from "@/lib/products"
+import { getSiteUrl } from "@/lib/site-url"
 import { createPublicClient } from "@/lib/supabase/public"
 
 type ProductImage = {
@@ -24,34 +26,125 @@ type ProductVariation = {
     stock_quantity: number
 }
 
+type ProductMetadataRecord = {
+    id: string
+    slug: string
+    name: string
+    description: string | null
+    product_images?: ProductImage[] | null
+}
+
+type ProductPageRecord = {
+    id: string
+    slug: string
+    name: string
+    description: string | null
+    base_price: number
+    category?: ProductCategory | ProductCategory[] | null
+    variations?: ProductVariation[] | null
+    images?: ProductImage[] | null
+}
+
+const PRODUCT_METADATA_SELECT = "id, slug, name, description, product_images(image_url, is_primary, display_order)"
+const PRODUCT_PAGE_SELECT = `
+    id,
+    slug,
+    name,
+    description,
+    base_price,
+    category:categories(name, slug),
+    variations:product_variations(id, size, color, stock_quantity),
+    images:product_images(image_url, is_primary, display_order)
+`
+
+async function getProductMetadataByReference(productRef: string) {
+    const supabase = createPublicClient()
+
+    const { data: productBySlug } = await supabase
+        .from("products")
+        .select(PRODUCT_METADATA_SELECT)
+        .eq("slug", productRef)
+        .eq("is_active", true)
+        .maybeSingle()
+
+    if (productBySlug) {
+        return productBySlug as ProductMetadataRecord
+    }
+
+    if (!isUuidLike(productRef)) {
+        return null
+    }
+
+    const { data: productById } = await supabase
+        .from("products")
+        .select(PRODUCT_METADATA_SELECT)
+        .eq("id", productRef)
+        .eq("is_active", true)
+        .maybeSingle()
+
+    return (productById as ProductMetadataRecord | null) ?? null
+}
+
+async function getProductPageByReference(productRef: string) {
+    const supabase = createPublicClient()
+
+    const { data: productBySlug } = await supabase
+        .from("products")
+        .select(PRODUCT_PAGE_SELECT)
+        .eq("slug", productRef)
+        .eq("is_active", true)
+        .maybeSingle()
+
+    if (productBySlug) {
+        return productBySlug as ProductPageRecord
+    }
+
+    if (!isUuidLike(productRef)) {
+        return null
+    }
+
+    const { data: productById } = await supabase
+        .from("products")
+        .select(PRODUCT_PAGE_SELECT)
+        .eq("id", productRef)
+        .eq("is_active", true)
+        .maybeSingle()
+
+    return (productById as ProductPageRecord | null) ?? null
+}
+
+function getCanonicalProductUrl(slug: string) {
+    return `${getSiteUrl()}${getProductPath(slug)}`
+}
+
 export async function generateMetadata({
     params,
 }: {
     params: Promise<{ id: string }>
 }): Promise<Metadata> {
-    const { id } = await params
-    const supabase = createPublicClient()
-
-    const { data: product } = await supabase
-        .from("products")
-        .select("name, description, product_images(image_url, is_primary, display_order)")
-        .eq("id", id)
-        .maybeSingle()
+    const { id: productRef } = await params
+    const product = await getProductMetadataByReference(productRef)
 
     if (!product) {
         notFound()
     }
 
-    const images = (product.product_images || []) as ProductImage[]
-    const description = product.description || "Veja fotos, variacoes disponiveis e informacoes desta peca."
+    const resolvedProduct = product as ProductMetadataRecord
+    const images = (resolvedProduct.product_images || []) as ProductImage[]
+    const description = resolvedProduct.description || "Veja fotos, variacoes disponiveis e informacoes desta peca."
     const imageUrl = images.find((img) => img.is_primary)?.image_url || images[0]?.image_url
+    const canonicalUrl = getCanonicalProductUrl(resolvedProduct.slug)
 
     return {
-        title: product.name,
+        title: resolvedProduct.name,
         description: description.slice(0, 160),
+        alternates: {
+            canonical: canonicalUrl,
+        },
         openGraph: {
-            title: product.name,
+            title: resolvedProduct.name,
             description,
+            url: canonicalUrl,
             images: imageUrl ? [{ url: imageUrl }] : [],
         },
     }
@@ -62,27 +155,23 @@ export default async function ProductPage({
 }: {
     params: Promise<{ id: string }>
 }) {
-    const { id } = await params
-    const supabase = createPublicClient()
-
-    const { data: product } = await supabase
-        .from("products")
-        .select(`
-            *,
-            category:categories(name, slug),
-            variations:product_variations(*),
-            images:product_images(image_url, is_primary, display_order)
-        `)
-        .eq("id", id)
-        .maybeSingle()
+    const { id: productRef } = await params
+    const product = await getProductPageByReference(productRef)
 
     if (!product) {
         notFound()
     }
 
-    const images = (product.images || []) as ProductImage[]
-    const category = (product.category || {}) as ProductCategory
-    const variations = (product.variations || []) as ProductVariation[]
+    const resolvedProduct = product as ProductPageRecord
+
+    if (productRef !== resolvedProduct.slug) {
+        permanentRedirect(getProductPath(resolvedProduct.slug))
+    }
+
+    const images = (resolvedProduct.images || []) as ProductImage[]
+    const rawCategory = resolvedProduct.category
+    const category = Array.isArray(rawCategory) ? (rawCategory[0] || {}) : (rawCategory || {})
+    const variations = (resolvedProduct.variations || []) as ProductVariation[]
     const primaryImage = images.find((img) => img.is_primary)?.image_url
         || images[0]?.image_url
         || "/placeholder-image.jpg"
@@ -91,12 +180,12 @@ export default async function ProductPage({
     const formattedPrice = new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
-    }).format(product.base_price)
+    }).format(resolvedProduct.base_price)
 
     const installmentPrice = new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
-    }).format(product.base_price / 3)
+    }).format(resolvedProduct.base_price / 3)
 
     const highlights = [
         { icon: Truck, title: "Envio com rastreio", desc: "Prazo e valor aparecem antes do pagamento." },
@@ -113,16 +202,16 @@ export default async function ProductPage({
                     {category.name || "Catalogo"}
                 </Link>
                 <ChevronRight className="h-3.5 w-3.5" />
-                <span className="min-w-0 max-w-full break-words text-foreground">{product.name}</span>
+                <span className="min-w-0 max-w-full break-words text-foreground">{resolvedProduct.name}</span>
             </nav>
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
-                <ProductGallery images={images} productName={product.name} />
+                <ProductGallery images={images} productName={resolvedProduct.name} />
 
                 <div className="flex flex-col py-1 md:py-2">
                     <span className="eyebrow">{category.name || "produto"}</span>
                     <h1 className="mt-3 font-display text-[2.35rem] leading-tight text-foreground md:mt-4 md:text-5xl">
-                        {product.name}
+                        {resolvedProduct.name}
                     </h1>
 
                     <div className="mt-4 flex flex-wrap items-end gap-x-3 gap-y-1.5 md:mt-5 md:gap-x-4 md:gap-y-2">
@@ -131,13 +220,13 @@ export default async function ProductPage({
                     </div>
 
                     <p className="mt-5 text-[0.98rem] leading-7 text-muted-foreground md:mt-6 md:text-base md:leading-8">
-                        {product.description || "Confira fotos, escolha a variacao ideal e adicione a peca na sacola com o frete calculado no carrinho."}
+                        {resolvedProduct.description || "Confira fotos, escolha a variacao ideal e adicione a peca na sacola com o frete calculado no carrinho."}
                     </p>
 
                     <AddToCart
-                        productId={product.id}
-                        productName={product.name}
-                        price={product.base_price}
+                        productId={resolvedProduct.id}
+                        productName={resolvedProduct.name}
+                        price={resolvedProduct.base_price}
                         imageUrl={primaryImage}
                         variations={variations}
                     />
