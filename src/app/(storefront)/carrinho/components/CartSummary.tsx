@@ -4,7 +4,7 @@ import Link from "next/link"
 import { ArrowRight, Loader2, MessageSquare } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
-import { createCheckoutSession } from "@/app/(storefront)/_actions/checkout/create-session"
+import { createCheckoutSession, createWhatsAppCheckoutSession } from "@/app/(storefront)/_actions/checkout/create-session"
 import { ShippingSelector } from "@/app/(storefront)/carrinho/components/ShippingSelector"
 import { Button } from "@/components/ui/button"
 import { useCartStore } from "@/store/useCartStore"
@@ -16,7 +16,6 @@ interface CartSummaryProps {
     formattedTotal: string
     installment: string
     defaultPostalCode?: string | null
-    handleWhatsAppCheckout: () => void
 }
 
 export function CartSummary({
@@ -25,11 +24,12 @@ export function CartSummary({
     formattedTotal,
     installment,
     defaultPostalCode,
-    handleWhatsAppCheckout,
 }: CartSummaryProps) {
     const { items, selectedShipping } = useCartStore()
     const [isLoadingCheckout, setIsLoadingCheckout] = useState(false)
-    const checkoutDisabled = items.length === 0 || !selectedShipping || isLoadingCheckout
+    const [isLoadingWhatsApp, setIsLoadingWhatsApp] = useState(false)
+    const isBusy = isLoadingCheckout || isLoadingWhatsApp
+    const checkoutDisabled = items.length === 0 || !selectedShipping || isBusy
 
     const handleHostedCheckout = async () => {
         if (items.length === 0 || !selectedShipping) {
@@ -59,6 +59,50 @@ export function CartSummary({
             toast.error("Falha interna ao redirecionar para o pagamento.")
         } finally {
             setIsLoadingCheckout(false)
+        }
+    }
+
+    const handleWhatsAppCheckout = async () => {
+        if (items.length === 0 || !selectedShipping) {
+            toast.error("Calcule e selecione um frete antes de seguir pelo WhatsApp.")
+            return
+        }
+
+        setIsLoadingWhatsApp(true)
+        const popupWindow = window.open("", "_blank", "noopener,noreferrer")
+
+        try {
+            const result = await createWhatsAppCheckoutSession(items, selectedShipping)
+
+            if (result.error) {
+                popupWindow?.close()
+                toast.error(result.error)
+                return
+            }
+
+            if (result.redirectTo) {
+                popupWindow?.close()
+                window.location.assign(result.redirectTo)
+                return
+            }
+
+            if (result.whatsappUrl) {
+                if (popupWindow) {
+                    popupWindow.location.href = result.whatsappUrl
+                } else {
+                    window.location.assign(result.whatsappUrl)
+                }
+
+                return
+            }
+
+            popupWindow?.close()
+            toast.error("Nao foi possivel abrir o atendimento no WhatsApp agora.")
+        } catch {
+            popupWindow?.close()
+            toast.error("Falha interna ao preparar o atendimento via WhatsApp.")
+        } finally {
+            setIsLoadingWhatsApp(false)
         }
     }
 
@@ -98,17 +142,23 @@ export function CartSummary({
 
                     <Button
                         onClick={handleWhatsAppCheckout}
-                        disabled={isLoadingCheckout}
+                        disabled={checkoutDisabled}
                         variant="outline"
                         className="h-12 w-full rounded-full border-emerald-500/30 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-emerald-700 hover:bg-emerald-50 sm:text-sm sm:tracking-[0.16em]"
                     >
-                        <MessageSquare className="h-4 w-4" />
-                        Finalizar via WhatsApp
+                        {isLoadingWhatsApp ? (
+                            <span className="flex items-center gap-2">Preparando <Loader2 className="h-4 w-4 animate-spin" /></span>
+                        ) : (
+                            <span className="flex items-center gap-2">Receber link no WhatsApp <MessageSquare className="h-4 w-4" /></span>
+                        )}
                     </Button>
                 </div>
 
                 <p className="mt-4 text-center text-xs text-muted-foreground">
                     Checkout hospedado pela AbacatePay.
+                </p>
+                <p className="mt-2 text-center text-xs text-muted-foreground">
+                    Pedido, estoque e envio so sao confirmados apos o pagamento.
                 </p>
 
                 <Link href="/" className="mt-5 block text-center text-sm text-muted-foreground transition-colors hover:text-foreground">

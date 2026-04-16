@@ -16,7 +16,6 @@ export default function CarrinhoPage() {
         total, 
         selectedShipping, 
         defaultPostalCode, 
-        handleWhatsAppCheckout 
     } = useCartLogic()
 
     const { removeItem, updateQuantity } = useCartStore()
@@ -66,7 +65,6 @@ export default function CarrinhoPage() {
                     formattedTotal={formattedTotal}
                     installment={installment}
                     defaultPostalCode={defaultPostalCode}
-                    handleWhatsAppCheckout={handleWhatsAppCheckout}
                 />
             </div>
         </div>

@@ -3639,32 +3639,32 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/[id]/editar/page_client-reference-manifest.js": {
-      "bytes": 31096,
+      "bytes": 31099,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/configuracoes/page_client-reference-manifest.js": {
-      "bytes": 30544,
+      "bytes": 30547,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/novo/page_client-reference-manifest.js": {
-      "bytes": 31062,
+      "bytes": 31065,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/[id]/page_client-reference-manifest.js": {
-      "bytes": 30443,
+      "bytes": 30446,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/categorias/page_client-reference-manifest.js": {
-      "bytes": 30535,
+      "bytes": 30538,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/cadastro/page_client-reference-manifest.js": {
-      "bytes": 29938,
+      "bytes": 29941,
       "imports": [],
       "format": "cjs"
     },
@@ -3674,27 +3674,27 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/page_client-reference-manifest.js": {
-      "bytes": 30529,
+      "bytes": 30532,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/page_client-reference-manifest.js": {
-      "bytes": 30057,
+      "bytes": 30060,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/pedidos/page_client-reference-manifest.js": {
-      "bytes": 30526,
+      "bytes": 30529,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page_client-reference-manifest.js": {
-      "bytes": 29882,
+      "bytes": 29885,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/perfil/page_client-reference-manifest.js": {
-      "bytes": 29802,
+      "bytes": 29805,
       "imports": [],
       "format": "cjs"
     },
@@ -3704,67 +3704,67 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/login/page_client-reference-manifest.js": {
-      "bytes": 29929,
+      "bytes": 29932,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/categorias/page_client-reference-manifest.js": {
-      "bytes": 29151,
+      "bytes": 29154,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/produtos/page_client-reference-manifest.js": {
-      "bytes": 29490,
+      "bytes": 29493,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/carrinho/page_client-reference-manifest.js": {
-      "bytes": 29458,
+      "bytes": 29461,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/sucesso/page_client-reference-manifest.js": {
-      "bytes": 30266,
+      "bytes": 30269,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/contato/page_client-reference-manifest.js": {
-      "bytes": 29019,
+      "bytes": 29022,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/[slug]/page_client-reference-manifest.js": {
-      "bytes": 29585,
+      "bytes": 29588,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/termos/page_client-reference-manifest.js": {
-      "bytes": 29015,
+      "bytes": 29018,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/search/page_client-reference-manifest.js": {
-      "bytes": 29119,
+      "bytes": 29122,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/sobre/page_client-reference-manifest.js": {
-      "bytes": 29093,
+      "bytes": 29096,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/page_client-reference-manifest.js": {
-      "bytes": 29705,
+      "bytes": 29708,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/page_client-reference-manifest.js": {
-      "bytes": 30106,
+      "bytes": 30109,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/_global-error/page_client-reference-manifest.js": {
-      "bytes": 29082,
+      "bytes": 29085,
       "imports": [],
       "format": "cjs"
     },
@@ -3779,22 +3779,22 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/page_client-reference-manifest.js": {
-      "bytes": 29000,
+      "bytes": 29003,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/login/page_client-reference-manifest.js": {
-      "bytes": 30638,
+      "bytes": 30641,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/_not-found/page_client-reference-manifest.js": {
-      "bytes": 29076,
+      "bytes": 29079,
       "imports": [],
       "format": "cjs"
     },
     ".open-next/server-functions/default/node_modules/next/dist/server/load-manifest.external.js": {
-      "bytes": 60675,
+      "bytes": 60973,
       "imports": [
         {
           "path": "path",
@@ -6119,7 +6119,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/carrinho/page.js": {
-      "bytes": 65190,
+      "bytes": 67211,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -10463,82 +10463,82 @@
           "bytesInOutput": 598
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/[id]/editar/page_client-reference-manifest.js": {
-          "bytesInOutput": 28807
+          "bytesInOutput": 28810
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/configuracoes/page_client-reference-manifest.js": {
-          "bytesInOutput": 28249
+          "bytesInOutput": 28252
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/novo/page_client-reference-manifest.js": {
-          "bytesInOutput": 28767
+          "bytesInOutput": 28770
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/[id]/page_client-reference-manifest.js": {
-          "bytesInOutput": 28148
+          "bytesInOutput": 28151
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/categorias/page_client-reference-manifest.js": {
-          "bytesInOutput": 28237
+          "bytesInOutput": 28240
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/cadastro/page_client-reference-manifest.js": {
-          "bytesInOutput": 27639
+          "bytesInOutput": 27642
         },
         ".open-next/server-functions/default/.next/server/app/api/webhooks/melhor-envio/route_client-reference-manifest.js": {
           "bytesInOutput": 561
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/page_client-reference-manifest.js": {
-          "bytesInOutput": 28229
+          "bytesInOutput": 28232
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/page_client-reference-manifest.js": {
-          "bytesInOutput": 27757
+          "bytesInOutput": 27760
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/pedidos/page_client-reference-manifest.js": {
-          "bytesInOutput": 28225
+          "bytesInOutput": 28228
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page_client-reference-manifest.js": {
-          "bytesInOutput": 27582
+          "bytesInOutput": 27585
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/perfil/page_client-reference-manifest.js": {
-          "bytesInOutput": 27502
+          "bytesInOutput": 27505
         },
         ".open-next/server-functions/default/.next/server/app/api/webhooks/abacatepay/route_client-reference-manifest.js": {
           "bytesInOutput": 555
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/login/page_client-reference-manifest.js": {
-          "bytesInOutput": 27628
+          "bytesInOutput": 27631
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/categorias/page_client-reference-manifest.js": {
-          "bytesInOutput": 26849
+          "bytesInOutput": 26852
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/produtos/page_client-reference-manifest.js": {
-          "bytesInOutput": 27186
+          "bytesInOutput": 27189
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/carrinho/page_client-reference-manifest.js": {
-          "bytesInOutput": 27154
+          "bytesInOutput": 27157
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/sucesso/page_client-reference-manifest.js": {
-          "bytesInOutput": 27961
+          "bytesInOutput": 27964
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/contato/page_client-reference-manifest.js": {
-          "bytesInOutput": 26714
+          "bytesInOutput": 26717
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/[slug]/page_client-reference-manifest.js": {
-          "bytesInOutput": 27279
+          "bytesInOutput": 27282
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/termos/page_client-reference-manifest.js": {
-          "bytesInOutput": 26709
+          "bytesInOutput": 26712
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/search/page_client-reference-manifest.js": {
-          "bytesInOutput": 26813
+          "bytesInOutput": 26816
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/sobre/page_client-reference-manifest.js": {
-          "bytesInOutput": 26786
+          "bytesInOutput": 26789
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/page_client-reference-manifest.js": {
-          "bytesInOutput": 27398
+          "bytesInOutput": 27401
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/page_client-reference-manifest.js": {
-          "bytesInOutput": 27798
+          "bytesInOutput": 27801
         },
         ".open-next/server-functions/default/.next/server/app/_global-error/page_client-reference-manifest.js": {
-          "bytesInOutput": 26770
+          "bytesInOutput": 26773
         },
         ".open-next/server-functions/default/.next/server/app/auth/confirm/route_client-reference-manifest.js": {
           "bytesInOutput": 521
@@ -10547,16 +10547,16 @@
           "bytesInOutput": 517
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/page_client-reference-manifest.js": {
-          "bytesInOutput": 26687
+          "bytesInOutput": 26690
         },
         ".open-next/server-functions/default/.next/server/app/admin/login/page_client-reference-manifest.js": {
-          "bytesInOutput": 28324
+          "bytesInOutput": 28327
         },
         ".open-next/server-functions/default/.next/server/app/_not-found/page_client-reference-manifest.js": {
-          "bytesInOutput": 26761
+          "bytesInOutput": 26764
         },
         ".open-next/server-functions/default/node_modules/next/dist/server/load-manifest.external.js": {
-          "bytesInOutput": 43351
+          "bytesInOutput": 43636
         },
         ".open-next/server-functions/default/node_modules/next/dist/server/app-render/action-async-storage-instance.js": {
           "bytesInOutput": 501
@@ -10739,7 +10739,7 @@
           "bytesInOutput": 27131
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/carrinho/page.js": {
-          "bytesInOutput": 66531
+          "bytesInOutput": 68620
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/produtos/page.js": {
           "bytesInOutput": 34561
@@ -10943,7 +10943,7 @@
           "bytesInOutput": 67980
         }
       },
-      "bytes": 6742941
+      "bytes": 6745396
     }
   }
 }
