@@ -5,6 +5,13 @@ import { createAbacatePayBilling, getAbacatePayMethods, normalizeAbacatePayStatu
 import { parseCheckoutCartItems } from "@/lib/checkout"
 import { getCheckoutProfile, normalizeBrazilPhone, normalizeCpf } from "@/lib/customer-profile"
 import { buildAbacatePayBillingProducts, calculateCheckoutTotal, getValidatedItems, validateCheckoutItems } from "@/lib/payment-checkout"
+import {
+    buildCheckoutAttemptFingerprint,
+    buildCheckoutAttemptFingerprintFromRow,
+    generateCheckoutAccessToken,
+    hashCheckoutAccessToken,
+    mergeAttemptRawResponse,
+} from "@/lib/payment-attempts"
 import { buildIpAndUserIdentifiers, enforceRateLimit, RateLimitError } from "@/lib/security/rate-limit"
 import { getServerActionSecurityContext } from "@/lib/security/request-context"
 import { getSiteUrl } from "@/lib/site-url"
@@ -26,6 +33,21 @@ type CheckoutActionResult = {
 type StoreContactSettings = {
     store_name: string | null
     whatsapp_number: string | null
+}
+
+type PendingAttemptCandidate = {
+    id: string
+    external_id: string
+    raw_response: Json | null
+    total_amount: number
+    trusted_items: Json
+    shipping_address: Json | null
+    shipping_service_id: string | null
+    shipping_service_name: string | null
+    shipping_company_name: string | null
+    shipping_cost: number | null
+    shipping_provider_cost: number | null
+    shipping_delivery_days: number | null
 }
 
 const currencyFormatter = new Intl.NumberFormat("pt-BR", {
@@ -109,6 +131,66 @@ async function getStoreContactSettings(serviceRole: ReturnType<typeof createServ
     return data ?? null
 }
 
+async function supersedeEquivalentPendingAttempts(
+    serviceRole: ReturnType<typeof createServiceRoleClient>,
+    userId: string,
+    currentExternalId: string,
+    checkoutFingerprint: string,
+) {
+    const cutoffIso = new Date(Date.now() - (7 * 24 * 60 * 60 * 1000)).toISOString()
+    const { data, error } = await serviceRole
+        .from("payment_attempts")
+        .select(`
+            id,
+            external_id,
+            raw_response,
+            total_amount,
+            trusted_items,
+            shipping_address,
+            shipping_service_id,
+            shipping_service_name,
+            shipping_company_name,
+            shipping_cost,
+            shipping_provider_cost,
+            shipping_delivery_days
+        `)
+        .eq("provider", "abacatepay")
+        .eq("user_id", userId)
+        .in("status", ["creating", "pending"])
+        .neq("external_id", currentExternalId)
+        .gte("created_at", cutoffIso)
+
+    if (error || !data?.length) {
+        if (error) {
+            console.error("Falha ao localizar tentativas antigas para superseder:", error.message)
+        }
+
+        return
+    }
+
+    const matchingAttempts = (data as PendingAttemptCandidate[]).filter((attempt) => (
+        buildCheckoutAttemptFingerprintFromRow(attempt) === checkoutFingerprint
+    ))
+
+    for (const attempt of matchingAttempts) {
+        const { error: updateError } = await serviceRole
+            .from("payment_attempts")
+            .update({
+                status: "superseded",
+                raw_response: mergeAttemptRawResponse(attempt.raw_response, {
+                    superseded_by_external_id: currentExternalId,
+                    superseded_reason: "newer_checkout_link_created",
+                }),
+                updated_at: new Date().toISOString(),
+            })
+            .eq("id", attempt.id)
+
+        if (updateError) {
+            console.error("Falha ao superseder tentativa antiga:", updateError.message)
+        }
+    }
+}
+
 async function prepareCheckoutSession(
     cartItems: unknown,
     shippingSelection?: CheckoutShippingSelection | null,
@@ -185,13 +267,22 @@ async function prepareCheckoutSession(
         const shippingCost = getShippingChargedAmount(selectedShipping)
         const totalAmount = calculateCheckoutTotal(validatedItems, shippingCost)
         const paymentMethods = getAbacatePayMethods()
+        const publicAccessToken = generateCheckoutAccessToken()
+        const publicAccessTokenHash = hashCheckoutAccessToken(publicAccessToken)
 
         externalId = `checkout_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`
+        const checkoutFingerprint = buildCheckoutAttemptFingerprint({
+            items: validatedItems,
+            totalAmount,
+            shippingAddress: effectiveShippingAddress as Json,
+            shippingSelection: selectedShipping,
+        })
 
         const { error: insertAttemptError } = await serviceRole
             .from("payment_attempts")
             .insert({
                 provider: "abacatepay",
+                checkout_source: channel,
                 external_id: externalId,
                 user_id: user.id,
                 trusted_items: validatedItems as unknown as Json,
@@ -209,6 +300,7 @@ async function prepareCheckoutSession(
                 shipping_provider_cost: selectedShipping.provider_cost,
                 shipping_delivery_days: selectedShipping.delivery_days,
                 shipping_quote_payload: (selectedShipping.quote_payload as Json | null) ?? null,
+                public_access_token_hash: publicAccessTokenHash,
                 status: "creating",
             })
 
@@ -222,7 +314,7 @@ async function prepareCheckoutSession(
                 methods: paymentMethods,
                 products: buildAbacatePayBillingProducts(validatedItems, selectedShipping),
                 returnUrl: `${origin}/carrinho`,
-                completionUrl: `${origin}/sucesso?checkout_ref=${externalId}`,
+                completionUrl: `${origin}/sucesso?checkout_ref=${externalId}&access_token=${publicAccessToken}`,
                 customer: {
                     name: profile.fullName,
                     cellphone: normalizedPhone,
@@ -254,6 +346,13 @@ async function prepareCheckoutSession(
             if (!billing.url) {
                 throw new Error("A AbacatePay nao retornou a URL de pagamento.")
             }
+
+            await supersedeEquivalentPendingAttempts(
+                serviceRole,
+                user.id,
+                externalId,
+                checkoutFingerprint,
+            )
 
             if (channel === "whatsapp") {
                 const checkoutMessage = buildWhatsAppCheckoutMessage({

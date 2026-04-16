@@ -4605,11 +4605,6 @@
       "imports": [],
       "format": "cjs"
     },
-    ".open-next/server-functions/default/.next/server/chunks/6515.js": {
-      "bytes": 13131,
-      "imports": [],
-      "format": "cjs"
-    },
     ".open-next/server-functions/default/.next/server/chunks/7097.js": {
       "bytes": 22950,
       "imports": [],
@@ -4617,6 +4612,11 @@
     },
     ".open-next/server-functions/default/.next/server/chunks/7747.js": {
       "bytes": 11312,
+      "imports": [],
+      "format": "cjs"
+    },
+    ".open-next/server-functions/default/.next/server/chunks/808.js": {
+      "bytes": 9810,
       "imports": [],
       "format": "cjs"
     },
@@ -4641,7 +4641,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/webpack-runtime.js": {
-      "bytes": 2630,
+      "bytes": 2628,
       "imports": [
         {
           "path": ".open-next/server-functions/default/.next/server/chunks/1453.js",
@@ -4704,11 +4704,6 @@
           "original": "./chunks/6454.js"
         },
         {
-          "path": ".open-next/server-functions/default/.next/server/chunks/6515.js",
-          "kind": "require-call",
-          "original": "./chunks/6515.js"
-        },
-        {
           "path": ".open-next/server-functions/default/.next/server/chunks/7097.js",
           "kind": "require-call",
           "original": "./chunks/7097.js"
@@ -4717,6 +4712,11 @@
           "path": ".open-next/server-functions/default/.next/server/chunks/7747.js",
           "kind": "require-call",
           "original": "./chunks/7747.js"
+        },
+        {
+          "path": ".open-next/server-functions/default/.next/server/chunks/808.js",
+          "kind": "require-call",
+          "original": "./chunks/808.js"
         },
         {
           "path": ".open-next/server-functions/default/.next/server/chunks/861.js",
@@ -5446,7 +5446,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/page.js": {
-      "bytes": 37416,
+      "bytes": 29129,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5800,7 +5800,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/pedidos/page.js": {
-      "bytes": 45310,
+      "bytes": 50187,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5891,7 +5891,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/api/webhooks/abacatepay/route.js": {
-      "bytes": 18604,
+      "bytes": 20072,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6119,7 +6119,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/carrinho/page.js": {
-      "bytes": 67211,
+      "bytes": 70849,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6296,7 +6296,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/sucesso/page.js": {
-      "bytes": 46888,
+      "bytes": 40156,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6731,7 +6731,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/conta/page.js": {
-      "bytes": 41466,
+      "bytes": 33179,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -6908,7 +6908,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/page.js": {
-      "bytes": 33701,
+      "bytes": 38578,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -10663,14 +10663,14 @@
         ".open-next/server-functions/default/.next/server/chunks/6454.js": {
           "bytesInOutput": 190241
         },
-        ".open-next/server-functions/default/.next/server/chunks/6515.js": {
-          "bytesInOutput": 13638
-        },
         ".open-next/server-functions/default/.next/server/chunks/7097.js": {
           "bytesInOutput": 23288
         },
         ".open-next/server-functions/default/.next/server/chunks/7747.js": {
           "bytesInOutput": 11499
+        },
+        ".open-next/server-functions/default/.next/server/chunks/808.js": {
+          "bytesInOutput": 10311
         },
         ".open-next/server-functions/default/.next/server/chunks/861.js": {
           "bytesInOutput": 27555
@@ -10685,7 +10685,7 @@
           "bytesInOutput": 256331
         },
         ".open-next/server-functions/default/.next/server/webpack-runtime.js": {
-          "bytesInOutput": 2383
+          "bytesInOutput": 2382
         },
         ".open-next/server-functions/default/.next/server/app/api/integrations/melhor-envio/callback/route.js": {
           "bytesInOutput": 13292
@@ -10715,7 +10715,7 @@
           "bytesInOutput": 11575
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/pedidos/page.js": {
-          "bytesInOutput": 37842
+          "bytesInOutput": 29198
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/produtos/page.js": {
           "bytesInOutput": 47004
@@ -10727,10 +10727,10 @@
           "bytesInOutput": 49893
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/pedidos/page.js": {
-          "bytesInOutput": 45591
+          "bytesInOutput": 50597
         },
         ".open-next/server-functions/default/.next/server/app/api/webhooks/abacatepay/route.js": {
-          "bytesInOutput": 19255
+          "bytesInOutput": 20798
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/login/page.js": {
           "bytesInOutput": 36607
@@ -10739,13 +10739,13 @@
           "bytesInOutput": 27131
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/carrinho/page.js": {
-          "bytesInOutput": 68620
+          "bytesInOutput": 72410
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/produtos/page.js": {
           "bytesInOutput": 34561
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/sucesso/page.js": {
-          "bytesInOutput": 47639
+          "bytesInOutput": 40606
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/contato/page.js": {
           "bytesInOutput": 27232
@@ -10760,13 +10760,13 @@
           "bytesInOutput": 26694
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/page.js": {
-          "bytesInOutput": 42049
+          "bytesInOutput": 33405
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/sobre/page.js": {
           "bytesInOutput": 26266
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/page.js": {
-          "bytesInOutput": 33850
+          "bytesInOutput": 38856
         },
         ".open-next/server-functions/default/.next/server/app/apple-icon.jpg/route.js": {
           "bytesInOutput": 295267
@@ -10943,7 +10943,7 @@
           "bytesInOutput": 67980
         }
       },
-      "bytes": 6745396
+      "bytes": 6733092
     }
   }
 }

@@ -90,6 +90,7 @@ export type Database = {
       }
       orders: {
         Row: {
+          checkout_source: string | null
           created_at: string
           customer_email: string | null
           customer_name: string | null
@@ -132,6 +133,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          checkout_source?: string | null
           created_at?: string
           customer_email?: string | null
           customer_name?: string | null
@@ -174,6 +176,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          checkout_source?: string | null
           created_at?: string
           customer_email?: string | null
           customer_name?: string | null
@@ -220,6 +223,7 @@ export type Database = {
       payment_attempts: {
         Row: {
           checkout_id: string | null
+          checkout_source: string
           checkout_url: string | null
           created_at: string
           customer_email: string
@@ -230,6 +234,7 @@ export type Database = {
           id: string
           payment_method: string | null
           provider: string
+          public_access_token_hash: string | null
           raw_response: Json | null
           receipt_url: string | null
           shipping_company_name: string | null
@@ -249,6 +254,7 @@ export type Database = {
         }
         Insert: {
           checkout_id?: string | null
+          checkout_source?: string
           checkout_url?: string | null
           created_at?: string
           customer_email: string
@@ -259,6 +265,7 @@ export type Database = {
           id?: string
           payment_method?: string | null
           provider: string
+          public_access_token_hash?: string | null
           raw_response?: Json | null
           receipt_url?: string | null
           shipping_company_name?: string | null
@@ -278,6 +285,7 @@ export type Database = {
         }
         Update: {
           checkout_id?: string | null
+          checkout_source?: string
           checkout_url?: string | null
           created_at?: string
           customer_email?: string
@@ -288,6 +296,7 @@ export type Database = {
           id?: string
           payment_method?: string | null
           provider?: string
+          public_access_token_hash?: string | null
           raw_response?: Json | null
           receipt_url?: string | null
           shipping_company_name?: string | null
@@ -656,6 +665,7 @@ export type Database = {
       finalize_payment_order: {
         Args: {
           p_checkout_id: string
+          p_checkout_source: string
           p_customer_email: string
           p_customer_name: string
           p_external_id: string
