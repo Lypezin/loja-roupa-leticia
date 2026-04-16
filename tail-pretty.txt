@@ -1,7 +1,0 @@
-
- ⛅️ wrangler 4.82.1
-───────────────────
-Successfully created tail, expires at 2026-04-14T01:04:52Z
-Connected to loja-roupa-leticia, waiting for logs...
-GET https://loja-roupa-leticia.foolype.workers.dev/ - Ok @ 13/04/2026, 16:13:24
-  (error) ⨯ ChunkLoadError: Failed to load chunk server/chunks/ssr/[root-of-the-server]__be909abc._.js from runtime for chunk server/app/(storefront)/page.js
