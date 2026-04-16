@@ -70,14 +70,14 @@ export function StatusSummary({
 
                 <div className="space-y-2">
                     {order ? orderItems.map((item) => (
-                        <div key={item.id} className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">{item.quantity}x {item.products?.name || "Produto"}</span>
-                            <span className="font-medium">{formatCurrency(item.price * item.quantity)}</span>
+                        <div key={item.id} className="flex justify-between gap-3 text-sm">
+                            <span className="min-w-0 text-muted-foreground">{item.quantity}x {item.products?.name || "Produto"}</span>
+                            <span className="shrink-0 font-medium">{formatCurrency(item.price * item.quantity)}</span>
                         </div>
                     )) : attemptItems.map((item, index) => (
-                        <div key={`${checkoutRef}-${index}`} className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">{item.quantity || 0}x {item.product_name || "Produto"}</span>
-                            <span className="font-medium">{formatCurrency((item.unit_price || 0) * (item.quantity || 0))}</span>
+                        <div key={`${checkoutRef}-${index}`} className="flex justify-between gap-3 text-sm">
+                            <span className="min-w-0 text-muted-foreground">{item.quantity || 0}x {item.product_name || "Produto"}</span>
+                            <span className="shrink-0 font-medium">{formatCurrency((item.unit_price || 0) * (item.quantity || 0))}</span>
                         </div>
                     ))}
                 </div>

@@ -38,20 +38,28 @@ export function CartSummary({
         }
 
         setIsLoadingCheckout(true)
+
         try {
             const result = await createCheckoutSession(items, selectedShipping)
+
             if (result.error) {
                 toast.error(result.error)
-            } else if (result.redirectTo || result.url) {
-                window.location.href = (result.redirectTo || result.url) as string
                 return
-            } else {
-                toast.error("Não foi possível iniciar o pagamento.")
             }
+
+            const targetUrl = result.redirectTo || result.url
+
+            if (targetUrl) {
+                window.location.assign(targetUrl)
+                return
+            }
+
+            toast.error("Não foi possível iniciar o pagamento agora. Tente novamente em alguns segundos.")
         } catch {
             toast.error("Falha interna ao redirecionar para o pagamento.")
+        } finally {
+            setIsLoadingCheckout(false)
         }
-        setIsLoadingCheckout(false)
     }
 
     return (

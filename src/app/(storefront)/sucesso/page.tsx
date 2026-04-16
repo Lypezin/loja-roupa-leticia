@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { AlertTriangle, Package, ShoppingBag } from "lucide-react"
+import { AlertTriangle, Package, RefreshCcw, ShoppingBag } from "lucide-react"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { reconcileAbacatePayAttempt } from "@/lib/abacatepay/reconcile"
@@ -36,7 +36,9 @@ export default async function SucessoPage({
     }
 
     const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const {
+        data: { user },
+    } = await supabase.auth.getUser()
 
     if (!user) {
         redirect(`/conta/login?reason=checkout_login_required&next=${encodeURIComponent(`/sucesso?checkout_ref=${checkoutRef}`)}`)
@@ -49,7 +51,7 @@ export default async function SucessoPage({
         try {
             await reconcileAbacatePayAttempt(checkoutRef, user.id)
         } catch (error) {
-            console.error("Falha ao reconciliar checkout pendente na pagina de sucesso:", error)
+            console.error("Falha ao reconciliar checkout pendente na página de sucesso:", error)
         }
         typedAttempt = await fetchPaymentAttempt(supabase, checkoutRef, user.id)
         typedOrder = await fetchOrderDetails(supabase, checkoutRef, user.id)
@@ -81,7 +83,7 @@ export default async function SucessoPage({
     const shouldPoll = Boolean(typedAttempt && !typedOrder && !isFailureState && !isWarningState && !isExpiredPending)
     const receiptUrl = getSafeAbsoluteUrl(typedOrder?.payment_receipt_url || typedAttempt?.receipt_url || null)
     const hasConfirmedOrder = Boolean(typedOrder) && !isFailureState && !isWarningState
-    const canClearCart = Boolean(typedOrder)
+    const canClearCart = hasConfirmedOrder
     const waitingWebhook = !typedOrder && !isFailureState && !isWarningState && !isExpiredPending
 
     return (
@@ -98,10 +100,10 @@ export default async function SucessoPage({
                 />
 
                 <div className="space-y-3 pt-4">
-                    {typedOrder ? (
-                        <Link href="/conta/pedidos">
+                    {hasConfirmedOrder && typedOrder ? (
+                        <Link href={`/conta/pedidos/${typedOrder.id}`}>
                             <Button className="h-12 w-full rounded-xl bg-foreground font-medium text-background hover:bg-foreground/90">
-                                <Package className="h-5 w-5" /> Ver meus pedidos
+                                <Package className="h-5 w-5" /> Ver pedido
                             </Button>
                         </Link>
                     ) : isFailureState ? (
@@ -110,10 +112,24 @@ export default async function SucessoPage({
                                 <ShoppingBag className="h-5 w-5" /> Voltar ao carrinho
                             </Button>
                         </Link>
+                    ) : isWarningState && typedOrder ? (
+                        <Link href={`/conta/pedidos/${typedOrder.id}`}>
+                            <Button className="h-12 w-full rounded-xl bg-foreground font-medium text-background hover:bg-foreground/90">
+                                <Package className="h-5 w-5" /> Ver detalhes do pedido
+                            </Button>
+                        </Link>
                     ) : (
                         <Button disabled className="h-12 w-full rounded-xl font-medium">
                             <Package className="h-5 w-5" /> {waitingWebhook ? "Aguardando confirmação" : "Em verificação"}
                         </Button>
+                    )}
+
+                    {isExpiredPending && (
+                        <Link href={`/sucesso?checkout_ref=${encodeURIComponent(checkoutRef)}`} className="block">
+                            <Button variant="outline" className="h-12 w-full rounded-xl font-medium">
+                                <RefreshCcw className="h-5 w-5" /> Atualizar status agora
+                            </Button>
+                        </Link>
                     )}
 
                     {receiptUrl && (

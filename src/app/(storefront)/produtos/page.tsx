@@ -1,7 +1,7 @@
-import { createPublicClient } from "@/lib/supabase/public"
-import { ProductCard } from "@/components/store/ProductCard"
 import { FilterSort } from "@/components/store/FilterSort"
 import { PaginationControls } from "@/components/store/PaginationControls"
+import { ProductCard } from "@/components/store/ProductCard"
+import { createPublicClient } from "@/lib/supabase/public"
 
 export const revalidate = 60
 const PRODUCTS_PER_PAGE = 12

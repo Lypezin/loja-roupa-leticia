@@ -69,7 +69,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
                     <div className="mt-auto flex items-end justify-between gap-3 pt-5">
                         <p className="text-lg font-semibold text-foreground">{formattedPrice}</p>
                         <span className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-                            ver peca
+                            ver peça
                         </span>
                     </div>
                 </div>

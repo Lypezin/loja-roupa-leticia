@@ -1,9 +1,9 @@
-import { createPublicClient } from "@/lib/supabase/public"
-import { getStoreCategories, getStoreSettings } from "@/lib/storefront"
-import { HeroSection } from "@/components/store/HeroSection"
 import { CategoriesSection } from "@/components/store/CategoriesSection"
+import { HeroSection } from "@/components/store/HeroSection"
 import { LatestProductsSection } from "@/components/store/LatestProductsSection"
 import { TrustSection } from "@/components/store/TrustSection"
+import { createPublicClient } from "@/lib/supabase/public"
+import { getStoreCategories, getStoreSettings } from "@/lib/storefront"
 
 export const revalidate = 60
 

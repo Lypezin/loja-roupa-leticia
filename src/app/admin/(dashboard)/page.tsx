@@ -1,12 +1,12 @@
 import Link from "next/link"
 import { reconcilePendingAbacatePayAttempts } from "@/lib/abacatepay/reconcile"
 import { AdminActivitySection, type AdminActivityItem } from "@/components/admin/dashboard/AdminActivitySection"
-import { AdminPageHeader } from "@/components/admin/layout/AdminPageHeader"
-import { formatCurrency } from "@/lib/utils"
-import { createServiceRoleClient } from "@/lib/supabase/service-role"
-import { getAdminStats } from "./pedidos/actions"
 import { DashboardStats } from "@/components/admin/dashboard/DashboardStats"
 import { QuickActions } from "@/components/admin/dashboard/QuickActions"
+import { AdminPageHeader } from "@/components/admin/layout/AdminPageHeader"
+import { createServiceRoleClient } from "@/lib/supabase/service-role"
+import { formatCurrency } from "@/lib/utils"
+import { getAdminStats } from "./pedidos/actions"
 
 function getOrderStatusLabel(status: string) {
     const labels: Record<string, string> = {
@@ -24,6 +24,7 @@ function getOrderStatusLabel(status: string) {
 
 export default async function AdminDashboard() {
     const supabase = createServiceRoleClient("admin-dashboard.page")
+
     try {
         await reconcilePendingAbacatePayAttempts({ limit: 20 })
     } catch (error) {

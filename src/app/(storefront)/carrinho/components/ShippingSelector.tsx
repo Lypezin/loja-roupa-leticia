@@ -86,6 +86,8 @@ export function ShippingSelector({ defaultPostalCode }: ShippingSelectorProps) {
                             value={shippingPostalCode}
                             onChange={(event) => handlePostalCodeChange(event.target.value)}
                             placeholder="Digite o CEP"
+                            maxLength={9}
+                            autoComplete="postal-code"
                             className="h-11 w-full rounded-full border border-border bg-background pl-11 pr-4 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/15"
                         />
                     </div>

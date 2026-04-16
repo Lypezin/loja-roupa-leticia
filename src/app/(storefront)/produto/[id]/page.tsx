@@ -131,7 +131,7 @@ export async function generateMetadata({
 
     const resolvedProduct = product as ProductMetadataRecord
     const images = (resolvedProduct.product_images || []) as ProductImage[]
-    const description = resolvedProduct.description || "Veja fotos, variacoes disponiveis e informacoes desta peca."
+    const description = resolvedProduct.description || "Veja fotos, variações disponíveis e informações desta peça."
     const imageUrl = images.find((img) => img.is_primary)?.image_url || images[0]?.image_url
     const canonicalUrl = getCanonicalProductUrl(resolvedProduct.slug)
 
@@ -189,17 +189,17 @@ export default async function ProductPage({
 
     const highlights = [
         { icon: Truck, title: "Envio com rastreio", desc: "Prazo e valor aparecem antes do pagamento." },
-        { icon: RefreshCcw, title: "Troca em ate 7 dias", desc: "Suporte direto para orientar o pos-compra." },
+        { icon: RefreshCcw, title: "Troca em até 7 dias", desc: "Suporte direto para orientar o pós-compra." },
         { icon: ShieldCheck, title: "Pagamento protegido", desc: "Checkout seguro do pedido ao recibo." },
     ]
 
     return (
         <div className="page-shell py-6 md:py-12">
             <nav className="mb-6 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground md:mb-8 md:text-sm">
-                <Link href="/" className="transition-colors hover:text-foreground">Inicio</Link>
+                <Link href="/" className="transition-colors hover:text-foreground">Início</Link>
                 <ChevronRight className="h-3.5 w-3.5" />
                 <Link href={categoryHref} className="transition-colors hover:text-foreground">
-                    {category.name || "Catalogo"}
+                    {category.name || "Catálogo"}
                 </Link>
                 <ChevronRight className="h-3.5 w-3.5" />
                 <span className="min-w-0 max-w-full break-words text-foreground">{resolvedProduct.name}</span>
@@ -220,7 +220,7 @@ export default async function ProductPage({
                     </div>
 
                     <p className="mt-5 text-[0.98rem] leading-7 text-muted-foreground md:mt-6 md:text-base md:leading-8">
-                        {resolvedProduct.description || "Confira fotos, escolha a variacao ideal e adicione a peca na sacola com o frete calculado no carrinho."}
+                        {resolvedProduct.description || "Confira fotos, escolha a variação ideal e adicione a peça na sacola com o frete calculado no carrinho."}
                     </p>
 
                     <AddToCart

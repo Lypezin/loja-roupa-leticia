@@ -5,7 +5,7 @@ import { createAbacatePayBilling, getAbacatePayMethods, normalizeAbacatePayStatu
 import { parseCheckoutCartItems } from "@/lib/checkout"
 import { getCheckoutProfile, normalizeBrazilPhone, normalizeCpf } from "@/lib/customer-profile"
 import { buildAbacatePayBillingProducts, calculateCheckoutTotal, getValidatedItems, validateCheckoutItems } from "@/lib/payment-checkout"
-import { getRequestSiteUrl } from "@/lib/site-url"
+import { getSiteUrl } from "@/lib/site-url"
 import { getShippingChargedAmount, resolveCheckoutShippingSelection } from "@/lib/store-shipping"
 import { createServiceRoleClient } from "@/lib/supabase/service-role"
 import { createClient } from "@/lib/supabase/server"
@@ -49,7 +49,7 @@ export async function createCheckoutSession(cartItems: unknown, shippingSelectio
 
         const shippingAddress = profile.shippingAddress
         const destinationPostalCode = shippingSelection?.postal_code || shippingAddress.postal_code
-        const origin = await getRequestSiteUrl()
+        const origin = getSiteUrl()
         const normalizedCartItems = parseCheckoutCartItems(cartItems)
         const productIds = [...new Set(normalizedCartItems.map((item) => item.product_id))]
         const variationIds = [...new Set(normalizedCartItems.map((item) => item.variation_id))]

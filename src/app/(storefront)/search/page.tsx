@@ -32,7 +32,7 @@ function buildSearchFilter(term: string, categoryIds: string[], productIds: stri
 export const revalidate = 60
 
 export default async function SearchPage({
-    searchParams
+    searchParams,
 }: {
     searchParams: Promise<{ q?: string; page?: string }>
 }) {

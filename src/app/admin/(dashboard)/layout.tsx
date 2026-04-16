@@ -26,7 +26,7 @@ export default async function AdminLayout({
         >
             <AdminSidebar navLinks={navLinks} />
 
-            <div className="min-h-screen xl:pl-64">
+            <div className="min-h-screen lg:pl-64">
                 <AdminMobileHeader navLinks={navLinks} />
 
                 <main className="px-4 pb-8 pt-4 md:px-6 lg:px-8 lg:py-8">

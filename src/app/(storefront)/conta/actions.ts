@@ -2,9 +2,9 @@
 
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { getRequestSiteUrl } from "@/lib/site-url"
-import { createClient } from "@/lib/supabase/server"
 import { getSafeRelativePath } from "@/lib/url-safety"
+import { getSiteUrl } from "@/lib/site-url"
+import { createClient } from "@/lib/supabase/server"
 
 export async function loginCliente(formData: FormData) {
     const supabase = await createClient()
@@ -33,7 +33,7 @@ export async function loginCliente(formData: FormData) {
 
 export async function cadastrarCliente(formData: FormData) {
     const supabase = await createClient()
-    const siteUrl = await getRequestSiteUrl()
+    const siteUrl = getSiteUrl()
 
     const name = (formData.get("name") as string)?.trim()
     const email = (formData.get("email") as string)?.trim()

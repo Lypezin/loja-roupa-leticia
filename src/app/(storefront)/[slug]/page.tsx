@@ -33,7 +33,7 @@ export async function generateMetadata(props: {
 
     return {
         title: resolvedCategory.name,
-        description: `Pecas organizadas em ${resolvedCategory.name} para comparar foto, preco e disponibilidade com mais rapidez.`,
+        description: `Peças organizadas em ${resolvedCategory.name} para comparar foto, preço e disponibilidade com mais rapidez.`,
     }
 }
 
@@ -108,7 +108,7 @@ export default async function CategoryPage(props: {
                         <span className="eyebrow">categoria</span>
                         <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">{resolvedCategory.name}</h1>
                         <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">
-                            Veja somente as pecas desta categoria, com preco, foto e disponibilidade em leitura direta.
+                            Veja somente as peças desta categoria, com preço, foto e disponibilidade em leitura direta.
                         </p>
                     </div>
                     <div className="w-full md:w-auto">
@@ -134,7 +134,7 @@ export default async function CategoryPage(props: {
                 </>
             ) : (
                 <div className="py-20 text-center text-muted-foreground">
-                    Nenhum produto disponivel nesta categoria no momento.
+                    Nenhum produto disponível nesta categoria no momento.
                 </div>
             )}
         </div>
