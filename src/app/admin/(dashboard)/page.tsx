@@ -57,9 +57,9 @@ export default async function AdminDashboard() {
     ]
 
     const quickActions = [
-        { href: "/admin/produtos/novo", icon: "PlusCircle" as const, label: "Cadastrar produto", desc: "Adicionar novo item" },
-        { href: "/admin/categorias", icon: "Tags" as const, label: "Categorias", desc: "Gerenciar coleções" },
-        { href: "/admin/configuracoes", icon: "Settings" as const, label: "Configurações", desc: "Ajustes gerais da loja" },
+        { href: "/admin/produtos/novo", icon: "PlusCircle" as const, label: "Cadastrar produto", desc: "Criar item, imagens e variações" },
+        { href: "/admin/categorias", icon: "Tags" as const, label: "Gerenciar categorias", desc: "Organizar coleções e capas" },
+        { href: "/admin/configuracoes", icon: "Settings" as const, label: "Ajustar loja", desc: "Atualizar marca, home e logística" },
     ]
 
     const activities: AdminActivityItem[] = [
@@ -95,10 +95,17 @@ export default async function AdminDashboard() {
     return (
         <div className="flex flex-col gap-6">
             <AdminPageHeader
-                eyebrow="Visão Geral"
-                title="Dashboard da loja"
-                description="Acompanhe o desempenho da loja, gerencie pedidos e produtos de forma rápida."
-                actions={<Link href="/admin/produtos/novo" className="inline-flex items-center justify-center rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800">Novo Produto</Link>}
+                eyebrow="Visão geral"
+                title="Operação com leitura rápida."
+                description="Acompanhe vendas, catálogo e atividade recente sem ruído visual. O painel resume o que está ativo agora e leva direto para as ações mais frequentes."
+                actions={
+                    <Link
+                        href="/admin/produtos/novo"
+                        className="inline-flex h-11 items-center justify-center rounded-full bg-zinc-950 px-5 text-sm font-semibold text-white transition-colors hover:bg-zinc-800"
+                    >
+                        Novo produto
+                    </Link>
+                }
             />
             <DashboardStats stats={stats} />
             <QuickActions actions={quickActions} />

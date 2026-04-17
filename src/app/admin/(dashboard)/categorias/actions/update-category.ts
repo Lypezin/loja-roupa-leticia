@@ -19,7 +19,7 @@ export async function updateCategory(id: string, formData: FormData) {
         }
 
         if (name.length > 80) {
-            return { error: "O nome da categoria deve ter no maximo 80 caracteres." }
+        return { error: "O nome da categoria deve ter no máximo 80 caracteres." }
         }
 
         const slug = name

@@ -40,10 +40,10 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
             }
 
             showSuccess(setSuccess)
-            toast.success("Configuracoes de frete atualizadas.")
+            toast.success("Configurações de frete atualizadas.")
         } catch (error: unknown) {
             const err = error as Error
-            toast.error(`Erro ao salvar logistica: ${err.message}`)
+            toast.error(`Erro ao salvar logística: ${err.message}`)
         } finally {
             setIsLoading(false)
         }
@@ -74,7 +74,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
             <SectionHeader
                 icon={Truck}
                 title="Frete e despacho"
-                description="Conecte o Melhor Envio, defina a origem dos envios da loja e acompanhe quais produtos ja estao prontos para cotacao."
+                description="Conecte o Melhor Envio, defina a origem dos envios da loja e acompanhe quais produtos já estão prontos para cotação."
             />
 
             <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_19rem]">
@@ -85,6 +85,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                 />
 
                 <ShippingOperationalStatus
+                    isConnected={melhorEnvio.connected}
                     shippingReady={shippingReady}
                     hasOriginZip={hasOriginZip}
                     originZip={originZip}
@@ -106,7 +107,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                     defaultChecked={settings.shipping_sender_non_commercial !== false}
                     className="mt-1 h-4 w-4 shrink-0 rounded border-zinc-300 text-zinc-950 focus:ring-zinc-300"
                 />
-                <span>Tratar os envios como nao comerciais por padrao ao criar etiquetas via API.</span>
+                <span>Tratar os envios como não comerciais por padrão ao criar etiquetas via API.</span>
             </label>
 
             <FreeShippingSection threshold={readThresholdValue(settings.free_shipping_threshold)} />
@@ -114,17 +115,17 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
             <div className="rounded-2xl border border-zinc-200 bg-zinc-50/50 p-4 md:p-5">
                 <div className="flex items-center gap-2">
                     <PackageSearch className="h-4 w-4 text-zinc-500" />
-                    <h3 className="text-sm font-semibold text-zinc-950">Revisao rapida da operacao</h3>
+                    <h3 className="text-sm font-semibold text-zinc-950">Revisão rápida da operação</h3>
                 </div>
                 <ul className="mt-4 space-y-3 text-sm leading-6 text-zinc-600">
-                    <li>1. A conta sandbox do Melhor Envio ja esta conectada e a cotacao respondeu em teste.</li>
+                    <li>1. A conta sandbox do Melhor Envio já está conectada e a cotação respondeu em teste.</li>
                     <li>2. O CEP de origem precisa continuar no admin porque ele define o ponto de despacho da sua loja.</li>
-                    <li>3. O calculo de frete depende de peso e dimensoes do pacote em cada produto.</li>
-                    <li>4. Se algum produto ficar sem essas medidas, o carrinho bloqueia a cotacao para esse item.</li>
+                    <li>3. O cálculo de frete depende de peso e dimensões do pacote em cada produto.</li>
+                    <li>4. Se algum produto ficar sem essas medidas, o carrinho bloqueia a cotação para esse item.</li>
                 </ul>
             </div>
 
-            <SaveButton isLoading={isLoading} success={success} label="Salvar logistica" />
+            <SaveButton isLoading={isLoading} success={success} label="Salvar logística" />
         </form>
     )
 }

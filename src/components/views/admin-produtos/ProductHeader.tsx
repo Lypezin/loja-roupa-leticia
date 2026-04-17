@@ -20,7 +20,11 @@ export function ProductHeader({ isEditing }: ProductHeaderProps) {
                         Primeiro defina os dados principais e o pacote de frete. Depois organize imagens, variações e visibilidade.
                     </p>
                 </div>
-                <Button asChild variant="outline" className="rounded-full border-zinc-200 px-5">
+                <Button
+                    asChild
+                    variant="outline"
+                    className="cursor-pointer rounded-full border-zinc-200 px-5 hover:border-zinc-300 hover:bg-zinc-50"
+                >
                     <Link href="/admin/produtos">Voltar para produtos</Link>
                 </Button>
             </div>

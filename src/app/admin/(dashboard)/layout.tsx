@@ -1,4 +1,3 @@
-import { Toaster } from "@/components/ui/sonner"
 import { type AdminNavLink } from "@/components/admin/layout/AdminNavLinks"
 import { requireAdminPage } from "@/lib/supabase/server"
 import { AdminMobileHeader } from "./components/AdminMobileHeader"
@@ -24,11 +23,11 @@ export default async function AdminLayout({
     return (
         <div
             data-admin
-            className="min-h-screen bg-zinc-50/50 text-zinc-950"
+            className="min-h-screen bg-[linear-gradient(180deg,rgba(251,249,246,0.98),rgba(244,239,232,0.98))] text-zinc-950"
         >
             <AdminSidebar navLinks={navLinks} />
 
-            <div className="min-h-screen lg:pl-64">
+            <div className="min-h-screen lg:pl-72">
                 <AdminMobileHeader navLinks={navLinks} />
 
                 <main className="px-4 pb-8 pt-4 md:px-6 lg:px-8 lg:py-8">
@@ -37,8 +36,6 @@ export default async function AdminLayout({
                     </div>
                 </main>
             </div>
-
-            <Toaster position="top-right" richColors />
         </div>
     )
 }

@@ -66,7 +66,7 @@ export default async function SucessoPage({
         try {
             await reconcileAbacatePayAttempt(checkoutRef, user.id)
         } catch (error) {
-            console.error("Falha ao reconciliar checkout pendente na pagina de sucesso:", error)
+            console.error("Falha ao reconciliar checkout pendente na página de sucesso:", error)
         }
 
         typedAttempt = await fetchPaymentAttempt(supabase, checkoutRef, user.id)
@@ -80,8 +80,8 @@ export default async function SucessoPage({
                     <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-100">
                         <AlertTriangle className="h-10 w-10 text-red-600" />
                     </div>
-                    <h1 className="text-2xl font-bold tracking-tight text-foreground">Checkout invalido</h1>
-                    <p className="mt-3 text-muted-foreground">Nao foi possivel localizar esta tentativa de pagamento.</p>
+                    <h1 className="text-2xl font-bold tracking-tight text-foreground">Checkout inválido</h1>
+                    <p className="mt-3 text-muted-foreground">Não foi possível localizar esta tentativa de pagamento.</p>
                     <Link href="/" className="mt-6 block">
                         <Button className="h-12 w-full rounded-xl bg-foreground font-medium text-background hover:bg-foreground/90">
                             Voltar para a loja
@@ -143,11 +143,11 @@ export default async function SucessoPage({
                         </Link>
                     ) : isManualReviewState ? (
                         <Button disabled className="h-12 w-full rounded-xl font-medium">
-                            <Package className="h-5 w-5" /> Em analise manual
+                            <Package className="h-5 w-5" /> Em análise manual
                         </Button>
                     ) : (
                         <Button disabled className="h-12 w-full rounded-xl font-medium">
-                            <Package className="h-5 w-5" /> {waitingWebhook ? "Aguardando confirmacao" : "Em verificacao"}
+                            <Package className="h-5 w-5" /> {waitingWebhook ? "Aguardando confirmação" : "Em verificação"}
                         </Button>
                     )}
 

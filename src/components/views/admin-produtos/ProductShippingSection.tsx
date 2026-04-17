@@ -41,7 +41,11 @@ export function ProductShippingSection({
                     <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
                             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Frete</p>
-                            <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] ${hasCompleteShippingFields ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>
+                            <span
+                                className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] ${
+                                    hasCompleteShippingFields ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"
+                                }`}
+                            >
                                 {hasCompleteShippingFields ? "Pacote pronto" : "Medidas pendentes"}
                             </span>
                         </div>
@@ -54,12 +58,24 @@ export function ProductShippingSection({
 
                 <div className="flex flex-wrap gap-2 lg:justify-end">
                     {shippingDefaults && (
-                        <Button type="button" variant="outline" size="sm" className="rounded-full border-zinc-200" onClick={onApplyDefaults}>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="cursor-pointer rounded-full border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
+                            onClick={onApplyDefaults}
+                        >
                             <Copy className="h-4 w-4" />
                             Usar últimas medidas salvas
                         </Button>
                     )}
-                    <Button type="button" variant="ghost" size="sm" className="rounded-full" onClick={onClearFields}>
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="cursor-pointer rounded-full hover:bg-zinc-100"
+                        onClick={onClearFields}
+                    >
                         <RefreshCcw className="h-4 w-4" />
                         Limpar
                     </Button>
@@ -68,8 +84,8 @@ export function ProductShippingSection({
 
             {shippingDefaults && (
                 <div className="mt-4 rounded-[1.2rem] border border-zinc-200 bg-zinc-50/70 px-4 py-3 text-sm text-zinc-600">
-                    Último pacote salvo na loja: <strong className="text-zinc-950">{shippingDefaults.sourceProductName}</strong>
-                    {" "}({shippingDefaults.weight_kg} kg | {shippingDefaults.length_cm} x {shippingDefaults.width_cm} x {shippingDefaults.height_cm} cm)
+                    Último pacote salvo na loja: <strong className="text-zinc-950">{shippingDefaults.sourceProductName}</strong>{" "}
+                    ({shippingDefaults.weight_kg} kg | {shippingDefaults.length_cm} x {shippingDefaults.width_cm} x {shippingDefaults.height_cm} cm)
                 </div>
             )}
 

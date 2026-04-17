@@ -10,9 +10,9 @@ interface HeroContentProps {
 }
 
 const heroFacts = [
-    { label: "Tecidos Premium", value: "Toque macio e durável", icon: Sparkles },
-    { label: "Caimento Ideal", value: "Modelagem impecável", icon: Scissors },
-    { label: "Compra Segura", value: "Primeira troca grátis", icon: ShieldCheck },
+    { label: "Tecidos premium", value: "Toque macio e durável", icon: Sparkles },
+    { label: "Caimento ideal", value: "Modelagem impecável", icon: Scissors },
+    { label: "Compra segura", value: "Primeira troca grátis", icon: ShieldCheck },
 ]
 
 export function HeroContent({ title, subtitle, buttonText, badgeText, secondaryButtonText }: HeroContentProps) {

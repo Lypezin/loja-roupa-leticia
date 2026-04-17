@@ -12,7 +12,7 @@ interface CategoriesSectionProps {
 export function CategoriesSection({
     categories,
     sectionLabel = "Categorias",
-    sectionTitle = "Escolha por tipo de peca",
+    sectionTitle = "Escolha por tipo de peça",
 }: CategoriesSectionProps) {
     if (!categories || categories.length === 0) {
         return null
@@ -31,7 +31,7 @@ export function CategoriesSection({
                     </h2>
                 </div>
                 <p className="animate-enter-soft animate-enter-delay-1 max-w-xl text-sm leading-6 text-muted-foreground md:text-base md:leading-7">
-                    Comece pelo tipo de peca. Depois a loja mostra so o que faz sentido para aquela busca.
+                    Comece pelo tipo de peça. Depois a loja mostra só o que faz sentido para aquela busca.
                 </p>
             </div>
 
@@ -64,7 +64,7 @@ export function CategoriesSection({
                                         {category.name}
                                     </h3>
                                     <p className="mt-2 text-sm leading-5.5 text-muted-foreground md:leading-6">
-                                        Veja os modelos desta secao com foto clara, cores disponiveis e compra direta.
+                                        Veja os modelos desta seção com foto clara, cores disponíveis e compra direta.
                                     </p>
                                 </div>
                             </div>

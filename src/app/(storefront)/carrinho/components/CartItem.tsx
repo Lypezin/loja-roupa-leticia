@@ -30,14 +30,13 @@ export function CartItem({ item, removeItem, updateQuantity }: CartItemProps) {
                     alt={item.product_name}
                     sizes="112px"
                     className="h-full w-full"
-                    imageClassName="scale-[0.98]"
                 />
             </div>
 
             <div className="min-w-0 flex flex-1 flex-col justify-center">
                 <h3 className="font-display text-2xl leading-tight text-foreground">{item.product_name}</h3>
                 <p className="mt-2 break-words text-sm text-muted-foreground">
-                    {[item.color && `Cor: ${item.color}`, item.size && `Tam: ${item.size}`].filter(Boolean).join(" · ")}
+                    {[item.color && `Cor: ${item.color}`, item.size && `Tam: ${item.size}`].filter(Boolean).join(" • ")}
                 </p>
             </div>
 

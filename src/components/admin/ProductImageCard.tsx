@@ -24,7 +24,7 @@ export function ProductImageCard({
     isLast,
     onRemove,
     onMove,
-    onSetPrimary
+    onSetPrimary,
 }: ImageCardProps) {
     return (
         <div className="overflow-hidden rounded-[1.2rem] border border-zinc-200 bg-zinc-50/70">
@@ -36,7 +36,7 @@ export function ProductImageCard({
                 <button
                     type="button"
                     onClick={() => onRemove(index)}
-                    className="absolute right-2 top-2 rounded-full bg-red-500/95 p-1 text-white shadow-sm transition hover:bg-red-600"
+                    className="absolute right-2 top-2 cursor-pointer rounded-full bg-red-500/95 p-1 text-white shadow-sm transition hover:bg-red-600"
                     aria-label="Remover imagem"
                 >
                     <X className="h-3.5 w-3.5" />
@@ -50,7 +50,7 @@ export function ProductImageCard({
                 <button
                     type="button"
                     onClick={() => onSetPrimary(index)}
-                    className={`flex w-full items-center justify-center gap-2 rounded-full border px-3 py-2 text-xs font-semibold transition ${
+                    className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border px-3 py-2 text-xs font-semibold transition ${
                         img.is_primary
                             ? "border-amber-300 bg-amber-50 text-amber-800"
                             : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50"
@@ -65,7 +65,7 @@ export function ProductImageCard({
                         type="button"
                         onClick={() => onMove(index, "left")}
                         disabled={index === 0}
-                        className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-45"
+                        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-45"
                     >
                         <ArrowLeft className="h-3.5 w-3.5" />
                         Antes
@@ -74,7 +74,7 @@ export function ProductImageCard({
                         type="button"
                         onClick={() => onMove(index, "right")}
                         disabled={isLast}
-                        className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-45"
+                        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-45"
                     >
                         Depois
                         <ArrowRight className="h-3.5 w-3.5" />

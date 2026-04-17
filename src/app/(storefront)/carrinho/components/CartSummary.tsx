@@ -97,7 +97,7 @@ export function CartSummary({
             }
 
             popupWindow?.close()
-            toast.error("Nao foi possivel abrir o atendimento no WhatsApp agora.")
+            toast.error("Não foi possível abrir o atendimento no WhatsApp agora.")
         } catch {
             popupWindow?.close()
             toast.error("Falha interna ao preparar o atendimento via WhatsApp.")
@@ -128,9 +128,13 @@ export function CartSummary({
                         className="h-12 w-full rounded-full text-[0.82rem] font-semibold uppercase tracking-[0.14em] sm:text-sm sm:tracking-[0.16em]"
                     >
                         {isLoadingCheckout ? (
-                            <span className="flex items-center gap-2">Processando <Loader2 className="h-4 w-4 animate-spin" /></span>
+                            <span className="flex items-center gap-2">
+                                Processando <Loader2 className="h-4 w-4 animate-spin" />
+                            </span>
                         ) : (
-                            <span className="flex items-center gap-2">Pagar com AbacatePay <ArrowRight className="h-4 w-4" /></span>
+                            <span className="flex items-center gap-2">
+                                Pagar com AbacatePay <ArrowRight className="h-4 w-4" />
+                            </span>
                         )}
                     </Button>
 
@@ -147,9 +151,13 @@ export function CartSummary({
                         className="h-12 w-full rounded-full border-emerald-500/30 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-emerald-700 hover:bg-emerald-50 sm:text-sm sm:tracking-[0.16em]"
                     >
                         {isLoadingWhatsApp ? (
-                            <span className="flex items-center gap-2">Preparando <Loader2 className="h-4 w-4 animate-spin" /></span>
+                            <span className="flex items-center gap-2">
+                                Preparando <Loader2 className="h-4 w-4 animate-spin" />
+                            </span>
                         ) : (
-                            <span className="flex items-center gap-2">Receber link no WhatsApp <MessageSquare className="h-4 w-4" /></span>
+                            <span className="flex items-center gap-2">
+                                Receber link no WhatsApp <MessageSquare className="h-4 w-4" />
+                            </span>
                         )}
                     </Button>
                 </div>
@@ -158,7 +166,7 @@ export function CartSummary({
                     Checkout hospedado pela AbacatePay.
                 </p>
                 <p className="mt-2 text-center text-xs text-muted-foreground">
-                    Pedido, estoque e envio so sao confirmados apos o pagamento.
+                    Pedido, estoque e envio só são confirmados após o pagamento.
                 </p>
 
                 <Link href="/" className="mt-5 block text-center text-sm text-muted-foreground transition-colors hover:text-foreground">

@@ -37,7 +37,13 @@ export function ProductInfoSection({ product, categories }: ProductInfoSectionPr
             <div className="mt-6 space-y-4">
                 <div className="space-y-2">
                     <Label htmlFor="name">Nome do produto</Label>
-                    <Input id="name" name="name" defaultValue={product?.name} required className="h-11 rounded-2xl border-zinc-200 bg-zinc-50/60" />
+                    <Input
+                        id="name"
+                        name="name"
+                        defaultValue={product?.name}
+                        required
+                        className="h-11 rounded-2xl border-zinc-200 bg-zinc-50/60"
+                    />
                 </div>
 
                 <div className="space-y-2">
@@ -77,9 +83,13 @@ export function ProductInfoSection({ product, categories }: ProductInfoSectionPr
                             defaultValue={product?.category_id || ""}
                             required
                         >
-                            <option value="" disabled>Selecione uma categoria</option>
+                            <option value="" disabled>
+                                Selecione uma categoria
+                            </option>
                             {categories.map((cat) => (
-                                <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                <option key={cat.id} value={cat.id}>
+                                    {cat.name}
+                                </option>
                             ))}
                         </select>
                     </div>

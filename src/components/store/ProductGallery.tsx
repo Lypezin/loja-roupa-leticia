@@ -106,7 +106,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                         <button
                             type="button"
                             onClick={showNextImage}
-                            aria-label={`Ver proxima foto de ${productName}`}
+                            aria-label={`Ver próxima foto de ${productName}`}
                             className="interactive-press absolute right-4 top-1/2 z-20 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/65 bg-white/84 text-foreground/80 shadow-sm backdrop-blur-sm hover:bg-white md:right-6 md:h-12 md:w-12"
                         >
                             <ChevronRight className="h-5 w-5" />
@@ -193,7 +193,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                                 <button
                                     type="button"
                                     onClick={showNextImage}
-                                    aria-label={`Ver proxima foto de ${productName}`}
+                                    aria-label={`Ver próxima foto de ${productName}`}
                                     className="interactive-press absolute right-3 top-1/2 z-20 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white backdrop-blur-sm hover:bg-white/15 md:right-5 md:h-12 md:w-12"
                                 >
                                     <ChevronRight className="h-5 w-5" />

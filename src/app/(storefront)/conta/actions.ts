@@ -42,7 +42,7 @@ export async function loginCliente(formData: FormData) {
         let mensagem = "E-mail ou senha incorretos."
 
         if (error.message.toLowerCase().includes("email not confirmed")) {
-            mensagem = "Voce precisa confirmar seu e-mail antes de fazer login. Verifique sua caixa de entrada."
+            mensagem = "Você precisa confirmar seu e-mail antes de fazer login. Verifique sua caixa de entrada."
         }
 
         redirect(`/conta/login?error=${encodeURIComponent(mensagem)}&next=${encodeURIComponent(nextPath)}`)
@@ -66,11 +66,11 @@ export async function cadastrarCliente(formData: FormData) {
     }
 
     if (name.length > 120) {
-        redirect("/conta/cadastro?error=O nome deve ter no maximo 120 caracteres.")
+        redirect("/conta/cadastro?error=O nome deve ter no máximo 120 caracteres.")
     }
 
     if (password.length < 8) {
-        redirect("/conta/cadastro?error=A senha deve ter no minimo 8 caracteres.")
+        redirect("/conta/cadastro?error=A senha deve ter no mínimo 8 caracteres.")
     }
 
     try {
@@ -102,10 +102,10 @@ export async function cadastrarCliente(formData: FormData) {
 
     if (error) {
         if (error.message.toLowerCase().includes("already registered")) {
-            redirect("/conta/login?success=Se o e-mail for valido, voce recebera as instrucoes para continuar.")
+            redirect("/conta/login?success=Se o e-mail for válido, você receberá as instruções para continuar.")
         }
 
-        redirect("/conta/cadastro?error=Nao foi possivel iniciar o cadastro. Revise os dados e tente novamente.")
+        redirect("/conta/cadastro?error=Não foi possível iniciar o cadastro. Revise os dados e tente novamente.")
     }
 
     if (data?.user && !data?.session) {

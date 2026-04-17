@@ -7,11 +7,13 @@ import { AdminRouteButton } from "@/components/admin/AdminRouteButton"
 export function ProductListHeader() {
     return (
         <AdminPageHeader
+            eyebrow="Catálogo"
             title="Produtos"
+            description="Gerencie o mix ativo da loja com foco em imagem, variações, preço e disponibilidade. Cada linha leva rápido para edição sem perder contexto."
             actions={
                 <AdminRouteButton
                     href="/admin/produtos/novo"
-                    className="h-10 rounded-md bg-zinc-950 px-4 text-sm font-medium text-white hover:bg-zinc-800"
+                    className="h-11 rounded-full bg-zinc-950 px-5 text-sm font-semibold text-white hover:bg-zinc-800"
                     pendingContent={
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -20,7 +22,7 @@ export function ProductListHeader() {
                     }
                 >
                     <Plus className="mr-2 h-4 w-4" />
-                    Cadastrar
+                    Cadastrar produto
                 </AdminRouteButton>
             }
         />

@@ -39,10 +39,10 @@ function mapShippingErrorMessage(message: string, destinationPostalCode: string)
     ) {
         return isUnknownPostalCode(destinationPostalCode).then((unknownPostalCode) => {
             if (unknownPostalCode) {
-                return "O CEP informado nao foi encontrado. Revise os numeros e tente novamente."
+                return "O CEP informado não foi encontrado. Revise os números e tente novamente."
             }
 
-            return "Nao foi possivel calcular frete para esse CEP agora. Confira o CEP e tente novamente em instantes."
+            return "Não foi possível calcular frete para esse CEP agora. Confira o CEP e tente novamente em instantes."
         })
     }
 
@@ -54,7 +54,7 @@ export async function quoteShippingOptions(cartItems: unknown, destinationPostal
         const options = await quoteShippingOptionsForCart(cartItems, destinationPostalCode)
         return { options }
     } catch (error) {
-        const rawMessage = error instanceof Error ? error.message : "Nao foi possivel calcular o frete."
+        const rawMessage = error instanceof Error ? error.message : "Não foi possível calcular o frete."
         const errorMessage = await mapShippingErrorMessage(rawMessage, destinationPostalCode)
 
         return {

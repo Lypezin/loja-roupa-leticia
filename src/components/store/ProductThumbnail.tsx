@@ -35,7 +35,7 @@ export function ProductThumbnail({
                 alt={alt}
                 fill
                 priority={priority}
-                className={`object-contain object-center ${imageClassName}`.trim()}
+                className={`scale-[1.02] object-cover object-center ${imageClassName}`.trim()}
                 sizes={sizes}
             />
         </div>

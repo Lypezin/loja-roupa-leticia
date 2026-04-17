@@ -15,16 +15,17 @@ interface QuickActionsProps {
 
 export function QuickActions({ actions }: QuickActionsProps) {
     return (
-        <section className="rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
-            <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between mb-4">
-                <div>
-                    <h2 className="text-lg font-semibold tracking-tight text-zinc-950">
-                        Ações Rápidas
-                    </h2>
-                </div>
+        <section className="rounded-[1.8rem] border border-zinc-200/80 bg-white/92 p-5 shadow-[0_18px_40px_rgba(79,55,39,0.05)] md:p-6">
+            <div className="mb-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
+                    Atalhos
+                </p>
+                <h2 className="mt-2 text-xl font-semibold tracking-[-0.04em] text-zinc-950">
+                    Ações rápidas
+                </h2>
             </div>
 
-            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 {actions.map((action) => (
                     <AdminActionCard key={action.href} {...action} />
                 ))}

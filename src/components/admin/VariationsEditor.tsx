@@ -29,7 +29,13 @@ export function VariationsEditor({ variations, onAdd, onRemove, onChange }: Vari
                         Mantenha pelo menos uma variação válida para vender o produto. Tamanho ou cor já bastam para criar a linha.
                     </p>
                 </div>
-                <Button type="button" variant="outline" size="sm" onClick={onAdd} className="rounded-full border-zinc-200">
+                <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={onAdd}
+                    className="cursor-pointer rounded-full border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50"
+                >
                     <Plus className="mr-2 h-4 w-4" />
                     Adicionar variação
                 </Button>
@@ -81,7 +87,7 @@ export function VariationsEditor({ variations, onAdd, onRemove, onChange }: Vari
                                     type="number"
                                     min="0"
                                     value={variation.stock_quantity}
-                                    onChange={(e) => onChange(index, "stock_quantity", parseInt(e.target.value, 10) || 0)}
+                                    onChange={(e) => onChange(index, "stock_quantity", Number.parseInt(e.target.value, 10) || 0)}
                                     required
                                     className="h-11 rounded-2xl border-zinc-200 bg-white"
                                 />

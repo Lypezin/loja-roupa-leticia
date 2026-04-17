@@ -68,11 +68,11 @@ async function validateImageSignature(file: UploadFile) {
     const matchingSignature = IMAGE_SIGNATURES.find((signature) => matchesSignature(buffer, signature))
 
     if (!matchingSignature) {
-        throw new Error("A imagem enviada nao possui uma assinatura de arquivo valida.")
+        throw new Error("A imagem enviada não possui uma assinatura de arquivo válida.")
     }
 
     if (matchingSignature.mime !== file.type) {
-        throw new Error("O tipo real da imagem nao corresponde ao formato informado.")
+        throw new Error("O tipo real da imagem não corresponde ao formato informado.")
     }
 }
 
@@ -86,7 +86,7 @@ export async function validateImageFile(file: UploadFile | null | undefined) {
     }
 
     if (!ACCEPTED_IMAGE_MIME_TYPES.includes(file.type as (typeof ACCEPTED_IMAGE_MIME_TYPES)[number])) {
-        throw new Error("Formato de imagem invalido. Use JPG, PNG, WEBP, AVIF ou GIF.")
+        throw new Error("Formato de imagem inválido. Use JPG, PNG, WEBP, AVIF ou GIF.")
     }
 
     const mimeExtension = getMimeExtension(file.type)
@@ -95,7 +95,7 @@ export async function validateImageFile(file: UploadFile | null | undefined) {
         const normalizedName = file.name.trim().toLowerCase()
 
         if (!normalizedName.endsWith(`.${mimeExtension}`) && !(mimeExtension === "jpg" && normalizedName.endsWith(".jpeg"))) {
-            throw new Error("A extensao do arquivo nao corresponde ao tipo da imagem.")
+            throw new Error("A extensão do arquivo não corresponde ao tipo da imagem.")
         }
     }
 

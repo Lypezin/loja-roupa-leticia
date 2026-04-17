@@ -8,14 +8,14 @@ import { CartEmptyState } from "./components/CartEmptyState"
 import { useCartLogic } from "./hooks/useCartLogic"
 
 export default function CarrinhoPage() {
-    const { 
-        mounted, 
-        items, 
-        subtotal, 
-        shippingCost, 
-        total, 
-        selectedShipping, 
-        defaultPostalCode, 
+    const {
+        mounted,
+        items,
+        subtotal,
+        shippingCost,
+        total,
+        selectedShipping,
+        defaultPostalCode,
     } = useCartLogic()
 
     const { removeItem, updateQuantity } = useCartStore()

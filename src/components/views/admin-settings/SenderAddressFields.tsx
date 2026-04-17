@@ -51,7 +51,7 @@ export function SenderAddressFields({ settings }: SenderAddressFieldsProps) {
                     id="shipping_sender_document"
                     name="shipping_sender_document"
                     defaultValue={typeof settings.shipping_sender_document === "string" ? settings.shipping_sender_document : ""}
-                    placeholder="Somente numeros ou formatado"
+                    placeholder="Somente números ou formatado"
                     className="h-11 w-full rounded-xl border border-zinc-200 px-4 text-sm text-zinc-950 focus:outline-none focus:ring-2 focus:ring-zinc-200"
                 />
             </div>
@@ -69,7 +69,7 @@ export function SenderAddressFields({ settings }: SenderAddressFieldsProps) {
             </div>
             <div className="space-y-2">
                 <label htmlFor="shipping_sender_number" className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-                    Numero do remetente
+                    Número do remetente
                 </label>
                 <input
                     id="shipping_sender_number"
@@ -99,7 +99,7 @@ export function SenderAddressFields({ settings }: SenderAddressFieldsProps) {
                     id="shipping_sender_complement"
                     name="shipping_sender_complement"
                     defaultValue={typeof settings.shipping_sender_complement === "string" ? settings.shipping_sender_complement : ""}
-                    placeholder="Sala, loja, referencia"
+                    placeholder="Sala, loja, referência"
                     className="h-11 w-full rounded-xl border border-zinc-200 px-4 text-sm text-zinc-950 focus:outline-none focus:ring-2 focus:ring-zinc-200"
                 />
             </div>
@@ -130,7 +130,7 @@ export function SenderAddressFields({ settings }: SenderAddressFieldsProps) {
             </div>
             <div className="space-y-2">
                 <label htmlFor="shipping_sender_state_register" className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-                    Inscricao estadual
+                    Inscrição estadual
                 </label>
                 <input
                     id="shipping_sender_state_register"

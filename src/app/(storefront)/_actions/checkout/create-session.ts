@@ -104,15 +104,15 @@ function buildWhatsAppCheckoutMessage(params: {
 
     messageLines.push("*Frete selecionado*")
     messageLines.push(`   ${params.shippingSelection.company_name} - ${params.shippingSelection.service_name}`)
-    messageLines.push(`   Prazo: ${params.shippingSelection.delivery_days} dia(s) uteis`)
+    messageLines.push(`   Prazo: ${params.shippingSelection.delivery_days} dia(s) úteis`)
     messageLines.push(
-        `   Valor: ${params.shippingSelection.is_free_shipping ? "Gratis" : formatCurrency(params.shippingSelection.cost)}`,
+        `   Valor: ${params.shippingSelection.is_free_shipping ? "Grátis" : formatCurrency(params.shippingSelection.cost)}`,
     )
     messageLines.push("")
     messageLines.push(`*Total para pagamento:* ${formatCurrency(params.totalAmount)}`)
     messageLines.push(`*Link de pagamento:* ${params.checkoutUrl}`)
     messageLines.push("")
-    messageLines.push("Assim que o pagamento for confirmado, o pedido entra na loja, o estoque e baixado e o envio segue com esse frete.")
+    messageLines.push("Assim que o pagamento for confirmado, o pedido entra na loja, o estoque é baixado e o envio segue com esse frete.")
 
     return messageLines.join("\n")
 }
@@ -125,7 +125,7 @@ async function getStoreContactSettings(serviceRole: ReturnType<typeof createServ
         .maybeSingle<StoreContactSettings>()
 
     if (error) {
-        throw new Error(`Falha ao carregar configuracoes da loja: ${error.message}`)
+        throw new Error(`Falha ao carregar configurações da loja: ${error.message}`)
     }
 
     return data ?? null
@@ -235,7 +235,7 @@ async function prepareCheckoutSession(
         const cleanWhatsAppNumber = normalizeWhatsAppNumber(storeContactSettings?.whatsapp_number)
 
         if (channel === "whatsapp" && !cleanWhatsAppNumber) {
-            return { error: "O WhatsApp da loja ainda nao esta configurado corretamente." }
+            return { error: "O WhatsApp da loja ainda não está configurado corretamente." }
         }
 
         await enforceRateLimit({
@@ -344,7 +344,7 @@ async function prepareCheckoutSession(
             }
 
             if (!billing.url) {
-                throw new Error("A AbacatePay nao retornou a URL de pagamento.")
+                throw new Error("A AbacatePay não retornou a URL de pagamento.")
             }
 
             await supersedeEquivalentPendingAttempts(
@@ -382,7 +382,7 @@ async function prepareCheckoutSession(
                 })
                 .eq("external_id", externalId)
 
-            throw new Error("Nao foi possivel iniciar o pagamento. Tente novamente.")
+            throw new Error("Não foi possível iniciar o pagamento. Tente novamente.")
         }
     } catch (error: unknown) {
         if (error instanceof RateLimitError) {

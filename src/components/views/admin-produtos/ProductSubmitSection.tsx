@@ -19,7 +19,7 @@ export function ProductSubmitSection({ isLoading, isEditing }: ProductSubmitSect
                 <Button
                     disabled={isLoading}
                     type="submit"
-                    className="h-12 w-full rounded-full bg-white px-6 text-base text-zinc-950 hover:bg-white/90 lg:w-auto"
+                    className="h-12 w-full cursor-pointer rounded-full bg-white px-6 text-base text-zinc-950 hover:bg-white/90 lg:w-auto"
                 >
                     {isLoading ? (
                         <>

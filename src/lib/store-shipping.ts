@@ -29,7 +29,7 @@ async function getStoreShippingSettings(): Promise<StoreShippingSettings> {
         .maybeSingle()
 
     if (error) {
-        throw new Error(`Falha ao carregar configuracoes de frete: ${error.message}`)
+        throw new Error(`Falha ao carregar configurações de frete: ${error.message}`)
     }
 
     if (!data?.shipping_origin_zip) {
@@ -43,7 +43,7 @@ export async function quoteShippingOptionsForCart(cartItems: unknown, destinatio
     const normalizedPostalCode = normalizePostalCode(destinationPostalCode)
 
     if (!normalizedPostalCode) {
-        throw new Error("Informe um CEP valido para calcular o frete.")
+        throw new Error("Informe um CEP válido para calcular o frete.")
     }
 
     const normalizedCartItems = parseCheckoutCartItems(cartItems)
@@ -76,13 +76,13 @@ export async function resolveCheckoutShippingSelection(
     selection: CheckoutShippingSelection | null | undefined,
 ) {
     if (!selection?.service_id) {
-        throw new Error("Selecione uma opcao de frete antes de finalizar a compra.")
+        throw new Error("Selecione uma opção de frete antes de finalizar a compra.")
     }
 
     const normalizedPostalCode = normalizePostalCode(destinationPostalCode)
 
     if (!normalizedPostalCode) {
-        throw new Error("O CEP de entrega informado e invalido. Atualize o CEP e recalcule o frete.")
+        throw new Error("O CEP de entrega informado é inválido. Atualize o CEP e recalcule o frete.")
     }
 
     const quotes = await quoteShippingOptionsForCart(cartItems, normalizedPostalCode)
@@ -92,10 +92,10 @@ export async function resolveCheckoutShippingSelection(
         const quotedPostalCode = normalizePostalCode(selection.postal_code)
 
         if (quotedPostalCode && quotedPostalCode !== normalizedPostalCode) {
-            throw new Error("A opcao de frete escolhida nao esta disponivel para o CEP informado. Recalcule o frete com esse CEP para continuar.")
+            throw new Error("A opção de frete escolhida não está disponível para o CEP informado. Recalcule o frete com esse CEP para continuar.")
         }
 
-        throw new Error("A opcao de frete selecionada nao esta mais disponivel. Recalcule o frete.")
+        throw new Error("A opção de frete selecionada não está mais disponível. Recalcule o frete.")
     }
 
     return selectedQuote

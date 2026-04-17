@@ -18,7 +18,7 @@ export function ProductStatusSection({ isActive }: ProductStatusSectionProps) {
                 </div>
             </div>
 
-            <div className="mt-5 flex items-center gap-3 rounded-[1.2rem] border border-zinc-200 bg-zinc-50/70 px-4 py-3">
+            <div className="mt-5 flex items-center gap-3 rounded-[1.2rem] border border-zinc-200 bg-zinc-50/70 px-4 py-3 transition-colors hover:border-zinc-300 hover:bg-zinc-50">
                 <input
                     type="checkbox"
                     id="is_active"

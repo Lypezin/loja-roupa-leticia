@@ -27,37 +27,37 @@ export function StatusSummary({
     const title = hasConfirmedOrder
         ? "Pedido confirmado!"
         : isFailureState
-            ? "Pagamento nao concluido"
+            ? "Pagamento não concluído"
             : currentStatus === "refunded"
                 ? "Pagamento reembolsado"
                 : currentStatus === "disputed"
-                    ? "Pagamento em analise"
+                    ? "Pagamento em análise"
                     : isSupersededState
-                        ? "Link de pagamento substituido"
+                        ? "Link de pagamento substituído"
                         : isManualReviewState
-                            ? "Pagamento recebido em analise manual"
+                            ? "Pagamento recebido em análise manual"
                             : isExpiredPending
-                                ? "Pagamento em verificacao"
+                                ? "Pagamento em verificação"
                                 : "Pagamento recebido"
 
     const description = hasConfirmedOrder
-        ? "Seu pagamento foi confirmado e o pedido ja esta salvo na sua conta."
+        ? "Seu pagamento foi confirmado e o pedido já está salvo na sua conta."
         : isFailureState
-            ? "Nao conseguimos confirmar este pagamento. Voce pode voltar ao carrinho e tentar novamente."
+            ? "Não conseguimos confirmar este pagamento. Você pode voltar ao carrinho e tentar novamente."
             : currentStatus === "refunded"
-                ? "O pagamento foi reembolsado e nao gerou um pedido ativo."
+                ? "O pagamento foi reembolsado e não gerou um pedido ativo."
                 : currentStatus === "disputed"
-                    ? "Recebemos uma sinalizacao sobre este pagamento e o pedido foi pausado para analise."
+                    ? "Recebemos uma sinalização sobre este pagamento e o pedido foi pausado para análise."
                     : isSupersededState
-                        ? "Este link foi substituido por outro mais recente. Use o ultimo link enviado no WhatsApp para evitar cobranca duplicada."
+                        ? "Este link foi substituído por outro mais recente. Use o último link enviado no WhatsApp para evitar cobrança duplicada."
                         : isManualReviewState
-                            ? "Recebemos o pagamento, mas precisamos conferir manualmente porque o link antigo foi usado ou o estoque mudou apos a geracao da cobranca."
+                            ? "Recebemos o pagamento, mas precisamos conferir manualmente porque o link antigo foi usado ou o estoque mudou após a geração da cobrança."
                             : isExpiredPending
-                                ? "O pagamento foi recebido, mas a confirmacao automatica demorou mais do que o esperado. Se o valor ja saiu da sua conta, fale com a loja e informe o codigo do checkout."
-                                : "Aguardando a confirmacao final da AbacatePay. Esta pagina atualiza sozinha em alguns segundos."
+                                ? "O pagamento foi recebido, mas a confirmação automática demorou mais do que o esperado. Se o valor já saiu da sua conta, fale com a loja e informe o código do checkout."
+                                : "Aguardando a confirmação final da AbacatePay. Esta página atualiza sozinha em alguns segundos."
 
     const paymentMethod = order?.payment_method || attempt?.payment_method
-    const methodLabel = paymentMethod?.includes(",") ? "Metodos aceitos" : "Metodo"
+    const methodLabel = paymentMethod?.includes(",") ? "Métodos aceitos" : "Método"
 
     const Icon = hasConfirmedOrder ? CheckCircle : isFailureState ? XCircle : isWarningState || isExpiredPending ? AlertTriangle : CheckCircle
     const iconWrapperClassName = hasConfirmedOrder ? "bg-emerald-100" : isFailureState ? "bg-red-100" : isWarningState || isExpiredPending ? "bg-amber-100" : "bg-emerald-100"
@@ -105,7 +105,7 @@ export function StatusSummary({
 
                 {!order && (
                     <p className="text-xs text-muted-foreground">
-                        Codigo do checkout: <span className="font-medium text-foreground">{checkoutRef}</span>
+                        Código do checkout: <span className="font-medium text-foreground">{checkoutRef}</span>
                     </p>
                 )}
             </div>

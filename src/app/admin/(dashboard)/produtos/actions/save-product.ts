@@ -28,9 +28,9 @@ export async function saveProduct(formData: FormData) {
         const isActive = formData.get("is_active") === "true"
         const variations = JSON.parse(formData.get("variations_json") as string)
 
-        if (!name?.trim()) throw new Error("Nome do produto e obrigatorio.")
+        if (!name?.trim()) throw new Error("Nome do produto é obrigatório.")
         if (!categoryId) throw new Error("Selecione uma categoria para o produto.")
-        if (!Number.isFinite(basePrice) || basePrice < 0) throw new Error("Preco do produto invalido.")
+        if (!Number.isFinite(basePrice) || basePrice < 0) throw new Error("Preço do produto inválido.")
 
         let finalId = productId
         let previousCategorySlug: string | null = null

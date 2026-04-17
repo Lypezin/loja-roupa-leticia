@@ -35,7 +35,11 @@ export default async function CategoriasPage() {
 
     return (
         <div className="flex flex-col gap-6">
-            <AdminPageHeader title="Categorias" />
+            <AdminPageHeader
+                eyebrow="Catálogo"
+                title="Categorias"
+                description="Organize as coleções da vitrine com nome, slug e imagem de capa. A estrutura certa aqui deixa navegação e busca mais claras para o cliente."
+            />
 
             <CategoryManager initialCategories={formattedCategories} />
         </div>
