@@ -5714,7 +5714,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page.js": {
-      "bytes": 49356,
+      "bytes": 49369,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -10724,7 +10724,7 @@
           "bytesInOutput": 42492
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page.js": {
-          "bytesInOutput": 49893
+          "bytesInOutput": 49906
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/pedidos/page.js": {
           "bytesInOutput": 50597
@@ -10943,7 +10943,7 @@
           "bytesInOutput": 67980
         }
       },
-      "bytes": 6733092
+      "bytes": 6733105
     }
   }
 }

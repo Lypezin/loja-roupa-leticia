@@ -63,7 +63,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                     </div>
                 )}
 
-                <div className="paper-panel relative min-w-0 flex-1 self-start overflow-hidden rounded-[1.6rem] p-2.5 md:rounded-[2rem] md:p-3">
+                <div className="paper-panel relative w-full min-w-0 overflow-hidden rounded-[1.6rem] p-2.5 md:flex-1 md:self-start md:rounded-[2rem] md:p-3">
                     <button
                         type="button"
                         onClick={() => setIsZoomed(true)}
