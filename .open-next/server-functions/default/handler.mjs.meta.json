@@ -3689,7 +3689,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page_client-reference-manifest.js": {
-      "bytes": 29885,
+      "bytes": 29869,
       "imports": [],
       "format": "cjs"
     },
@@ -5122,7 +5122,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/configuracoes/page.js": {
-      "bytes": 86611,
+      "bytes": 86674,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -5714,7 +5714,7 @@
       "format": "cjs"
     },
     ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page.js": {
-      "bytes": 49649,
+      "bytes": 50704,
       "imports": [
         {
           "path": ".open-next/server-functions/default/node_modules/next/dist/shared/lib/router/utils/app-paths.js",
@@ -10493,7 +10493,7 @@
           "bytesInOutput": 28228
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page_client-reference-manifest.js": {
-          "bytesInOutput": 27585
+          "bytesInOutput": 27569
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/conta/perfil/page_client-reference-manifest.js": {
           "bytesInOutput": 27505
@@ -10703,7 +10703,7 @@
           "bytesInOutput": 24950
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/configuracoes/page.js": {
-          "bytesInOutput": 87645
+          "bytesInOutput": 87715
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/categorias/page.js": {
           "bytesInOutput": 53586
@@ -10724,7 +10724,7 @@
           "bytesInOutput": 42492
         },
         ".open-next/server-functions/default/.next/server/app/(storefront)/produto/[id]/page.js": {
-          "bytesInOutput": 50220
+          "bytesInOutput": 51261
         },
         ".open-next/server-functions/default/.next/server/app/admin/(dashboard)/pedidos/page.js": {
           "bytesInOutput": 50597
@@ -10943,7 +10943,7 @@
           "bytesInOutput": 67980
         }
       },
-      "bytes": 6733950
+      "bytes": 6735045
     }
   }
 }
