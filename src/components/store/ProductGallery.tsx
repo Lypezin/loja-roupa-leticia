@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react"
 
@@ -34,6 +34,8 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [isZoomed, setIsZoomed] = useState(false)
     const hasMultipleImages = galleryImages.length > 1
+    const touchStartX = useRef<number | null>(null)
+    const touchCurrentX = useRef<number | null>(null)
 
     const showPreviousImage = () => {
         setSelectedIndex((currentIndex) => (
@@ -45,6 +47,37 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
         setSelectedIndex((currentIndex) => (
             currentIndex === galleryImages.length - 1 ? 0 : currentIndex + 1
         ))
+    }
+
+    const handleTouchStart = (clientX: number) => {
+        touchStartX.current = clientX
+        touchCurrentX.current = clientX
+    }
+
+    const handleTouchMove = (clientX: number) => {
+        touchCurrentX.current = clientX
+    }
+
+    const handleTouchEnd = () => {
+        if (!hasMultipleImages || touchStartX.current === null || touchCurrentX.current === null) {
+            touchStartX.current = null
+            touchCurrentX.current = null
+            return
+        }
+
+        const deltaX = touchCurrentX.current - touchStartX.current
+        const swipeThreshold = 42
+
+        if (Math.abs(deltaX) >= swipeThreshold) {
+            if (deltaX < 0) {
+                showNextImage()
+            } else {
+                showPreviousImage()
+            }
+        }
+
+        touchStartX.current = null
+        touchCurrentX.current = null
     }
 
     return (
@@ -81,7 +114,12 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                     </>
                 )}
 
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem] bg-[linear-gradient(180deg,rgba(245,240,232,0.92),rgba(237,229,219,0.96))] md:rounded-[1.6rem]">
+                <div
+                    className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem] bg-[linear-gradient(180deg,rgba(245,240,232,0.92),rgba(237,229,219,0.96))] md:rounded-[1.6rem]"
+                    onTouchStart={(event) => handleTouchStart(event.touches[0]?.clientX ?? 0)}
+                    onTouchMove={(event) => handleTouchMove(event.touches[0]?.clientX ?? 0)}
+                    onTouchEnd={handleTouchEnd}
+                >
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.72),transparent_58%)]" />
                     <Image
                         src={galleryImages[selectedIndex]?.image_url || "/placeholder-image.jpg"}
@@ -163,7 +201,12 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                             </>
                         )}
 
-                        <div className="relative h-[78vh] w-full">
+                        <div
+                            className="relative h-[78vh] w-full"
+                            onTouchStart={(event) => handleTouchStart(event.touches[0]?.clientX ?? 0)}
+                            onTouchMove={(event) => handleTouchMove(event.touches[0]?.clientX ?? 0)}
+                            onTouchEnd={handleTouchEnd}
+                        >
                             <Image
                                 src={galleryImages[selectedIndex]?.image_url || "/placeholder-image.jpg"}
                                 alt={productName}
