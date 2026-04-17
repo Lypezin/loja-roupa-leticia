@@ -3,7 +3,6 @@
 import { useState } from "react"
 import Image from "next/image"
 import { Expand, X } from "lucide-react"
-import { ProductThumbnail } from "@/components/store/ProductThumbnail"
 
 interface ProductGalleryProps {
     images: {
@@ -34,33 +33,77 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [isZoomed, setIsZoomed] = useState(false)
+    const [thumbnailAspectRatios, setThumbnailAspectRatios] = useState<Record<string, number>>({})
+
+    const getThumbnailKey = (imageUrl: string, index: number) => `${imageUrl}-${index}`
+    const getThumbnailAspectRatio = (imageUrl: string, index: number) => {
+        const ratio = thumbnailAspectRatios[getThumbnailKey(imageUrl, index)]
+
+        if (!ratio || !Number.isFinite(ratio)) {
+            return 0.72
+        }
+
+        return Math.min(Math.max(ratio, 0.45), 1.15)
+    }
+
+    const handleThumbnailLoad = (key: string, naturalWidth: number, naturalHeight: number) => {
+        if (!naturalWidth || !naturalHeight) {
+            return
+        }
+
+        const nextRatio = naturalWidth / naturalHeight
+
+        setThumbnailAspectRatios((currentRatios) => {
+            if (currentRatios[key] === nextRatio) {
+                return currentRatios
+            }
+
+            return {
+                ...currentRatios,
+                [key]: nextRatio,
+            }
+        })
+    }
 
     return (
         <>
             <div className="flex self-start flex-col-reverse gap-3 md:flex-row md:items-start md:gap-4">
                 {galleryImages.length > 1 && (
                     <div className="flex gap-2 overflow-x-auto pb-2 md:max-h-[620px] md:flex-col md:gap-3 md:overflow-y-auto md:pb-0">
-                        {galleryImages.map((image, index) => (
+                        {galleryImages.map((image, index) => {
+                            const thumbnailKey = getThumbnailKey(image.image_url, index)
+                            const thumbnailAspectRatio = getThumbnailAspectRatio(image.image_url, index)
+
+                            return (
                             <button
-                                key={`${image.image_url}-${index}`}
+                                key={thumbnailKey}
                                 type="button"
                                 onClick={() => setSelectedIndex(index)}
                                 aria-label={`Ver foto ${index + 1} de ${productName}`}
-                                className={`interactive-press relative h-[4.5rem] w-[3.75rem] shrink-0 overflow-hidden rounded-[0.95rem] border bg-[linear-gradient(180deg,rgba(245,240,232,0.9),rgba(236,228,218,0.96))] transition-all md:h-24 md:w-20 md:rounded-[1rem] ${
+                                style={{ aspectRatio: `${thumbnailAspectRatio}` }}
+                                className={`interactive-press relative w-[4.25rem] shrink-0 overflow-hidden rounded-[0.95rem] border bg-[linear-gradient(180deg,rgba(245,240,232,0.92),rgba(236,228,218,0.98))] transition-all md:w-20 md:rounded-[1rem] ${
                                     selectedIndex === index
                                         ? "border-primary shadow-[0_12px_28px_rgba(70,52,35,0.12)]"
                                         : "border-border opacity-78 hover:opacity-100"
                                 }`}
                             >
-                                <ProductThumbnail
+                                <Image
                                     src={image.image_url}
                                     alt={`${productName} - foto ${index + 1}`}
-                                    sizes="(max-width: 768px) 64px, 80px"
-                                    className="h-full w-full"
-                                    imageClassName="scale-[0.96]"
+                                    fill
+                                    className="object-cover object-center"
+                                    sizes="(max-width: 768px) 72px, 80px"
+                                    onLoad={(event) => {
+                                        handleThumbnailLoad(
+                                            thumbnailKey,
+                                            event.currentTarget.naturalWidth,
+                                            event.currentTarget.naturalHeight,
+                                        )
+                                    }}
                                 />
                             </button>
-                        ))}
+                            )
+                        })}
                     </div>
                 )}
 
