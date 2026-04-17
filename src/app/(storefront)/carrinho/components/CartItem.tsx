@@ -1,7 +1,7 @@
 'use client'
 
-import Image from "next/image"
 import { Minus, Plus, Trash2 } from "lucide-react"
+import { ProductThumbnail } from "@/components/store/ProductThumbnail"
 
 type CartLineItem = {
     id: string
@@ -24,13 +24,13 @@ export function CartItem({ item, removeItem, updateQuantity }: CartItemProps) {
 
     return (
         <div className="surface-card interactive-panel flex flex-col gap-5 rounded-[1.8rem] p-4 sm:flex-row sm:items-center">
-            <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded-[1.2rem] bg-muted sm:h-32 sm:w-28">
-                <Image
+            <div className="h-28 w-24 shrink-0 overflow-hidden rounded-[1.2rem] bg-muted sm:h-32 sm:w-28">
+                <ProductThumbnail
                     src={item.image_url || "/placeholder-image.jpg"}
                     alt={item.product_name}
-                    fill
-                    className="object-cover transition-transform duration-500"
                     sizes="112px"
+                    className="h-full w-full"
+                    imageClassName="scale-[0.98]"
                 />
             </div>
 

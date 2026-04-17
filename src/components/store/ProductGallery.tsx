@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import { Expand, X } from "lucide-react"
+import { ProductThumbnail } from "@/components/store/ProductThumbnail"
 
 interface ProductGalleryProps {
     images: {
@@ -45,18 +46,18 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                                 type="button"
                                 onClick={() => setSelectedIndex(index)}
                                 aria-label={`Ver foto ${index + 1} de ${productName}`}
-                                className={`interactive-press relative h-[4.5rem] w-[3.75rem] shrink-0 overflow-hidden rounded-[0.95rem] border bg-[linear-gradient(180deg,rgba(245,240,232,0.9),rgba(236,228,218,0.96))] p-1.5 transition-all md:h-24 md:w-20 md:rounded-[1rem] md:p-2 ${
+                                className={`interactive-press relative h-[4.5rem] w-[3.75rem] shrink-0 overflow-hidden rounded-[0.95rem] border bg-[linear-gradient(180deg,rgba(245,240,232,0.9),rgba(236,228,218,0.96))] transition-all md:h-24 md:w-20 md:rounded-[1rem] ${
                                     selectedIndex === index
                                         ? "border-primary shadow-[0_12px_28px_rgba(70,52,35,0.12)]"
                                         : "border-border opacity-78 hover:opacity-100"
                                 }`}
                             >
-                                <Image
+                                <ProductThumbnail
                                     src={image.image_url}
                                     alt={`${productName} - foto ${index + 1}`}
-                                    fill
-                                    className="object-cover object-center"
                                     sizes="(max-width: 768px) 64px, 80px"
+                                    className="h-full w-full"
+                                    imageClassName="scale-[0.96]"
                                 />
                             </button>
                         ))}
