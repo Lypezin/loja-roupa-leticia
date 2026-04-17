@@ -12,57 +12,57 @@ interface AdminSidebarProps {
 export function AdminSidebar({ navLinks }: AdminSidebarProps) {
     return (
         <aside className="fixed inset-y-0 left-0 z-30 hidden w-72 border-r border-zinc-200/80 bg-white/88 backdrop-blur-xl lg:block">
-            <div className="flex h-full min-h-0 flex-col px-5 py-5">
+            <div className="flex h-full min-h-0 flex-col px-4 py-4">
                 <Link
                     href="/admin"
-                    className="rounded-[1.8rem] border border-zinc-200/80 bg-white/92 px-4 py-4 shadow-[0_18px_40px_rgba(79,55,39,0.05)] transition-colors hover:border-zinc-300"
+                    className="rounded-[1.6rem] border border-zinc-200/80 bg-white/92 px-3 py-3 shadow-[0_18px_40px_rgba(79,55,39,0.05)] transition-colors hover:border-zinc-300"
                 >
                     <div className="flex items-start gap-3">
                         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-zinc-950 text-white shadow-sm">
                             <Store className="h-5 w-5" />
                         </div>
                         <div className="min-w-0">
-                            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-500">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-500">
                                 Painel da loja
                             </p>
-                            <h2 className="mt-2 text-[1.85rem] font-semibold tracking-[-0.05em] text-zinc-950">
+                            <h2 className="mt-1 text-2xl font-semibold tracking-[-0.05em] text-zinc-950">
                                 Operação central
                             </h2>
-                            <p className="mt-2 text-sm leading-6 text-zinc-600">
+                            <p className="mt-1.5 text-xs leading-5 text-zinc-600">
                                 Catálogo, pedidos, conteúdo e logística em um fluxo mais claro.
                             </p>
                         </div>
                     </div>
                 </Link>
 
-                <div className="mt-5 flex min-h-0 flex-1 flex-col rounded-[1.8rem] border border-zinc-200/80 bg-white/92 p-3 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
-                    <div className="px-2 pb-2">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-500">
+                <div className="mt-3 flex min-h-0 flex-1 flex-col rounded-[1.6rem] border border-zinc-200/80 bg-white/92 p-2.5 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
+                    <div className="px-2 pb-1.5">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-500">
                             Navegação
                         </p>
-                        <p className="mt-2 text-sm leading-6 text-zinc-600">
+                        <p className="mt-1 text-xs leading-5 text-zinc-600">
                             Cada área da operação com contexto e acesso direto.
                         </p>
                     </div>
 
-                    <nav className="mt-3 min-h-0 flex-1 overflow-y-auto pr-1">
+                    <nav className="mt-2 min-h-0 flex-1 overflow-visible pr-1">
                         <AdminNavLinks links={navLinks} variant="desktop" />
                     </nav>
                 </div>
 
-                <div className="mt-5 space-y-2 rounded-[1.8rem] border border-zinc-200/80 bg-white/92 p-3 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
+                <div className="mt-3 space-y-1.5 rounded-[1.6rem] border border-zinc-200/80 bg-white/92 p-2.5 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
                     <Link
                         href="/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group flex items-center gap-3 rounded-[1.2rem] px-3 py-3 text-sm text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
+                        className="group flex items-center gap-3 rounded-[1.2rem] px-3 py-2 text-sm text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
                     >
-                        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 text-zinc-500 transition-colors group-hover:border-zinc-300 group-hover:text-zinc-900">
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 text-zinc-500 transition-colors group-hover:border-zinc-300 group-hover:text-zinc-900">
                             <ExternalLink className="h-4 w-4" />
                         </span>
                         <span className="min-w-0 flex-1">
-                            <span className="block text-base font-semibold text-zinc-950">Abrir vitrine</span>
-                            <span className="block text-sm leading-5 text-zinc-500">Ver a loja como cliente</span>
+                            <span className="block text-sm font-semibold text-zinc-950">Abrir vitrine</span>
+                            <span className="block text-xs leading-5 text-zinc-500">Ver a loja como cliente</span>
                         </span>
                         <ArrowUpRight className="h-4 w-4 shrink-0 text-zinc-400" />
                     </Link>
@@ -70,14 +70,14 @@ export function AdminSidebar({ navLinks }: AdminSidebarProps) {
                     <form action={logout}>
                         <button
                             type="submit"
-                            className="group flex w-full cursor-pointer items-center gap-3 rounded-[1.2rem] px-3 py-3 text-left text-sm text-zinc-600 transition-colors hover:bg-red-50 hover:text-red-700"
+                            className="group flex w-full cursor-pointer items-center gap-3 rounded-[1.2rem] px-3 py-2 text-left text-sm text-zinc-600 transition-colors hover:bg-red-50 hover:text-red-700"
                         >
-                            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-red-200/80 bg-red-50 text-red-500 transition-colors group-hover:border-red-300 group-hover:text-red-600">
+                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-red-200/80 bg-red-50 text-red-500 transition-colors group-hover:border-red-300 group-hover:text-red-600">
                                 <LogOut className="h-4 w-4" />
                             </span>
                             <span className="min-w-0 flex-1">
-                                <span className="block text-base font-semibold text-zinc-950 group-hover:text-red-700">Encerrar sessão</span>
-                                <span className="block text-sm leading-5 text-zinc-500 group-hover:text-red-600">Sair do painel administrativo</span>
+                                <span className="block text-sm font-semibold text-zinc-950 group-hover:text-red-700">Encerrar sessão</span>
+                                <span className="block text-xs leading-5 text-zinc-500 group-hover:text-red-600">Sair do painel</span>
                             </span>
                         </button>
                     </form>

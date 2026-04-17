@@ -28,7 +28,7 @@ export function TrustSection({ settings }: { settings?: StoreSettings | null }) 
     ]
 
     return (
-        <section className="page-shell pb-14 md:pb-18">
+        <section className="page-shell pb-8 md:pb-16">
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                 {trustItems.map((item, index) => (
                     <div

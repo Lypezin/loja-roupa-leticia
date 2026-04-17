@@ -51,7 +51,7 @@ export function AdminNavLinks({
                         href={link.href}
                         aria-current={isActive ? "page" : undefined}
                         className={cn(
-                            "group flex items-start gap-3 rounded-[1.2rem] border px-3.5 py-3 text-sm transition-all",
+                            "group flex items-start gap-2.5 rounded-[1.2rem] border px-3.5 py-2.5 text-sm transition-all",
                             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                             isActive
                                 ? "border-zinc-200 bg-zinc-950 text-white shadow-[0_18px_30px_rgba(39,30,24,0.14)]"

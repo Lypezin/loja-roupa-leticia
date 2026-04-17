@@ -22,7 +22,7 @@ export function LatestProductsSection({
     sectionTitle,
 }: LatestProductsSectionProps) {
     return (
-        <section className="page-shell py-8 md:py-14">
+        <section className="page-shell py-8 md:py-16">
             <div className="paper-panel animate-enter-soft rounded-[2rem] border border-muted/20 bg-paper/30 px-6 py-6 backdrop-blur-sm md:px-8">
                 <div className="flex flex-col items-center justify-center gap-6 text-center">
                     <div className="flex flex-col items-center">
