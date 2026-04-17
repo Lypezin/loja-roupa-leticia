@@ -38,7 +38,7 @@ export function AdminStatCard({
         <div className="rounded-[1.6rem] border border-zinc-200/80 bg-white/92 p-5 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
             <div className="flex items-start justify-between gap-4">
                 <div className="space-y-2">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">{label}</p>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-zinc-600">{label}</p>
                     <p className="text-3xl font-semibold tracking-tight text-zinc-950">{value}</p>
                 </div>
                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 text-zinc-600">

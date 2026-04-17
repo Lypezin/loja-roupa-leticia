@@ -22,26 +22,23 @@ export function AdminSidebar({ navLinks }: AdminSidebarProps) {
                             <Store className="h-5 w-5" />
                         </div>
                         <div className="min-w-0">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-500">
-                                Painel da loja
+                            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+                                Administração
                             </p>
-                            <h2 className="mt-1 text-2xl font-semibold tracking-[-0.05em] text-zinc-950">
-                                Operação central
+                            <h2 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-950">
+                                Painel da Loja
                             </h2>
                             <p className="mt-1.5 text-xs leading-5 text-zinc-600">
-                                Catálogo, pedidos, conteúdo e logística em um fluxo mais claro.
+                                Gerencie seus produtos, pedidos e configurações.
                             </p>
                         </div>
                     </div>
                 </Link>
 
                 <div className="mt-3 flex min-h-0 flex-1 flex-col rounded-[1.6rem] border border-zinc-200/80 bg-white/92 p-2.5 shadow-[0_18px_40px_rgba(79,55,39,0.05)]">
-                    <div className="px-2 pb-1.5">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-500">
-                            Navegação
-                        </p>
-                        <p className="mt-1 text-xs leading-5 text-zinc-600">
-                            Cada área da operação com contexto e acesso direto.
+                    <div className="px-2 pb-1.5 pt-1">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+                            Menu Principal
                         </p>
                     </div>
 

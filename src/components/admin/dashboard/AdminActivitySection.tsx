@@ -39,11 +39,11 @@ export function AdminActivitySection({ items }: AdminActivitySectionProps) {
     return (
         <section className="rounded-[1.8rem] border border-zinc-200/80 bg-white/92 p-5 shadow-[0_18px_40px_rgba(79,55,39,0.05)] md:p-6">
             <div className="mb-4">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                    Fluxo recente
+                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-600">
+                    Últimas Atualizações
                 </p>
-                <h2 className="mt-2 text-xl font-semibold tracking-[-0.04em] text-zinc-950">
-                    Atividade recente
+                <h2 className="mt-1 text-xl font-semibold tracking-tight text-zinc-950">
+                    Atividade Recente
                 </h2>
             </div>
 
@@ -71,7 +71,7 @@ export function AdminActivitySection({ items }: AdminActivitySectionProps) {
                                         <p className="text-sm font-semibold text-zinc-950">{item.title}</p>
                                         <span
                                             className={cn(
-                                                "inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold",
+                                                "inline-flex rounded-full px-2.5 py-1 text-xs font-semibold",
                                                 badgeToneByKind[item.kind],
                                             )}
                                         >

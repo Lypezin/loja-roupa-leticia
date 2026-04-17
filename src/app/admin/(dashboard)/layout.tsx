@@ -13,11 +13,11 @@ export default async function AdminLayout({
     await requireAdminPage()
 
     const navLinks: AdminNavLink[] = [
-        { href: "/admin", icon: "LayoutDashboard", label: "Dashboard", description: "Visão geral da operação" },
-        { href: "/admin/categorias", icon: "Tags", label: "Categorias", description: "Coleções e organização" },
-        { href: "/admin/produtos", icon: "Package", label: "Produtos", description: "Catálogo, estoque e imagens" },
-        { href: "/admin/pedidos", icon: "ShoppingCart", label: "Pedidos", description: "Pagamento, envio e acompanhamento" },
-        { href: "/admin/configuracoes", icon: "Settings", label: "Configurações", description: "Marca, conteúdo e logística" },
+        { href: "/admin", icon: "LayoutDashboard", label: "Dashboard", description: "Visão geral da loja" },
+        { href: "/admin/categorias", icon: "Tags", label: "Categorias", description: "Gerenciar coleções" },
+        { href: "/admin/produtos", icon: "Package", label: "Produtos", description: "Catálogo e estoque" },
+        { href: "/admin/pedidos", icon: "ShoppingCart", label: "Pedidos", description: "Acompanhar vendas" },
+        { href: "/admin/configuracoes", icon: "Settings", label: "Configurações", description: "Ajustes gerais" },
     ]
 
     return (

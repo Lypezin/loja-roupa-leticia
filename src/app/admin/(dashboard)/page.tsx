@@ -51,15 +51,15 @@ export default async function AdminDashboard() {
 
     const stats = [
         { label: "Vendas no mês", value: formatCurrency(salesData.totalSales), change: `${salesData.totalOrders} pedido(s) no período`, icon: "DollarSign" as const },
-        { label: "Pedidos", value: String(salesData.totalOrders), change: "Fluxo recebido neste mês", icon: "ShoppingCart" as const },
-        { label: "Produtos ativos", value: String(activeProducts || 0), change: `${totalProducts || 0} no catálogo`, icon: "Package" as const },
-        { label: "Categorias", value: String(categoriesCount || 0), change: "Coleções cadastradas", icon: "Tags" as const },
+        { label: "Pedidos", value: String(salesData.totalOrders), change: "Recebidos neste mês", icon: "ShoppingCart" as const },
+        { label: "Produtos ativos", value: String(activeProducts || 0), change: `${totalProducts || 0} cadastrados no total`, icon: "Package" as const },
+        { label: "Categorias", value: String(categoriesCount || 0), change: "Coleções criadas", icon: "Tags" as const },
     ]
 
     const quickActions = [
-        { href: "/admin/produtos/novo", icon: "PlusCircle" as const, label: "Cadastrar produto", desc: "Criar item, imagens e variações" },
-        { href: "/admin/categorias", icon: "Tags" as const, label: "Gerenciar categorias", desc: "Organizar coleções e capas" },
-        { href: "/admin/configuracoes", icon: "Settings" as const, label: "Ajustar loja", desc: "Atualizar marca, home e logística" },
+        { href: "/admin/produtos/novo", icon: "PlusCircle" as const, label: "Cadastrar produto", desc: "Adicionar novo item ao catálogo" },
+        { href: "/admin/categorias", icon: "Tags" as const, label: "Gerenciar categorias", desc: "Criar e editar coleções" },
+        { href: "/admin/configuracoes", icon: "Settings" as const, label: "Ajustar loja", desc: "Configurações gerais da plataforma" },
     ]
 
     const activities: AdminActivityItem[] = [
@@ -95,9 +95,9 @@ export default async function AdminDashboard() {
     return (
         <div className="flex flex-col gap-6">
             <AdminPageHeader
-                eyebrow="Visão geral"
-                title="Operação com leitura rápida."
-                description="Acompanhe vendas, catálogo e atividade recente sem ruído visual. O painel resume o que está ativo agora e leva direto para as ações mais frequentes."
+                eyebrow="Dashboard"
+                title="Resumo da Loja"
+                description="Acompanhe suas vendas, seu catálogo e as atividades recentes. Acesse rapidamente as ações mais importantes para o dia a dia da operação."
                 actions={
                     <Link
                         href="/admin/produtos/novo"
