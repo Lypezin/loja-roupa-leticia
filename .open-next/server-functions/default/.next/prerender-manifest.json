@@ -13,7 +13,7 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": 60,
+      "initialRevalidateSeconds": 300,
       "initialExpireSeconds": 31536000,
       "srcRoute": "/",
       "dataRoute": "/index.rsc",
@@ -63,7 +63,7 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": 60,
+      "initialRevalidateSeconds": 300,
       "initialExpireSeconds": 31536000,
       "srcRoute": "/_not-found",
       "dataRoute": "/_not-found.rsc",
@@ -117,7 +117,7 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": 60,
+      "initialRevalidateSeconds": 300,
       "initialExpireSeconds": 31536000,
       "srcRoute": "/carrinho",
       "dataRoute": "/carrinho.rsc",
@@ -167,7 +167,7 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": 60,
+      "initialRevalidateSeconds": 300,
       "initialExpireSeconds": 31536000,
       "srcRoute": "/conta/cadastro",
       "dataRoute": "/conta/cadastro.rsc",
@@ -192,7 +192,7 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "initialRevalidateSeconds": 60,
+      "initialRevalidateSeconds": 300,
       "initialExpireSeconds": 31536000,
       "srcRoute": "/conta/login",
       "dataRoute": "/conta/login.rsc",
@@ -342,8 +342,8 @@
   "dynamicRoutes": {},
   "notFoundRoutes": [],
   "preview": {
-    "previewModeId": "b52645289f179db9fb7acf64f771c465",
-    "previewModeSigningKey": "4c240ccf1da2f843bcba715aede237beb3e1d04824202c435891e70412a68561",
-    "previewModeEncryptionKey": "4442d665f59b2a323357d9a5cf3864e3f958d2a0fe02b16c8964b72f0501641f"
+    "previewModeId": "ce3bab75dfcc5d4cb1d57a7dc4503d6c",
+    "previewModeSigningKey": "be128efffe48c2257fcab04caaac14cd1b13e804a03b137f1d40c7b2b551f790",
+    "previewModeEncryptionKey": "322238d2369ffeb1bdbfdb052631b3c98dea933762e4d7c96165fb2a961e8f7e"
   }
 }

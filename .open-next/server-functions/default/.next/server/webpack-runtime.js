@@ -3,6 +3,7 @@
     switch (a) {
        case 1453: d(require("./chunks/1453.js")); break;
        case 1455: d(require("./chunks/1455.js")); break;
+       case 1571: d(require("./chunks/1571.js")); break;
        case 2404: d(require("./chunks/2404.js")); break;
        case 3225: d(require("./chunks/3225.js")); break;
        case 333: d(require("./chunks/333.js")); break;
@@ -17,9 +18,8 @@
        case 7747: d(require("./chunks/7747.js")); break;
        case 808: d(require("./chunks/808.js")); break;
        case 861: d(require("./chunks/861.js")); break;
-       case 8965: d(require("./chunks/8965.js")); break;
-       case 9363: d(require("./chunks/9363.js")); break;
-       case 9478: d(require("./chunks/9478.js")); break;
+       case 9660: d(require("./chunks/9660.js")); break;
+       case 9978: d(require("./chunks/9978.js")); break;
        case 7311: c[a] = 1; break;
        default: throw new Error(`Unknown chunk ${a}`);
     }
