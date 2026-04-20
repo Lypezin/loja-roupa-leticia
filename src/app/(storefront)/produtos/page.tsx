@@ -3,7 +3,7 @@ import { PaginationControls } from "@/components/store/PaginationControls"
 import { ProductCard } from "@/components/store/ProductCard"
 import { createPublicClient } from "@/lib/supabase/public"
 
-export const revalidate = 60
+export const revalidate = 300
 const PRODUCTS_PER_PAGE = 12
 
 type CatalogProduct = {
@@ -24,7 +24,7 @@ export default async function ProdutosPage({
     const { sort, minPrice, maxPrice } = params
     const currentPage = Math.max(1, Number.parseInt(params.page || "1", 10) || 1)
     const from = (currentPage - 1) * PRODUCTS_PER_PAGE
-    const to = from + PRODUCTS_PER_PAGE - 1
+    const to = from + PRODUCTS_PER_PAGE
     const supabase = createPublicClient()
 
     let query = supabase
@@ -36,32 +36,22 @@ export default async function ProdutosPage({
         `)
         .eq("is_active", true)
 
-    let countQuery = supabase
-        .from("products")
-        .select("id", { count: "exact", head: true })
-        .eq("is_active", true)
-
     if (minPrice) {
-        query = query.gte("base_price", parseFloat(minPrice))
-        countQuery = countQuery.gte("base_price", parseFloat(minPrice))
+        query = query.gte("base_price", Number.parseFloat(minPrice))
     }
 
     if (maxPrice) {
-        query = query.lte("base_price", parseFloat(maxPrice))
-        countQuery = countQuery.lte("base_price", parseFloat(maxPrice))
+        query = query.lte("base_price", Number.parseFloat(maxPrice))
     }
 
     if (sort === "price-asc") query = query.order("base_price", { ascending: true })
     else if (sort === "price-desc") query = query.order("base_price", { ascending: false })
     else query = query.order("created_at", { ascending: false })
 
-    const [{ data: products }, { count }] = await Promise.all([
-        query.range(from, to),
-        countQuery,
-    ])
-
-    const totalProducts = count || 0
-    const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE))
+    const { data } = await query.range(from, to)
+    const rawProducts = (data ?? []) as CatalogProduct[]
+    const hasNextPage = rawProducts.length > PRODUCTS_PER_PAGE
+    const products = hasNextPage ? rawProducts.slice(0, PRODUCTS_PER_PAGE) : rawProducts
 
     return (
         <div className="page-shell py-10 md:py-14">
@@ -71,7 +61,7 @@ export default async function ProdutosPage({
                         <span className="eyebrow">catálogo</span>
                         <h1 className="mt-4 font-display text-4xl text-foreground md:text-5xl">Todas as peças</h1>
                         <p className="mt-3 text-sm text-muted-foreground">
-                            {totalProducts} produto(s) encontrado(s).
+                            Mostrando {products.length} item(ns) nesta página.
                         </p>
                     </div>
                     <div className="w-full md:w-auto">
@@ -80,10 +70,10 @@ export default async function ProdutosPage({
                 </div>
             </div>
 
-            {products && products.length > 0 ? (
+            {products.length > 0 ? (
                 <>
                     <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-                        {(products as CatalogProduct[]).map((product, index) => (
+                        {products.map((product, index) => (
                             <ProductCard key={product.id} product={product} index={index} />
                         ))}
                     </div>
@@ -91,7 +81,7 @@ export default async function ProdutosPage({
                     <PaginationControls
                         basePath="/produtos"
                         currentPage={currentPage}
-                        totalPages={totalPages}
+                        hasNextPage={hasNextPage}
                         searchParams={{ sort, minPrice, maxPrice }}
                     />
                 </>

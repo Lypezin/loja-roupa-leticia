@@ -15,18 +15,6 @@ export function HeroBackground({ backgroundUrl, title }: HeroBackgroundProps) {
             <div className="absolute -left-4 top-8 hidden h-32 w-32 rounded-full border border-primary/10 bg-primary/6 blur-3xl lg:block" />
             <div className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-card shadow-[0_26px_60px_rgba(68,48,31,0.12)]">
                 <div className="relative aspect-[4/3] bg-[linear-gradient(180deg,rgba(247,242,236,0.92),rgba(235,225,214,0.92))] sm:aspect-[5/4] md:aspect-[6/5] lg:aspect-[5/6]">
-                    <div className="absolute inset-0 scale-110 opacity-22 blur-2xl">
-                        <Image
-                            src={imageSrc}
-                            alt=""
-                            fill
-                            aria-hidden
-                            className="object-cover"
-                            sizes="(max-width: 1024px) 100vw, 42vw"
-                            quality={72}
-                        />
-                    </div>
-
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.7),transparent_58%)]" />
 
                     <div className="absolute inset-0 p-4 md:p-5">
@@ -38,8 +26,9 @@ export function HeroBackground({ backgroundUrl, title }: HeroBackgroundProps) {
                                 priority
                                 className="animate-float-slow object-cover object-center"
                                 sizes="(max-width: 1024px) 100vw, 42vw"
-                                quality={90}
+                                quality={82}
                             />
+                            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.42),transparent_58%)]" />
                         </div>
                     </div>
 

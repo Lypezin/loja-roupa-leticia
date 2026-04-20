@@ -3,17 +3,25 @@ import Link from "next/link"
 interface PaginationControlsProps {
     basePath: string
     currentPage: number
-    totalPages: number
     searchParams?: Record<string, string | undefined>
+    totalPages?: number | null
+    hasNextPage?: boolean
 }
 
 export function PaginationControls({
     basePath,
     currentPage,
-    totalPages,
     searchParams = {},
+    totalPages = null,
+    hasNextPage = false,
 }: PaginationControlsProps) {
-    if (totalPages <= 1) return null
+    const shouldRender = totalPages !== null
+        ? totalPages > 1
+        : currentPage > 1 || hasNextPage
+
+    if (!shouldRender) {
+        return null
+    }
 
     const createHref = (page: number) => {
         const params = new URLSearchParams()
@@ -36,11 +44,12 @@ export function PaginationControls({
 
     const previousPage = currentPage - 1
     const nextPage = currentPage + 1
+    const canGoNext = totalPages !== null ? currentPage < totalPages : hasNextPage
 
     return (
         <nav className="mt-10 flex flex-col gap-4 rounded-[1.8rem] border border-border bg-card px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm text-muted-foreground">
-                Página {currentPage} de {totalPages}
+                {totalPages !== null ? `Página ${currentPage} de ${totalPages}` : `Página ${currentPage}`}
             </p>
 
             <div className="flex items-center gap-3">
@@ -57,7 +66,7 @@ export function PaginationControls({
                     </span>
                 )}
 
-                {currentPage < totalPages ? (
+                {canGoNext ? (
                     <Link
                         href={createHref(nextPage)}
                         className="inline-flex h-11 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"

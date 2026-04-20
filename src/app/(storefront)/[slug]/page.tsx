@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { FilterSort } from "@/components/store/FilterSort"
@@ -5,10 +6,10 @@ import { PaginationControls } from "@/components/store/PaginationControls"
 import { ProductCard, type Product } from "@/components/store/ProductCard"
 import { createPublicClient } from "@/lib/supabase/public"
 
-export const revalidate = 60
+export const revalidate = 300
 const PRODUCTS_PER_PAGE = 12
 
-async function getCategoryBySlug(slug: string) {
+const getCategoryBySlug = unstable_cache(async (slug: string) => {
     const supabase = createPublicClient()
     const { data } = await supabase
         .from("categories")
@@ -17,7 +18,7 @@ async function getCategoryBySlug(slug: string) {
         .maybeSingle()
 
     return data
-}
+}, ["storefront-category-by-slug"], { revalidate: 300 })
 
 export async function generateMetadata(props: {
     params: Promise<{ slug: string }>
@@ -47,7 +48,7 @@ export default async function CategoryPage(props: {
     const { sort, minPrice, maxPrice } = searchParams
     const currentPage = Math.max(1, Number.parseInt(searchParams.page || "1", 10) || 1)
     const from = (currentPage - 1) * PRODUCTS_PER_PAGE
-    const to = from + PRODUCTS_PER_PAGE - 1
+    const to = from + PRODUCTS_PER_PAGE
     const category = await getCategoryBySlug(slug)
 
     if (!category) {
@@ -67,20 +68,12 @@ export default async function CategoryPage(props: {
         .eq("is_active", true)
         .eq("category_id", resolvedCategory.id)
 
-    let countQuery = supabase
-        .from("products")
-        .select("id", { count: "exact", head: true })
-        .eq("is_active", true)
-        .eq("category_id", resolvedCategory.id)
-
     if (minPrice) {
-        query = query.gte("base_price", parseFloat(minPrice))
-        countQuery = countQuery.gte("base_price", parseFloat(minPrice))
+        query = query.gte("base_price", Number.parseFloat(minPrice))
     }
 
     if (maxPrice) {
-        query = query.lte("base_price", parseFloat(maxPrice))
-        countQuery = countQuery.lte("base_price", parseFloat(maxPrice))
+        query = query.lte("base_price", Number.parseFloat(maxPrice))
     }
 
     if (sort === "price-asc") {
@@ -91,14 +84,10 @@ export default async function CategoryPage(props: {
         query = query.order("created_at", { ascending: false })
     }
 
-    const [{ data: products }, { count }] = await Promise.all([
-        query.range(from, to),
-        countQuery,
-    ])
-
-    const filteredProducts = (products ?? []) as Product[]
-    const totalProducts = count || 0
-    const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE))
+    const { data } = await query.range(from, to)
+    const rawProducts = (data ?? []) as Product[]
+    const hasNextPage = rawProducts.length > PRODUCTS_PER_PAGE
+    const filteredProducts = hasNextPage ? rawProducts.slice(0, PRODUCTS_PER_PAGE) : rawProducts
 
     return (
         <div className="page-shell py-10 md:py-14">
@@ -128,7 +117,7 @@ export default async function CategoryPage(props: {
                     <PaginationControls
                         basePath={`/${slug}`}
                         currentPage={currentPage}
-                        totalPages={totalPages}
+                        hasNextPage={hasNextPage}
                         searchParams={{ sort, minPrice, maxPrice }}
                     />
                 </>

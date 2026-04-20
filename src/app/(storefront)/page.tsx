@@ -5,7 +5,7 @@ import { TrustSection } from "@/components/store/TrustSection"
 import { createPublicClient } from "@/lib/supabase/public"
 import { getStoreCategories, getStoreSettings } from "@/lib/storefront"
 
-export const revalidate = 60
+export const revalidate = 300
 
 type HomeProduct = {
     id: string

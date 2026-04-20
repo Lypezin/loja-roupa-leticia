@@ -9,7 +9,7 @@ export const getStoreSettings = unstable_cache(async () => {
     const supabase = createPublicClient()
     const { data } = await supabase.from('store_settings').select('*').single()
     return data as StoreSettings | null
-}, ['store-settings'], { revalidate: 60 })
+}, ['store-settings'], { revalidate: 300 })
 
 export const getStoreCategories = unstable_cache(async () => {
     const supabase = createPublicClient()
@@ -19,4 +19,4 @@ export const getStoreCategories = unstable_cache(async () => {
         .order('created_at', { ascending: true })
 
     return (data ?? []) as StoreCategory[]
-}, ['store-categories'], { revalidate: 60 })
+}, ['store-categories'], { revalidate: 300 })

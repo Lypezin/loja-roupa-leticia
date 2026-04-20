@@ -1,7 +1,4 @@
-'use client'
-
 import Link from "next/link"
-import { useState } from "react"
 import { getProductPath } from "@/lib/products"
 import { ProductCardImage } from "./ProductCardImage"
 
@@ -34,7 +31,6 @@ function sortProductImages(images: ProductImage[]) {
 }
 
 export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
-    const [showSecondaryImage, setShowSecondaryImage] = useState(false)
     const images = product.images && product.images.length > 0
         ? sortProductImages(product.images)
         : [{ image_url: "/placeholder-image.jpg", is_primary: true }]
@@ -47,16 +43,12 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
             <Link
                 href={getProductPath(product.slug)}
                 className="flex h-full flex-col rounded-[1.45rem] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
-                onMouseEnter={() => setShowSecondaryImage(true)}
-                onFocus={() => setShowSecondaryImage(true)}
-                onMouseLeave={() => setShowSecondaryImage(false)}
-                onBlur={() => setShowSecondaryImage(false)}
             >
                 <ProductCardImage
                     images={images}
                     productName={product.name}
                     isPriority={index < 2}
-                    showSecondaryImage={showSecondaryImage}
+                    showSecondaryImage={images.length > 1}
                 />
 
                 <div className="flex min-w-0 flex-1 flex-col px-2 pb-2 pt-4">

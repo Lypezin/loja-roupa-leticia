@@ -33,7 +33,7 @@ function buildSearchFilter(term: string, categoryIds: string[], productIds: stri
     return filters.join(",")
 }
 
-export const revalidate = 60
+export const revalidate = 300
 
 export default async function SearchPage({
     searchParams,
@@ -44,7 +44,7 @@ export default async function SearchPage({
     const queryTerm = q?.trim() || ""
     const currentPage = Math.max(1, Number.parseInt(page || "1", 10) || 1)
     const from = (currentPage - 1) * SEARCH_RESULTS_PER_PAGE
-    const to = from + SEARCH_RESULTS_PER_PAGE - 1
+    const to = from + SEARCH_RESULTS_PER_PAGE
     const supabase = createPublicClient()
 
     if (!queryTerm) {
@@ -82,7 +82,7 @@ export default async function SearchPage({
     )]
     const searchFilter = buildSearchFilter(queryTerm, matchingCategoryIds, matchingProductIds)
 
-    const productQuery = supabase
+    const { data } = await supabase
         .from("products")
         .select(`
             id, slug, name, base_price,
@@ -92,20 +92,11 @@ export default async function SearchPage({
         .eq("is_active", true)
         .order("created_at", { ascending: false })
         .range(from, to)
+        .or(searchFilter)
 
-    const countQuery = supabase
-        .from("products")
-        .select("id", { count: "exact", head: true })
-        .eq("is_active", true)
-
-    const [{ data: products }, { count }] = await Promise.all([
-        productQuery.or(searchFilter),
-        countQuery.or(searchFilter),
-    ])
-
-    const results = (products || []) as SearchProduct[]
-    const totalResults = count || 0
-    const totalPages = Math.max(1, Math.ceil(totalResults / SEARCH_RESULTS_PER_PAGE))
+    const rawResults = (data || []) as SearchProduct[]
+    const hasNextPage = rawResults.length > SEARCH_RESULTS_PER_PAGE
+    const results = hasNextPage ? rawResults.slice(0, SEARCH_RESULTS_PER_PAGE) : rawResults
 
     return (
         <div className="page-shell py-10 md:py-14">
@@ -115,7 +106,7 @@ export default async function SearchPage({
                     Busca por {queryTerm}
                 </h1>
                 <p className="mt-3 text-sm text-muted-foreground">
-                    Encontramos {totalResults} produto(s).
+                    Mostrando {results.length} resultado(s) nesta página.
                 </p>
             </div>
 
@@ -130,7 +121,7 @@ export default async function SearchPage({
                     <PaginationControls
                         basePath="/search"
                         currentPage={currentPage}
-                        totalPages={totalPages}
+                        hasNextPage={hasNextPage}
                         searchParams={{ q: queryTerm }}
                     />
                 </>

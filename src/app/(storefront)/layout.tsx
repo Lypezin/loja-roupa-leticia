@@ -2,7 +2,7 @@ import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
 import { getStoreCategories, getStoreSettings } from "@/lib/storefront"
 
-export const revalidate = 60
+export const revalidate = 300
 
 export default async function StorefrontLayout({
     children,
