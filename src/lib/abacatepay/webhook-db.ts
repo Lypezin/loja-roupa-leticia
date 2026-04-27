@@ -41,19 +41,23 @@ export async function markOrderStatus(
     transactionId?: string | null,
 ) {
     const supabase = createServiceRoleClient('abacatepay-webhook.mark-order')
-    let orderId: string | null = null
+    let order: { id: string; status: string | null } | null = null
 
     if (externalId) {
-        const { data } = await supabase.from('orders').select('id').eq('payment_provider', 'abacatepay').eq('payment_external_id', externalId).maybeSingle()
-        orderId = data?.id || null
+        const { data } = await supabase.from('orders').select('id, status').eq('payment_provider', 'abacatepay').eq('payment_external_id', externalId).maybeSingle()
+        order = data || null
     }
 
-    if (!orderId && checkoutId) {
-        const { data } = await supabase.from('orders').select('id').eq('payment_provider', 'abacatepay').eq('payment_checkout_id', checkoutId).maybeSingle()
-        orderId = data?.id || null
+    if (!order && checkoutId) {
+        const { data } = await supabase.from('orders').select('id, status').eq('payment_provider', 'abacatepay').eq('payment_checkout_id', checkoutId).maybeSingle()
+        order = data || null
     }
 
-    if (!orderId) return
+    if (!order) return
+
+    if (status === 'cancelled' && ['paid', 'processing', 'shipped', 'delivered', 'refunded', 'disputed'].includes(order.status || '')) {
+        return
+    }
 
     const { error } = await supabase
         .from('orders')
@@ -64,7 +68,7 @@ export async function markOrderStatus(
             payment_transaction_id: transactionId,
             updated_at: new Date().toISOString(),
         })
-        .eq('id', orderId)
+        .eq('id', order.id)
 
     if (error) throw new Error(`Falha ao atualizar pedido: ${error.message}`)
 }

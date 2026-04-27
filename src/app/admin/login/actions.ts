@@ -39,12 +39,12 @@ export async function login(formData: FormData) {
     const { data: authData, error } = await supabase.auth.signInWithPassword(data)
 
     if (error) {
-        redirect('/admin/login?error=Credenciais invalidas')
+        redirect('/admin/login?error=Credenciais inválidas')
     }
 
     if (!isAdminUser(authData.user)) {
         await supabase.auth.signOut()
-        redirect('/admin/login?error=Credenciais invalidas')
+        redirect('/admin/login?error=Credenciais inválidas')
     }
 
     revalidatePath('/admin', 'layout')

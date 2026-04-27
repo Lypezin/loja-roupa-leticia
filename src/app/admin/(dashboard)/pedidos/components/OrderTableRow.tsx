@@ -17,7 +17,8 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
     const clientEmail = order.customer_email || "E-mail não informado"
     const providerLabel = order.payment_provider || (order.payment_receipt_url ? "abacatepay" : "legado")
     const shippingLabel = [order.shipping_company_name, order.shipping_service_name].filter(Boolean).join(" • ")
-    const canManageMelhorEnvio = order.shipping_provider === "melhor_envio" && (order.status === "paid" || order.status === "processing" || order.status === "shipped")
+    const canManageMelhorEnvio = order.shipping_provider === "melhor_envio"
+        && (order.shipping_external_id ? !["cancelled", "refunded", "disputed"].includes(order.status) : ["paid", "processing"].includes(order.status))
     const statusMeta = getStatusMeta(order.status)
     const hasOperationalAttention = ["disputed", "cancelled", "refunded"].includes(order.status)
 

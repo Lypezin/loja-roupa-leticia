@@ -140,6 +140,21 @@ export async function processFailedEvent(details: PaymentEventDetails): Promise<
     const attempt = await findPaymentAttempt(details.externalId, details.checkoutId)
     const normalizedStatus = normalizeAbacatePayStatus(details.status)
 
+    if (attempt && ["completed", "refunded", "disputed", "paid_manual_review"].includes(attempt.status)) {
+        await markAttemptStatus(attempt.id, {
+            checkout_id: details.checkoutId || attempt.checkout_id,
+            receipt_url: details.receiptUrl || attempt.receipt_url,
+            payment_method: details.paymentMethod || attempt.payment_method,
+            raw_response: mergeAttemptRawResponse(attempt.raw_response, {
+                ignored_provider_payload: details.payload,
+                ignored_event: details.event,
+                ignored_reason: "terminal_attempt_status",
+            }),
+        })
+
+        return { action: "ignored", ignored: "terminal_attempt_status" }
+    }
+
     if (attempt) {
         await markAttemptStatus(attempt.id, {
             status: normalizedStatus === "pending" ? "failed" : normalizedStatus,

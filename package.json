@@ -47,6 +47,7 @@
     "wrangler": "^4.82.1"
   },
   "overrides": {
+    "postcss": "^8.5.12",
     "router": {
       "path-to-regexp": "^8.4.2"
     }

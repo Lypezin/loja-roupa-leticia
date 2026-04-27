@@ -248,6 +248,10 @@ export async function createMelhorEnvioShipmentDraft(orderId: string) {
         throw new Error("Pedido não encontrado.")
     }
 
+    if (!["paid", "processing"].includes(order.status)) {
+        throw new Error("Só é possível emitir etiqueta para pedidos pagos ou em preparação.")
+    }
+
     if (order.shipping_external_id) {
         throw new Error("Este pedido já possui uma etiqueta criada no Melhor Envio.")
     }
