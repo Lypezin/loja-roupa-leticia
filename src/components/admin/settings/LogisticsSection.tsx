@@ -26,8 +26,22 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
 
     const originZip = readStringValue(settings.shipping_origin_zip)
     const hasOriginZip = Boolean(originZip.trim())
+    const senderProfileReady = [
+        settings.shipping_sender_name,
+        settings.shipping_sender_email,
+        settings.shipping_sender_phone,
+        settings.shipping_sender_document,
+        settings.shipping_sender_address,
+        settings.shipping_sender_number,
+        settings.shipping_sender_district,
+        settings.shipping_sender_city,
+        settings.shipping_sender_state,
+    ].every((value) => typeof value === "string" && value.trim().length > 0)
+    const shipmentScopesReady = melhorEnvio.missing_scopes.length === 0
     const shippingReady = melhorEnvio.connected
+        && shipmentScopesReady
         && hasOriginZip
+        && senderProfileReady
         && shippingCoverage.productsMissingShippingData === 0
         && shippingCoverage.totalProducts > 0
 
@@ -40,10 +54,10 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
             }
 
             showSuccess(setSuccess)
-            toast.success("Configurações de frete atualizadas.")
+            toast.success("Configuracoes de frete atualizadas.")
         } catch (error: unknown) {
             const err = error as Error
-            toast.error(`Erro ao salvar logística: ${err.message}`)
+            toast.error(`Erro ao salvar logistica: ${err.message}`)
         } finally {
             setIsLoading(false)
         }
@@ -74,7 +88,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
             <SectionHeader
                 icon={Truck}
                 title="Frete e despacho"
-                description="Conecte o Melhor Envio, defina a origem dos envios da loja e acompanhe quais produtos já estão prontos para cotação."
+                description="Conecte o Melhor Envio, defina a origem dos envios da loja e acompanhe quais produtos ja estao prontos para cotacao."
             />
 
             <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_19rem]">
@@ -87,8 +101,11 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                 <ShippingOperationalStatus
                     isConnected={melhorEnvio.connected}
                     shippingReady={shippingReady}
+                    hasShipmentScopes={shipmentScopesReady}
+                    hasSenderProfile={senderProfileReady}
                     hasOriginZip={hasOriginZip}
                     originZip={originZip}
+                    missingScopes={melhorEnvio.missing_scopes}
                     shippingCoverage={shippingCoverage}
                 />
             </div>
@@ -107,7 +124,7 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
                     defaultChecked={settings.shipping_sender_non_commercial !== false}
                     className="mt-1 h-4 w-4 shrink-0 rounded border-zinc-300 text-zinc-950 focus:ring-zinc-300"
                 />
-                <span>Tratar os envios como não comerciais por padrão ao criar etiquetas via API.</span>
+                <span>Tratar os envios como nao comerciais por padrao ao criar etiquetas via API.</span>
             </label>
 
             <FreeShippingSection threshold={readThresholdValue(settings.free_shipping_threshold)} />
@@ -115,17 +132,17 @@ export function LogisticsSection({ settings, melhorEnvio, shippingCoverage }: Lo
             <div className="rounded-2xl border border-zinc-200 bg-zinc-50/50 p-4 md:p-5">
                 <div className="flex items-center gap-2">
                     <PackageSearch className="h-4 w-4 text-zinc-500" />
-                    <h3 className="text-sm font-semibold text-zinc-950">Revisão rápida da operação</h3>
+                    <h3 className="text-sm font-semibold text-zinc-950">Revisao rapida da operacao</h3>
                 </div>
                 <ul className="mt-4 space-y-3 text-sm leading-6 text-zinc-600">
-                    <li>1. A conta sandbox do Melhor Envio já está conectada e a cotação respondeu em teste.</li>
-                    <li>2. O CEP de origem precisa continuar no admin porque ele define o ponto de despacho da sua loja.</li>
-                    <li>3. O cálculo de frete depende de peso e dimensões do pacote em cada produto.</li>
-                    <li>4. Se algum produto ficar sem essas medidas, o carrinho bloqueia a cotação para esse item.</li>
+                    <li>1. A cotacao depende de conta conectada, CEP de origem e produtos com peso e dimensoes.</li>
+                    <li>2. A emissao automatica exige escopos de etiqueta liberados e remetente completo.</li>
+                    <li>3. O CEP de origem continua no admin porque ele define o ponto real de despacho da loja.</li>
+                    <li>4. Se algum produto ficar sem essas medidas, o carrinho bloqueia a cotacao para esse item.</li>
                 </ul>
             </div>
 
-            <SaveButton isLoading={isLoading} success={success} label="Salvar logística" />
+            <SaveButton isLoading={isLoading} success={success} label="Salvar logistica" />
         </form>
     )
 }

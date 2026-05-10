@@ -20,15 +20,15 @@ export function SettingsForm({ settings, melhorEnvio, shippingCoverage }: Settin
     const baseSettings = settings as Record<string, string | number | null>
 
     if (!settings) {
-        return <p className="text-sm text-muted-foreground">Nenhuma configuração encontrada.</p>
+        return <p className="text-sm text-muted-foreground">Nenhuma configuracao encontrada.</p>
     }
 
     const tabs = [
-        { id: "perfil", label: "Perfil e SEO", description: "Nome, contatos e apresentação da loja.", icon: User },
+        { id: "perfil", label: "Perfil e SEO", description: "Nome, contatos e apresentacao da loja.", icon: User },
         { id: "banner", label: "Banner hero", description: "Imagem principal e chamadas da primeira dobra.", icon: ImageIcon },
-        { id: "conteudo", label: "Página inicial", description: "Textos da home e blocos de confiança.", icon: Type },
-        { id: "rodape", label: "Rodapé", description: "Informações institucionais da loja.", icon: LayoutTemplate },
-        { id: "logistica", label: "Logística", description: "Melhor Envio, despacho e frete grátis.", icon: Truck },
+        { id: "conteudo", label: "Pagina inicial", description: "Textos da home e blocos de confianca.", icon: Type },
+        { id: "rodape", label: "Rodape", description: "Informacoes institucionais da loja.", icon: LayoutTemplate },
+        { id: "logistica", label: "Logistica", description: "Melhor Envio, despacho e frete gratis.", icon: Truck },
     ]
 
     const renderContent = () => {
@@ -54,10 +54,10 @@ export function SettingsForm({ settings, melhorEnvio, shippingCoverage }: Settin
                 <div className="rounded-[1.8rem] border border-zinc-200/80 bg-white/92 p-3 shadow-[0_18px_40px_rgba(79,55,39,0.05)] md:p-4">
                     <div className="rounded-[1.35rem] border border-zinc-200 bg-zinc-50/70 px-4 py-4">
                         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                            Áreas de configuração
+                            Areas de configuracao
                         </p>
                         <p className="mt-2 text-sm leading-6 text-zinc-600">
-                            Cada seção controla uma parte específica da experiência da loja.
+                            Cada secao controla uma parte especifica da experiencia da loja.
                         </p>
                     </div>
 

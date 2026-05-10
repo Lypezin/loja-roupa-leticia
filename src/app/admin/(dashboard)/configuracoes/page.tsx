@@ -44,7 +44,7 @@ export default async function ConfiguracoesPage() {
     return (
         <div className="flex flex-col gap-6">
             <AdminPageHeader
-                title="Configurações"
+                title="Configuracoes"
             />
 
             <SettingsForm

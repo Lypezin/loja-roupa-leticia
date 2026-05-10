@@ -5,16 +5,22 @@ import type { ShippingCoverageSummary } from "@/types/shipping"
 interface ShippingOperationalStatusProps {
     isConnected: boolean
     shippingReady: boolean
+    hasShipmentScopes: boolean
+    hasSenderProfile: boolean
     hasOriginZip: boolean
     originZip: string
+    missingScopes: string[]
     shippingCoverage: ShippingCoverageSummary
 }
 
 export function ShippingOperationalStatus({
     isConnected,
     shippingReady,
+    hasShipmentScopes,
+    hasSenderProfile,
     hasOriginZip,
     originZip,
+    missingScopes,
     shippingCoverage,
 }: ShippingOperationalStatusProps) {
     return (
@@ -28,7 +34,7 @@ export function ShippingOperationalStatus({
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-600">Status operacional</p>
             </div>
             <h3 className="mt-3 text-lg font-semibold text-zinc-950">
-                {shippingReady ? "Loja pronta para cotar frete" : "Faltam ajustes para o frete"}
+                {shippingReady ? "Loja pronta para cotar, cobrar e despachar" : "Faltam ajustes para frete e despacho"}
             </h3>
             <ul className="mt-4 space-y-3 text-sm text-zinc-700">
                 <li className="flex items-start justify-between gap-3">
@@ -40,13 +46,34 @@ export function ShippingOperationalStatus({
                     <strong>{hasOriginZip ? originZip : "Pendente"}</strong>
                 </li>
                 <li className="flex items-start justify-between gap-3">
+                    <span>Escopos para etiqueta</span>
+                    <strong>{hasShipmentScopes ? "Liberados" : "Incompletos"}</strong>
+                </li>
+                <li className="flex items-start justify-between gap-3">
+                    <span>Cadastro do remetente</span>
+                    <strong>{hasSenderProfile ? "Completo" : "Pendente"}</strong>
+                </li>
+                <li className="flex items-start justify-between gap-3">
                     <span>Produtos com medidas</span>
                     <strong>{shippingCoverage.productsReadyForShipping}/{shippingCoverage.totalProducts}</strong>
                 </li>
             </ul>
+
+            {!hasShipmentScopes && missingScopes.length > 0 && (
+                <p className="mt-4 text-xs leading-5 text-zinc-600">
+                    Reconecte o Melhor Envio para liberar os escopos de etiqueta: {missingScopes.join(", ")}.
+                </p>
+            )}
+
+            {!hasSenderProfile && (
+                <p className="mt-4 text-xs leading-5 text-zinc-600">
+                    Preencha os dados do remetente para conseguir emitir etiquetas automaticamente.
+                </p>
+            )}
+
             {shippingCoverage.productsMissingShippingData > 0 && (
                 <p className="mt-4 text-xs leading-5 text-zinc-600">
-                    {shippingCoverage.productsMissingShippingData} produto(s) ainda não têm peso e dimensões.
+                    {shippingCoverage.productsMissingShippingData} produto(s) ainda nao tem peso e dimensoes.
                     {" "}
                     Ajuste isso em{" "}
                     <Link href="/admin/produtos" className="font-semibold text-zinc-950 underline underline-offset-4">
